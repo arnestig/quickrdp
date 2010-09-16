@@ -82,6 +82,7 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ComboBox2->Append(_("1152 x 864"));
 	ComboBox2->Append(_("1280 x 960"));
 	ComboBox2->Append(_("1400 x 1050"));
+	ComboBox2->Disable();
 	wxFont ComboBox2Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	ComboBox2->SetFont(ComboBox2Font);
 	BoxSizer7->Add(ComboBox2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
@@ -134,4 +135,9 @@ void windowTabPanel::setOwner( RDPFrame *owner )
 
 void windowTabPanel::OnResoultionClick(wxCommandEvent& event)
 {
+    if ( RadioBox1->GetStringSelection() == wxT("Custom resolution") ) {
+        ComboBox2->Enable();
+    } else {
+        ComboBox2->Disable();
+    }
 }
