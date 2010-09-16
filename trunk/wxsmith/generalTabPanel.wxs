@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxPanel" name="generalTabPanel">
+		<size>384,339</size>
+		<id_arg>0</id_arg>
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<object class="wxBoxSizer" variable="BoxSizer9" member="no">
+					<object class="sizeritem">
+						<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
+							<label>Server and login information</label>
+							<font>
+								<size>10</size>
+								<style>normal</style>
+								<weight>bold</weight>
+								<underlined>0</underlined>
+								<family>swiss</family>
+							</font>
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+			</object>
+			<object class="sizeritem">
+				<object class="wxBoxSizer" variable="BoxSizer8" member="no">
+					<object class="sizeritem">
+						<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+							<orient>wxVERTICAL</orient>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer2" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
+											<label>Hostname:</label>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCtrl2" member="yes">
+											<size>150,-1</size>
+											<style>wxDOUBLE_BORDER</style>
+											<handler function="onTextUpdates" entry="EVT_TEXT" />
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer11" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
+											<label>Username:</label>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="TextCtrl7" member="yes">
+											<size>150,27</size>
+											<handler function="onTextUpdates" entry="EVT_TEXT" />
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer5" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+											<label>Password:</label>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl3" member="yes">
+											<size>150,-1</size>
+											<style>wxTE_PASSWORD</style>
+											<handler function="onTextUpdates" entry="EVT_TEXT" />
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer6" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
+											<label>Domain:</label>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL4" variable="TextCtrl4" member="yes">
+											<size>150,-1</size>
+											<handler function="onTextUpdates" entry="EVT_TEXT" />
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer10" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText7" member="yes">
+											<label>Comment:</label>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL6" variable="TextCtrl6" member="yes">
+											<size>150,-1</size>
+											<handler function="onTextUpdates" entry="EVT_TEXT" />
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer7" member="no">
+									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
+											<label>Client name:</label>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
+										<object class="wxTextCtrl" name="ID_TEXTCTRL5" variable="TextCtrl5" member="yes">
+											<size>150,-1</size>
+											<handler function="onTextUpdates" entry="EVT_TEXT" />
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</wxsmith>
