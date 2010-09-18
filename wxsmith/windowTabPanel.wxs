@@ -7,39 +7,11 @@
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="BoxSizer2" member="no">
 					<object class="sizeritem">
-						<object class="wxBoxSizer" variable="BoxSizer13" member="no">
-							<orient>wxVERTICAL</orient>
-							<object class="sizeritem">
-								<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-									<label>Screen resolution</label>
-									<font>
-										<size>10</size>
-										<style>normal</style>
-										<weight>bold</weight>
-										<underlined>0</underlined>
-										<family>swiss</family>
-									</font>
-								</object>
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-								<option>1</option>
-							</object>
-							<object class="spacer">
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-								<size>116,20</size>
-							</object>
-						</object>
-						<flag>wxALL|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer7" member="no">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
 								<object class="wxRadioBox" name="ID_RADIOBOX1" variable="RadioBox1" member="yes">
-									<label>Label</label>
+									<label>Screen resolution</label>
 									<content>
 										<item>Default resolution</item>
 										<item>Fullscreen</item>
@@ -85,12 +57,12 @@
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
 			</object>
 			<object class="sizeritem">
 				<object class="wxStaticLine" name="ID_STATICLINE1" variable="StaticLine1" member="yes">
-					<size>344,1</size>
+					<size>389,6</size>
 				</object>
 				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
@@ -98,80 +70,37 @@
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="BoxSizer8" member="no">
 					<object class="sizeritem">
-						<object class="wxBoxSizer" variable="BoxSizer9" member="no">
-							<orient>wxVERTICAL</orient>
-							<object class="sizeritem">
-								<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
-									<label>Colors</label>
-									<font>
-										<size>10</size>
-										<style>normal</style>
-										<weight>bold</weight>
-										<underlined>0</underlined>
-										<family>swiss</family>
-									</font>
-								</object>
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-								<option>1</option>
-							</object>
-							<object class="spacer">
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-								<size>116,20</size>
-							</object>
-						</object>
-						<flag>wxALL|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer3" member="no">
 							<orient>wxVERTICAL</orient>
 							<object class="sizeritem">
-								<object class="wxBoxSizer" variable="BoxSizer4" member="no">
-									<object class="sizeritem">
-										<object class="wxRadioButton" name="ID_RADIOBUTTON1" variable="RadioButton1" member="yes">
-											<label>Default colors</label>
-										</object>
-										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
+								<object class="wxRadioBox" name="ID_RADIOBOX2" variable="RadioBox2" member="yes">
+									<label>Colors</label>
+									<content>
+										<item>Default colors</item>
+										<item>Custom colors</item>
+									</content>
+									<default>-1</default>
+									<style>wxRA_SPECIFY_COLS</style>
+									<handler function="OnColorsClick" entry="EVT_RADIOBOX" />
 								</object>
-								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-							</object>
-							<object class="sizeritem">
-								<object class="wxBoxSizer" variable="BoxSizer5" member="no">
-									<orient>wxVERTICAL</orient>
-									<object class="sizeritem">
-										<object class="wxRadioButton" name="ID_RADIOBUTTON2" variable="RadioButton2" member="yes">
-											<label>Custom colors</label>
-										</object>
-										<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
-									<object class="sizeritem">
-										<object class="wxComboBox" name="ID_COMBOBOX1" variable="ComboBox1" member="yes">
-											<content>
-												<item>&quot;High Color&quot; (15 bits)</item>
-												<item>&quot;High Color&quot; (16 bits)</item>
-												<item>&quot;True Color&quot; (24 bits)</item>
-											</content>
-											<selection>1</selection>
-											<size>116,21</size>
-											<style>wxCB_READONLY</style>
-										</object>
-										<flag>wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
-								</object>
-								<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxComboBox" name="ID_COMBOBOX1" variable="ComboBox1" member="yes">
+									<content>
+										<item>&quot;High Color&quot; (15 bits)</item>
+										<item>&quot;High Color&quot; (16 bits)</item>
+										<item>&quot;True Color&quot; (24 bits)</item>
+									</content>
+									<selection>1</selection>
+									<size>116,23</size>
+									<enabled>0</enabled>
+									<style>wxCB_READONLY</style>
+								</object>
+								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL</flag>
@@ -179,7 +108,7 @@
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
 			</object>
 		</object>

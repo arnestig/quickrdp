@@ -91,7 +91,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenuBar* MenuBar1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-
+    
     Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -103,10 +103,12 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BitmapButton1->SetToolTip(_("New connection"));
     BoxSizer3->Add(BitmapButton1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BitmapButton2 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("data/edit-delete.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
+    BitmapButton2->SetBitmapDisabled(wxBitmap(wxImage(_T("data/edit-delete-disabled.png"))));
     BitmapButton2->Disable();
     BitmapButton2->SetToolTip(_("Delete connection"));
     BoxSizer3->Add(BitmapButton2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BitmapButton3 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON3, wxBitmap(wxImage(_T("data/preferences-other.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
+    BitmapButton3->SetBitmapDisabled(wxBitmap(wxImage(_T("data/preferences-other-disabled.png"))));
     BitmapButton3->Disable();
     BitmapButton3->SetToolTip(_("View properties"));
     BoxSizer3->Add(BitmapButton3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -139,7 +141,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     StatusBar1->SetStatusStyles(1,__wxStatusBarStyles_1);
     SetStatusBar(StatusBar1);
     BoxSizer1->SetSizeHints(this);
-
+    
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
     Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnEditButtonClick);
@@ -234,7 +236,6 @@ void quickRDPFrame::loadRDPFromDatabase()
 
     std::vector<RDPConnection*> database = rdpDatabase->getDatabase();
 
-
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
         wxListItem item;
@@ -248,6 +249,9 @@ void quickRDPFrame::loadRDPFromDatabase()
         ListCtrl1->SetItem( index, 0, curRDP->getHostname() );
         ListCtrl1->SetItem( index, 1, username );
     }
+
+    ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
+    ListCtrl1->SetColumnWidth( 1, wxLIST_AUTOSIZE );
 }
 
 void quickRDPFrame::clearListCtrl()

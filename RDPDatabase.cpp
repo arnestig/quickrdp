@@ -216,6 +216,15 @@ void RDPDatabase::deleteRDPConnectionById( size_t id )
     database.erase( database.begin() + id );
 }
 
+void RDPDatabase::deleteRDPConnectionByPointer( RDPConnection *rdpConnection )
+{
+    for ( size_t index = 0; index < database.size(); index++ ) {
+        if ( database[ index ] == rdpConnection ) {
+            database.erase( database.begin() + index );
+        }
+    }
+}
+
 std::vector<RDPConnection*> RDPDatabase::getDatabase()
 {
     return database;

@@ -3,6 +3,7 @@
 	<object class="wxDialog" name="RDPFrame">
 		<pos_arg>1</pos_arg>
 		<size_arg>1</size_arg>
+		<handler function="OnClose" entry="EVT_CLOSE" />
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">

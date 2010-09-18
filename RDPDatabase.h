@@ -67,6 +67,7 @@ class RDPDatabase
         RDPConnection *addRDPConnection( wxString filename );
         RDPConnection *getRDPConnectionById( size_t id );
         void deleteRDPConnectionById( size_t id );
+        void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
         std::vector<RDPConnection*> getDatabase();
 
     private:
