@@ -50,7 +50,7 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxDefaultSize);
 	Move(wxDefaultPosition);
@@ -73,9 +73,10 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onSaveClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onCloseClick);
+	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&RDPFrame::OnClose);
 	//*)
 	generalTab = new generalTabPanel( Notebook1, wxID_ANY );
 	windowTab = new windowTabPanel( Notebook1, wxID_ANY );
@@ -146,4 +147,12 @@ void RDPFrame::onSaveClick(wxCommandEvent& event)
     Button1->Disable();
     Button2->SetFocus();
     Close();
+}
+
+void RDPFrame::OnClose(wxCloseEvent& event)
+{
+    if ( rdpConnection->getHostname().IsEmpty() == true ) {
+        rdpDatabase->deleteRDPConnectionByPointer( rdpConnection );
+    }
+    Destroy();
 }

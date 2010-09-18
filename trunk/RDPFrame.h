@@ -75,6 +75,7 @@ class RDPFrame: public wxDialog
 		//(*Handlers(RDPFrame)
 		void onCloseClick(wxCommandEvent& event);
 		void onSaveClick(wxCommandEvent& event);
+		void OnClose(wxCloseEvent& event);
 		//*)
 
 		RDPConnection *rdpConnection;

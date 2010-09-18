@@ -26,10 +26,8 @@
 
 //(*Headers(windowTabPanel)
 #include <wx/sizer.h>
-#include <wx/stattext.h>
 #include <wx/radiobox.h>
 #include <wx/statline.h>
-#include <wx/radiobut.h>
 #include <wx/panel.h>
 #include <wx/combobox.h>
 //*)
@@ -42,10 +40,7 @@ class windowTabPanel: public wxPanel
 		virtual ~windowTabPanel();
 
 		//(*Declarations(windowTabPanel)
-		wxRadioButton* RadioButton1;
-		wxStaticText* StaticText2;
-		wxRadioButton* RadioButton2;
-		wxStaticText* StaticText1;
+		wxRadioBox* RadioBox2;
 		wxStaticLine* StaticLine1;
 		wxComboBox* ComboBox1;
 		wxRadioBox* RadioBox1;
@@ -57,13 +52,10 @@ class windowTabPanel: public wxPanel
 	protected:
 
 		//(*Identifiers(windowTabPanel)
-		static const long ID_STATICTEXT1;
 		static const long ID_RADIOBOX1;
 		static const long ID_COMBOBOX2;
 		static const long ID_STATICLINE1;
-		static const long ID_STATICTEXT2;
-		static const long ID_RADIOBUTTON1;
-		static const long ID_RADIOBUTTON2;
+		static const long ID_RADIOBOX2;
 		static const long ID_COMBOBOX1;
 		//*)
 
@@ -71,6 +63,7 @@ class windowTabPanel: public wxPanel
 
 		//(*Handlers(windowTabPanel)
 		void OnResoultionClick(wxCommandEvent& event);
+		void OnColorsClick(wxCommandEvent& event);
 		//*)
 
 		RDPFrame *owner;
