@@ -29,6 +29,7 @@ class RDPConnection
 {
     public:
         RDPConnection( wxString filename );
+        RDPConnection( wxString filename, RDPConnection *copy );
         ~RDPConnection();
 
         wxString getFilename() const;
@@ -74,6 +75,7 @@ class RDPDatabase
         RDPDatabase();
         ~RDPDatabase();
         RDPConnection *addRDPConnection( wxString filename );
+        RDPConnection *duplicateRDPConnection( wxString filename, RDPConnection *copy );
         RDPConnection *getRDPConnectionById( size_t id );
         void deleteRDPConnectionById( size_t id );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );

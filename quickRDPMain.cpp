@@ -286,6 +286,7 @@ void quickRDPFrame::loadRDPFromDatabase()
 
     ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
     ListCtrl1->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+    ListCtrl1->SetColumnWidth( 2, 100 );
     ListCtrl1->SetColumnWidth( 3, wxLIST_AUTOSIZE );
 }
 
@@ -318,14 +319,16 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
-        /** HÄR SKALL VI KOPIERA EN ANSLUTNING.... **/
 
+        const char hex[] = "ABCDEF0123456789";
+        wxString filename;
+        srand( time( NULL ) );
+        for ( size_t index = 0; index < 32; index++ ) {
+            filename.Append( wxString( &hex[ rand() % 16 ] , wxConvUTF8, 1 ) );
+        }
+        rdpDatabase->duplicateRDPConnection( filename, rdpDatabase->getRDPConnectionById( itemIndex ) );
 
-        /**RDPFrame *newFrame = new RDPFrame( this, 0 );
-        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionById( itemIndex ) );
-        newFrame->ShowModal();**/
         loadRDPFromDatabase();
-//        delete newFrame;
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
             BitmapButton2->Disable();
             BitmapButton3->Disable();

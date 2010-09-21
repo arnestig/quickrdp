@@ -38,6 +38,22 @@ RDPConnection::RDPConnection( wxString filename_ )
     parseFile();
 }
 
+RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
+    :   filename( filename_ )
+{
+    setClientHostname( copy->getClientHostname() );
+    setComment( copy->getComment() );
+    setConsole( copy->getConsole() );
+    setDesktopWidth( copy->getDesktopWidth() );
+    setDesktopHeight( copy->getDesktopHeight() );
+    setDomain( copy->getDomain() );
+    setHostname( copy->getHostname() );
+    setPassword( copy->getPassword() );
+    setScreenMode( copy->getScreenMode() );
+    setUsername( copy->getUsername() );
+    saveFile();
+}
+
 RDPConnection::~RDPConnection()
 {
 }
@@ -260,6 +276,13 @@ void RDPDatabase::loadRDPFiles()
 RDPConnection *RDPDatabase::addRDPConnection( wxString filename )
 {
     RDPConnection *newRDP = new RDPConnection( filename );
+    database.push_back( newRDP );
+    return newRDP;
+}
+
+RDPConnection *RDPDatabase::duplicateRDPConnection( wxString filename, RDPConnection *copy )
+{
+    RDPConnection *newRDP = new RDPConnection( filename, copy );
     database.push_back( newRDP );
     return newRDP;
 }
