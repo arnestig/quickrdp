@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxDialog" name="RDPFrame">
+		<size>371,447</size>
 		<pos_arg>1</pos_arg>
 		<size_arg>1</size_arg>
 		<handler function="OnClose" entry="EVT_CLOSE" />
@@ -11,7 +12,7 @@
 						<orient>wxVERTICAL</orient>
 						<object class="sizeritem">
 							<object class="wxNotebook" name="ID_NOTEBOOK1" variable="Notebook1" member="yes">
-								<size>361,368</size>
+								<size>361,391</size>
 							</object>
 							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<border>5</border>

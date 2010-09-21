@@ -50,14 +50,14 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-	
+
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
-	SetClientSize(wxDefaultSize);
+	SetClientSize(wxSize(371,447));
 	Move(wxDefaultPosition);
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
-	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(361,368), 0, _T("ID_NOTEBOOK1"));
+	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(361,391), 0, _T("ID_NOTEBOOK1"));
 	BoxSizer2->Add(Notebook1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
 	Button1 = new wxButton(Panel1, ID_BUTTON1, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
@@ -71,9 +71,8 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	BoxSizer2->SetSizeHints(Panel1);
 	BoxSizer1->Add(Panel1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	SetSizer(BoxSizer1);
-	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onSaveClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onCloseClick);
 	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&RDPFrame::OnClose);
@@ -99,12 +98,32 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
 {
     this->rdpConnection = rdpConnection;
 
+    /// GENERALTAB BEGIN
     generalTab->TextCtrl2->ChangeValue( rdpConnection->getHostname() ); // hostname
     generalTab->TextCtrl7->ChangeValue( rdpConnection->getUsername() ); // user
     generalTab->TextCtrl3->ChangeValue( rdpConnection->getPassword() ); // pass
     generalTab->TextCtrl4->ChangeValue( rdpConnection->getDomain() ); // domain
     generalTab->TextCtrl6->ChangeValue( rdpConnection->getComment() ); // comment
     generalTab->TextCtrl5->ChangeValue( rdpConnection->getClientHostname() ); // client hostname
+    if ( rdpConnection->getConsole() == wxT("1") ) {
+        generalTab->CheckBox1->SetValue( true );
+    } else {
+        generalTab->CheckBox1->SetValue( false );
+    }
+    /// GENERALTAB END
+
+
+    /// WINDOWTAB BEGIN
+    if ( rdpConnection->getScreenMode() == wxT("2") ) {
+        windowTab->RadioBox1->SetStringSelection( wxT("Fullscreen") );
+    } else if ( rdpConnection->getScreenMode() == wxT("1") && rdpConnection->getDesktopHeight() == wxT("0") && rdpConnection->getDesktopWidth() == wxT("0") ) {
+        windowTab->RadioBox1->SetStringSelection( wxT("Default resolution" ) );
+    } else {
+        windowTab->RadioBox1->SetStringSelection( wxT("Custom resolution" ) );
+        windowTab->ComboBox2->SetValue( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() );
+    }
+    windowTab->MarkComboBoxes();
+    /// WINDOWTAB END
 }
 
 void RDPFrame::checkForChanges()
@@ -116,6 +135,25 @@ void RDPFrame::checkForChanges()
     if ( generalTab->TextCtrl4->GetValue().Cmp( rdpConnection->getDomain() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl6->GetValue().Cmp( rdpConnection->getComment() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl5->GetValue().Cmp( rdpConnection->getClientHostname() ) != 0 ) { hasChangedSomething = true; }
+    if ( ( generalTab->CheckBox1->IsChecked() == true && rdpConnection->getConsole() == wxT("0") ) || ( generalTab->CheckBox1->IsChecked() == false && rdpConnection->getConsole() == wxT("1") ) ) { hasChangedSomething = true; }
+
+    /// desktop resolution
+    switch ( windowTab->RadioBox1->GetSelection() )
+    {
+        case 0: // default resolution
+            if ( !( rdpConnection->getScreenMode() == wxT("1") )
+            || !( rdpConnection->getDesktopHeight() == wxT("0") )
+            || !( rdpConnection->getDesktopWidth() == wxT("0") ) ) { hasChangedSomething = true; }
+        break;
+        case 1: // full screen
+            if ( !( rdpConnection->getScreenMode() == wxT("2") )
+            || !( rdpConnection->getDesktopHeight() == wxT("0") )
+            || !( rdpConnection->getDesktopWidth() == wxT("0") ) ) { hasChangedSomething = true; }
+        break;
+        case 2: // custom resolution
+            if ( !( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() == windowTab->ComboBox2->GetStringSelection() ) ) { hasChangedSomething = true; }
+        break;
+    }
 
     if ( generalTab->TextCtrl2->IsEmpty() == true ) {
         Button1->Disable();
@@ -142,6 +180,35 @@ void RDPFrame::onSaveClick(wxCommandEvent& event)
     rdpConnection->setDomain( generalTab->TextCtrl4->GetValue() );
     rdpConnection->setComment( generalTab->TextCtrl6->GetValue() );
     rdpConnection->setClientHostname( generalTab->TextCtrl5->GetValue() );
+    if ( generalTab->CheckBox1->IsChecked() == true ) {
+        rdpConnection->setConsole( wxT("1") );
+    } else {
+        rdpConnection->setConsole( wxT("0") );
+    }
+
+    /// desktop resolution
+    switch ( windowTab->RadioBox1->GetSelection() )
+    {
+        case 0: // default resolution
+            rdpConnection->setDesktopHeight( wxT("0") );
+            rdpConnection->setDesktopWidth( wxT("0") );
+            rdpConnection->setScreenMode( wxT("1") );
+        break;
+        case 1: // full screen
+            rdpConnection->setDesktopHeight( wxT("0") );
+            rdpConnection->setDesktopWidth( wxT("0") );
+            rdpConnection->setScreenMode( wxT("2") );
+        break;
+        case 2: // custom resolution
+            rdpConnection->setScreenMode( wxT("1") );
+            wxString resolutionString = windowTab->ComboBox2->GetValue();
+            wxString splitString = wxT(" x ");
+            int splitPos = resolutionString.Find( splitString );
+            rdpConnection->setDesktopWidth( resolutionString.SubString( 0, splitPos-1 ) );
+            rdpConnection->setDesktopHeight( resolutionString.SubString( splitPos + splitString.Len(), resolutionString.Len() ) );
+        break;
+    }
+
 
     rdpConnection->saveFile();
     Button1->Disable();

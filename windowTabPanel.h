@@ -48,6 +48,7 @@ class windowTabPanel: public wxPanel
 		//*)
 
 		void setOwner( RDPFrame *owner );
+		void MarkComboBoxes();
 
 	protected:
 

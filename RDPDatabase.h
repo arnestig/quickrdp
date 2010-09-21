@@ -38,6 +38,12 @@ class RDPConnection
         wxString getDomain() const;
         wxString getComment() const;
         wxString getClientHostname() const;
+        wxString getDesktopHeight() const;
+        wxString getDesktopWidth() const;
+        wxString getScreenMode() const;
+        wxString getConsole() const;
+
+        void connect();
 
         bool operator<(const wxString& hostname1) const {
             return getHostname() > hostname1;
@@ -49,14 +55,17 @@ class RDPConnection
         void setDomain( wxString domain );
         void setComment( wxString comment );
         void setClientHostname( wxString clienthostname );
+        void setDesktopHeight( wxString desktopheight );
+        void setDesktopWidth( wxString desktopwidth );
+        void setScreenMode( wxString screenmode );
+        void setConsole( wxString console );
 
         void saveFile();
 
     private:
         void parseFile();
         void writeLineToFile( std::ofstream &file, wxString line );
-        wxString filename, hostname, comment, username, password, domain, clienthostname;
-        size_t desktopheight, desktopwidth;
+        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, console, screenmode ;
 };
 
 class RDPDatabase

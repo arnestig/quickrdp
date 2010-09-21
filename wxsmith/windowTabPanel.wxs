@@ -37,7 +37,6 @@
 									</content>
 									<selection>1</selection>
 									<size>116,23</size>
-									<enabled>0</enabled>
 									<font>
 										<size>8</size>
 										<style>normal</style>
@@ -47,6 +46,7 @@
 										<face>Sans</face>
 									</font>
 									<style>wxCB_READONLY</style>
+									<handler function="OnResoultionClick" entry="EVT_COMBOBOX" />
 								</object>
 								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -96,8 +96,8 @@
 									</content>
 									<selection>1</selection>
 									<size>116,23</size>
-									<enabled>0</enabled>
 									<style>wxCB_READONLY</style>
+									<handler function="OnColorsClick" entry="EVT_COMBOBOX" />
 								</object>
 								<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>

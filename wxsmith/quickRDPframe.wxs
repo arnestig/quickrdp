@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="quickRDPFrame">
+		<title>quickRDP</title>
+		<icon>data/preferences-desktop-remote-desktop.png</icon>
 		<size>172,202</size>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
@@ -17,6 +19,18 @@
 										<size>64,64</size>
 										<tooltip>New connection</tooltip>
 										<handler function="OnNewButtonClick" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="BitmapButton4" member="yes">
+										<bitmap>data/network-workgroup.png</bitmap>
+										<disabled>data/network-workgroup-disabled.png</disabled>
+										<size>64,64</size>
+										<enabled>0</enabled>
+										<tooltip>Duplicate connection</tooltip>
+										<handler function="OnDuplicateButtonClick" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -51,7 +65,7 @@
 						<object class="sizeritem">
 							<object class="wxListCtrl" name="ID_LISTCTRL1" variable="ListCtrl1" member="yes">
 								<size>566,278</size>
-								<extra_code>ListCtrl1-&gt;InsertColumn( 0, wxT(&quot;Host&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 1, wxT(&quot;Username&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 2, wxT(&quot;Hmxmx&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 3, wxT(&quot;Use console&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 4, wxT(&quot;Fullscreen&quot;) );</extra_code>
+								<extra_code>ListCtrl1-&gt;InsertColumn( 0, wxT(&quot;Host&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 1, wxT(&quot;Username&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 2, wxT(&quot;Use console&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 3, wxT(&quot;Resolution&quot;) );</extra_code>
 								<style>wxLC_REPORT|wxLC_SINGLE_SEL</style>
 								<handler function="OnListCtrl1ItemSelect" entry="EVT_LIST_ITEM_SELECTED" />
 								<handler function="OnListCtrl1ItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
@@ -86,11 +100,6 @@
 					<handler function="OnAbout" entry="EVT_MENU" />
 				</object>
 			</object>
-		</object>
-		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
-			<fields>1</fields>
-			<widths>-1</widths>
-			<styles>wxSB_NORMAL</styles>
 		</object>
 	</object>
 </wxsmith>
