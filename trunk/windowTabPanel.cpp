@@ -68,7 +68,6 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ComboBox2->Append(_("1152 x 864"));
 	ComboBox2->Append(_("1280 x 960"));
 	ComboBox2->Append(_("1400 x 1050"));
-	ComboBox2->Disable();
 	wxFont ComboBox2Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	ComboBox2->SetFont(ComboBox2Font);
 	BoxSizer7->Add(ComboBox2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
@@ -89,7 +88,6 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	ComboBox1->Append(_("\"High Color\" (15 bits)"));
 	ComboBox1->SetSelection( ComboBox1->Append(_("\"High Color\" (16 bits)")) );
 	ComboBox1->Append(_("\"True Color\" (24 bits)"));
-	ComboBox1->Disable();
 	BoxSizer3->Add(ComboBox1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer8->Add(BoxSizer3, 1, wxALL|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL, 5);
 	BoxSizer1->Add(BoxSizer8, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
@@ -98,7 +96,9 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer1->SetSizeHints(this);
 
 	Connect(ID_RADIOBOX1,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnResoultionClick);
+	Connect(ID_COMBOBOX2,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnResoultionClick);
 	Connect(ID_RADIOBOX2,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnColorsClick);
+	Connect(ID_COMBOBOX1,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnColorsClick);
 	//*)
 }
 
@@ -108,6 +108,21 @@ windowTabPanel::~windowTabPanel()
 	//*)
 }
 
+void windowTabPanel::MarkComboBoxes()
+{
+    if ( RadioBox1->GetStringSelection() == wxT("Custom resolution") ) {
+        ComboBox2->Enable();
+    } else {
+        ComboBox2->Disable();
+    }
+
+    if ( RadioBox2->GetStringSelection() == wxT("Custom colors") ) {
+        ComboBox1->Enable();
+    } else {
+        ComboBox1->Disable();
+    }
+}
+
 void windowTabPanel::setOwner( RDPFrame *owner )
 {
     this->owner = owner;
@@ -115,18 +130,12 @@ void windowTabPanel::setOwner( RDPFrame *owner )
 
 void windowTabPanel::OnResoultionClick(wxCommandEvent& event)
 {
-    if ( RadioBox1->GetStringSelection() == wxT("Custom resolution") ) {
-        ComboBox2->Enable();
-    } else {
-        ComboBox2->Disable();
-    }
+    MarkComboBoxes();
+    owner->checkForChanges();
 }
 
 void windowTabPanel::OnColorsClick(wxCommandEvent& event)
 {
-    if ( RadioBox2->GetStringSelection() == wxT("Custom colors") ) {
-        ComboBox1->Enable();
-    } else {
-        ComboBox1->Disable();
-    }
+    MarkComboBoxes();
+    owner->checkForChanges();
 }

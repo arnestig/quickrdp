@@ -29,7 +29,11 @@
 
 ///BEGIN RDPConnection
 RDPConnection::RDPConnection( wxString filename_ )
-    :   filename( filename_ )
+    :   filename( filename_ ),
+        desktopheight( wxT("0") ),
+        desktopwidth( wxT("0") ),
+        console( wxT("0") ),
+        screenmode( wxT("1") )
 {
     parseFile();
 }
@@ -73,6 +77,26 @@ wxString RDPConnection::getFilename() const
     return filename;
 }
 
+wxString RDPConnection::getDesktopHeight() const
+{
+    return desktopheight;
+}
+
+wxString RDPConnection::getDesktopWidth() const
+{
+    return desktopwidth;
+}
+
+wxString RDPConnection::getScreenMode() const
+{
+    return screenmode;
+}
+
+wxString RDPConnection::getConsole() const
+{
+    return console;
+}
+
 void RDPConnection::setHostname( wxString hostname )
 {
     this->hostname = hostname;
@@ -103,6 +127,33 @@ void RDPConnection::setClientHostname( wxString clienthostname )
     this->clienthostname = clienthostname;
 }
 
+void RDPConnection::setDesktopHeight( wxString desktopheight )
+{
+    this->desktopheight = desktopheight;
+}
+
+void RDPConnection::setDesktopWidth( wxString desktopwidth )
+{
+    this->desktopwidth = desktopwidth;
+}
+
+void RDPConnection::setScreenMode( wxString screenmode )
+{
+    this->screenmode = screenmode;
+}
+
+void RDPConnection::setConsole( wxString console )
+{
+    this->console = console;
+}
+
+void RDPConnection::connect()
+{
+    if ( getFilename().IsEmpty() == false ) {
+        wxExecute( Configuration::getExecString() + Configuration::getDatabaseFolder() + getFilename() );
+    }
+}
+
 void RDPConnection::writeLineToFile( std::ofstream &file, wxString line )
 {
     file.write( line.mb_str(), line.Len() );
@@ -120,6 +171,10 @@ void RDPConnection::saveFile()
     writeLineToFile( ofile, wxString(wxT("full address:s:")) + getHostname() );
     writeLineToFile( ofile, wxString(wxT("client hostname:s:")) + getClientHostname() );
     writeLineToFile( ofile, wxString(wxT("description:s:")) + getComment() );
+    writeLineToFile( ofile, wxString(wxT("desktopheight:i:")) + getDesktopHeight() );
+    writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
+    writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
+    writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
 
 	ofile.close();
 }
@@ -159,6 +214,10 @@ void RDPConnection::parseFile()
         setHostname( FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
         setClientHostname( FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
         setComment( FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
+        setDesktopHeight( FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
+        setDesktopWidth( FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
+        setScreenMode( FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
+        setConsole( FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
 	}
 	rfile.close();
     }

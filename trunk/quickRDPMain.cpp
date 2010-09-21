@@ -63,13 +63,13 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 
 //(*IdInit(quickRDPFrame)
 const long quickRDPFrame::ID_BITMAPBUTTON1 = wxNewId();
+const long quickRDPFrame::ID_BITMAPBUTTON4 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON2 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON3 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMenuQuit = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
-const long quickRDPFrame::ID_STATUSBAR1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
@@ -91,9 +91,14 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenuBar* MenuBar1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-    
-    Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
+
+    Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
+    {
+    	wxIcon FrameIcon;
+    	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("data/preferences-desktop-remote-desktop.png"))));
+    	SetIcon(FrameIcon);
+    }
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
     Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(182,217), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
@@ -102,6 +107,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BitmapButton1->SetDefault();
     BitmapButton1->SetToolTip(_("New connection"));
     BoxSizer3->Add(BitmapButton1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BitmapButton4 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON4, wxBitmap(wxImage(_T("data/network-workgroup.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
+    BitmapButton4->SetBitmapDisabled(wxBitmap(wxImage(_T("data/network-workgroup-disabled.png"))));
+    BitmapButton4->Disable();
+    BitmapButton4->SetToolTip(_("Duplicate connection"));
+    BoxSizer3->Add(BitmapButton4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BitmapButton2 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("data/edit-delete.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
     BitmapButton2->SetBitmapDisabled(wxBitmap(wxImage(_T("data/edit-delete-disabled.png"))));
     BitmapButton2->Disable();
@@ -116,9 +126,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxLC_SINGLE_SEL, wxDefaultValidator, _T("ID_LISTCTRL1"));
     ListCtrl1->InsertColumn( 0, wxT("Host") );
     ListCtrl1->InsertColumn( 1, wxT("Username") );
-    ListCtrl1->InsertColumn( 2, wxT("Hmxmx") );
-    ListCtrl1->InsertColumn( 3, wxT("Use console") );
-    ListCtrl1->InsertColumn( 4, wxT("Fullscreen") );
+    ListCtrl1->InsertColumn( 2, wxT("Use console") );
+    ListCtrl1->InsertColumn( 3, wxT("Resolution") );
     BoxSizer2->Add(ListCtrl1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     Panel1->SetSizer(BoxSizer2);
     BoxSizer2->SetSizeHints(Panel1);
@@ -134,15 +143,10 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu2->Append(MenuItem2);
     MenuBar1->Append(Menu2, _("Help"));
     SetMenuBar(MenuBar1);
-    StatusBar1 = new wxStatusBar(this, ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
-    int __wxStatusBarWidths_1[1] = { -1 };
-    int __wxStatusBarStyles_1[1] = { wxSB_NORMAL };
-    StatusBar1->SetFieldsCount(1,__wxStatusBarWidths_1);
-    StatusBar1->SetStatusStyles(1,__wxStatusBarStyles_1);
-    SetStatusBar(StatusBar1);
     BoxSizer1->SetSizeHints(this);
-    
+
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
+    Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
     Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnEditButtonClick);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemSelect);
@@ -169,18 +173,21 @@ void quickRDPFrame::OnAbout(wxCommandEvent& event)
 {
     aboutDialog *about = new aboutDialog( this, 0 );
     about->ShowModal();
+    delete about;
 }
 
 void quickRDPFrame::OnListCtrl1ItemSelect(wxListEvent& event)
 {
     BitmapButton2->Enable();
     BitmapButton3->Enable();
+    BitmapButton4->Enable();
 }
 
 void quickRDPFrame::OnListCtrl1ItemDeselect(wxListEvent& event)
 {
     BitmapButton2->Disable();
     BitmapButton3->Disable();
+    BitmapButton4->Disable();
 }
 
 void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
@@ -196,6 +203,12 @@ void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
     newFrame->loadRDPConnection( rdpDatabase->addRDPConnection( filename ) );
     newFrame->ShowModal();
     loadRDPFromDatabase();
+    delete newFrame;
+    if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
+        BitmapButton2->Disable();
+        BitmapButton3->Disable();
+        BitmapButton4->Disable();
+    }
 }
 
 void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
@@ -211,6 +224,7 @@ void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
             BitmapButton2->Disable();
             BitmapButton3->Disable();
+            BitmapButton4->Disable();
         }
     }
 }
@@ -227,6 +241,12 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& event)
         newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionById( itemIndex ) );
         newFrame->ShowModal();
         loadRDPFromDatabase();
+        delete newFrame;
+        if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
+            BitmapButton2->Disable();
+            BitmapButton3->Disable();
+            BitmapButton4->Disable();
+        }
     }
 }
 
@@ -248,10 +268,25 @@ void quickRDPFrame::loadRDPFromDatabase()
         username.Append( curRDP->getUsername() );
         ListCtrl1->SetItem( index, 0, curRDP->getHostname() );
         ListCtrl1->SetItem( index, 1, username );
+
+        if ( curRDP->getConsole() == wxT("1") ) {
+            ListCtrl1->SetItem( index, 2, wxT("Yes") );
+        } else {
+            ListCtrl1->SetItem( index, 2, wxT("No" ) );
+        }
+
+        if ( curRDP->getScreenMode() == wxT("2") ) {
+            ListCtrl1->SetItem( index, 3, wxT("Fullscreen") );
+        } else if ( curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
+            ListCtrl1->SetItem( index, 3, wxT("Default") );
+        } else {
+            ListCtrl1->SetItem( index, 3, curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight() );
+        }
     }
 
     ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
     ListCtrl1->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+    ListCtrl1->SetColumnWidth( 3, wxLIST_AUTOSIZE );
 }
 
 void quickRDPFrame::clearListCtrl()
@@ -259,14 +294,8 @@ void quickRDPFrame::clearListCtrl()
     ListCtrl1->ClearAll();
     ListCtrl1->InsertColumn( 0, wxT("Host") );
     ListCtrl1->InsertColumn( 1, wxT("Username") );
-    ListCtrl1->InsertColumn( 2, wxT("Hmxmx") );
-    ListCtrl1->InsertColumn( 3, wxT("Use console") );
-    ListCtrl1->InsertColumn( 4, wxT("Fullscreen") );
-}
-
-void quickRDPFrame::launchRDPConnection( RDPConnection *rdpConnection )
-{
-    wxExecute( Configuration::getExecString() + Configuration::getDatabaseFolder() + rdpConnection->getFilename() );
+    ListCtrl1->InsertColumn( 2, wxT("Use console") );
+    ListCtrl1->InsertColumn( 3, wxT("Resolution") );
 }
 
 void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
@@ -277,6 +306,30 @@ void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
-        launchRDPConnection( rdpDatabase->getRDPConnectionById( itemIndex ) );
+        rdpDatabase->getRDPConnectionById( itemIndex )->connect();
+    }
+}
+
+void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
+{
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        /** HÄR SKALL VI KOPIERA EN ANSLUTNING.... **/
+
+
+        /**RDPFrame *newFrame = new RDPFrame( this, 0 );
+        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionById( itemIndex ) );
+        newFrame->ShowModal();**/
+        loadRDPFromDatabase();
+//        delete newFrame;
+        if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
+            BitmapButton2->Disable();
+            BitmapButton3->Disable();
+            BitmapButton4->Disable();
+        }
     }
 }

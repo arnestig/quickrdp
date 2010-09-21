@@ -26,6 +26,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/checkbox.h>
 #include <wx/panel.h>
 //*)
 
@@ -45,6 +46,7 @@ class generalTabPanel: public wxPanel
 		wxTextCtrl* TextCtrl6;
 		wxStaticText* StaticText8;
 		wxStaticText* StaticText3;
+		wxCheckBox* CheckBox1;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
 		wxTextCtrl* TextCtrl2;
@@ -71,6 +73,7 @@ class generalTabPanel: public wxPanel
 		static const long ID_TEXTCTRL6;
 		static const long ID_STATICTEXT5;
 		static const long ID_TEXTCTRL5;
+		static const long ID_CHECKBOX1;
 		//*)
 
 	private:

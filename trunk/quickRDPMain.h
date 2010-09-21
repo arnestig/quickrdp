@@ -32,7 +32,6 @@
 #include <wx/panel.h>
 #include <wx/bmpbuttn.h>
 #include <wx/frame.h>
-#include <wx/statusbr.h>
 //*)
 
 class quickRDPFrame: public wxFrame
@@ -53,17 +52,18 @@ class quickRDPFrame: public wxFrame
         void OnDeleteButtonClick(wxCommandEvent& event);
         void OnEditButtonClick(wxCommandEvent& event);
         void OnListCtrl1ItemActivated(wxListEvent& event);
+        void OnDuplicateButtonClick(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
+        static const long ID_BITMAPBUTTON4;
         static const long ID_BITMAPBUTTON2;
         static const long ID_BITMAPBUTTON3;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
         static const long idMenuQuit;
         static const long idMenuAbout;
-        static const long ID_STATUSBAR1;
         //*)
 
         //(*Declarations(quickRDPFrame)
@@ -71,13 +71,12 @@ class quickRDPFrame: public wxFrame
         wxPanel* Panel1;
         wxBitmapButton* BitmapButton2;
         wxBitmapButton* BitmapButton1;
-        wxStatusBar* StatusBar1;
+        wxBitmapButton* BitmapButton4;
         wxBitmapButton* BitmapButton3;
         //*)
 
         void loadRDPFromDatabase();
         void clearListCtrl();
-        void launchRDPConnection( RDPConnection *rdpConnection );
 
         DECLARE_EVENT_TABLE()
 };
