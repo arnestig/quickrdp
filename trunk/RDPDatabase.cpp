@@ -166,7 +166,7 @@ void RDPConnection::setConsole( wxString console )
 void RDPConnection::connect()
 {
     if ( getFilename().IsEmpty() == false ) {
-        wxExecute( Configuration::getExecString() + Configuration::getDatabaseFolder() + getFilename() );
+        wxExecute( Configuration::getExecString() + wxT("\"") + Configuration::getDatabaseFolder() + getFilename() + wxT("\"") );
     }
 }
 

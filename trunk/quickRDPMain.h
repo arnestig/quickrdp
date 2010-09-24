@@ -29,6 +29,7 @@
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
 #include <wx/menu.h>
+#include <wx/textctrl.h>
 #include <wx/panel.h>
 #include <wx/bmpbuttn.h>
 #include <wx/frame.h>
@@ -53,6 +54,10 @@ class quickRDPFrame: public wxFrame
         void OnEditButtonClick(wxCommandEvent& event);
         void OnListCtrl1ItemActivated(wxListEvent& event);
         void OnDuplicateButtonClick(wxCommandEvent& event);
+        void OnSearchTextEnter(wxCommandEvent& event);
+        void OnListCtrl1ItemRClick(wxListEvent& event);
+        void OnMenuItem3Selected(wxCommandEvent& event);
+        void OnMenuItem4Selected(wxCommandEvent& event);
         //*)
 
         //(*Identifiers(quickRDPFrame)
@@ -60,18 +65,25 @@ class quickRDPFrame: public wxFrame
         static const long ID_BITMAPBUTTON4;
         static const long ID_BITMAPBUTTON2;
         static const long ID_BITMAPBUTTON3;
+        static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
         static const long idMenuQuit;
         static const long idMenuAbout;
+        static const long ID_POPUPMENUPROPERTIES;
+        static const long ID_POPUPMENUCONSOLE;
         //*)
 
         //(*Declarations(quickRDPFrame)
         wxListCtrl* ListCtrl1;
+        wxMenu PopupMenu1;
+        wxMenuItem* MenuItem4;
         wxPanel* Panel1;
         wxBitmapButton* BitmapButton2;
         wxBitmapButton* BitmapButton1;
+        wxMenuItem* MenuItem3;
         wxBitmapButton* BitmapButton4;
+        wxTextCtrl* TextCtrl1;
         wxBitmapButton* BitmapButton3;
         //*)
 
