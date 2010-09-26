@@ -43,6 +43,8 @@ class RDPConnection
         wxString getDesktopWidth() const;
         wxString getScreenMode() const;
         wxString getConsole() const;
+        wxString getSoundMode() const;
+        wxString getDiskMapping() const;
 
         void connect();
 
@@ -60,13 +62,17 @@ class RDPConnection
         void setDesktopWidth( wxString desktopwidth );
         void setScreenMode( wxString screenmode );
         void setConsole( wxString console );
+        void setSoundMode( wxString soundmode );
+        void setDiskMapping( wxString diskmapping );
 
         void saveFile();
+
+        bool doesRDPHasString( wxString searchString ) const;
 
     private:
         void parseFile();
         void writeLineToFile( std::ofstream &file, wxString line );
-        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, console, screenmode ;
+        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, console, screenmode, soundmode, diskmapping;
 };
 
 class RDPDatabase
@@ -76,8 +82,7 @@ class RDPDatabase
         ~RDPDatabase();
         RDPConnection *addRDPConnection( wxString filename );
         RDPConnection *duplicateRDPConnection( wxString filename, RDPConnection *copy );
-        RDPConnection *getRDPConnectionById( size_t id );
-        void deleteRDPConnectionById( size_t id );
+        RDPConnection *getRDPConnectionByPointer( RDPConnection *rdpConnection );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
         std::vector<RDPConnection*> getDatabase();
 

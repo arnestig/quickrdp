@@ -124,10 +124,20 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
     }
     windowTab->MarkComboBoxes();
     /// WINDOWTAB END
+
+    /// RESOURCESTAB BEGIN
+
+    resourcesTab->RadioBox1->SetSelection( wxAtoi( rdpConnection->getSoundMode() ) );
+    if ( rdpConnection->getDiskMapping() == wxT("1") ) {
+        resourcesTab->CheckBox1->SetValue( true );
+    }
+
+    /// RESOURCESTAB END
 }
 
 void RDPFrame::checkForChanges()
 {
+    /// general tab
     bool hasChangedSomething = false;
     if ( generalTab->TextCtrl2->GetValue().Cmp( rdpConnection->getHostname() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl7->GetValue().Cmp( rdpConnection->getUsername() ) != 0 ) { hasChangedSomething = true; }
@@ -152,6 +162,20 @@ void RDPFrame::checkForChanges()
         break;
         case 2: // custom resolution
             if ( !( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() == windowTab->ComboBox2->GetStringSelection() ) ) { hasChangedSomething = true; }
+        break;
+    }
+
+    /// resources tab
+    switch ( resourcesTab->RadioBox1->GetSelection() )
+    {
+        case 0:
+            if ( rdpConnection->getSoundMode() != wxT("0") ) { hasChangedSomething = true; }
+        break;
+        case 1:
+            if ( rdpConnection->getSoundMode() != wxT("1") ) { hasChangedSomething = true; }
+        break;
+        case 2:
+            if ( rdpConnection->getSoundMode() != wxT("2") ) { hasChangedSomething = true; }
         break;
     }
 
@@ -208,6 +232,9 @@ void RDPFrame::onSaveClick(wxCommandEvent& event)
             rdpConnection->setDesktopHeight( resolutionString.SubString( splitPos + splitString.Len(), resolutionString.Len() ) );
         break;
     }
+
+    rdpConnection->setSoundMode( wxString::Format( wxT("%d"),resourcesTab->RadioBox1->GetSelection() ) );
+    rdpConnection->setDiskMapping( wxString::Format( wxT("%d"),resourcesTab->CheckBox1->IsChecked() ) );
 
 
     rdpConnection->saveFile();

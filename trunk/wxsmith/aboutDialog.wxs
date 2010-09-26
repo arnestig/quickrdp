@@ -29,7 +29,7 @@
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-										<label>quickRDP 0.1</label>
+										<label>quickRDP 0.2</label>
 										<font>
 											<size>16</size>
 											<style>normal</style>

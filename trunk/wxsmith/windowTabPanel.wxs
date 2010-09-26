@@ -62,7 +62,7 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxStaticLine" name="ID_STATICLINE1" variable="StaticLine1" member="yes">
-					<size>389,6</size>
+					<size>400,6</size>
 				</object>
 				<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
@@ -80,10 +80,11 @@
 										<item>Custom colors</item>
 									</content>
 									<default>-1</default>
+									<size>143,68</size>
 									<style>wxRA_SPECIFY_COLS</style>
 									<handler function="OnColorsClick" entry="EVT_RADIOBOX" />
 								</object>
-								<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<flag>wxTOP|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
 								<option>1</option>
 							</object>
@@ -95,7 +96,7 @@
 										<item>&quot;True Color&quot; (24 bits)</item>
 									</content>
 									<selection>1</selection>
-									<size>116,23</size>
+									<size>176,23</size>
 									<style>wxCB_READONLY</style>
 									<handler function="OnColorsClick" entry="EVT_COMBOBOX" />
 								</object>

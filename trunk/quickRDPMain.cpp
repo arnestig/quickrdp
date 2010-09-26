@@ -82,6 +82,7 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
 END_EVENT_TABLE()
 
 std::auto_ptr<RDPDatabase> rdpDatabase;
+std::vector<RDPConnection*> ListCtrlRDPRelation;
 
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
 {
@@ -111,7 +112,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
     BitmapButton1 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON1, wxBitmap(wxImage(_T("data/document-new.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
-    BitmapButton1->SetDefault();
     BitmapButton1->SetToolTip(_("New connection"));
     BoxSizer5->Add(BitmapButton1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BitmapButton4 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON4, wxBitmap(wxImage(_T("data/network-workgroup.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
@@ -178,6 +178,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
     //*)
+    TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
+
     loadRDPFromDatabase();
 }
 
@@ -242,7 +244,7 @@ void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
-        rdpDatabase->deleteRDPConnectionById( itemIndex );
+        rdpDatabase->deleteRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
         loadRDPFromDatabase();
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
             BitmapButton2->Disable();
@@ -261,7 +263,7 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& event)
             return;
         }
         RDPFrame *newFrame = new RDPFrame( this, 0 );
-        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionById( itemIndex ) );
+        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
         newFrame->ShowModal();
         loadRDPFromDatabase();
         delete newFrame;
@@ -278,35 +280,42 @@ void quickRDPFrame::loadRDPFromDatabase()
     clearListCtrl();
 
     std::vector<RDPConnection*> database = rdpDatabase->getDatabase();
+    ListCtrlRDPRelation.clear();
+    long itemIndexCounter = 0;
 
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
-        wxListItem item;
-        item.SetId( index );
-        ListCtrl1->InsertItem( item );
-        wxString username;
-        if ( curRDP->getDomain().Len() > 0 ) {
-            username.Append( curRDP->getDomain() + wxT("\\") );
-        }
-        username.Append( curRDP->getUsername() );
-        ListCtrl1->SetItem( index, 0, curRDP->getHostname() );
-        ListCtrl1->SetItem( index, 1, username );
+        // if we have a filter in place, we search the RDPConnection and checks if any value matches our pattern. if it doesn't, we hop to the next item in the database.
+        if ( curRDP->doesRDPHasString( TextCtrl1->GetValue() ) == true || TextCtrl1->GetValue() == wxT("Search ...") ) {
+            ListCtrlRDPRelation.push_back( curRDP );
+            wxListItem item;
+            item.SetId( index );
+            ListCtrl1->InsertItem( item );
+            wxString username;
+            if ( curRDP->getDomain().Len() > 0 ) {
+                username.Append( curRDP->getDomain() + wxT("\\") );
+            }
+            username.Append( curRDP->getUsername() );
+            ListCtrl1->SetItem( itemIndexCounter, 0, curRDP->getHostname() );
+            ListCtrl1->SetItem( itemIndexCounter, 1, username );
 
-        if ( curRDP->getConsole() == wxT("1") ) {
-            ListCtrl1->SetItem( index, 2, wxT("Yes") );
-        } else {
-            ListCtrl1->SetItem( index, 2, wxT("No" ) );
-        }
+            if ( curRDP->getConsole() == wxT("1") ) {
+                ListCtrl1->SetItem( itemIndexCounter, 2, wxT("Yes") );
+            } else {
+                ListCtrl1->SetItem( itemIndexCounter, 2, wxT("No" ) );
+            }
 
-        if ( curRDP->getScreenMode() == wxT("2") ) {
-            ListCtrl1->SetItem( index, 3, wxT("Fullscreen") );
-        } else if ( curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
-            ListCtrl1->SetItem( index, 3, wxT("Default") );
-        } else {
-            ListCtrl1->SetItem( index, 3, curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight() );
-        }
+            if ( curRDP->getScreenMode() == wxT("2") ) {
+                ListCtrl1->SetItem( itemIndexCounter, 3, wxT("Fullscreen") );
+            } else if ( curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
+                ListCtrl1->SetItem( itemIndexCounter, 3, wxT("Default") );
+            } else {
+                ListCtrl1->SetItem( itemIndexCounter, 3, curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight() );
+            }
 
-        ListCtrl1->SetItem( index, 4, curRDP->getComment() );
+            ListCtrl1->SetItem( itemIndexCounter, 4, curRDP->getComment() );
+            itemIndexCounter++;
+        }
     }
 
     ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
@@ -334,7 +343,7 @@ void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
-        rdpDatabase->getRDPConnectionById( itemIndex )->connect();
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
     }
 }
 
@@ -353,7 +362,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
         for ( size_t index = 0; index < 32; index++ ) {
             filename.Append( wxString( &hex[ rand() % 16 ] , wxConvUTF8, 1 ) );
         }
-        rdpDatabase->duplicateRDPConnection( filename, rdpDatabase->getRDPConnectionById( itemIndex ) );
+        rdpDatabase->duplicateRDPConnection( filename, rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
 
         loadRDPFromDatabase();
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
@@ -369,6 +378,7 @@ void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& event)
     if ( TextCtrl1->IsEmpty() == true ) {
         TextCtrl1->ChangeValue( wxT("Search ...") );
     }
+    loadRDPFromDatabase();
 }
 
 void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
@@ -381,7 +391,7 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
             return;
         }
 
-        if ( rdpDatabase->getRDPConnectionById( itemIndex )->getConsole() == wxT("1") )
+        if ( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getConsole() == wxT("1") )
         {
             MenuItem4->Check( true );
         } else {
@@ -401,8 +411,9 @@ void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
+
         RDPFrame *newFrame = new RDPFrame( this, 0 );
-        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionById( itemIndex ) );
+        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
         newFrame->ShowModal();
         loadRDPFromDatabase();
         delete newFrame;
@@ -425,9 +436,9 @@ void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
         }
 
         if ( MenuItem4->IsChecked() == true ) {
-            rdpDatabase->getRDPConnectionById( itemIndex )->setConsole( wxT("1") );
+            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->setConsole( wxT("1") );
         } else {
-            rdpDatabase->getRDPConnectionById( itemIndex )->setConsole( wxT("0") );
+            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->setConsole( wxT("0") );
         }
 
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
@@ -437,4 +448,10 @@ void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
         }
         loadRDPFromDatabase();
     }
+}
+
+void quickRDPFrame::OnTextCtrlClick(wxCommandEvent& event)
+{
+    TextCtrl1->SetSelection(-1,-1);
+    TextCtrl1->SetFocus();
 }
