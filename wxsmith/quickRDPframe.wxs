@@ -17,7 +17,6 @@
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" variable="BitmapButton1" member="yes">
 												<bitmap>data/document-new.png</bitmap>
-												<default>1</default>
 												<size>64,64</size>
 												<tooltip>New connection</tooltip>
 												<handler function="OnNewButtonClick" entry="EVT_BUTTON" />

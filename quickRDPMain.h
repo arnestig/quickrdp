@@ -59,6 +59,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem3Selected(wxCommandEvent& event);
         void OnMenuItem4Selected(wxCommandEvent& event);
         //*)
+        void OnTextCtrlClick(wxCommandEvent& event);
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;

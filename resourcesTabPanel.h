@@ -26,6 +26,9 @@
 
 //(*Headers(resourcesTabPanel)
 #include <wx/sizer.h>
+#include <wx/radiobox.h>
+#include <wx/checkbox.h>
+#include <wx/statline.h>
 #include <wx/panel.h>
 //*)
 
@@ -37,6 +40,9 @@ class resourcesTabPanel: public wxPanel
 		virtual ~resourcesTabPanel();
 
 		//(*Declarations(resourcesTabPanel)
+		wxCheckBox* CheckBox1;
+		wxStaticLine* StaticLine1;
+		wxRadioBox* RadioBox1;
 		//*)
 
 		void setOwner( RDPFrame *owner );
@@ -44,11 +50,16 @@ class resourcesTabPanel: public wxPanel
 	protected:
 
 		//(*Identifiers(resourcesTabPanel)
+		static const long ID_CHECKBOX1;
+		static const long ID_STATICLINE1;
+		static const long ID_RADIOBOX1;
 		//*)
 
 	private:
 
 		//(*Handlers(resourcesTabPanel)
+		void OnSoundClick(wxCommandEvent& event);
+		void OnDiskMappingClick(wxCommandEvent& event);
 		//*)
 
 		RDPFrame *owner;

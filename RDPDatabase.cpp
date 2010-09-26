@@ -33,7 +33,9 @@ RDPConnection::RDPConnection( wxString filename_ )
         desktopheight( wxT("0") ),
         desktopwidth( wxT("0") ),
         console( wxT("0") ),
-        screenmode( wxT("1") )
+        screenmode( wxT("1") ),
+        soundmode( wxT("0") ),
+        diskmapping( wxT("0") )
 {
     parseFile();
 }
@@ -51,6 +53,8 @@ RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     setPassword( copy->getPassword() );
     setScreenMode( copy->getScreenMode() );
     setUsername( copy->getUsername() );
+    setSoundMode( copy->getSoundMode() );
+    setDiskMapping( copy->getDiskMapping() );
     saveFile();
 }
 
@@ -113,6 +117,16 @@ wxString RDPConnection::getConsole() const
     return console;
 }
 
+wxString RDPConnection::getSoundMode() const
+{
+    return soundmode;
+}
+
+wxString RDPConnection::getDiskMapping() const
+{
+    return diskmapping;
+}
+
 void RDPConnection::setHostname( wxString hostname )
 {
     this->hostname = hostname;
@@ -163,6 +177,16 @@ void RDPConnection::setConsole( wxString console )
     this->console = console;
 }
 
+void RDPConnection::setDiskMapping( wxString diskmapping )
+{
+    this->diskmapping = diskmapping;
+}
+
+void RDPConnection::setSoundMode( wxString soundmode )
+{
+    this->soundmode = soundmode;
+}
+
 void RDPConnection::connect()
 {
     if ( getFilename().IsEmpty() == false ) {
@@ -191,6 +215,8 @@ void RDPConnection::saveFile()
     writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
     writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
     writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
+    writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
+    writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
 
 	ofile.close();
 }
@@ -234,9 +260,24 @@ void RDPConnection::parseFile()
         setDesktopWidth( FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
         setScreenMode( FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
         setConsole( FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
+        setSoundMode( FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
+        setDiskMapping( FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
 	}
 	rfile.close();
     }
+}
+
+bool RDPConnection::doesRDPHasString( wxString searchString ) const
+{
+    bool foundAnything = false;
+
+    if ( getUsername().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
+    if ( getDomain().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
+    if ( getHostname().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
+    if ( getHostname().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
+    if ( getComment().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
+
+    return foundAnything;
 }
 ///END RDPConnection
 
@@ -287,15 +328,14 @@ RDPConnection *RDPDatabase::duplicateRDPConnection( wxString filename, RDPConnec
     return newRDP;
 }
 
-RDPConnection *RDPDatabase::getRDPConnectionById( size_t id )
+RDPConnection *RDPDatabase::getRDPConnectionByPointer( RDPConnection *rdpConnection )
 {
-    return database[ id ];
-}
-
-void RDPDatabase::deleteRDPConnectionById( size_t id )
-{
-    wxRemove( Configuration::getDatabaseFolder() + database[ id ]->getFilename() );
-    database.erase( database.begin() + id );
+    for ( size_t index = 0; index < database.size(); index++ ) {
+        if ( database[ index ] == rdpConnection ) {
+            return database[ index ];
+        }
+    }
+    return NULL;
 }
 
 void RDPDatabase::deleteRDPConnectionByPointer( RDPConnection *rdpConnection )

@@ -48,12 +48,12 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer7 = new wxBoxSizer(wxVERTICAL);
-	wxString __wxRadioBoxChoices_1[3] =
+	wxString __wxRadioBoxChoices_1[3] = 
 	{
 		_("Default resolution"),
 		_("Fullscreen"),
@@ -73,18 +73,18 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer7->Add(ComboBox2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer7, 1, wxALL|wxALIGN_TOP|wxALIGN_CENTER_HORIZONTAL, 5);
 	BoxSizer1->Add(BoxSizer2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-	StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(389,6), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
+	StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(400,6), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
 	BoxSizer1->Add(StaticLine1, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	wxString __wxRadioBoxChoices_2[2] =
+	wxString __wxRadioBoxChoices_2[2] = 
 	{
 		_("Default colors"),
 		_("Custom colors")
 	};
-	RadioBox2 = new wxRadioBox(this, ID_RADIOBOX2, _("Colors"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_2, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, _T("ID_RADIOBOX2"));
-	BoxSizer3->Add(RadioBox2, 1, wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	ComboBox1 = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxSize(116,23), 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
+	RadioBox2 = new wxRadioBox(this, ID_RADIOBOX2, _("Colors"), wxDefaultPosition, wxSize(143,68), 2, __wxRadioBoxChoices_2, 1, wxRA_SPECIFY_COLS, wxDefaultValidator, _T("ID_RADIOBOX2"));
+	BoxSizer3->Add(RadioBox2, 1, wxTOP|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+	ComboBox1 = new wxComboBox(this, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxSize(176,23), 0, 0, wxCB_READONLY, wxDefaultValidator, _T("ID_COMBOBOX1"));
 	ComboBox1->Append(_("\"High Color\" (15 bits)"));
 	ComboBox1->SetSelection( ComboBox1->Append(_("\"High Color\" (16 bits)")) );
 	ComboBox1->Append(_("\"True Color\" (24 bits)"));
@@ -94,7 +94,7 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_RADIOBOX1,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnResoultionClick);
 	Connect(ID_COMBOBOX2,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnResoultionClick);
 	Connect(ID_RADIOBOX2,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnColorsClick);

@@ -37,7 +37,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(400,306));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -48,7 +48,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	BoxSizer4->Add(StaticBitmap1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("quickRDP 0.1"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("quickRDP 0.2"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	wxFont StaticText1Font(16,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	StaticText1->SetFont(StaticText1Font);
 	BoxSizer3->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
