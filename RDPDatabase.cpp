@@ -256,12 +256,12 @@ void RDPConnection::parseFile()
         setHostname( FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
         setClientHostname( FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
         setComment( FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
-        setDesktopHeight( FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
-        setDesktopWidth( FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
-        setScreenMode( FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
-        setConsole( FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
-        setSoundMode( FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
-        setDiskMapping( FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
+        setDesktopHeight( FileParser::getIntegerFromFile( wxT("desktopheight:i:"), allLines ) );
+        setDesktopWidth( FileParser::getIntegerFromFile( wxT("desktopwidth:i:"), allLines ) );
+        setScreenMode( FileParser::getIntegerFromFile( wxT("screen mode id:i:"), allLines ) );
+        setConsole( FileParser::getIntegerFromFile( wxT("attach to console:i:"), allLines ) );
+        setSoundMode( FileParser::getIntegerFromFile( wxT("audiomode:i:"), allLines ) );
+        setDiskMapping( FileParser::getIntegerFromFile( wxT("diskmapping:i:"), allLines ) );
 	}
 	rfile.close();
     }

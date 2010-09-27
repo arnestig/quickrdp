@@ -35,15 +35,15 @@ namespace FileParser
         return wxT("");
     };
 
-    int getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
+    wxString getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
     {
         for ( size_t index = 0; index < file.size(); index++ ) {
             int searchRet = file[ index ].Find( searchPattern );
             if ( searchRet != wxNOT_FOUND ) {
-                return wxAtoi( file[ index ].SubString( searchPattern.Len(), file[ index ].Len() ) );
+                return file[ index ].SubString( searchPattern.Len(), file[ index ].Len() );
             }
         }
-        return 0;
+        return wxT("0");
     };
 }
 
