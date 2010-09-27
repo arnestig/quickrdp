@@ -161,7 +161,7 @@ void RDPFrame::checkForChanges()
             || !( rdpConnection->getDesktopWidth() == wxT("0") ) ) { hasChangedSomething = true; }
         break;
         case 2: // custom resolution
-            if ( !( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() == windowTab->ComboBox2->GetStringSelection() ) ) { hasChangedSomething = true; }
+            if ( !( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() == windowTab->ComboBox2->GetValue() ) ) { hasChangedSomething = true; }
         break;
     }
 
@@ -178,6 +178,8 @@ void RDPFrame::checkForChanges()
             if ( rdpConnection->getSoundMode() != wxT("2") ) { hasChangedSomething = true; }
         break;
     }
+
+    if ( ( resourcesTab->CheckBox1->IsChecked() == true && rdpConnection->getDiskMapping() == wxT("0") ) || ( resourcesTab->CheckBox1->IsChecked() == false && rdpConnection->getDiskMapping() == wxT("1") ) ) { hasChangedSomething = true; }
 
     if ( generalTab->TextCtrl2->IsEmpty() == true ) {
         Button1->Disable();
