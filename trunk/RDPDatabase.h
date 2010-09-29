@@ -41,6 +41,7 @@ class RDPConnection
         wxString getClientHostname() const;
         wxString getDesktopHeight() const;
         wxString getDesktopWidth() const;
+        wxString getDesktopBpp() const;
         wxString getScreenMode() const;
         wxString getConsole() const;
         wxString getSoundMode() const;
@@ -60,6 +61,7 @@ class RDPConnection
         void setClientHostname( wxString clienthostname );
         void setDesktopHeight( wxString desktopheight );
         void setDesktopWidth( wxString desktopwidth );
+        void setDesktopBpp( wxString desktopbpp );
         void setScreenMode( wxString screenmode );
         void setConsole( wxString console );
         void setSoundMode( wxString soundmode );
@@ -72,7 +74,7 @@ class RDPConnection
     private:
         void parseFile();
         void writeLineToFile( std::ofstream &file, wxString line );
-        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, console, screenmode, soundmode, diskmapping;
+        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping;
 };
 
 class RDPDatabase

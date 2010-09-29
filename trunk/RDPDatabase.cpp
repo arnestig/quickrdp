@@ -32,6 +32,7 @@ RDPConnection::RDPConnection( wxString filename_ )
     :   filename( filename_ ),
         desktopheight( wxT("0") ),
         desktopwidth( wxT("0") ),
+        desktopbpp( wxT("0") ),
         console( wxT("0") ),
         screenmode( wxT("1") ),
         soundmode( wxT("0") ),
@@ -48,6 +49,7 @@ RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     setConsole( copy->getConsole() );
     setDesktopWidth( copy->getDesktopWidth() );
     setDesktopHeight( copy->getDesktopHeight() );
+    setDesktopBpp( copy->getDesktopBpp() );
     setDomain( copy->getDomain() );
     setHostname( copy->getHostname() );
     setPassword( copy->getPassword() );
@@ -105,6 +107,11 @@ wxString RDPConnection::getDesktopHeight() const
 wxString RDPConnection::getDesktopWidth() const
 {
     return desktopwidth;
+}
+
+wxString RDPConnection::getDesktopBpp() const
+{
+    return desktopbpp;
 }
 
 wxString RDPConnection::getScreenMode() const
@@ -167,6 +174,11 @@ void RDPConnection::setDesktopWidth( wxString desktopwidth )
     this->desktopwidth = desktopwidth;
 }
 
+void RDPConnection::setDesktopBpp( wxString desktopbpp )
+{
+    this->desktopbpp = desktopbpp;
+}
+
 void RDPConnection::setScreenMode( wxString screenmode )
 {
     this->screenmode = screenmode;
@@ -213,6 +225,7 @@ void RDPConnection::saveFile()
     writeLineToFile( ofile, wxString(wxT("description:s:")) + getComment() );
     writeLineToFile( ofile, wxString(wxT("desktopheight:i:")) + getDesktopHeight() );
     writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
+    writeLineToFile( ofile, wxString(wxT("session bpp:i:")) + getDesktopBpp() );
     writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
     writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
     writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
@@ -258,6 +271,7 @@ void RDPConnection::parseFile()
         setComment( FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
         setDesktopHeight( FileParser::getIntegerFromFile( wxT("desktopheight:i:"), allLines ) );
         setDesktopWidth( FileParser::getIntegerFromFile( wxT("desktopwidth:i:"), allLines ) );
+        setDesktopBpp( FileParser::getIntegerFromFile( wxT("session bpp:i:"), allLines ) );
         setScreenMode( FileParser::getIntegerFromFile( wxT("screen mode id:i:"), allLines ) );
         setConsole( FileParser::getIntegerFromFile( wxT("attach to console:i:"), allLines ) );
         setSoundMode( FileParser::getIntegerFromFile( wxT("audiomode:i:"), allLines ) );

@@ -74,6 +74,16 @@ const long quickRDPFrame::idMenuQuit = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
+const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
+const long quickRDPFrame::ID_MENUFULLSCREEN = wxNewId();
+const long quickRDPFrame::ID_MENUITEM5 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM6 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM7 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM8 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM9 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM10 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM4 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
@@ -162,6 +172,26 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     PopupMenu1.AppendSeparator();
     MenuItem4 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
     PopupMenu1.Append(MenuItem4);
+    MenuItem5 = new wxMenu();
+    MenuItem6 = new wxMenuItem(MenuItem5, ID_MENUDEFAULT, _("Default"), wxEmptyString, wxITEM_CHECK);
+    MenuItem5->Append(MenuItem6);
+    MenuItem7 = new wxMenuItem(MenuItem5, ID_MENUFULLSCREEN, _("Fullscreen"), wxEmptyString, wxITEM_CHECK);
+    MenuItem5->Append(MenuItem7);
+    MenuItem8 = new wxMenu();
+    MenuItem9 = new wxMenuItem(MenuItem8, ID_MENUITEM5, _("640 x 480"), wxEmptyString, wxITEM_CHECK);
+    MenuItem8->Append(MenuItem9);
+    MenuItem10 = new wxMenuItem(MenuItem8, ID_MENUITEM6, _("800 x 600"), wxEmptyString, wxITEM_CHECK);
+    MenuItem8->Append(MenuItem10);
+    MenuItem11 = new wxMenuItem(MenuItem8, ID_MENUITEM7, _("1024 x 768"), wxEmptyString, wxITEM_CHECK);
+    MenuItem8->Append(MenuItem11);
+    MenuItem12 = new wxMenuItem(MenuItem8, ID_MENUITEM8, _("1152 x 864"), wxEmptyString, wxITEM_CHECK);
+    MenuItem8->Append(MenuItem12);
+    MenuItem13 = new wxMenuItem(MenuItem8, ID_MENUITEM9, _("1280 x 960"), wxEmptyString, wxITEM_CHECK);
+    MenuItem8->Append(MenuItem13);
+    MenuItem14 = new wxMenuItem(MenuItem8, ID_MENUITEM10, _("1400 x 1050"), wxEmptyString, wxITEM_CHECK);
+    MenuItem8->Append(MenuItem14);
+    MenuItem5->Append(ID_MENUITEM4, _("Custom"), MenuItem8, wxEmptyString);
+    PopupMenu1.Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
     BoxSizer1->SetSizeHints(this);
 
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
@@ -177,6 +207,14 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
+    Connect(ID_MENUDEFAULT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemDefaultClick);
+    Connect(ID_MENUFULLSCREEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemFullscreenClick);
+    Connect(ID_MENUITEM5,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem640);
+    Connect(ID_MENUITEM6,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem800);
+    Connect(ID_MENUITEM7,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1024);
+    Connect(ID_MENUITEM8,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1152);
+    Connect(ID_MENUITEM9,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1280);
+    Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
 
@@ -318,11 +356,19 @@ void quickRDPFrame::loadRDPFromDatabase()
         }
     }
 
-    ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
-    ListCtrl1->SetColumnWidth( 1, wxLIST_AUTOSIZE );
-    ListCtrl1->SetColumnWidth( 2, 100 );
-    ListCtrl1->SetColumnWidth( 3, wxLIST_AUTOSIZE );
-    ListCtrl1->SetColumnWidth( 4, wxLIST_AUTOSIZE );
+    if ( ListCtrl1->GetItemCount() > 0 ) {
+        ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
+        ListCtrl1->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+        ListCtrl1->SetColumnWidth( 2, 100 );
+        ListCtrl1->SetColumnWidth( 3, wxLIST_AUTOSIZE );
+        ListCtrl1->SetColumnWidth( 4, wxLIST_AUTOSIZE );
+    } else {
+        ListCtrl1->SetColumnWidth( 0, 80 );
+        ListCtrl1->SetColumnWidth( 1, 123 );
+        ListCtrl1->SetColumnWidth( 2, 100 );
+        ListCtrl1->SetColumnWidth( 3, 82 );
+        ListCtrl1->SetColumnWidth( 4, 107 );
+    }
 }
 
 void quickRDPFrame::clearListCtrl()
@@ -381,6 +427,19 @@ void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& event)
     loadRDPFromDatabase();
 }
 
+void quickRDPFrame::clearPopupMenuChoices()
+{
+    MenuItem4->Check( false );
+    MenuItem6->Check( false );
+    MenuItem7->Check( false );
+    MenuItem9->Check( false );
+    MenuItem10->Check( false );
+    MenuItem11->Check( false );
+    MenuItem12->Check( false );
+    MenuItem13->Check( false );
+    MenuItem14->Check( false );
+}
+
 void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
 {
     // checkboxclick for console
@@ -391,11 +450,27 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
             return;
         }
 
-        if ( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getConsole() == wxT("1") )
+        clearPopupMenuChoices();
+
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+
+        if ( curRDP->getConsole() == wxT("1") )
         {
             MenuItem4->Check( true );
+        }
+
+        if ( curRDP->getScreenMode() == wxT("2") ) {
+            MenuItem7->Check( true );
+        } else if ( curRDP->getScreenMode() == wxT("1") && curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
+            MenuItem6->Check( true );
         } else {
-            MenuItem4->Check( false );
+            wxString resolutionString = curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight();
+            if ( resolutionString == wxT("640 x 480") ) { MenuItem9->Check( true ); }
+            if ( resolutionString == wxT("800 x 600") ) { MenuItem10->Check( true ); }
+            if ( resolutionString == wxT("1024 x 768") ) { MenuItem11->Check( true ); }
+            if ( resolutionString == wxT("1152 x 864") ) { MenuItem12->Check( true ); }
+            if ( resolutionString == wxT("1280 x 960") ) { MenuItem13->Check( true ); }
+            if ( resolutionString == wxT("1400 x 1050") ) { MenuItem14->Check( true ); }
         }
     }
 
@@ -415,6 +490,7 @@ void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event)
         RDPFrame *newFrame = new RDPFrame( this, 0 );
         newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
         newFrame->ShowModal();
+
         loadRDPFromDatabase();
         delete newFrame;
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
@@ -441,6 +517,8 @@ void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
             rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->setConsole( wxT("0") );
         }
 
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
             BitmapButton2->Disable();
             BitmapButton3->Disable();
@@ -454,4 +532,164 @@ void quickRDPFrame::OnTextCtrlClick(wxCommandEvent& event)
 {
     TextCtrl1->SetSelection(-1,-1);
     TextCtrl1->SetFocus();
+}
+
+void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("0") );
+        curRDP->setDesktopHeight( wxT("0") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItemFullscreenClick(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("2") );
+        curRDP->setDesktopWidth( wxT("0") );
+        curRDP->setDesktopHeight( wxT("0") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItem640(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("640") );
+        curRDP->setDesktopHeight( wxT("480") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItem800(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("800") );
+        curRDP->setDesktopHeight( wxT("600") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItem1024(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("1024") );
+        curRDP->setDesktopHeight( wxT("768") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItem1152(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("1152") );
+        curRDP->setDesktopHeight( wxT("864") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItem1280(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("1280") );
+        curRDP->setDesktopHeight( wxT("960") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
+}
+
+void quickRDPFrame::OnMenuItem1400(wxCommandEvent& event)
+{
+    // checkboxclick for console
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( itemIndex == -1 ) {
+            return;
+        }
+        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+        curRDP->setScreenMode( wxT("1") );
+        curRDP->setDesktopWidth( wxT("1400") );
+        curRDP->setDesktopHeight( wxT("1050") );
+
+        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+
+        loadRDPFromDatabase();
+    }
 }
