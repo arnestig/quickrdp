@@ -122,6 +122,16 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
         windowTab->RadioBox1->SetStringSelection( wxT("Custom resolution" ) );
         windowTab->ComboBox2->SetValue( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() );
     }
+
+    if ( rdpConnection->getDesktopBpp() == wxT("0") ) {
+        windowTab->RadioBox2->SetStringSelection( wxT("Default colors") );
+    } else {
+        windowTab->RadioBox2->SetStringSelection( wxT("Custom colors") );
+        if ( rdpConnection->getDesktopBpp() == wxT("15") ) { windowTab->ComboBox1->SetValue( wxT("\"High Color\" (15 bits)") ); }
+        if ( rdpConnection->getDesktopBpp() == wxT("16") ) { windowTab->ComboBox1->SetValue( wxT("\"High Color\" (16 bits)") ); }
+        if ( rdpConnection->getDesktopBpp() == wxT("24") ) { windowTab->ComboBox1->SetValue( wxT("\"True Color\" (24 bits)") ); }
+    }
+
     windowTab->MarkComboBoxes();
     /// WINDOWTAB END
 
@@ -162,6 +172,20 @@ void RDPFrame::checkForChanges()
         break;
         case 2: // custom resolution
             if ( !( rdpConnection->getDesktopWidth() + wxT(" x ") + rdpConnection->getDesktopHeight() == windowTab->ComboBox2->GetValue() ) ) { hasChangedSomething = true; }
+        break;
+    }
+
+    /// desktop bpp
+    switch ( windowTab->RadioBox2->GetSelection() )
+    {
+        case 0:
+            if ( rdpConnection->getDesktopBpp() != wxT("0") ) { hasChangedSomething = true; }
+        break;
+        case 1:
+            if (  ( rdpConnection->getDesktopBpp() == wxT("0" ) )
+               || ( rdpConnection->getDesktopBpp() == wxT("15") && windowTab->ComboBox1->GetValue() != wxT("\"High Color\" (15 bits)") )
+               || ( rdpConnection->getDesktopBpp() == wxT("16") && windowTab->ComboBox1->GetValue() != wxT("\"High Color\" (16 bits)") )
+               || ( rdpConnection->getDesktopBpp() == wxT("24") && windowTab->ComboBox1->GetValue() != wxT("\"True Color\" (24 bits)") ) ) { hasChangedSomething = true; }
         break;
     }
 
@@ -232,6 +256,17 @@ void RDPFrame::onSaveClick(wxCommandEvent& event)
             int splitPos = resolutionString.Find( splitString );
             rdpConnection->setDesktopWidth( resolutionString.SubString( 0, splitPos-1 ) );
             rdpConnection->setDesktopHeight( resolutionString.SubString( splitPos + splitString.Len(), resolutionString.Len() ) );
+        break;
+    }
+    switch( windowTab->RadioBox2->GetSelection() )
+    {
+        case 0:
+            rdpConnection->setDesktopBpp( wxT("0") );
+        break;
+        case 1:
+            if ( windowTab->ComboBox1->GetValue() == wxT("\"High Color\" (15 bits)") ) { rdpConnection->setDesktopBpp( wxT("15") ); }
+            if ( windowTab->ComboBox1->GetValue() == wxT("\"High Color\" (16 bits)") ) { rdpConnection->setDesktopBpp( wxT("16") ); }
+            if ( windowTab->ComboBox1->GetValue() == wxT("\"True Color\" (24 bits)") ) { rdpConnection->setDesktopBpp( wxT("24") ); }
         break;
     }
 

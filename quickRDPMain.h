@@ -58,6 +58,14 @@ class quickRDPFrame: public wxFrame
         void OnListCtrl1ItemRClick(wxListEvent& event);
         void OnMenuItem3Selected(wxCommandEvent& event);
         void OnMenuItem4Selected(wxCommandEvent& event);
+        void OnMenuItemDefaultClick(wxCommandEvent& event);
+        void OnMenuItemFullscreenClick(wxCommandEvent& event);
+        void OnMenuItem640(wxCommandEvent& event);
+        void OnMenuItem800(wxCommandEvent& event);
+        void OnMenuItem1024(wxCommandEvent& event);
+        void OnMenuItem1152(wxCommandEvent& event);
+        void OnMenuItem1280(wxCommandEvent& event);
+        void OnMenuItem1400(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
 
@@ -73,23 +81,44 @@ class quickRDPFrame: public wxFrame
         static const long idMenuAbout;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENUCONSOLE;
+        static const long ID_MENUDEFAULT;
+        static const long ID_MENUFULLSCREEN;
+        static const long ID_MENUITEM5;
+        static const long ID_MENUITEM6;
+        static const long ID_MENUITEM7;
+        static const long ID_MENUITEM8;
+        static const long ID_MENUITEM9;
+        static const long ID_MENUITEM10;
+        static const long ID_MENUITEM4;
+        static const long ID_MENUITEM1;
         //*)
 
         //(*Declarations(quickRDPFrame)
+        wxMenuItem* MenuItem7;
         wxListCtrl* ListCtrl1;
         wxMenu PopupMenu1;
         wxMenuItem* MenuItem4;
+        wxMenuItem* MenuItem14;
+        wxMenuItem* MenuItem11;
         wxPanel* Panel1;
         wxBitmapButton* BitmapButton2;
+        wxMenuItem* MenuItem13;
         wxBitmapButton* BitmapButton1;
+        wxMenu* MenuItem8;
+        wxMenuItem* MenuItem10;
+        wxMenuItem* MenuItem12;
         wxMenuItem* MenuItem3;
+        wxMenuItem* MenuItem6;
         wxBitmapButton* BitmapButton4;
         wxTextCtrl* TextCtrl1;
         wxBitmapButton* BitmapButton3;
+        wxMenu* MenuItem5;
+        wxMenuItem* MenuItem9;
         //*)
 
         void loadRDPFromDatabase();
         void clearListCtrl();
+        void clearPopupMenuChoices();
 
         DECLARE_EVENT_TABLE()
 };
