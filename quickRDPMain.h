@@ -23,7 +23,7 @@
 #define QUICKRDPMAIN_H
 
 #include "RDPDatabase.h"
-
+#include <memory>
 
 //(*Headers(quickRDPFrame)
 #include <wx/listctrl.h>
@@ -66,6 +66,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1152(wxCommandEvent& event);
         void OnMenuItem1280(wxCommandEvent& event);
         void OnMenuItem1400(wxCommandEvent& event);
+        void OnListCtrl1ColumnClick(wxListEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
 
@@ -115,6 +116,8 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem9;
         //*)
+
+        int last_column_click;
 
         void loadRDPFromDatabase();
         void clearListCtrl();

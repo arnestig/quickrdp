@@ -23,15 +23,20 @@
 #define __CONFIGURATION_H__
 
 #include <wx/stdpaths.h>
+#include <memory>
 
 namespace Configuration
 {
-    inline wxString getExecString()
+    inline wxString getExecString( bool useAdminString = false )
     {
         #if defined(__WXMSW__)
-        return wxT("mstsc ");
+            if ( useAdminString == true ) {
+                return wxT("mstsc /admin ");
+            } else {
+                return wxT("mstsc ");
+            }
         #elif defined(__UNIX__)
-        return wxT("tsclient -x ");
+            return wxT("tsclient -x ");
         #endif
     };
 
