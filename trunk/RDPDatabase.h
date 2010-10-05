@@ -47,11 +47,12 @@ class RDPConnection
         wxString getSoundMode() const;
         wxString getDiskMapping() const;
 
-        void connect();
+        // special string returns for the connection
+        wxString getResolutionString() const;
+        wxString getDomainUsernameString() const;
+        wxString getColorsString() const;
 
-        bool operator<(const wxString& hostname1) const {
-            return getHostname() > hostname1;
-        }
+        void connect();
 
         void setHostname( wxString hostname );
         void setUsername( wxString username );
@@ -87,11 +88,63 @@ class RDPDatabase
         RDPConnection *getRDPConnectionByPointer( RDPConnection *rdpConnection );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
         std::vector<RDPConnection*> getDatabase();
+        void sortById( int id );
+        bool isSortOrderAscending() const;
+        void setSortOrder( bool database_sort_ascending );
 
     private:
+        bool database_sort_ascending;
         void loadRDPFiles();
-
         std::vector<RDPConnection*> database;
-};
 
+        static bool hostnameCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getHostname().Lower() < right->getHostname().Lower();
+        }
+
+        static bool hostnameCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getHostname().Lower() > right->getHostname().Lower();
+        }
+
+        static bool usernameCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getDomainUsernameString().Lower() < right->getDomainUsernameString().Lower();
+        }
+
+        static bool usernameCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getDomainUsernameString().Lower() > right->getDomainUsernameString().Lower();
+        }
+
+        static bool useConsoleCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getConsole().Lower() < right->getConsole().Lower();
+        }
+
+        static bool useConsoleCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getConsole().Lower() > right->getConsole().Lower();
+        }
+
+        static bool resolutionCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getResolutionString().Lower() < right->getResolutionString().Lower();
+        }
+
+        static bool resolutionCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getResolutionString().Lower() > right->getResolutionString().Lower();
+        }
+
+        static bool commentCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getComment().Lower() < right->getComment().Lower();
+        }
+
+        static bool commentCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getComment().Lower() > right->getComment().Lower();
+        }
+};
 #endif

@@ -106,6 +106,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenu* Menu1;
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
+    wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
 
@@ -141,9 +142,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer5->Add(BitmapButton3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer3->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
-    TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, _("Search ..."), wxDefaultPosition, wxSize(172,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Panel1, _("Search"));
+    TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(172,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     TextCtrl1->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
-    BoxSizer4->Add(TextCtrl1, 0, wxTOP|wxLEFT|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
+    StaticBoxSizer1->Add(TextCtrl1, 0, wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
+    BoxSizer4->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer3->Add(BoxSizer4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
     BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxLC_SINGLE_SEL|wxRAISED_BORDER, wxDefaultValidator, _T("ID_LISTCTRL1"));
@@ -198,11 +201,13 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
     Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnEditButtonClick);
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemSelect);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemDeselect);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemActivated);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
+    Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
@@ -217,6 +222,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
+
+    last_column_click = 0;
 
     loadRDPFromDatabase();
 }
@@ -421,9 +428,6 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& event)
 {
-    if ( TextCtrl1->IsEmpty() == true ) {
-        TextCtrl1->ChangeValue( wxT("Search ...") );
-    }
     loadRDPFromDatabase();
 }
 
@@ -692,4 +696,18 @@ void quickRDPFrame::OnMenuItem1400(wxCommandEvent& event)
 
         loadRDPFromDatabase();
     }
+}
+
+void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
+{
+    if ( last_column_click == event.GetColumn() ) {
+        // change sort order.
+        rdpDatabase->setSortOrder( !rdpDatabase->isSortOrderAscending() );
+        rdpDatabase->sortById( event.GetColumn() );
+    } else {
+        last_column_click = event.GetColumn();
+        rdpDatabase->setSortOrder( true );
+        rdpDatabase->sortById( event.GetColumn() );
+    }
+    loadRDPFromDatabase();
 }

@@ -26,6 +26,7 @@
 #include <wx/filename.h>
 #include <fstream>
 #include <cstdarg>
+#include <algorithm>
 
 ///BEGIN RDPConnection
 RDPConnection::RDPConnection( wxString filename_ )
@@ -134,6 +135,39 @@ wxString RDPConnection::getDiskMapping() const
     return diskmapping;
 }
 
+wxString RDPConnection::getResolutionString() const
+{
+    if ( getScreenMode() == wxT("2") ) {
+        return wxT("Fullscreen");
+    } else if ( getScreenMode() == wxT("1") && getDesktopHeight() == wxT("0") && getDesktopWidth() == wxT("0") ) {
+        return wxT("Default resolution" );
+    } else {
+        return ( getDesktopWidth() + wxT(" x ") + getDesktopHeight() );
+    }
+}
+
+wxString RDPConnection::getDomainUsernameString() const
+{
+    wxString username;
+    if ( getDomain().Len() > 0 ) {
+        username.Append( getDomain() + wxT("\\") );
+    }
+    username.Append( getUsername() );
+    return username;
+}
+
+wxString RDPConnection::getColorsString() const
+{
+    if ( getDesktopBpp() == wxT("0") ) {
+        return wxT("Default colors");
+    } else {
+        if ( getDesktopBpp() == wxT("15") ) { return wxT("\"High Color\" (15 bits)"); }
+        if ( getDesktopBpp() == wxT("16") ) { return wxT("\"High Color\" (16 bits)"); }
+        if ( getDesktopBpp() == wxT("24") ) { return wxT("\"True Color\" (24 bits)"); }
+    }
+    return wxT("");
+}
+
 void RDPConnection::setHostname( wxString hostname )
 {
     this->hostname = hostname;
@@ -202,7 +236,8 @@ void RDPConnection::setSoundMode( wxString soundmode )
 void RDPConnection::connect()
 {
     if ( getFilename().IsEmpty() == false ) {
-        wxExecute( Configuration::getExecString() + wxT("\"") + Configuration::getDatabaseFolder() + getFilename() + wxT("\"") );
+        bool useAdminString = ( getConsole() == wxT("1") );
+        wxExecute( Configuration::getExecString( useAdminString ) + wxT("\"") + Configuration::getDatabaseFolder() + getFilename() + wxT("\"") );
     }
 }
 
@@ -299,8 +334,10 @@ bool RDPConnection::doesRDPHasString( wxString searchString ) const
 
 ///BEGIN RDPDatabase
 RDPDatabase::RDPDatabase()
+    : database_sort_ascending( true )
 {
     loadRDPFiles();
+    sortById( 0 );
 }
 
 RDPDatabase::~RDPDatabase()
@@ -365,4 +402,64 @@ std::vector<RDPConnection*> RDPDatabase::getDatabase()
 {
     return database;
 }
+
+void RDPDatabase::sortById( int id )
+{
+    switch ( id )
+    {
+        case 0:
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), hostnameCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), hostnameCompareDesc );
+            }
+        break;
+        case 1:
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), usernameCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), usernameCompareDesc );
+            }
+        break;
+        case 2:
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), useConsoleCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), useConsoleCompareDesc );
+            }
+        break;
+        case 3:
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), resolutionCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), resolutionCompareDesc );
+            }
+        break;
+        case 4:
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), commentCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), commentCompareDesc );
+            }
+        break;
+        default:
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), hostnameCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), hostnameCompareDesc );
+            }
+        break;
+    }
+}
+
+bool RDPDatabase::isSortOrderAscending() const
+{
+    return database_sort_ascending;
+}
+
+void RDPDatabase::setSortOrder( bool database_sort_ascending )
+{
+    this->database_sort_ascending = database_sort_ascending;
+}
+
 ///END RDPDatabase
