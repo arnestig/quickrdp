@@ -25,6 +25,33 @@
 #ifndef __RDP_DATABASE_H__
 #define __RDP_DATABASE_H__
 
+namespace ConnectionType
+{
+    enum ConnectionType
+    {
+        RDP,
+        TELNET,
+        SSH
+    };
+
+    inline wxString getConnectionTypeName( ConnectionType::ConnectionType connectionType )
+    {
+        switch ( connectionType )
+        {
+            default:
+            case ConnectionType::RDP:
+                return wxT( "Remote Desktop" );
+            break;
+            case ConnectionType::TELNET:
+                return wxT( "Telnet" );
+            break;
+            case ConnectionType::SSH:
+                return wxT( "SSH" );
+            break;
+        }
+    }
+}
+
 class RDPConnection
 {
     public:
@@ -32,6 +59,7 @@ class RDPConnection
         RDPConnection( wxString filename, RDPConnection *copy );
         ~RDPConnection();
 
+        ConnectionType::ConnectionType getConnectionType() const;
         wxString getFilename() const;
         wxString getHostname() const;
         wxString getUsername() const;
@@ -54,6 +82,7 @@ class RDPConnection
 
         void connect();
 
+        void setConnectionType( ConnectionType::ConnectionType connectionType );
         void setHostname( wxString hostname );
         void setUsername( wxString username );
         void setPassword( wxString password );
@@ -74,7 +103,7 @@ class RDPConnection
 
     private:
         void parseFile();
-        void writeLineToFile( std::ofstream &file, wxString line );
+        ConnectionType::ConnectionType connectionType;
         wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping;
 };
 

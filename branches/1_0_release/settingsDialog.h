@@ -19,68 +19,61 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef RDPFRAME_H
-#define RDPFRAME_H
+#ifndef SETTINGSDIALOG_H
+#define SETTINGSDIALOG_H
 
-#include "generalTabPanel.h"
-#include "resourcesTabPanel.h"
-#include "windowTabPanel.h"
-#include "RDPDatabase.h"
-
-//(*Headers(RDPFrame)
-#include <wx/notebook.h>
+//(*Headers(settingsDialog)
 #include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/panel.h>
+#include <wx/filedlg.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
 
-class generalTabPanel;
-class windowTabPanel;
-class resourcesTabPanel;
-
-class RDPFrame: public wxDialog
+class settingsDialog: public wxDialog
 {
-	friend class generalTabPanel;
-	friend class windowTabPanel;
-	friend class resourcesTabPanel;
-
 	public:
 
-		RDPFrame(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
-		virtual ~RDPFrame();
+		settingsDialog(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+		virtual ~settingsDialog();
 
-		//(*Declarations(RDPFrame)
-		wxNotebook* Notebook1;
+		//(*Declarations(settingsDialog)
+		wxButton* Button4;
 		wxButton* Button1;
 		wxPanel* Panel1;
+		wxStaticText* StaticText1;
+		wxFileDialog* FileDialog1;
+		wxStaticText* StaticText3;
 		wxButton* Button2;
+		wxButton* Button3;
+		wxTextCtrl* TextCtrl2;
+		wxTextCtrl* TextCtrl1;
 		//*)
-		generalTabPanel* generalTab;
-		windowTabPanel* windowTab;
-        resourcesTabPanel* resourcesTab;
-        void loadRDPConnection( RDPConnection* rdpConnection );
 
 	protected:
 
-		//(*Identifiers(RDPFrame)
-		static const long ID_NOTEBOOK1;
+		//(*Identifiers(settingsDialog)
+		static const long ID_STATICTEXT1;
+		static const long ID_TEXTCTRL1;
 		static const long ID_BUTTON1;
+		static const long ID_STATICTEXT3;
+		static const long ID_TEXTCTRL2;
 		static const long ID_BUTTON2;
+		static const long ID_BUTTON3;
+		static const long ID_BUTTON4;
 		static const long ID_PANEL1;
 		//*)
 
 	private:
 
-		//(*Handlers(RDPFrame)
-		void onCloseClick(wxCommandEvent& event);
-		void onSaveClick(wxCommandEvent& event);
-		void OnClose(wxCloseEvent& event);
+		//(*Handlers(settingsDialog)
+		void OnPuttyBrowseClick(wxCommandEvent& event);
+		void OnInit(wxInitDialogEvent& event);
+		void OnButtonSave(wxCommandEvent& event);
+		void OnButtonCancel(wxCommandEvent& event);
 		//*)
-
-		RDPConnection *rdpConnection;
-		void checkForChanges();
-		void switchConnectionType( ConnectionType::ConnectionType connectionType );
 
 		DECLARE_EVENT_TABLE()
 };

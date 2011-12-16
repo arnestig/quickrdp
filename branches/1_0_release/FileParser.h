@@ -22,9 +22,29 @@
 #ifndef __FILE_PARSER__
 #define __FILE_PARSER__
 
+#include <fstream>
+
 namespace FileParser
 {
-    wxString getStringFromFile( wxString searchPattern, std::vector<wxString> file )
+    inline wxString generateFilename()
+    {
+        wxString filename;
+        const char hex[] = "ABCDEF0123456789";
+        srand( time( NULL ) );
+        for ( size_t index = 0; index < 8; index++ ) {
+            filename.Append( wxString( &hex[ rand() % 16 ] , wxConvUTF8, 1 ) );
+        }
+
+        return filename;
+    }
+
+    inline void writeLineToFile( std::ofstream &file, wxString line )
+    {
+        file.write( line.mb_str(), line.Len() );
+        file.write( "\r\n", 2 );
+    }
+
+    inline wxString getStringFromFile( wxString searchPattern, std::vector<wxString> file )
     {
         for ( size_t index = 0; index < file.size(); index++ ) {
             int searchRet = file[ index ].Find( searchPattern );
@@ -35,7 +55,7 @@ namespace FileParser
         return wxT("");
     };
 
-    wxString getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
+    inline wxString getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
     {
         for ( size_t index = 0; index < file.size(); index++ ) {
             int searchRet = file[ index ].Find( searchPattern );

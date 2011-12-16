@@ -21,16 +21,16 @@
 
 #include "RDPDatabase.h"
 #include "FileParser.h"
-#include "Configuration.h"
+#include "Resources.h"
 #include <wx/filefn.h>
 #include <wx/filename.h>
-#include <fstream>
 #include <cstdarg>
 #include <algorithm>
 
 ///BEGIN RDPConnection
-RDPConnection::RDPConnection( wxString filename_ )
-    :   filename( filename_ ),
+RDPConnection::RDPConnection( wxString filename )
+    :   connectionType( ConnectionType::RDP ),
+        filename( filename ),
         desktopheight( wxT("0") ),
         desktopwidth( wxT("0") ),
         desktopbpp( wxT("0") ),
@@ -45,6 +45,7 @@ RDPConnection::RDPConnection( wxString filename_ )
 RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     :   filename( filename_ )
 {
+    setConnectionType( copy->getConnectionType() );
     setClientHostname( copy->getClientHostname() );
     setComment( copy->getComment() );
     setConsole( copy->getConsole() );
@@ -63,6 +64,11 @@ RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
 
 RDPConnection::~RDPConnection()
 {
+}
+
+ConnectionType::ConnectionType RDPConnection::getConnectionType() const
+{
+    return connectionType;
 }
 
 wxString RDPConnection::getHostname() const
@@ -168,6 +174,11 @@ wxString RDPConnection::getColorsString() const
     return wxT("");
 }
 
+void RDPConnection::setConnectionType( ConnectionType::ConnectionType connectionType )
+{
+    this->connectionType = connectionType;
+}
+
 void RDPConnection::setHostname( wxString hostname )
 {
     this->hostname = hostname;
@@ -235,43 +246,60 @@ void RDPConnection::setSoundMode( wxString soundmode )
 
 void RDPConnection::connect()
 {
+    Settings *settings = Resources::Instance()->getSettings();
     if ( getFilename().IsEmpty() == false ) {
         bool useAdminString = ( getConsole() == wxT("1") );
-        wxExecute( Configuration::getExecString( useAdminString ) + wxT("\"") + Configuration::getDatabaseFolder() + getFilename() + wxT("\"") );
-    }
-}
+        /** connect to either RDP, telnet or SSH here.. telnet and SSH both use Putty... **/
+        if ( getConnectionType() == ConnectionType::RDP ) {
+            wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
+        } else {
+            /** make sure we have putty in our settings so we can connect here.. **/
+            if ( Resources::Instance()->getSettings()->getPuttyExec().IsEmpty() == false ) {
+                wxString execString( wxString( settings->getPuttyExec() + wxT(" -") + ConnectionType::getConnectionTypeName( getConnectionType() ) ).Lower() );
+                execString << wxT( " " );
+                if ( getUsername().IsEmpty() == false ) {
+                    execString << getUsername() << wxT("@");
+                }
+                execString << getHostname();
 
-void RDPConnection::writeLineToFile( std::ofstream &file, wxString line )
-{
-    file.write( line.mb_str(), line.Len() );
-    file.write( "\r\n", 2 );
+                if ( getPassword().IsEmpty() == false ) {
+                    execString << wxT(" -pw ") << getPassword();
+                }
+                wxExecute( execString );
+            } else {
+                wxMessageBox( wxT("You have not defined a location of PuTTY executable. Please do so under Settings -> Preferences."), wxT("Unable to locate PuTTY"), wxICON_ERROR );
+            }
+
+        }
+    }
 }
 
 void RDPConnection::saveFile()
 {
     std::ofstream ofile;
-    ofile.open( wxString( Configuration::getDatabaseFolder() + getFilename() ).mb_str(), std::ios::out|std::ios::binary );
+    ofile.open( wxString( Resources::Instance()->getSettings()->getDatabasePath() + getFilename() ).mb_str(), std::ios::out|std::ios::binary );
 
-    writeLineToFile( ofile, wxString(wxT("username:s:")) + getUsername() );
-    writeLineToFile( ofile, wxString(wxT("domain:s:")) + getDomain() );
-    writeLineToFile( ofile, wxString(wxT("password:s:")) + getPassword() );
-    writeLineToFile( ofile, wxString(wxT("full address:s:")) + getHostname() );
-    writeLineToFile( ofile, wxString(wxT("client hostname:s:")) + getClientHostname() );
-    writeLineToFile( ofile, wxString(wxT("description:s:")) + getComment() );
-    writeLineToFile( ofile, wxString(wxT("desktopheight:i:")) + getDesktopHeight() );
-    writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
-    writeLineToFile( ofile, wxString(wxT("session bpp:i:")) + getDesktopBpp() );
-    writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
-    writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
-    writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
-    writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("connectiontype:i:")) << getConnectionType() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("username:s:")) + getUsername() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("domain:s:")) + getDomain() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("password:s:")) + getPassword() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("full address:s:")) + getHostname() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("client hostname:s:")) + getClientHostname() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("description:s:")) + getComment() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("desktopheight:i:")) + getDesktopHeight() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("session bpp:i:")) + getDesktopBpp() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
 
 	ofile.close();
 }
 
 void RDPConnection::parseFile()
 {
-    wxString filename( Configuration::getDatabaseFolder() + getFilename() );
+    wxString filename( Resources::Instance()->getSettings()->getDatabasePath() + getFilename() );
 
     if ( wxFileExists( filename ) == true ) {
             std::ifstream rfile;
@@ -298,6 +326,7 @@ void RDPConnection::parseFile()
             allLines.push_back( input );
 		}
 		delete[] buffer;
+        setConnectionType( static_cast< ConnectionType::ConnectionType >( wxAtoi( FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) ) );
         setUsername( FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
         setDomain( FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );
         setPassword( FileParser::getStringFromFile( wxT("password:s:"), allLines ) );
@@ -346,17 +375,8 @@ RDPDatabase::~RDPDatabase()
 
 void RDPDatabase::loadRDPFiles()
 {
-    if ( wxDirExists( Configuration::getDatabaseFolder() ) == false ) {
-        #if defined(__WXMSW__)
-        wxMkDir( Configuration::getDatabaseFolder().fn_str() );
-        #elif defined(__UNIX__)
-        wxMkDir( Configuration::getDatabaseFolder().fn_str(), 0700);
-        #endif
-
-    }
-
     // traverse the database folder, looking for RDPConnections.
-    wxString f = wxFindFirstFile( Configuration::getDatabaseFolder() );
+    wxString f = wxFindFirstFile( Resources::Instance()->getSettings()->getDatabasePath() );
     while ( f.empty() == false ) {
         wxFileName fname;
         fname.Assign( f );
