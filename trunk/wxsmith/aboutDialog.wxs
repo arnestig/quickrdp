@@ -29,7 +29,7 @@
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-										<label>quickRDP 0.2</label>
+										<label>quickRDP 1.0</label>
 										<font>
 											<size>16</size>
 											<style>normal</style>
@@ -43,13 +43,13 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
-										<label>Remote desktop organizer</label>
+										<label>Remote connection organizer</label>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
-										<label>Copyright © 2010 Tobias Eliasson</label>
+										<label>Copyright © 2010 - 2011 Tobias Eliasson</label>
 										<font>
 											<size>8</size>
 											<style>normal</style>
@@ -74,7 +74,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
-												<label>Label</label>
+												<label>Text</label>
 												<hidden>1</hidden>
 												<extra_code>Hyperlink1 = new wxHyperlinkCtrl(Panel1, ID__HYPERLINK1, __(&quot;http://www.gnu.org/licenses/gpl.html&quot;), __(&quot;http://www.gnu.org/licenses/gpl.html&quot;),wxDefaultPosition, wxDefaultSize, wxHL__ALIGN__CENTRE, __T(&quot;ID__HYPERLINK1&quot;));&#x0A;&#x09;BoxSizer6-&gt;Add(Hyperlink1, 1, wxALL|wxALIGN__CENTER__HORIZONTAL|wxALIGN__CENTER__VERTICAL, 5);&#x0A;</extra_code>
 											</object>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxDialog" name="settingsDialog">
+		<size>373,153</size>
+		<pos_arg>1</pos_arg>
+		<size_arg>1</size_arg>
+		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<object class="sizeritem">
+				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizer2" member="no">
+						<orient>wxVERTICAL</orient>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+										<label>PuTTY location</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCtrl1" member="yes">
+										<size>200,21</size>
+										<enabled>0</enabled>
+										<style>wxDOUBLE_BORDER</style>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
+										<label>...</label>
+										<size>25,23</size>
+										<handler function="OnPuttyBrowseClick" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizer4" member="no">
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
+										<label>Plink location</label>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCtrl2" member="yes">
+										<size>200,21</size>
+										<enabled>0</enabled>
+										<style>wxDOUBLE_BORDER</style>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON2" variable="Button2" member="yes">
+										<label>...</label>
+										<size>25,23</size>
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizer5" member="no">
+								<object class="spacer">
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON3" variable="Button3" member="yes">
+										<label>Ok</label>
+										<size>75,23</size>
+										<handler function="OnButtonSave" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxButton" name="ID_BUTTON4" variable="Button4" member="yes">
+										<label>Cancel</label>
+										<size>75,23</size>
+										<handler function="OnButtonCancel" entry="EVT_BUTTON" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+							</object>
+							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
+					</object>
+				</object>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+		<object class="wxFileDialog" variable="FileDialog1" member="yes">
+			<message>Locate PuTTY</message>
+			<wildcard>PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*</wildcard>
+		</object>
+	</object>
+</wxsmith>

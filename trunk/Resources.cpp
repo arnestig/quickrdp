@@ -19,35 +19,32 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef __CONFIGURATION_H__
-#define __CONFIGURATION_H__
+#include "Resources.h"
 
-#include <wx/stdpaths.h>
-#include <memory>
+Resources* Resources::instance = NULL;
 
-namespace Configuration
+Resources::Resources()
+    :   settings( NULL )
 {
-    inline wxString getExecString( bool useAdminString = false )
-    {
-        #if defined(__WXMSW__)
-            if ( useAdminString == true ) {
-                return wxT("mstsc /admin ");
-            } else {
-                return wxT("mstsc ");
-            }
-        #elif defined(__UNIX__)
-            return wxT("tsclient -x ");
-        #endif
-    };
-
-    inline wxString getDatabaseFolder()
-    {
-        #if defined(__WXMSW__)
-        return wxStandardPathsBase::Get().GetUserDataDir() + wxT("\\");
-        #elif defined(__UNIX__)
-        return wxStandardPathsBase::Get().GetUserDataDir() + wxT("/");
-        #endif
-    };
+    settings = new Settings();
+//    conDatabase = new RDPDatabase();
 }
 
-#endif
+Resources* Resources::Instance()
+{
+    if ( instance == NULL ) {
+        instance = new Resources();
+    }
+    return instance;
+}
+
+Settings* Resources::getSettings() const
+{
+    return settings;
+}
+
+RDPDatabase* Resources::getConDatabase() const
+{
+    return conDatabase;
+}
+

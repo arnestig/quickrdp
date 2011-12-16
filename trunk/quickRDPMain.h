@@ -67,6 +67,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1280(wxCommandEvent& event);
         void OnMenuItem1400(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
+        void OnPreferences(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
 
@@ -79,6 +80,8 @@ class quickRDPFrame: public wxFrame
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
         static const long idMenuQuit;
+        static const long idMenuMacroCommands;
+        static const long idMenuPreferences;
         static const long idMenuAbout;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENUCONSOLE;
@@ -98,9 +101,11 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem7;
         wxListCtrl* ListCtrl1;
         wxMenu PopupMenu1;
+        wxMenu* Menu3;
         wxMenuItem* MenuItem4;
         wxMenuItem* MenuItem14;
         wxMenuItem* MenuItem11;
+        wxMenuItem* MenuItem15;
         wxPanel* Panel1;
         wxBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem13;
@@ -114,6 +119,7 @@ class quickRDPFrame: public wxFrame
         wxTextCtrl* TextCtrl1;
         wxBitmapButton* BitmapButton3;
         wxMenu* MenuItem5;
+        wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         //*)
 

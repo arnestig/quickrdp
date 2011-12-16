@@ -19,28 +19,27 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#include "quickRDPApp.h"
+#ifndef __RESOURCES_H__
+#define __RESOURCES_H__
 
-//(*AppHeaders
-#include "quickRDPMain.h"
-#include <wx/image.h>
-//*)
+#include "Settings.h"
+#include "RDPDatabase.h"
 
-IMPLEMENT_APP(quickRDPApp);
-
-bool quickRDPApp::OnInit()
+class Resources
 {
-    //(*AppInitialize
-    bool wxsOK = true;
-    wxInitAllImageHandlers();
-    if ( wxsOK )
-    {
-    	quickRDPFrame* Frame = new quickRDPFrame(0);
-    	Frame->SetIcon(wxICON(aaaaa_logo));
-    	Frame->Show();
-    	SetTopWindow(Frame);
-    }
-    //*)
-    return wxsOK;
+    public:
+        static Resources* Instance();
 
-}
+        Settings* getSettings() const;
+        RDPDatabase* getConDatabase() const;
+
+    private:
+        static Resources* instance;
+        Resources();
+        Resources( Resources const& ) {};
+
+        Settings *settings;
+        RDPDatabase *conDatabase;
+};
+
+#endif

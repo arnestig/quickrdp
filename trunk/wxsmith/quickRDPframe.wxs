@@ -2,7 +2,6 @@
 <wxsmith>
 	<object class="wxFrame" name="quickRDPFrame">
 		<title>quickRDP</title>
-		<icon>data/preferences-desktop-remote-desktop.png</icon>
 		<size>172,202</size>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
@@ -98,7 +97,7 @@
 							<object class="wxListCtrl" name="ID_LISTCTRL1" variable="ListCtrl1" member="yes">
 								<size>566,278</size>
 								<extra_code>ListCtrl1-&gt;InsertColumn( 0, wxT(&quot;Host&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 1, wxT(&quot;Username&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 2, wxT(&quot;Use console&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 3, wxT(&quot;Resolution&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 4, wxT(&quot;Comment&quot;) );</extra_code>
-								<style>wxLC_REPORT|wxLC_SINGLE_SEL|wxRAISED_BORDER</style>
+								<style>wxLC_REPORT|wxRAISED_BORDER</style>
 								<handler function="OnListCtrl1ItemSelect" entry="EVT_LIST_ITEM_SELECTED" />
 								<handler function="OnListCtrl1ItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
 								<handler function="OnListCtrl1ItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
@@ -125,6 +124,18 @@
 					<handler function="OnQuit" entry="EVT_MENU" />
 				</object>
 			</object>
+			<object class="wxMenu" variable="Menu3" member="yes">
+				<label>&amp;Settings</label>
+				<object class="wxMenuItem" name="idMenuMacroCommands" variable="MenuItem16" member="yes">
+					<label>Macro Commands</label>
+					<enabled>0</enabled>
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="idMenuPreferences" variable="MenuItem15" member="yes">
+					<label>Preferences</label>
+					<handler function="OnPreferences" entry="EVT_MENU" />
+				</object>
+			</object>
 			<object class="wxMenu" variable="Menu2" member="no">
 				<label>Help</label>
 				<object class="wxMenuItem" name="idMenuAbout" variable="MenuItem2" member="no">
@@ -144,51 +155,51 @@
 			<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">
 				<label>Attach to console</label>
 				<handler function="OnMenuItem4Selected" entry="EVT_MENU" />
-				<check>1</check>
+				<checkable>1</checkable>
 			</object>
 			<object class="wxMenu" name="ID_MENUITEM1" variable="MenuItem5" member="yes">
 				<label>Resolution</label>
 				<object class="wxMenuItem" name="ID_MENUDEFAULT" variable="MenuItem6" member="yes">
 					<label>Default</label>
 					<handler function="OnMenuItemDefaultClick" entry="EVT_MENU" />
-					<check>1</check>
+					<checkable>1</checkable>
 				</object>
 				<object class="wxMenuItem" name="ID_MENUFULLSCREEN" variable="MenuItem7" member="yes">
 					<label>Fullscreen</label>
 					<handler function="OnMenuItemFullscreenClick" entry="EVT_MENU" />
-					<check>1</check>
+					<checkable>1</checkable>
 				</object>
 				<object class="wxMenu" name="ID_MENUITEM4" variable="MenuItem8" member="yes">
 					<label>Custom</label>
 					<object class="wxMenuItem" name="ID_MENUITEM5" variable="MenuItem9" member="yes">
 						<label>640 x 480</label>
 						<handler function="OnMenuItem640" entry="EVT_MENU" />
-						<check>1</check>
+						<checkable>1</checkable>
 					</object>
 					<object class="wxMenuItem" name="ID_MENUITEM6" variable="MenuItem10" member="yes">
 						<label>800 x 600</label>
 						<handler function="OnMenuItem800" entry="EVT_MENU" />
-						<check>1</check>
+						<checkable>1</checkable>
 					</object>
 					<object class="wxMenuItem" name="ID_MENUITEM7" variable="MenuItem11" member="yes">
 						<label>1024 x 768</label>
 						<handler function="OnMenuItem1024" entry="EVT_MENU" />
-						<check>1</check>
+						<checkable>1</checkable>
 					</object>
 					<object class="wxMenuItem" name="ID_MENUITEM8" variable="MenuItem12" member="yes">
 						<label>1152 x 864</label>
 						<handler function="OnMenuItem1152" entry="EVT_MENU" />
-						<check>1</check>
+						<checkable>1</checkable>
 					</object>
 					<object class="wxMenuItem" name="ID_MENUITEM9" variable="MenuItem13" member="yes">
 						<label>1280 x 960</label>
 						<handler function="OnMenuItem1280" entry="EVT_MENU" />
-						<check>1</check>
+						<checkable>1</checkable>
 					</object>
 					<object class="wxMenuItem" name="ID_MENUITEM10" variable="MenuItem14" member="yes">
 						<label>1400 x 1050</label>
 						<handler function="OnMenuItem1400" entry="EVT_MENU" />
-						<check>1</check>
+						<checkable>1</checkable>
 					</object>
 				</object>
 			</object>

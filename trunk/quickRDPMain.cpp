@@ -22,8 +22,9 @@
 #include "quickRDPMain.h"
 #include "RDPFrame.h"
 #include "RDPDatabase.h"
-#include "Configuration.h"
 #include "aboutDialog.h"
+#include "settingsDialog.h"
+#include "FileParser.h"
 
 #include <wx/msgdlg.h>
 #include <memory>
@@ -71,6 +72,8 @@ const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMenuQuit = wxNewId();
+const long quickRDPFrame::idMenuMacroCommands = wxNewId();
+const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
@@ -112,11 +115,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
 
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
-    {
-    	wxIcon FrameIcon;
-    	FrameIcon.CopyFromBitmap(wxBitmap(wxImage(_T("data/preferences-desktop-remote-desktop.png"))));
-    	SetIcon(FrameIcon);
-    }
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
     Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(182,217), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
@@ -149,7 +147,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer4->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer3->Add(BoxSizer4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
     BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-    ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxLC_SINGLE_SEL|wxRAISED_BORDER, wxDefaultValidator, _T("ID_LISTCTRL1"));
+    ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxRAISED_BORDER, wxDefaultValidator, _T("ID_LISTCTRL1"));
     ListCtrl1->InsertColumn( 0, wxT("Host") );
     ListCtrl1->InsertColumn( 1, wxT("Username") );
     ListCtrl1->InsertColumn( 2, wxT("Use console") );
@@ -165,6 +163,14 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
+    Menu3 = new wxMenu();
+    MenuItem16 = new wxMenuItem(Menu3, idMenuMacroCommands, _("Macro Commands"), wxEmptyString, wxITEM_NORMAL);
+    Menu3->Append(MenuItem16);
+    MenuItem16->Enable(false);
+    Menu3->AppendSeparator();
+    MenuItem15 = new wxMenuItem(Menu3, idMenuPreferences, _("Preferences"), wxEmptyString, wxITEM_NORMAL);
+    Menu3->Append(MenuItem15);
+    MenuBar1->Append(Menu3, _("&Settings"));
     Menu2 = new wxMenu();
     MenuItem2 = new wxMenuItem(Menu2, idMenuAbout, _("About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
     Menu2->Append(MenuItem2);
@@ -209,6 +215,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
+    Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
@@ -262,12 +269,7 @@ void quickRDPFrame::OnListCtrl1ItemDeselect(wxListEvent& event)
 
 void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
 {
-    const char hex[] = "ABCDEF0123456789";
-    wxString filename;
-    srand( time( NULL ) );
-    for ( size_t index = 0; index < 32; index++ ) {
-        filename.Append( wxString( &hex[ rand() % 16 ] , wxConvUTF8, 1 ) );
-    }
+    wxString filename = FileParser::generateFilename();
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
     newFrame->loadRDPConnection( rdpDatabase->addRDPConnection( filename ) );
@@ -344,37 +346,41 @@ void quickRDPFrame::loadRDPFromDatabase()
             ListCtrl1->SetItem( itemIndexCounter, 0, curRDP->getHostname() );
             ListCtrl1->SetItem( itemIndexCounter, 1, username );
 
+            ListCtrl1->SetItem( itemIndexCounter, 2, ConnectionType::getConnectionTypeName( curRDP->getConnectionType() ) );
+
             if ( curRDP->getConsole() == wxT("1") ) {
-                ListCtrl1->SetItem( itemIndexCounter, 2, wxT("Yes") );
+                ListCtrl1->SetItem( itemIndexCounter, 3, wxT("Yes") );
             } else {
-                ListCtrl1->SetItem( itemIndexCounter, 2, wxT("No" ) );
+                ListCtrl1->SetItem( itemIndexCounter, 3, wxT("No" ) );
             }
 
             if ( curRDP->getScreenMode() == wxT("2") ) {
-                ListCtrl1->SetItem( itemIndexCounter, 3, wxT("Fullscreen") );
+                ListCtrl1->SetItem( itemIndexCounter, 4, wxT("Fullscreen") );
             } else if ( curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
-                ListCtrl1->SetItem( itemIndexCounter, 3, wxT("Default") );
+                ListCtrl1->SetItem( itemIndexCounter, 4, wxT("Default") );
             } else {
-                ListCtrl1->SetItem( itemIndexCounter, 3, curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight() );
+                ListCtrl1->SetItem( itemIndexCounter, 4, curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight() );
             }
 
-            ListCtrl1->SetItem( itemIndexCounter, 4, curRDP->getComment() );
+            ListCtrl1->SetItem( itemIndexCounter, 5, curRDP->getComment() );
             itemIndexCounter++;
         }
     }
 
     if ( ListCtrl1->GetItemCount() > 0 ) {
         ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
-        ListCtrl1->SetColumnWidth( 1, wxLIST_AUTOSIZE );
+        ListCtrl1->SetColumnWidth( 1, 90 );
         ListCtrl1->SetColumnWidth( 2, 100 );
-        ListCtrl1->SetColumnWidth( 3, wxLIST_AUTOSIZE );
-        ListCtrl1->SetColumnWidth( 4, wxLIST_AUTOSIZE );
+        ListCtrl1->SetColumnWidth( 3, 100 );
+        ListCtrl1->SetColumnWidth( 4, 70 );
+        ListCtrl1->SetColumnWidth( 5, 110 );
     } else {
         ListCtrl1->SetColumnWidth( 0, 80 );
         ListCtrl1->SetColumnWidth( 1, 123 );
         ListCtrl1->SetColumnWidth( 2, 100 );
-        ListCtrl1->SetColumnWidth( 3, 82 );
-        ListCtrl1->SetColumnWidth( 4, 107 );
+        ListCtrl1->SetColumnWidth( 3, 100 );
+        ListCtrl1->SetColumnWidth( 4, 82 );
+        ListCtrl1->SetColumnWidth( 5, 107 );
     }
 }
 
@@ -383,20 +389,23 @@ void quickRDPFrame::clearListCtrl()
     ListCtrl1->ClearAll();
     ListCtrl1->InsertColumn( 0, wxT("Host") );
     ListCtrl1->InsertColumn( 1, wxT("Username") );
-    ListCtrl1->InsertColumn( 2, wxT("Use console") );
-    ListCtrl1->InsertColumn( 3, wxT("Resolution") );
-    ListCtrl1->InsertColumn( 4, wxT("Comment") );
+    ListCtrl1->InsertColumn( 2, wxT("Connection") );
+    ListCtrl1->InsertColumn( 3, wxT("Use console") );
+    ListCtrl1->InsertColumn( 4, wxT("Resolution") );
+    ListCtrl1->InsertColumn( 5, wxT("Comment") );
 }
 
 void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
 {
     if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
         long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
         }
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
     }
 }
 
@@ -409,12 +418,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
             return;
         }
 
-        const char hex[] = "ABCDEF0123456789";
-        wxString filename;
-        srand( time( NULL ) );
-        for ( size_t index = 0; index < 32; index++ ) {
-            filename.Append( wxString( &hex[ rand() % 16 ] , wxConvUTF8, 1 ) );
-        }
+        wxString filename = FileParser::generateFilename();
         rdpDatabase->duplicateRDPConnection( filename, rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
 
         loadRDPFromDatabase();
@@ -710,4 +714,11 @@ void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
         rdpDatabase->sortById( event.GetColumn() );
     }
     loadRDPFromDatabase();
+}
+
+void quickRDPFrame::OnPreferences(wxCommandEvent& event)
+{
+    settingsDialog *settings = new settingsDialog( this, 0 );
+    settings->ShowModal();
+    delete settings;
 }

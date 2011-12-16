@@ -98,7 +98,11 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
 {
     this->rdpConnection = rdpConnection;
 
+    /// select correct layout based on which connectiontype we have.
+    switchConnectionType( rdpConnection->getConnectionType() );
+
     /// GENERALTAB BEGIN
+    generalTab->Choice1->Select( rdpConnection->getConnectionType() );
     generalTab->TextCtrl2->ChangeValue( rdpConnection->getHostname() ); // hostname
     generalTab->TextCtrl7->ChangeValue( rdpConnection->getUsername() ); // user
     generalTab->TextCtrl3->ChangeValue( rdpConnection->getPassword() ); // pass
@@ -145,10 +149,38 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
     /// RESOURCESTAB END
 }
 
+void RDPFrame::switchConnectionType( ConnectionType::ConnectionType connectionType )
+{
+    /** Layout for RDP connections **/
+    if ( connectionType == ConnectionType::RDP ) {
+        if ( Notebook1->GetPageCount() == 1 ) {
+            Notebook1->AddPage( windowTab, wxT("Window") );
+            Notebook1->AddPage( resourcesTab, wxT("Resources") );
+            generalTab->StaticText4->Show();
+            generalTab->TextCtrl4->Show();
+            generalTab->StaticText5->Show();
+            generalTab->TextCtrl5->Show();
+            generalTab->CheckBox1->Show();
+        }
+    } else {
+        /** Layout for SSH or telnet connections **/
+        if ( Notebook1->GetPageCount() > 1 ) {
+            Notebook1->RemovePage( 2 );
+            Notebook1->RemovePage( 1 );
+            generalTab->StaticText4->Hide();
+            generalTab->TextCtrl4->Hide();
+            generalTab->StaticText5->Hide();
+            generalTab->TextCtrl5->Hide();
+            generalTab->CheckBox1->Hide();
+        }
+    }
+}
+
 void RDPFrame::checkForChanges()
 {
     /// general tab
     bool hasChangedSomething = false;
+    if ( generalTab->Choice1->GetCurrentSelection() != rdpConnection->getConnectionType() ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl2->GetValue().Cmp( rdpConnection->getHostname() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl7->GetValue().Cmp( rdpConnection->getUsername() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl3->GetValue().Cmp( rdpConnection->getPassword() ) != 0 ) { hasChangedSomething = true; }
@@ -224,6 +256,7 @@ void RDPFrame::onCloseClick(wxCommandEvent& event)
 
 void RDPFrame::onSaveClick(wxCommandEvent& event)
 {
+    rdpConnection->setConnectionType( static_cast< ConnectionType::ConnectionType > ( generalTab->Choice1->GetCurrentSelection() ) );
     rdpConnection->setHostname( generalTab->TextCtrl2->GetValue() );
     rdpConnection->setUsername( generalTab->TextCtrl7->GetValue() );
     rdpConnection->setPassword( generalTab->TextCtrl3->GetValue() );
