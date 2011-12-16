@@ -19,28 +19,34 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#include "quickRDPApp.h"
+#ifndef __SETTINGS_H__
+#define __SETTINGS_H__
 
-//(*AppHeaders
-#include "quickRDPMain.h"
-#include <wx/image.h>
-//*)
+#include <wx/string.h>
 
-IMPLEMENT_APP(quickRDPApp);
-
-bool quickRDPApp::OnInit()
+class Settings
 {
-    //(*AppInitialize
-    bool wxsOK = true;
-    wxInitAllImageHandlers();
-    if ( wxsOK )
-    {
-    	quickRDPFrame* Frame = new quickRDPFrame(0);
-    	Frame->SetIcon(wxICON(aaaaa_logo));
-    	Frame->Show();
-    	SetTopWindow(Frame);
-    }
-    //*)
-    return wxsOK;
+    public:
+        Settings();
+        ~Settings();
 
-}
+        void saveSettings();
+        wxString getRDPExec( bool useAdminString = false ) const;
+        wxString getPuttyExec() const;
+        wxString getPlinkExec() const;
+        void setPlinkExec( wxString plinkExec );
+        void setPuttyExec( wxString puttyExec );
+        wxString getSettingsPath() const;
+        wxString getDatabasePath() const;
+
+    private:
+        void loadSettings();
+
+        wxString RDPExec;
+        wxString puttyExec;
+        wxString plinkExec;
+        wxString settingsPath;
+        wxString databasePath;
+};
+
+#endif

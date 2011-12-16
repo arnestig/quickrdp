@@ -28,6 +28,7 @@
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
 #include <wx/panel.h>
+#include <wx/choice.h>
 //*)
 
 class RDPFrame;
@@ -45,6 +46,7 @@ class generalTabPanel: public wxPanel
 		wxStaticText* StaticText6;
 		wxTextCtrl* TextCtrl6;
 		wxStaticText* StaticText8;
+		wxStaticText* StaticText1;
 		wxStaticText* StaticText3;
 		wxCheckBox* CheckBox1;
 		wxStaticText* StaticText5;
@@ -54,6 +56,7 @@ class generalTabPanel: public wxPanel
 		wxTextCtrl* TextCtrl5;
 		wxStaticText* StaticText4;
 		wxTextCtrl* TextCtrl3;
+		wxChoice* Choice1;
 		//*)
 		void setOwner( RDPFrame *owner );
 
@@ -61,16 +64,18 @@ class generalTabPanel: public wxPanel
 
 		//(*Identifiers(generalTabPanel)
 		static const long ID_STATICTEXT6;
+		static const long ID_STATICTEXT1;
+		static const long ID_CHOICE1;
 		static const long ID_STATICTEXT2;
 		static const long ID_TEXTCTRL2;
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL7;
 		static const long ID_STATICTEXT3;
 		static const long ID_TEXTCTRL3;
-		static const long ID_STATICTEXT4;
-		static const long ID_TEXTCTRL4;
 		static const long ID_STATICTEXT7;
 		static const long ID_TEXTCTRL6;
+		static const long ID_STATICTEXT4;
+		static const long ID_TEXTCTRL4;
 		static const long ID_STATICTEXT5;
 		static const long ID_TEXTCTRL5;
 		static const long ID_CHECKBOX1;
@@ -80,6 +85,7 @@ class generalTabPanel: public wxPanel
 
 		//(*Handlers(generalTabPanel)
 		void onTextUpdates(wxCommandEvent& event);
+		void onConnectionChoice(wxCommandEvent& event);
 		//*)
         RDPFrame *owner;
 		DECLARE_EVENT_TABLE()
