@@ -68,6 +68,8 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1400(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnPreferences(wxCommandEvent& event);
+        void OnPopupMenuPing(wxCommandEvent& event);
+        void OnMenuPerlScripts(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
 
@@ -80,10 +82,12 @@ class quickRDPFrame: public wxFrame
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
         static const long idMenuQuit;
-        static const long idMenuMacroCommands;
+        static const long idMainMenuPerlScripts;
         static const long idMenuPreferences;
         static const long idMenuAbout;
         static const long ID_POPUPMENUPROPERTIES;
+        static const long ID_POPUPMENU_PING;
+        static const long ID_POPUPMENU_MACRO;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;

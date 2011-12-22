@@ -19,32 +19,29 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef __RESOURCES_H__
-#define __RESOURCES_H__
+#ifndef __PERL_DATABASE__H_
+#define __PERL_DATABASE__H_
 
-#include "Settings.h"
-#include "RDPDatabase.h"
-#include "PerlDatabase.h"
+#include <wx/string.h>
+#include <map>
+#include <vector>
 
-class Resources
+class PerlDatabase
 {
     public:
-        static Resources* Instance();
+        PerlDatabase();
+        ~PerlDatabase();
 
-        wxString getVersion() const;
-        Settings* getSettings() const;
-        RDPDatabase* getConDatabase() const;
-        PerlDatabase* getPerlDatabase() const;
+        std::vector< wxString > getScripts();
+        const wxString getScriptContent( wxString script );
+        void deleteScript( wxString name );
+        bool addScript( wxString name );
+        void saveScript( wxString name, wxString content );
 
     private:
-        static Resources* instance;
-        Resources();
-        Resources( Resources const& ) {};
-
-        wxString version;
-        Settings *settings;
-        RDPDatabase *conDatabase;
-        PerlDatabase *perlDatabase;
+        void loadDatabase();
+        bool isDatabaseLoaded() const;
+        std::map< wxString, wxString > scripts;
 };
 
 #endif

@@ -146,6 +146,16 @@ class RDPDatabase
             return left->getDomainUsernameString().Lower() > right->getDomainUsernameString().Lower();
         }
 
+        static bool useConnectionCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return ConnectionType::getConnectionTypeName( left->getConnectionType() ).Lower() < ConnectionType::getConnectionTypeName( right->getConnectionType() ).Lower();
+        }
+
+        static bool useConnectionCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return ConnectionType::getConnectionTypeName( left->getConnectionType() ).Lower() > ConnectionType::getConnectionTypeName( right->getConnectionType() ).Lower();
+        }
+
         static bool useConsoleCompareAsc( RDPConnection* left, RDPConnection* right )
         {
             return left->getConsole().Lower() < right->getConsole().Lower();

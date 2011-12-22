@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxDialog" name="aboutDialog">
 		<size>400,306</size>
+		<extra_code>StaticText1-&gt;SetLabel( Resources::Instance()-&gt;getVersion() );</extra_code>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<orient>wxVERTICAL</orient>
@@ -29,7 +30,7 @@
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-										<label>quickRDP 1.0</label>
+										<label>QuickRDP x.x</label>
 										<font>
 											<size>16</size>
 											<style>normal</style>

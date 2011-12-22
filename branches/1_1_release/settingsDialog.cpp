@@ -23,6 +23,7 @@
 #include "Resources.h"
 
 //(*InternalHeaders(settingsDialog)
+#include <wx/settings.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
@@ -62,23 +63,23 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("PuTTY location"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	BoxSizer3->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(200,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
-	TextCtrl1->Disable();
-	BoxSizer3->Add(TextCtrl1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(167,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	TextCtrl1->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
+	BoxSizer3->Add(TextCtrl1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button1 = new wxButton(Panel1, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer3->Add(Button1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Plink location"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Perl location"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	BoxSizer4->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl2 = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(200,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	TextCtrl2->Disable();
-	BoxSizer4->Add(TextCtrl2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	TextCtrl2 = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(179,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	TextCtrl2->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
+	BoxSizer4->Add(TextCtrl2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button2 = new wxButton(Panel1, ID_BUTTON2, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	BoxSizer4->Add(Button2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer4, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-	BoxSizer5->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button3 = new wxButton(Panel1, ID_BUTTON3, _("Ok"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer5->Add(Button3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button4 = new wxButton(Panel1, ID_BUTTON4, _("Cancel"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON4"));
@@ -90,15 +91,17 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer1->Add(Panel1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	FileDialog1 = new wxFileDialog(this, _("Locate PuTTY"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
+	FileDialog2 = new wxFileDialog(this, _("Locate Perl"), wxEmptyString, wxEmptyString, _("Perl (perl.exe)|perl.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnPuttyBrowseClick);
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnPerlBrowseClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonSave);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&settingsDialog::OnInit);
 	//*)
 	TextCtrl1->SetValue( Resources::Instance()->getSettings()->getPuttyExec() );
-	TextCtrl2->SetValue( Resources::Instance()->getSettings()->getPlinkExec() );
+	TextCtrl2->SetValue( Resources::Instance()->getSettings()->getPerlExec() );
 }
 
 settingsDialog::~settingsDialog()
@@ -122,7 +125,7 @@ void settingsDialog::OnInit(wxInitDialogEvent& event)
 void settingsDialog::OnButtonSave(wxCommandEvent& event)
 {
     Resources::Instance()->getSettings()->setPuttyExec( TextCtrl1->GetValue() );
-    Resources::Instance()->getSettings()->setPlinkExec( TextCtrl2->GetValue() );
+    Resources::Instance()->getSettings()->setPerlExec( TextCtrl2->GetValue() );
     Resources::Instance()->getSettings()->saveSettings();
     this->EndModal( 0 );
 }
@@ -130,4 +133,11 @@ void settingsDialog::OnButtonSave(wxCommandEvent& event)
 void settingsDialog::OnButtonCancel(wxCommandEvent& event)
 {
     this->EndModal( 1 );
+}
+
+void settingsDialog::OnPerlBrowseClick(wxCommandEvent& event)
+{
+    if ( FileDialog2->ShowModal() == wxID_OK ) {
+        TextCtrl2->SetValue( FileDialog2->GetPath() );
+    }
 }

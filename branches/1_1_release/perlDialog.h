@@ -19,63 +19,65 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef SETTINGSDIALOG_H
-#define SETTINGSDIALOG_H
+#ifndef PERLDIALOG_H
+#define PERLDIALOG_H
 
-//(*Headers(settingsDialog)
+//(*Headers(perlDialog)
+#include <wx/listctrl.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/panel.h>
-#include <wx/filedlg.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
 
-class settingsDialog: public wxDialog
+class perlDialog: public wxDialog
 {
 	public:
 
-		settingsDialog(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
-		virtual ~settingsDialog();
+		perlDialog(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+		virtual ~perlDialog();
 
-		//(*Declarations(settingsDialog)
-		wxButton* Button4;
+		//(*Declarations(perlDialog)
+		wxListCtrl* ListCtrl1;
 		wxButton* Button1;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
-		wxFileDialog* FileDialog1;
-		wxStaticText* StaticText3;
 		wxButton* Button2;
 		wxButton* Button3;
 		wxTextCtrl* TextCtrl2;
-		wxFileDialog* FileDialog2;
 		wxTextCtrl* TextCtrl1;
 		//*)
 
 	protected:
 
-		//(*Identifiers(settingsDialog)
+		//(*Identifiers(perlDialog)
+		static const long ID_LISTCTRL1;
 		static const long ID_STATICTEXT1;
-		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON1;
-		static const long ID_STATICTEXT3;
 		static const long ID_TEXTCTRL2;
+		static const long ID_BUTTON1;
 		static const long ID_BUTTON2;
 		static const long ID_BUTTON3;
-		static const long ID_BUTTON4;
+		static const long ID_TEXTCTRL1;
 		static const long ID_PANEL1;
 		//*)
 
 	private:
 
-		//(*Handlers(settingsDialog)
-		void OnPuttyBrowseClick(wxCommandEvent& event);
-		void OnInit(wxInitDialogEvent& event);
+		//(*Handlers(perlDialog)
+		void OnTextNameInput(wxCommandEvent& event);
+		void OnScriptNameSelect(wxCommandEvent& event);
+		void OnScriptListSelected(wxListEvent& event);
+		void OnScriptListActivated(wxListEvent& event);
+		void OnListScriptDeselected(wxListEvent& event);
 		void OnButtonSave(wxCommandEvent& event);
-		void OnButtonCancel(wxCommandEvent& event);
-		void OnPerlBrowseClick(wxCommandEvent& event);
+		void OnButtonDelete(wxCommandEvent& event);
+		void OnNewScriptButton(wxCommandEvent& event);
+		void OnScriptTextInput(wxCommandEvent& event);
 		//*)
+
+		void reloadScriptList();
 
 		DECLARE_EVENT_TABLE()
 };

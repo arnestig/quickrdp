@@ -50,7 +50,14 @@ Settings::Settings()
         databasePath = getSettingsPath() + wxT("connections/");
     #endif
 
-    /** make sure we have the folders created for our settings and connection database **/
+    // perl database path
+    #if defined(__WXMSW__)
+        perlDatabasePath = getSettingsPath() + wxT("perl\\");
+    #elif defined(__UNIX__)
+        perlDatabasePath = getSettingsPath() + wxT("perl/");
+    #endif
+
+    /** make sure we have the folders created for our settings, connection database and perl database **/
     if ( wxDirExists( getSettingsPath() ) == false ) {
         #if defined(__WXMSW__)
             wxMkDir( getSettingsPath().fn_str() );
@@ -64,6 +71,14 @@ Settings::Settings()
             wxMkDir( getDatabasePath().fn_str() );
         #elif defined(__UNIX__)
             wxMkDir( getDatabasePath().fn_str(), 0700 );
+        #endif
+    }
+
+    if ( wxDirExists( getPerlDatabasePath() ) == false ) {
+        #if defined(__WXMSW__)
+            wxMkDir( getPerlDatabasePath().fn_str() );
+        #elif defined(__UNIX__)
+            wxMkDir( getPerlDatabasePath().fn_str(), 0700 );
         #endif
     }
 
@@ -82,7 +97,7 @@ void Settings::saveSettings()
     ofile.open( wxString( Resources::Instance()->getSettings()->getSettingsPath() + wxT("settings") ).mb_str(), std::ios::out|std::ios::binary );
 
     FileParser::writeLineToFile( ofile, wxString(wxT("puttyexec:s:")) + getPuttyExec() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("plinkexec:s:")) + getPlinkExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("perlexec:s:")) + getPerlExec() );
 
     ofile.close();
 }
@@ -117,7 +132,7 @@ void Settings::loadSettings()
 		}
 		delete[] buffer;
         setPuttyExec( FileParser::getStringFromFile( wxT("puttyexec:s:"), allLines ) );
-        setPlinkExec( FileParser::getStringFromFile( wxT("plinkexec:s:"), allLines ) );
+        setPerlExec( FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
 	}
 	rfile.close();
     }
@@ -138,9 +153,9 @@ wxString Settings::getPuttyExec() const
     return puttyExec;
 }
 
-wxString Settings::getPlinkExec() const
+wxString Settings::getPerlExec() const
 {
-    return plinkExec;
+    return perlExec;
 }
 
 void Settings::setPuttyExec( wxString puttyExec )
@@ -148,9 +163,9 @@ void Settings::setPuttyExec( wxString puttyExec )
     this->puttyExec = puttyExec;
 }
 
-void Settings::setPlinkExec( wxString plinkExec )
+void Settings::setPerlExec( wxString plinkExec )
 {
-    this->plinkExec = plinkExec;
+    this->perlExec = perlExec;
 }
 
 wxString Settings::getSettingsPath() const
@@ -161,4 +176,9 @@ wxString Settings::getSettingsPath() const
 wxString Settings::getDatabasePath() const
 {
     return databasePath;
+}
+
+wxString Settings::getPerlDatabasePath() const
+{
+    return perlDatabasePath;
 }

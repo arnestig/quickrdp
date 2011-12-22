@@ -262,7 +262,7 @@ void RDPConnection::connect()
                 }
                 execString << getHostname();
 
-                if ( getPassword().IsEmpty() == false ) {
+                if ( getPassword().IsEmpty() == false && getConnectionType() != ConnectionType::TELNET ) {
                     execString << wxT(" -pw ") << getPassword();
                 }
                 wxExecute( execString );
@@ -443,19 +443,26 @@ void RDPDatabase::sortById( int id )
         break;
         case 2:
             if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), useConnectionCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), useConnectionCompareDesc );
+            }
+        break;
+        case 3:
+            if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), useConsoleCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), useConsoleCompareDesc );
             }
         break;
-        case 3:
+        case 4:
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), resolutionCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), resolutionCompareDesc );
             }
         break;
-        case 4:
+        case 5:
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), commentCompareAsc );
             } else {

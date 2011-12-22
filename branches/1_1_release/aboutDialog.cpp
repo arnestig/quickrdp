@@ -1,4 +1,26 @@
+/**
+    Copyright (C) 2010 quickRDP - Remote desktop organizer
+
+    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+
+    This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
+
+    quickRDP is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    quickRDP is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 #include "aboutDialog.h"
+
 #include <wx/hyperlink.h>
 //(*InternalHeaders(aboutDialog)
 #include <wx/bitmap.h>
@@ -37,7 +59,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-	
+
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(400,306));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -48,7 +70,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	BoxSizer4->Add(StaticBitmap1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("quickRDP 1.0"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("QuickRDP x.x"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	wxFont StaticText1Font(16,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	StaticText1->SetFont(StaticText1Font);
 	BoxSizer3->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);

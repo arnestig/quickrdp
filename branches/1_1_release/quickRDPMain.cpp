@@ -25,6 +25,8 @@
 #include "aboutDialog.h"
 #include "settingsDialog.h"
 #include "FileParser.h"
+#include "Resources.h"
+#include "perlDialog.h"
 
 #include <wx/msgdlg.h>
 #include <memory>
@@ -72,10 +74,12 @@ const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMenuQuit = wxNewId();
-const long quickRDPFrame::idMenuMacroCommands = wxNewId();
+const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
+const long quickRDPFrame::ID_POPUPMENU_PING = wxNewId();
+const long quickRDPFrame::ID_POPUPMENU_MACRO = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
 const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
 const long quickRDPFrame::ID_MENUFULLSCREEN = wxNewId();
@@ -105,6 +109,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer5;
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
+    wxMenuItem* MenuItem17;
     wxBoxSizer* BoxSizer2;
     wxMenu* Menu1;
     wxBoxSizer* BoxSizer1;
@@ -112,6 +117,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
+    wxMenuItem* MenuItem18;
 
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
@@ -164,9 +170,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
     Menu3 = new wxMenu();
-    MenuItem16 = new wxMenuItem(Menu3, idMenuMacroCommands, _("Macro Commands"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem16 = new wxMenuItem(Menu3, idMainMenuPerlScripts, _("Perl scripts"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem16);
-    MenuItem16->Enable(false);
     Menu3->AppendSeparator();
     MenuItem15 = new wxMenuItem(Menu3, idMenuPreferences, _("Preferences"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem15);
@@ -179,6 +184,10 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
     PopupMenu1.AppendSeparator();
+    MenuItem18 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_PING, _("Ping"), _("Starts a continuous ping session towards the target"), wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem18);
+    MenuItem17 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_MACRO, _("Macro"), wxEmptyString, wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem17);
     MenuItem4 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
     PopupMenu1.Append(MenuItem4);
     MenuItem5 = new wxMenu();
@@ -215,9 +224,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
+    Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
+    Connect(ID_POPUPMENU_PING,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuPing);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
     Connect(ID_MENUDEFAULT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemDefaultClick);
     Connect(ID_MENUFULLSCREEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemFullscreenClick);
@@ -229,6 +240,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
+
+    SetTitle( Resources::Instance()->getVersion() );
 
     last_column_click = 0;
 
@@ -249,6 +262,7 @@ void quickRDPFrame::OnQuit(wxCommandEvent& event)
 void quickRDPFrame::OnAbout(wxCommandEvent& event)
 {
     aboutDialog *about = new aboutDialog( this, 0 );
+    about->StaticText1->SetLabel( Resources::Instance()->getVersion() );
     about->ShowModal();
     delete about;
 }
@@ -721,4 +735,30 @@ void quickRDPFrame::OnPreferences(wxCommandEvent& event)
     settingsDialog *settings = new settingsDialog( this, 0 );
     settings->ShowModal();
     delete settings;
+}
+
+void quickRDPFrame::OnPopupMenuPing(wxCommandEvent& event)
+{
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+            #if defined(__WXMSW__)
+                wxExecute( wxT("ping -t ") + rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getHostname() );
+            #elif defined(__UNIX__)
+                wxExecute( wxT("ping ") + rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getHostname() );
+            #endif
+        }
+    }
+}
+
+void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
+{
+    perlDialog *perldlg= new perlDialog( this, 0 );
+    perldlg->ShowModal();
+    delete perldlg;
+
 }

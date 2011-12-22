@@ -33,20 +33,22 @@ class Settings
         void saveSettings();
         wxString getRDPExec( bool useAdminString = false ) const;
         wxString getPuttyExec() const;
-        wxString getPlinkExec() const;
-        void setPlinkExec( wxString plinkExec );
+        wxString getPerlExec() const;
+        void setPerlExec( wxString plinkExec );
         void setPuttyExec( wxString puttyExec );
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
+        wxString getPerlDatabasePath() const;
 
     private:
         void loadSettings();
 
         wxString RDPExec;
         wxString puttyExec;
-        wxString plinkExec;
+        wxString perlExec;
         wxString settingsPath;
         wxString databasePath;
+        wxString perlDatabasePath;
 };
 
 #endif

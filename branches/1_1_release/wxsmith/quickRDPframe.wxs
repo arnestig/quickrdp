@@ -126,9 +126,9 @@
 			</object>
 			<object class="wxMenu" variable="Menu3" member="yes">
 				<label>&amp;Settings</label>
-				<object class="wxMenuItem" name="idMenuMacroCommands" variable="MenuItem16" member="yes">
-					<label>Macro Commands</label>
-					<enabled>0</enabled>
+				<object class="wxMenuItem" name="idMainMenuPerlScripts" variable="MenuItem16" member="yes">
+					<label>Perl scripts</label>
+					<handler function="OnMenuPerlScripts" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="idMenuPreferences" variable="MenuItem15" member="yes">
@@ -152,6 +152,14 @@
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />
 			</object>
 			<object class="separator" />
+			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
+				<label>Ping</label>
+				<help>Starts a continuous ping session towards the target</help>
+				<handler function="OnPopupMenuPing" entry="EVT_MENU" />
+			</object>
+			<object class="wxMenuItem" name="ID_POPUPMENU_MACRO" variable="MenuItem17" member="no">
+				<label>Macro</label>
+			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">
 				<label>Attach to console</label>
 				<handler function="OnMenuItem4Selected" entry="EVT_MENU" />

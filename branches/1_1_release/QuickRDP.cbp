@@ -61,6 +61,8 @@
 			<Add library="libodbc32.a" />
 		</Linker>
 		<Unit filename="FileParser.h" />
+		<Unit filename="PerlDatabase.cpp" />
+		<Unit filename="PerlDatabase.h" />
 		<Unit filename="RDPDatabase.cpp" />
 		<Unit filename="RDPDatabase.h" />
 		<Unit filename="RDPFrame.cpp" />
@@ -73,6 +75,8 @@
 		<Unit filename="aboutDialog.h" />
 		<Unit filename="generalTabPanel.cpp" />
 		<Unit filename="generalTabPanel.h" />
+		<Unit filename="perlDialog.cpp" />
+		<Unit filename="perlDialog.h" />
 		<Unit filename="quickRDPApp.cpp" />
 		<Unit filename="quickRDPApp.h" />
 		<Unit filename="quickRDPMain.cpp" />
@@ -99,6 +103,7 @@
 					<wxDialog wxs="wxsmith/RDPFrame.wxs" src="RDPFrame.cpp" hdr="RDPFrame.h" name="RDPFrame" language="CPP" />
 					<wxFrame wxs="wxsmith/quickRDPFrame.wxs" src="quickRDPMain.cpp" hdr="quickRDPMain.h" name="quickRDPFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="settingsDialog.cpp" hdr="settingsDialog.h" name="settingsDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/perlDialog.wxs" src="perlDialog.cpp" hdr="perlDialog.h" name="perlDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>
