@@ -54,7 +54,6 @@ std::vector< wxString > PerlDatabase::getScripts()
 
     std::vector< wxString > scriptNames;
     for ( std::map< wxString, wxString >::const_iterator it = scripts.begin(); it != scripts.end(); ++it ) {
-        wxMessageBox( (*it).first );
         scriptNames.push_back( (*it).first );
     }
     return scriptNames;
@@ -62,7 +61,12 @@ std::vector< wxString > PerlDatabase::getScripts()
 
 const wxString PerlDatabase::getScriptContent( wxString script )
 {
-    return scripts[ script ];
+    for ( std::map< wxString, wxString >::const_iterator it = scripts.begin(); it != scripts.end(); ++it ) {
+        if ( (*it).first == script ) {
+            return (*it).second;
+        }
+    }
+    return wxT("");
 }
 
 void PerlDatabase::deleteScript( wxString name )
