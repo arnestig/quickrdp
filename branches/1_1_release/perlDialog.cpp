@@ -161,7 +161,7 @@ void perlDialog::OnButtonDelete(wxCommandEvent& event)
 void perlDialog::OnNewScriptButton(wxCommandEvent& event)
 {
     /** set default text to our perl script. **/
-    TextCtrl1->SetValue(wxT("#!/usr/bin/perl -w\r\n\r\n# Arguments sent from QuickRDP to the perl interpreter:\r\n# $ARGV[$0]     -   Hostname / IP-address\r\n# $ARGV[$1]     -   Connection (RDP,SSH,TELNET)\r\n# $ARGV[$2]     -   Username (if any, otherwise \"NO_USER\")\r\n# $ARGV[$3]     -   Password (if any, otherwise \"NO_PASS\")\r\n\r\n"));
+    TextCtrl1->SetValue(wxT("#!/usr/bin/perl -w\r\n\r\n# Arguments sent from QuickRDP to the perl interpreter:\r\n# $ARGV[0]     -   Hostname / IP-address\r\n# $ARGV[1]     -   Connection (RDP,SSH,TELNET)\r\n# $ARGV[2]     -   Username (if any, otherwise \"NO_USER\")\r\n# $ARGV[3]     -   Password (if any, otherwise \"NO_PASS\")\r\n\r\n"));
     TextCtrl2->Clear();
 }
 

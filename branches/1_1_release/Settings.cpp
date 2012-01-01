@@ -163,7 +163,7 @@ void Settings::setPuttyExec( wxString puttyExec )
     this->puttyExec = puttyExec;
 }
 
-void Settings::setPerlExec( wxString plinkExec )
+void Settings::setPerlExec( wxString perlExec )
 {
     this->perlExec = perlExec;
 }

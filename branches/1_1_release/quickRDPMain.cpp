@@ -79,7 +79,6 @@ const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_PING = wxNewId();
-const long quickRDPFrame::ID_POPUPMENU_MACRO = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
 const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
 const long quickRDPFrame::ID_MENUFULLSCREEN = wxNewId();
@@ -109,7 +108,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer5;
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
-    wxMenuItem* MenuItem17;
     wxBoxSizer* BoxSizer2;
     wxMenu* Menu1;
     wxBoxSizer* BoxSizer1;
@@ -186,8 +184,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     PopupMenu1.AppendSeparator();
     MenuItem18 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_PING, _("Ping"), _("Starts a continuous ping session towards the target"), wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem18);
-    MenuItem17 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_MACRO, _("Macro"), wxEmptyString, wxITEM_NORMAL);
-    PopupMenu1.Append(MenuItem17);
     MenuItem4 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
     PopupMenu1.Append(MenuItem4);
     MenuItem5 = new wxMenu();
@@ -240,7 +236,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
-
+    perlMenu = new wxMenu();
+    PopupMenu1.AppendSubMenu( perlMenu, wxT("Perl") );
+   
     SetTitle( Resources::Instance()->getVersion() );
 
     last_column_click = 0;
@@ -494,6 +492,23 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
             if ( resolutionString == wxT("1280 x 960") ) { MenuItem13->Check( true ); }
             if ( resolutionString == wxT("1400 x 1050") ) { MenuItem14->Check( true ); }
         }
+    }
+
+    /** prepare our perl part of the popup menu before we display it. **/
+
+    // erase all items in the submenu.
+    wxMenuItemList perlMenuList = perlMenu->GetMenuItems();
+    for ( wxMenuItemList::iterator it = perlMenuList.begin(); it != perlMenuList.end(); ++it ) {
+        perlMenu->Destroy( (*it)->GetId() );
+    }
+
+    // add all perl scripts to the menu from the perldatabase
+    std::vector< wxString > perlDb = Resources::Instance()->getPerlDatabase()->getScripts();
+    for ( size_t pId = 0; pId < perlDb.size(); ++pId ) {
+        const long newPerlId = wxNewId();
+        Connect( newPerlId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnPerlScriptSelected );
+        wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, newPerlId, perlDb[ pId ], wxEmptyString, wxITEM_NORMAL );
+        perlMenu->Append( newPerlMenuItem );
     }
 
     PopupMenu(&PopupMenu1 );
@@ -761,4 +776,23 @@ void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
     perldlg->ShowModal();
     delete perldlg;
 
+}
+
+void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
+{
+    wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+            RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+            wxString username = myCon->getUsername().empty() ? wxT("NO_USER") : myCon->getUsername();
+            wxString password = myCon->getPassword().empty() ? wxT("NO_PASS") : myCon->getPassword();
+            wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
+            wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + myCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( myCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
+        }
+    }
 }

@@ -72,6 +72,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuPerlScripts(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
+        void OnPerlScriptSelected(wxCommandEvent& event);
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -87,7 +88,6 @@ class quickRDPFrame: public wxFrame
         static const long idMenuAbout;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_PING;
-        static const long ID_POPUPMENU_MACRO;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;
@@ -126,6 +126,8 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         //*)
+
+        wxMenu *perlMenu;
 
         int last_column_click;
 

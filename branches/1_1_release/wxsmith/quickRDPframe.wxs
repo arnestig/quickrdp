@@ -157,9 +157,6 @@
 				<help>Starts a continuous ping session towards the target</help>
 				<handler function="OnPopupMenuPing" entry="EVT_MENU" />
 			</object>
-			<object class="wxMenuItem" name="ID_POPUPMENU_MACRO" variable="MenuItem17" member="no">
-				<label>Macro</label>
-			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">
 				<label>Attach to console</label>
 				<handler function="OnMenuItem4Selected" entry="EVT_MENU" />

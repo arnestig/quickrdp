@@ -36,7 +36,6 @@ bool quickRDPApp::OnInit()
     if ( wxsOK )
     {
     	quickRDPFrame* Frame = new quickRDPFrame(0);
-    	Frame->SetIcon(wxICON(aaaaa_logo));
     	Frame->Show();
     	SetTopWindow(Frame);
     }
