@@ -15,7 +15,6 @@
 									<object class="wxBoxSizer" variable="BoxSizer5" member="no">
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" variable="BitmapButton1" member="yes">
-												<bitmap>data/document-new.png</bitmap>
 												<size>64,64</size>
 												<tooltip>New connection</tooltip>
 												<handler function="OnNewButtonClick" entry="EVT_BUTTON" />
@@ -25,8 +24,6 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="BitmapButton4" member="yes">
-												<bitmap>data/network-workgroup.png</bitmap>
-												<disabled>data/network-workgroup-disabled.png</disabled>
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>Duplicate connection</tooltip>
@@ -37,8 +34,6 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" variable="BitmapButton2" member="yes">
-												<bitmap>data/edit-delete.png</bitmap>
-												<disabled>data/edit-delete-disabled.png</disabled>
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>Delete connection</tooltip>
@@ -49,8 +44,6 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" variable="BitmapButton3" member="yes">
-												<bitmap>data/preferences-other.png</bitmap>
-												<disabled>data/preferences-other-disabled.png</disabled>
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>View properties</tooltip>
