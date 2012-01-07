@@ -36,6 +36,7 @@ class Settings
         wxString getPerlExec() const;
         void setPerlExec( wxString plinkExec );
         void setPuttyExec( wxString puttyExec );
+        wxString getDataPath() const;
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
         wxString getPerlDatabasePath() const;

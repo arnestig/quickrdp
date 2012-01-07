@@ -1,8 +1,8 @@
 ifndef CFG
-CFG=debug
+CFG=release
 endif
 
-PROGNAME=QuickRDP
+PROGNAME=quickrdp
 
 WARNING= -Wno-long-long -Wall -Wextra -pedantic
 
@@ -24,8 +24,8 @@ endif
 CFLAGS := $(shell wx-config --cxxflags)
 LIBS := $(shell wx-config --libs)
 
-INCLUDE_DIR=-I/usr/include/wx 
-DEFAULT_DEFINE=-DDATA_PATH=\"$(prefix)/usr/share/$(PROGNAME)/\" 
+INCLUDE_DIR=
+DEFAULT_DEFINE=-DDATA_PATH=\"$(DESTDIR)/usr/share/$(PROGNAME)/\" 
 
 
 OBJFILES := $(patsubst %.cpp,obj/%.o,$(wildcard *.cpp))
@@ -52,14 +52,14 @@ rebuild: clean all
 
 install:
 	echo $(DEFAULT_DEFINE)
-	test -d $(prefix)/usr/share/$(PROGNAME)/data || mkdir -p $(prefix)/usr/share/$(PROGNAME)/data
-	test -d $(prefix)/usr/bin || mkdir -p $(prefix)/usr/bin
-	install -m 0755 $(PROGNAME) $(prefix)/usr/bin
-	install -m 0644 data/*.* $(prefix)/usr/share/$(PROGNAME)/data
+	test -d $(DESTDIR)/usr/share/$(PROGNAME)/data || mkdir -p $(DESTDIR)/usr/share/$(PROGNAME)/data
+	test -d $(DESTDIR)/usr/bin || mkdir -p $(DESTDIR)/usr/bin
+	install -m 0755 $(PROGNAME) $(DESTDIR)/usr/bin
+	install -m 0644 data/*.* $(DESTDIR)/usr/share/$(PROGNAME)/data
 
 uninstall:
-	rm -rf $(prefix)/usr/share/$(PROGNAME)
-	rm -f $(prefix)/usr/bin/$(PROGNAME)
+	rm -rf $(DESTDIR)/usr/share/$(PROGNAME)
+	rm -f $(DESTDIR)/usr/bin/$(PROGNAME)
 
 .PHONY: install uninstall
 

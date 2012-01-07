@@ -25,6 +25,10 @@
 #include <wx/stdpaths.h>
 #include <fstream>
 
+#ifndef DATA_PATH
+#define DATA_PATH ""
+#endif
+
 Settings::Settings()
 {
     /** load all settings for quickRDP **/
@@ -89,6 +93,12 @@ Settings::Settings()
 Settings::~Settings()
 {
 
+}
+
+wxString Settings::getDataPath() const
+{
+	wxString retString( DATA_PATH, wxConvUTF8 );
+	return retString + wxT("data/");
 }
 
 void Settings::saveSettings()
