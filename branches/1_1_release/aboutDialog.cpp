@@ -20,13 +20,12 @@
 **/
 
 #include "aboutDialog.h"
+#include "Resources.h"
 
 #include <wx/hyperlink.h>
 //(*InternalHeaders(aboutDialog)
-#include <wx/bitmap.h>
 #include <wx/font.h>
 #include <wx/intl.h>
-#include <wx/image.h>
 #include <wx/string.h>
 //*)
 
@@ -66,7 +65,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxBitmap(wxImage(_T("data/preferences-desktop-remote-desktop.png")).Rescale(wxSize(64,64).GetWidth(),wxSize(64,64).GetHeight())), wxDefaultPosition, wxSize(64,64), 0, _T("ID_STATICBITMAP1"));
+	StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxNullBitmap, wxDefaultPosition, wxSize(64,64), 0, _T("ID_STATICBITMAP1"));
 	BoxSizer4->Add(StaticBitmap1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -107,6 +106,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
 	//*)
+	StaticBitmap1->SetBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("preferences-desktop-remote-desktop.png") ) );
 }
 
 aboutDialog::~aboutDialog()

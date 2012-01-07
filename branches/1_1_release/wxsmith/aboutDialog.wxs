@@ -14,7 +14,6 @@
 							<object class="wxBoxSizer" variable="BoxSizer4" member="no">
 								<object class="sizeritem">
 									<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="StaticBitmap1" member="yes">
-										<bitmap>data/preferences-desktop-remote-desktop.png</bitmap>
 										<size>64,64</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
