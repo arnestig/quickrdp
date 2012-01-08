@@ -106,8 +106,12 @@ void Settings::saveSettings()
     std::ofstream ofile;
     ofile.open( wxString( Resources::Instance()->getSettings()->getSettingsPath() + wxT("settings") ).mb_str(), std::ios::out|std::ios::binary );
 
-    FileParser::writeLineToFile( ofile, wxString(wxT("puttyexec:s:")) + getPuttyExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
     FileParser::writeLineToFile( ofile, wxString(wxT("perlexec:s:")) + getPerlExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("telnetargument:s:")) + getTelnetArgument() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("perlargument:s:")) + getPerlArgument() );
 
     ofile.close();
 }
@@ -141,8 +145,12 @@ void Settings::loadSettings()
             allLines.push_back( input );
 		}
 		delete[] buffer;
-        setPuttyExec( FileParser::getStringFromFile( wxT("puttyexec:s:"), allLines ) );
+        setTelnetExec( FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
+        setSSHExec( FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
         setPerlExec( FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
+        setTelnetArgument( FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
+        setSSHArgument( FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
+        setPerlArgument( FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
 	}
 	rfile.close();
     }
@@ -158,9 +166,23 @@ wxString Settings::getRDPExec( bool useAdminString ) const
     return RDPExec;
 }
 
-wxString Settings::getPuttyExec() const
+wxString Settings::getTelnetExec() const
 {
-    return puttyExec;
+    return telnetExec;
+}
+wxString Settings::getTelnetArgument() const
+{
+    return telnetArgument;
+}
+
+wxString Settings::getSSHExec() const
+{
+    return SSHExec;
+}
+
+wxString Settings::getSSHArgument() const
+{
+    return SSHArgument;
 }
 
 wxString Settings::getPerlExec() const
@@ -168,14 +190,39 @@ wxString Settings::getPerlExec() const
     return perlExec;
 }
 
-void Settings::setPuttyExec( wxString puttyExec )
+wxString Settings::getPerlArgument() const
 {
-    this->puttyExec = puttyExec;
+    return perlArgument;
+}
+
+void Settings::setTelnetExec( wxString telnetExec )
+{
+    this->telnetExec = telnetExec;
+}
+
+void Settings::setTelnetArgument( wxString telnetArgument )
+{
+    this->telnetArgument = telnetArgument;
+}
+
+void Settings::setSSHExec( wxString SSHExec )
+{
+    this->SSHExec = SSHExec;
+}
+
+void Settings::setSSHArgument( wxString SSHArgument)
+{
+    this->SSHArgument = SSHArgument;
 }
 
 void Settings::setPerlExec( wxString perlExec )
 {
     this->perlExec = perlExec;
+}
+
+void Settings::setPerlArgument( wxString perlArgument )
+{
+    this->perlArgument = perlArgument;
 }
 
 wxString Settings::getSettingsPath() const

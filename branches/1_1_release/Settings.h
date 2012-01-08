@@ -32,10 +32,18 @@ class Settings
 
         void saveSettings();
         wxString getRDPExec( bool useAdminString = false ) const;
-        wxString getPuttyExec() const;
+        wxString getTelnetExec() const;
+        wxString getTelnetArgument() const;
+        wxString getSSHExec() const;
+        wxString getSSHArgument() const;
         wxString getPerlExec() const;
-        void setPerlExec( wxString plinkExec );
-        void setPuttyExec( wxString puttyExec );
+        wxString getPerlArgument() const;
+        void setTelnetExec( wxString telnetExec );
+        void setTelnetArgument( wxString telnetArgument );
+        void setSSHExec( wxString SSHExec );
+        void setSSHArgument( wxString SSHArgujment );
+        void setPerlExec( wxString perlExec );
+        void setPerlArgument( wxString perlArgument );
         wxString getDataPath() const;
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
@@ -45,8 +53,12 @@ class Settings
         void loadSettings();
 
         wxString RDPExec;
-        wxString puttyExec;
+        wxString telnetExec;
+        wxString SSHExec;
         wxString perlExec;
+        wxString telnetArgument;
+        wxString SSHArgument;
+        wxString perlArgument;
         wxString settingsPath;
         wxString databasePath;
         wxString perlDatabasePath;

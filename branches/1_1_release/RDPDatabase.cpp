@@ -249,27 +249,26 @@ void RDPConnection::connect()
     Settings *settings = Resources::Instance()->getSettings();
     if ( getFilename().IsEmpty() == false ) {
         bool useAdminString = ( getConsole() == wxT("1") );
-        /** connect to either RDP, telnet or SSH here.. telnet and SSH both use Putty... **/
-        if ( getConnectionType() == ConnectionType::RDP ) {
-            wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
-        } else {
-            /** make sure we have putty in our settings so we can connect here.. **/
-            if ( Resources::Instance()->getSettings()->getPuttyExec().IsEmpty() == false ) {
-                wxString execString( wxString( settings->getPuttyExec() + wxT(" -") + ConnectionType::getConnectionTypeName( getConnectionType() ) ).Lower() );
-                execString << wxT( " " );
-                if ( getUsername().IsEmpty() == false ) {
-                    execString << getUsername() << wxT("@");
+        /** connect to either RDP, telnet or SSH here.. also make sure we have an executable for the choosen connection **/
+        wxString connectionTypeName = ConnectionType::getConnectionTypeName( getConnectionType() );
+        switch ( getConnectionType() ) {
+            case ConnectionType::RDP:
+                wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
+            break;
+            case ConnectionType::SSH:
+                if ( settings->getSSHExec().empty() == false ) {
+                    wxExecute( settings->getSSHExec() + wxT(" ") + FileParser::getRealArgumentString( settings->getSSHArgument(), this ) );
+                } else {
+                    wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
                 }
-                execString << getHostname();
-
-                if ( getPassword().IsEmpty() == false && getConnectionType() != ConnectionType::TELNET ) {
-                    execString << wxT(" -pw ") << getPassword();
+            break;
+            case ConnectionType::TELNET:
+                if ( settings->getTelnetExec().empty() == false ) {
+                    wxExecute( settings->getTelnetExec() + wxT(" ") + FileParser::getRealArgumentString( settings->getTelnetArgument(), this ) );
+                } else {
+                    wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
                 }
-                wxExecute( execString );
-            } else {
-                wxMessageBox( wxT("You have not defined a location of PuTTY executable. Please do so under Settings -> Preferences."), wxT("Unable to locate PuTTY"), wxICON_ERROR );
-            }
-
+            break;
         }
     }
 }
