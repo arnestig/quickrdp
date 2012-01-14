@@ -116,6 +116,16 @@
 										<border>5</border>
 									</object>
 									<object class="sizeritem">
+										<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
+											<label> ? </label>
+											<fg>#FF0000</fg>
+											<tooltip>*** SECURITY RISK ***&#x0A;Please note that for now passwords are stored in plain-text in your user&apos;s home directory. &#x0A;It&apos;s a security risk since those files are commonly readable by other users on your system! &#x0A;Use wisely and on your own risk.</tooltip>
+											<style>wxSIMPLE_BORDER</style>
+										</object>
+										<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+									</object>
+									<object class="sizeritem">
 										<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl3" member="yes">
 											<size>150,-1</size>
 											<style>wxTE_PASSWORD|wxDOUBLE_BORDER</style>
