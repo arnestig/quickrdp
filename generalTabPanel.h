@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -41,6 +41,7 @@ class generalTabPanel: public wxPanel
 		virtual ~generalTabPanel();
 
 		//(*Declarations(generalTabPanel)
+		wxStaticText* StaticText9;
 		wxTextCtrl* TextCtrl4;
 		wxStaticText* StaticText2;
 		wxStaticText* StaticText6;
@@ -71,6 +72,7 @@ class generalTabPanel: public wxPanel
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL7;
 		static const long ID_STATICTEXT3;
+		static const long ID_STATICTEXT9;
 		static const long ID_TEXTCTRL3;
 		static const long ID_STATICTEXT7;
 		static const long ID_TEXTCTRL6;
