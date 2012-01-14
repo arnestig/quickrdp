@@ -14,7 +14,7 @@ InstallDir "$PROGRAMFILES\${APPNAME}"
     LicenseData "license.rtf"
     Name "${APPNAME}"
     Icon "../../data/${APPNAME}.ico"
-    outFile "${APPNAME}-installer.exe"
+    outFile "${APPNAME}-${VERSIONMAJOR}.${VERSIONMINOR}-setup.exe"
 
 !include LogicLib.nsh
 
@@ -38,16 +38,16 @@ setShellVarContext all
 functionEnd
 
 section "install" # Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
+setOutPath "$INSTDIR\data" # Files added here should be removed by the uninstaller (see section "uninstall")
+file "..\..\data\*.*" # Add any other files for the install directory (license files, app data, etc) here
 setOutPath $INSTDIR # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\QuickRDP.exe"
 file "..\..\mingwm10.dll"
-setOutPath "$INSTDIR\data" # Files added here should be removed by the uninstaller (see section "uninstall")
-file "..\..\data\*.*" # Add any other files for the install directory (license files, app data, etc) here
 
     writeUninstaller "$INSTDIR\uninstall.exe"
 
     createDirectory "$SMPROGRAMS\${APPNAME}"
-    createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\QuickRDP.exe" "" "$INSTDIR\QuickRDP.ico"
+    createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\QuickRDP.exe" "" "$INSTDIR\data\QuickRDP.ico"
 
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "DisplayName" "${APPNAME}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
