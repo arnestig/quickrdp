@@ -117,6 +117,7 @@
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl3" member="yes">
 														<size>217,21</size>
+														<fg>wxSYS_COLOUR_GRAYTEXT</fg>
 														<style>wxTE_READONLY|wxDOUBLE_BORDER</style>
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

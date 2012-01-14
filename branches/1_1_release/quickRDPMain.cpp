@@ -793,11 +793,15 @@ void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
             if ( itemIndex == -1 ) {
                 break;
             }
-            RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-            wxString username = myCon->getUsername().empty() ? wxT("NO_USER") : myCon->getUsername();
-            wxString password = myCon->getPassword().empty() ? wxT("NO_PASS") : myCon->getPassword();
-            wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
-            wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + myCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( myCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
+            if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
+                RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+                wxString username = myCon->getUsername().empty() ? wxT("NO_USER") : myCon->getUsername();
+                wxString password = myCon->getPassword().empty() ? wxT("NO_PASS") : myCon->getPassword();
+                wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
+                wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + myCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( myCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
+            } else {
+                wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
+            }
         }
     }
 }
