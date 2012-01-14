@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -24,6 +24,10 @@
 #include "FileParser.h"
 #include <wx/stdpaths.h>
 #include <fstream>
+
+#ifndef DATA_PATH
+#define DATA_PATH ""
+#endif
 
 Settings::Settings()
 {
@@ -50,7 +54,14 @@ Settings::Settings()
         databasePath = getSettingsPath() + wxT("connections/");
     #endif
 
-    /** make sure we have the folders created for our settings and connection database **/
+    // perl database path
+    #if defined(__WXMSW__)
+        perlDatabasePath = getSettingsPath() + wxT("perl\\");
+    #elif defined(__UNIX__)
+        perlDatabasePath = getSettingsPath() + wxT("perl/");
+    #endif
+
+    /** make sure we have the folders created for our settings, connection database and perl database **/
     if ( wxDirExists( getSettingsPath() ) == false ) {
         #if defined(__WXMSW__)
             wxMkDir( getSettingsPath().fn_str() );
@@ -67,6 +78,14 @@ Settings::Settings()
         #endif
     }
 
+    if ( wxDirExists( getPerlDatabasePath() ) == false ) {
+        #if defined(__WXMSW__)
+            wxMkDir( getPerlDatabasePath().fn_str() );
+        #elif defined(__UNIX__)
+            wxMkDir( getPerlDatabasePath().fn_str(), 0700 );
+        #endif
+    }
+
     /** parse our settings file **/
     loadSettings();
 }
@@ -76,13 +95,23 @@ Settings::~Settings()
 
 }
 
+wxString Settings::getDataPath() const
+{
+	wxString retString( DATA_PATH, wxConvUTF8 );
+	return retString + wxT("data/");
+}
+
 void Settings::saveSettings()
 {
     std::ofstream ofile;
     ofile.open( wxString( Resources::Instance()->getSettings()->getSettingsPath() + wxT("settings") ).mb_str(), std::ios::out|std::ios::binary );
 
-    FileParser::writeLineToFile( ofile, wxString(wxT("puttyexec:s:")) + getPuttyExec() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("plinkexec:s:")) + getPlinkExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("perlexec:s:")) + getPerlExec() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("telnetargument:s:")) + getTelnetArgument() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("perlargument:s:")) + getPerlArgument() );
 
     ofile.close();
 }
@@ -116,8 +145,12 @@ void Settings::loadSettings()
             allLines.push_back( input );
 		}
 		delete[] buffer;
-        setPuttyExec( FileParser::getStringFromFile( wxT("puttyexec:s:"), allLines ) );
-        setPlinkExec( FileParser::getStringFromFile( wxT("plinkexec:s:"), allLines ) );
+        setTelnetExec( FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
+        setSSHExec( FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
+        setPerlExec( FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
+        setTelnetArgument( FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
+        setSSHArgument( FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
+        setPerlArgument( FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
 	}
 	rfile.close();
     }
@@ -133,24 +166,63 @@ wxString Settings::getRDPExec( bool useAdminString ) const
     return RDPExec;
 }
 
-wxString Settings::getPuttyExec() const
+wxString Settings::getTelnetExec() const
 {
-    return puttyExec;
+    return telnetExec;
+}
+wxString Settings::getTelnetArgument() const
+{
+    return telnetArgument;
 }
 
-wxString Settings::getPlinkExec() const
+wxString Settings::getSSHExec() const
 {
-    return plinkExec;
+    return SSHExec;
 }
 
-void Settings::setPuttyExec( wxString puttyExec )
+wxString Settings::getSSHArgument() const
 {
-    this->puttyExec = puttyExec;
+    return SSHArgument;
 }
 
-void Settings::setPlinkExec( wxString plinkExec )
+wxString Settings::getPerlExec() const
 {
-    this->plinkExec = plinkExec;
+    return perlExec;
+}
+
+wxString Settings::getPerlArgument() const
+{
+    return perlArgument;
+}
+
+void Settings::setTelnetExec( wxString telnetExec )
+{
+    this->telnetExec = telnetExec;
+}
+
+void Settings::setTelnetArgument( wxString telnetArgument )
+{
+    this->telnetArgument = telnetArgument;
+}
+
+void Settings::setSSHExec( wxString SSHExec )
+{
+    this->SSHExec = SSHExec;
+}
+
+void Settings::setSSHArgument( wxString SSHArgument)
+{
+    this->SSHArgument = SSHArgument;
+}
+
+void Settings::setPerlExec( wxString perlExec )
+{
+    this->perlExec = perlExec;
+}
+
+void Settings::setPerlArgument( wxString perlArgument )
+{
+    this->perlArgument = perlArgument;
 }
 
 wxString Settings::getSettingsPath() const
@@ -161,4 +233,9 @@ wxString Settings::getSettingsPath() const
 wxString Settings::getDatabasePath() const
 {
     return databasePath;
+}
+
+wxString Settings::getPerlDatabasePath() const
+{
+    return perlDatabasePath;
 }

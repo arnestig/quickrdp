@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -37,6 +37,7 @@ const long generalTabPanel::ID_TEXTCTRL2 = wxNewId();
 const long generalTabPanel::ID_STATICTEXT8 = wxNewId();
 const long generalTabPanel::ID_TEXTCTRL7 = wxNewId();
 const long generalTabPanel::ID_STATICTEXT3 = wxNewId();
+const long generalTabPanel::ID_STATICTEXT9 = wxNewId();
 const long generalTabPanel::ID_TEXTCTRL3 = wxNewId();
 const long generalTabPanel::ID_STATICTEXT7 = wxNewId();
 const long generalTabPanel::ID_TEXTCTRL6 = wxNewId();
@@ -67,7 +68,7 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxDefaultPosition, wxSize(261,344), wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
@@ -102,6 +103,10 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText3 = new wxStaticText(this, ID_STATICTEXT3, _("Password:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	BoxSizer5->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText9 = new wxStaticText(this, ID_STATICTEXT9, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT9"));
+	StaticText9->SetForegroundColour(wxColour(255,0,0));
+	StaticText9->SetToolTip(_("*** SECURITY RISK ***\nPlease note that for now passwords are stored in plain-text in your user\'s home directory. \nIt\'s a security risk since those files are commonly readable by other users on your system! \nUse wisely and on your own risk."));
+	BoxSizer5->Add(StaticText9, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	TextCtrl3 = new wxTextCtrl(this, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PASSWORD|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	BoxSizer5->Add(TextCtrl3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer5, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
@@ -132,7 +137,7 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	BoxSizer1->Add(BoxSizer8, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&generalTabPanel::onConnectionChoice);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
 	Connect(ID_TEXTCTRL7,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);

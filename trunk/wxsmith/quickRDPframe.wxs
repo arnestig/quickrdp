@@ -15,7 +15,6 @@
 									<object class="wxBoxSizer" variable="BoxSizer5" member="no">
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" variable="BitmapButton1" member="yes">
-												<bitmap>data/document-new.png</bitmap>
 												<size>64,64</size>
 												<tooltip>New connection</tooltip>
 												<handler function="OnNewButtonClick" entry="EVT_BUTTON" />
@@ -25,8 +24,6 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="BitmapButton4" member="yes">
-												<bitmap>data/network-workgroup.png</bitmap>
-												<disabled>data/network-workgroup-disabled.png</disabled>
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>Duplicate connection</tooltip>
@@ -37,8 +34,6 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" variable="BitmapButton2" member="yes">
-												<bitmap>data/edit-delete.png</bitmap>
-												<disabled>data/edit-delete-disabled.png</disabled>
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>Delete connection</tooltip>
@@ -49,8 +44,6 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" variable="BitmapButton3" member="yes">
-												<bitmap>data/preferences-other.png</bitmap>
-												<disabled>data/preferences-other-disabled.png</disabled>
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>View properties</tooltip>
@@ -126,9 +119,9 @@
 			</object>
 			<object class="wxMenu" variable="Menu3" member="yes">
 				<label>&amp;Settings</label>
-				<object class="wxMenuItem" name="idMenuMacroCommands" variable="MenuItem16" member="yes">
-					<label>Macro Commands</label>
-					<enabled>0</enabled>
+				<object class="wxMenuItem" name="idMainMenuPerlScripts" variable="MenuItem16" member="yes">
+					<label>Perl scripts</label>
+					<handler function="OnMenuPerlScripts" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="idMenuPreferences" variable="MenuItem15" member="yes">
@@ -152,6 +145,11 @@
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />
 			</object>
 			<object class="separator" />
+			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
+				<label>Ping</label>
+				<help>Starts a continuous ping session towards the target</help>
+				<handler function="OnPopupMenuPing" entry="EVT_MENU" />
+			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">
 				<label>Attach to console</label>
 				<handler function="OnMenuItem4Selected" entry="EVT_MENU" />

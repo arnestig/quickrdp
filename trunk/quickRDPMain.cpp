@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -25,15 +25,15 @@
 #include "aboutDialog.h"
 #include "settingsDialog.h"
 #include "FileParser.h"
+#include "Resources.h"
+#include "perlDialog.h"
 
 #include <wx/msgdlg.h>
 #include <memory>
 
 //(*InternalHeaders(quickRDPFrame)
-#include <wx/bitmap.h>
 #include <wx/settings.h>
 #include <wx/intl.h>
-#include <wx/image.h>
 #include <wx/string.h>
 //*)
 
@@ -72,10 +72,11 @@ const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMenuQuit = wxNewId();
-const long quickRDPFrame::idMenuMacroCommands = wxNewId();
+const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
+const long quickRDPFrame::ID_POPUPMENU_PING = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
 const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
 const long quickRDPFrame::ID_MENUFULLSCREEN = wxNewId();
@@ -112,6 +113,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
+    wxMenuItem* MenuItem18;
 
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
@@ -120,21 +122,18 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-    BitmapButton1 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON1, wxBitmap(wxImage(_T("data/document-new.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
+    BitmapButton1 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON1, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
     BitmapButton1->SetToolTip(_("New connection"));
     BoxSizer5->Add(BitmapButton1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BitmapButton4 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON4, wxBitmap(wxImage(_T("data/network-workgroup.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
-    BitmapButton4->SetBitmapDisabled(wxBitmap(wxImage(_T("data/network-workgroup-disabled.png"))));
+    BitmapButton4 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON4, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
     BitmapButton4->Disable();
     BitmapButton4->SetToolTip(_("Duplicate connection"));
     BoxSizer5->Add(BitmapButton4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BitmapButton2 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON2, wxBitmap(wxImage(_T("data/edit-delete.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
-    BitmapButton2->SetBitmapDisabled(wxBitmap(wxImage(_T("data/edit-delete-disabled.png"))));
+    BitmapButton2 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON2, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
     BitmapButton2->Disable();
     BitmapButton2->SetToolTip(_("Delete connection"));
     BoxSizer5->Add(BitmapButton2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BitmapButton3 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON3, wxBitmap(wxImage(_T("data/preferences-other.png"))), wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
-    BitmapButton3->SetBitmapDisabled(wxBitmap(wxImage(_T("data/preferences-other-disabled.png"))));
+    BitmapButton3 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON3, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
     BitmapButton3->Disable();
     BitmapButton3->SetToolTip(_("View properties"));
     BoxSizer5->Add(BitmapButton3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -164,9 +163,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
     Menu3 = new wxMenu();
-    MenuItem16 = new wxMenuItem(Menu3, idMenuMacroCommands, _("Macro Commands"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem16 = new wxMenuItem(Menu3, idMainMenuPerlScripts, _("Perl scripts"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem16);
-    MenuItem16->Enable(false);
     Menu3->AppendSeparator();
     MenuItem15 = new wxMenuItem(Menu3, idMenuPreferences, _("Preferences"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem15);
@@ -179,6 +177,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
     PopupMenu1.AppendSeparator();
+    MenuItem18 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_PING, _("Ping"), _("Starts a continuous ping session towards the target"), wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem18);
     MenuItem4 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
     PopupMenu1.Append(MenuItem4);
     MenuItem5 = new wxMenu();
@@ -215,9 +215,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
+    Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
+    Connect(ID_POPUPMENU_PING,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuPing);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
     Connect(ID_MENUDEFAULT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemDefaultClick);
     Connect(ID_MENUFULLSCREEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemFullscreenClick);
@@ -229,7 +231,21 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
+    perlMenu = new wxMenu();
+    PopupMenu1.AppendSubMenu( perlMenu, wxT("Perl") );
 
+    SetTitle( Resources::Instance()->getVersion() );
+
+    /** set our button images **/
+    BitmapButton1->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("document-new.png") ) ) );
+    BitmapButton2->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("edit-delete.png") ) ) );
+    BitmapButton2->SetBitmapDisabled(wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("edit-delete-disabled.png"))));
+    BitmapButton3->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("preferences-other.png") ) ) );
+    BitmapButton3->SetBitmapDisabled(wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("preferences-other-disabled.png"))));
+    BitmapButton4->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("network-workgroup.png") ) ) );
+    BitmapButton4->SetBitmapDisabled(wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("network-workgroup-disabled.png"))));
+
+	SetIcon( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("quickrdp.xpm") ) );
     last_column_click = 0;
 
     loadRDPFromDatabase();
@@ -249,6 +265,7 @@ void quickRDPFrame::OnQuit(wxCommandEvent& event)
 void quickRDPFrame::OnAbout(wxCommandEvent& event)
 {
     aboutDialog *about = new aboutDialog( this, 0 );
+    about->StaticText1->SetLabel( Resources::Instance()->getVersion() );
     about->ShowModal();
     delete about;
 }
@@ -480,6 +497,23 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
             if ( resolutionString == wxT("1280 x 960") ) { MenuItem13->Check( true ); }
             if ( resolutionString == wxT("1400 x 1050") ) { MenuItem14->Check( true ); }
         }
+    }
+
+    /** prepare our perl part of the popup menu before we display it. **/
+
+    // erase all items in the submenu.
+    wxMenuItemList perlMenuList = perlMenu->GetMenuItems();
+    for ( wxMenuItemList::iterator it = perlMenuList.begin(); it != perlMenuList.end(); ++it ) {
+        perlMenu->Destroy( (*it)->GetId() );
+    }
+
+    // add all perl scripts to the menu from the perldatabase
+    std::vector< wxString > perlDb = Resources::Instance()->getPerlDatabase()->getScripts();
+    for ( size_t pId = 0; pId < perlDb.size(); ++pId ) {
+        const long newPerlId = wxNewId();
+        Connect( newPerlId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnPerlScriptSelected );
+        wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, newPerlId, perlDb[ pId ], wxEmptyString, wxITEM_NORMAL );
+        perlMenu->Append( newPerlMenuItem );
     }
 
     PopupMenu(&PopupMenu1 );
@@ -721,4 +755,53 @@ void quickRDPFrame::OnPreferences(wxCommandEvent& event)
     settingsDialog *settings = new settingsDialog( this, 0 );
     settings->ShowModal();
     delete settings;
+}
+
+void quickRDPFrame::OnPopupMenuPing(wxCommandEvent& event)
+{
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+            #if defined(__WXMSW__)
+                wxExecute( wxT("ping -t ") + rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getHostname() );
+            #elif defined(__UNIX__)
+                wxExecute( wxT("ping ") + rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getHostname() );
+            #endif
+        }
+    }
+}
+
+void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
+{
+    perlDialog *perldlg= new perlDialog( this, 0 );
+    perldlg->ShowModal();
+    delete perldlg;
+
+}
+
+void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
+{
+    wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+            if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
+                RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+                wxString username = myCon->getUsername().empty() ? wxT("NO_USER") : myCon->getUsername();
+                wxString password = myCon->getPassword().empty() ? wxT("NO_PASS") : myCon->getPassword();
+                wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
+                wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + myCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( myCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
+            } else {
+                wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
+            }
+        }
+    }
 }

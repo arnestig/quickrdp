@@ -19,27 +19,29 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#include "quickRDPApp.h"
+#ifndef __PERL_DATABASE__H_
+#define __PERL_DATABASE__H_
 
-//(*AppHeaders
-#include "quickRDPMain.h"
-#include <wx/image.h>
-//*)
+#include <wx/string.h>
+#include <map>
+#include <vector>
 
-IMPLEMENT_APP(quickRDPApp);
-
-bool quickRDPApp::OnInit()
+class PerlDatabase
 {
-    //(*AppInitialize
-    bool wxsOK = true;
-    wxInitAllImageHandlers();
-    if ( wxsOK )
-    {
-    	quickRDPFrame* Frame = new quickRDPFrame(0);
-    	Frame->Show();
-    	SetTopWindow(Frame);
-    }
-    //*)
-    return wxsOK;
+    public:
+        PerlDatabase();
+        ~PerlDatabase();
 
-}
+        std::vector< wxString > getScripts();
+        const wxString getScriptContent( wxString script );
+        void deleteScript( wxString name );
+        bool addScript( wxString name );
+        void saveScript( wxString name, wxString content );
+
+    private:
+        void loadDatabase();
+        bool isDatabaseLoaded() const;
+        std::map< wxString, wxString > scripts;
+};
+
+#endif

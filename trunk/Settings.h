@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -32,21 +32,36 @@ class Settings
 
         void saveSettings();
         wxString getRDPExec( bool useAdminString = false ) const;
-        wxString getPuttyExec() const;
-        wxString getPlinkExec() const;
-        void setPlinkExec( wxString plinkExec );
-        void setPuttyExec( wxString puttyExec );
+        wxString getTelnetExec() const;
+        wxString getTelnetArgument() const;
+        wxString getSSHExec() const;
+        wxString getSSHArgument() const;
+        wxString getPerlExec() const;
+        wxString getPerlArgument() const;
+        void setTelnetExec( wxString telnetExec );
+        void setTelnetArgument( wxString telnetArgument );
+        void setSSHExec( wxString SSHExec );
+        void setSSHArgument( wxString SSHArgujment );
+        void setPerlExec( wxString perlExec );
+        void setPerlArgument( wxString perlArgument );
+        wxString getDataPath() const;
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
+        wxString getPerlDatabasePath() const;
 
     private:
         void loadSettings();
 
         wxString RDPExec;
-        wxString puttyExec;
-        wxString plinkExec;
+        wxString telnetExec;
+        wxString SSHExec;
+        wxString perlExec;
+        wxString telnetArgument;
+        wxString SSHArgument;
+        wxString perlArgument;
         wxString settingsPath;
         wxString databasePath;
+        wxString perlDatabasePath;
 };
 
 #endif

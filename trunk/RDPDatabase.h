@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -144,6 +144,16 @@ class RDPDatabase
         static bool usernameCompareDesc( RDPConnection* left, RDPConnection* right )
         {
             return left->getDomainUsernameString().Lower() > right->getDomainUsernameString().Lower();
+        }
+
+        static bool useConnectionCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return ConnectionType::getConnectionTypeName( left->getConnectionType() ).Lower() < ConnectionType::getConnectionTypeName( right->getConnectionType() ).Lower();
+        }
+
+        static bool useConnectionCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return ConnectionType::getConnectionTypeName( left->getConnectionType() ).Lower() > ConnectionType::getConnectionTypeName( right->getConnectionType() ).Lower();
         }
 
         static bool useConsoleCompareAsc( RDPConnection* left, RDPConnection* right )

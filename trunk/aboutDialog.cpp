@@ -1,10 +1,31 @@
+/**
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+
+    Written by Tobias Eliasson <arnestig@gmail.com>.
+
+    This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
+
+    quickRDP is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    quickRDP is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 #include "aboutDialog.h"
+#include "Resources.h"
+
 #include <wx/hyperlink.h>
 //(*InternalHeaders(aboutDialog)
-#include <wx/bitmap.h>
 #include <wx/font.h>
 #include <wx/intl.h>
-#include <wx/image.h>
 #include <wx/string.h>
 //*)
 
@@ -40,26 +61,27 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(400,306));
+	StaticText1->SetLabel( Resources::Instance()->getVersion() );
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-	StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxBitmap(wxImage(_T("data/preferences-desktop-remote-desktop.png")).Rescale(wxSize(64,64).GetWidth(),wxSize(64,64).GetHeight())), wxDefaultPosition, wxSize(64,64), 0, _T("ID_STATICBITMAP1"));
+	StaticBitmap1 = new wxStaticBitmap(Panel1, ID_STATICBITMAP1, wxNullBitmap, wxDefaultPosition, wxSize(64,64), 0, _T("ID_STATICBITMAP1"));
 	BoxSizer4->Add(StaticBitmap1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("quickRDP 1.0"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("QuickRDP x.x"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	wxFont StaticText1Font(16,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	StaticText1->SetFont(StaticText1Font);
 	BoxSizer3->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Remote connection organizer"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Manages RDP, telnet and SSH connections"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer3->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2011 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2012 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	StaticText3->SetFont(StaticText3Font);
 	BoxSizer3->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxVERTICAL);
-	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Licence: GNU GPL"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Licence: GNU GPLv3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	BoxSizer6->Add(StaticText4, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	StaticText5 = new wxStaticText(Panel1, ID_STATICTEXT5, _("Text"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	StaticText5->Hide();
@@ -85,6 +107,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
 	//*)
+	StaticBitmap1->SetBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("preferences-desktop-remote-desktop.png") ) );
 }
 
 aboutDialog::~aboutDialog()

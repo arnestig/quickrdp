@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -65,6 +65,38 @@ namespace FileParser
         }
         return wxT("0");
     };
+
+    inline wxString getRealArgumentString( wxString argument, RDPConnection* connection )
+    {
+        /** check if our argument is empty and inside a conditional output '{ }'. If so, we remove that from the argument **/
+        std::vector< std::pair< wxString, wxString > > strings_to_parse;
+        strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%hostname%"), connection->getHostname() ) );
+        strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%connectiontype%"), ConnectionType::getConnectionTypeName( connection->getConnectionType() ) ) );
+        strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%username%"), connection->getUsername() ) );
+        strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%password%"), connection->getPassword() ) );
+
+        for ( size_t stringId = 0; stringId < strings_to_parse.size(); ++stringId ) {
+            if ( strings_to_parse[ stringId ].second.empty() == true ) {
+                size_t foundPos = argument.find_first_of( wxT("{") );
+                while ( foundPos != std::string::npos && foundPos < argument.length() ) {
+                    size_t string_to_replace = argument.find( strings_to_parse[ stringId ].first, foundPos+1 );
+                    size_t foundPosEnd = argument.find_first_of( wxT("}"), foundPos+1 );
+                    if ( string_to_replace > foundPos && string_to_replace < foundPosEnd ) {
+                        argument.erase( foundPos, foundPosEnd-foundPos+1 );
+                    }
+                    foundPos = argument.find_first_of( wxT("{"), foundPos+1 );
+                }
+            }
+        }
+
+        argument.Replace( wxT("{" ), wxT("") );
+        argument.Replace( wxT("}" ), wxT("") );
+        argument.Replace( wxT("%hostname%"), connection->getHostname()  );
+        argument.Replace( wxT("%connectiontype%"), ConnectionType::getConnectionTypeName( connection->getConnectionType() ) );
+        argument.Replace( wxT("%username%"), connection->getUsername() );
+        argument.Replace( wxT("%password%"), connection->getPassword() );
+        return argument;
+    }
 }
 
 #endif

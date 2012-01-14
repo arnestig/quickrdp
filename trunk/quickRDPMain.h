@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -68,8 +68,11 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1400(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnPreferences(wxCommandEvent& event);
+        void OnPopupMenuPing(wxCommandEvent& event);
+        void OnMenuPerlScripts(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
+        void OnPerlScriptSelected(wxCommandEvent& event);
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -80,10 +83,11 @@ class quickRDPFrame: public wxFrame
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
         static const long idMenuQuit;
-        static const long idMenuMacroCommands;
+        static const long idMainMenuPerlScripts;
         static const long idMenuPreferences;
         static const long idMenuAbout;
         static const long ID_POPUPMENUPROPERTIES;
+        static const long ID_POPUPMENU_PING;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;
@@ -122,6 +126,8 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         //*)
+
+        wxMenu *perlMenu;
 
         int last_column_click;
 

@@ -1,7 +1,7 @@
 /**
-    Copyright (C) 2010 quickRDP - Remote desktop organizer
+    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
 
-    Written by Tobias Eliasson <arnestig@users.sourceforge.net>.
+    Written by Tobias Eliasson <arnestig@gmail.com>.
 
     This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
 
@@ -24,10 +24,14 @@
 Resources* Resources::instance = NULL;
 
 Resources::Resources()
-    :   settings( NULL )
+    :   version( wxT("QuickRDP 1.1") ),
+        settings( NULL ),
+        conDatabase( NULL ),
+        perlDatabase( NULL )
 {
     settings = new Settings();
-//    conDatabase = new RDPDatabase();
+    //conDatabase = new RDPDatabase();
+    perlDatabase = new PerlDatabase();
 }
 
 Resources* Resources::Instance()
@@ -38,6 +42,11 @@ Resources* Resources::Instance()
     return instance;
 }
 
+wxString Resources::getVersion() const
+{
+    return version;
+}
+
 Settings* Resources::getSettings() const
 {
     return settings;
@@ -46,5 +55,10 @@ Settings* Resources::getSettings() const
 RDPDatabase* Resources::getConDatabase() const
 {
     return conDatabase;
+}
+
+PerlDatabase* Resources::getPerlDatabase() const
+{
+    return perlDatabase;
 }
 
