@@ -10,9 +10,13 @@ Upstream Author(s):
 
     <Tobias Eliasson "arnestig@gmail.com">
 
-Copyright:
+Files: data/*.png, data/*.xpm, data/*.ico
+Licence: GPLv2
+Copyright: GNOME ART Project
 
-    <Copyright (C) 2009-2012 Tobias Eliasson>
+Files: *.cpp, *.h
+Licence: GPLv3
+Copyright: 2009-2012 Tobias Eliasson
 
 License:
 
