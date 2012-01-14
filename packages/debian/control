@@ -5,8 +5,7 @@ Maintainer: Tobias Eliasson <arnestig@gmail.com>
 Build-Depends: debhelper (>= 7.0.50~), libwxgtk2.8-dev, libwxbase2.8-dev
 Standards-Version: 3.8.4
 Homepage: http://sourceforge.net/projects/quickrdp/
-#Vcs-Git: git://git.debian.org/collab-maint/quickrdp.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/quickrdp.git;a=summary
+Vcs-svn: https://quickrdp.svn.sourceforge.net/svnroot/quickrdp/trunk
 
 Package: quickrdp
 Architecture: any
