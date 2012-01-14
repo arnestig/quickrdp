@@ -43,13 +43,13 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
-										<label>Remote connection organizer</label>
+										<label>Manages RDP, telnet and SSH connections</label>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
-										<label>Copyright © 2010 - 2011 Tobias Eliasson</label>
+										<label>Copyright © 2010 - 2012 Tobias Eliasson</label>
 										<font>
 											<size>8</size>
 											<style>normal</style>
@@ -68,7 +68,7 @@
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
-												<label>Licence: GNU GPL</label>
+												<label>Licence: GNU GPLv3</label>
 											</object>
 											<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 										</object>
