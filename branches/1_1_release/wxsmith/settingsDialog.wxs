@@ -28,7 +28,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCtrl1" member="yes">
-														<size>184,21</size>
+														<size>217,21</size>
 														<fg>wxSYS_COLOUR_GRAYTEXT</fg>
 														<style>wxTE_READONLY|wxDOUBLE_BORDER</style>
 													</object>
@@ -62,6 +62,15 @@
 													<object class="wxTextCtrl" name="ID_TEXTCTRL4" variable="TextCtrl4" member="yes">
 														<size>155,21</size>
 														<style>wxDOUBLE_BORDER</style>
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON9" variable="Button9" member="yes">
+														<label>?</label>
+														<size>23,23</size>
+														<handler function="OnHelpArgumentClick" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
@@ -107,7 +116,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl3" member="yes">
-														<size>184,21</size>
+														<size>217,21</size>
 														<style>wxTE_READONLY|wxDOUBLE_BORDER</style>
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -143,6 +152,16 @@
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON10" variable="Button10" member="yes">
+														<label>?</label>
+														<size>23,23</size>
+														<handler function="OnHelpArgumentClick" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
 												</object>
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON8" variable="Button8" member="yes">
@@ -184,7 +203,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCtrl2" member="yes">
-														<size>184,21</size>
+														<size>217,21</size>
 														<fg>wxSYS_COLOUR_GRAYTEXT</fg>
 														<style>wxTE_READONLY|wxDOUBLE_BORDER</style>
 													</object>
@@ -221,6 +240,16 @@
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON11" variable="Button11" member="yes">
+														<label>?</label>
+														<size>23,23</size>
+														<handler function="OnHelpArgumentClick" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
 												</object>
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON7" variable="Button7" member="yes">
