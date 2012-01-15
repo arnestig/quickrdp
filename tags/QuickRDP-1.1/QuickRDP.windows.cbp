@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="QuickRDP" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="QuickRDP" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libwxmsw28u.a" />
+					<Add library="libwxpng.a" />
+					<Add library="libwxjpeg.a" />
+					<Add library="libwxtiff.a" />
+					<Add library="libwxzlib.a" />
+					<Add directory="$(#wx)\lib\gcc_lib" />
+				</Linker>
+			</Target>
+			<Target title="Installer">
+				<Option output="QuickRDP" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)\lib\gcc_lib\mswu" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libwxmsw28u.a" />
+					<Add library="libwxpng.a" />
+					<Add library="libwxjpeg.a" />
+					<Add library="libwxtiff.a" />
+					<Add library="libwxzlib.a" />
+					<Add directory="$(#wx)\lib\gcc_lib" />
+				</Linker>
+				<ExtraCommands>
+					<Add after='cmd /c &quot;C:\Program Files\NSIS\makensis.exe&quot; $(PROJECT_DIR)\packages\windows\QuickRDP.nsi' />
+					<Mode after="always" />
+				</ExtraCommands>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-O2" />
+			<Add option="-Wextra" />
+			<Add option="-Wall" />
+			<Add option="-pipe" />
+			<Add option="-mthreads" />
+			<Add option='[[if (PLATFORM == PLATFORM_MSW &amp;&amp; (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.0.0&quot;))) print(_T(&quot;-Wno-attributes&quot;));]]' />
+			<Add option="-D__GNUWIN32__" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add directory="$(#wx)\include" />
+			<Add directory="$(#wx)\contrib\include" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="$(#wx)\include" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-s" />
+			<Add option="-mthreads" />
+			<Add library="libkernel32.a" />
+			<Add library="libuser32.a" />
+			<Add library="libgdi32.a" />
+			<Add library="libwinspool.a" />
+			<Add library="libcomdlg32.a" />
+			<Add library="libadvapi32.a" />
+			<Add library="libshell32.a" />
+			<Add library="libole32.a" />
+			<Add library="liboleaut32.a" />
+			<Add library="libuuid.a" />
+			<Add library="libcomctl32.a" />
+			<Add library="libwsock32.a" />
+			<Add library="libodbc32.a" />
+		</Linker>
+		<Unit filename="FileParser.h" />
+		<Unit filename="PerlDatabase.cpp" />
+		<Unit filename="PerlDatabase.h" />
+		<Unit filename="RDPDatabase.cpp" />
+		<Unit filename="RDPDatabase.h" />
+		<Unit filename="RDPFrame.cpp" />
+		<Unit filename="RDPFrame.h" />
+		<Unit filename="Resources.cpp" />
+		<Unit filename="Resources.h" />
+		<Unit filename="Settings.cpp" />
+		<Unit filename="Settings.h" />
+		<Unit filename="aboutDialog.cpp" />
+		<Unit filename="aboutDialog.h" />
+		<Unit filename="generalTabPanel.cpp" />
+		<Unit filename="generalTabPanel.h" />
+		<Unit filename="perlDialog.cpp" />
+		<Unit filename="perlDialog.h" />
+		<Unit filename="quickRDPApp.cpp" />
+		<Unit filename="quickRDPApp.h" />
+		<Unit filename="quickRDPMain.cpp" />
+		<Unit filename="quickRDPMain.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="resourcesTabPanel.cpp" />
+		<Unit filename="resourcesTabPanel.h" />
+		<Unit filename="settingsDialog.cpp" />
+		<Unit filename="settingsDialog.h" />
+		<Unit filename="windowTabPanel.cpp" />
+		<Unit filename="windowTabPanel.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="QuickRDPApp.cpp" main="quickRDPFrame" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxPanel wxs="wxsmith/windowTabPanel.wxs" src="windowTabPanel.cpp" hdr="windowTabPanel.h" name="windowTabPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/generalTabPanel.wxs" src="generalTabPanel.cpp" hdr="generalTabPanel.h" name="generalTabPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/resourcesTabPanel.wxs" src="resourcesTabPanel.cpp" hdr="resourcesTabPanel.h" name="resourcesTabPanel" language="CPP" />
+					<wxDialog wxs="wxsmith/aboutDialog.wxs" src="aboutDialog.cpp" hdr="aboutDialog.h" name="aboutDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/RDPFrame.wxs" src="RDPFrame.cpp" hdr="RDPFrame.h" name="RDPFrame" language="CPP" />
+					<wxFrame wxs="wxsmith/quickRDPFrame.wxs" src="quickRDPMain.cpp" hdr="quickRDPMain.h" name="quickRDPFrame" language="CPP" />
+					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="settingsDialog.cpp" hdr="settingsDialog.h" name="settingsDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/perlDialog.wxs" src="perlDialog.cpp" hdr="perlDialog.h" name="perlDialog" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
