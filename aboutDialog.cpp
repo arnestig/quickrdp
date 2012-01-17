@@ -58,10 +58,9 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-	
+
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(400,306));
-	StaticText1->SetLabel( Resources::Instance()->getVersion() );
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
