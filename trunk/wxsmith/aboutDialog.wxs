@@ -2,7 +2,6 @@
 <wxsmith>
 	<object class="wxDialog" name="aboutDialog">
 		<size>400,306</size>
-		<extra_code>StaticText1-&gt;SetLabel( Resources::Instance()-&gt;getVersion() );</extra_code>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<orient>wxVERTICAL</orient>
