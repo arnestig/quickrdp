@@ -124,16 +124,16 @@
 			<code_completion />
 			<debugger />
 			<wxsmith version="1">
-				<gui name="wxWidgets" src="QuickRDPApp.cpp" main="quickRDPFrame" init_handlers="necessary" language="CPP" />
+				<gui name="wxWidgets" src="src/quickRDPApp.cpp" main="quickRDPframe" init_handlers="necessary" language="CPP" />
 				<resources>
-					<wxPanel wxs="wxsmith/windowTabPanel.wxs" src="windowTabPanel.cpp" hdr="windowTabPanel.h" name="windowTabPanel" language="CPP" />
-					<wxPanel wxs="wxsmith/generalTabPanel.wxs" src="generalTabPanel.cpp" hdr="generalTabPanel.h" name="generalTabPanel" language="CPP" />
-					<wxPanel wxs="wxsmith/resourcesTabPanel.wxs" src="resourcesTabPanel.cpp" hdr="resourcesTabPanel.h" name="resourcesTabPanel" language="CPP" />
-					<wxDialog wxs="wxsmith/aboutDialog.wxs" src="aboutDialog.cpp" hdr="aboutDialog.h" name="aboutDialog" language="CPP" />
-					<wxDialog wxs="wxsmith/RDPFrame.wxs" src="RDPFrame.cpp" hdr="RDPFrame.h" name="RDPFrame" language="CPP" />
-					<wxFrame wxs="wxsmith/quickRDPFrame.wxs" src="quickRDPMain.cpp" hdr="quickRDPMain.h" name="quickRDPFrame" language="CPP" />
-					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="settingsDialog.cpp" hdr="settingsDialog.h" name="settingsDialog" language="CPP" />
-					<wxDialog wxs="wxsmith/perlDialog.wxs" src="perlDialog.cpp" hdr="perlDialog.h" name="perlDialog" language="CPP" />
+					<wxPanel wxs="wxsmith/windowTabPanel.wxs" src="src/windowTabPanel.cpp" hdr="src/windowTabPanel.h" name="windowTabPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/generalTabPanel.wxs" src="src/generalTabPanel.cpp" hdr="src/generalTabPanel.h" name="generalTabPanel" language="CPP" />
+					<wxPanel wxs="wxsmith/resourcesTabPanel.wxs" src="src/resourcesTabPanel.cpp" hdr="src/resourcesTabPanel.h" name="resourcesTabPanel" language="CPP" />
+					<wxDialog wxs="wxsmith/aboutDialog.wxs" src="src/aboutDialog.cpp" hdr="src/aboutDialog.h" name="aboutDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/RDPFrame.wxs" src="src/RDPFrame.cpp" hdr="src/RDPFrame.h" name="RDPFrame" language="CPP" />
+					<wxFrame wxs="wxsmith/quickRDPframe.wxs" src="src/quickRDPMain.cpp" hdr="src/quickRDPMain.h" name="quickRDPFrame" language="CPP" />
+					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="src/settingsDialog.cpp" hdr="src/settingsDialog.h" name="settingsDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/perlDialog.wxs" src="src/perlDialog.cpp" hdr="src/perlDialog.h" name="perlDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>
