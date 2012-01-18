@@ -90,36 +90,36 @@
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
-		<Unit filename="FileParser.h" />
-		<Unit filename="PerlDatabase.cpp" />
-		<Unit filename="PerlDatabase.h" />
-		<Unit filename="RDPDatabase.cpp" />
-		<Unit filename="RDPDatabase.h" />
-		<Unit filename="RDPFrame.cpp" />
-		<Unit filename="RDPFrame.h" />
-		<Unit filename="Resources.cpp" />
-		<Unit filename="Resources.h" />
-		<Unit filename="Settings.cpp" />
-		<Unit filename="Settings.h" />
-		<Unit filename="aboutDialog.cpp" />
-		<Unit filename="aboutDialog.h" />
-		<Unit filename="generalTabPanel.cpp" />
-		<Unit filename="generalTabPanel.h" />
-		<Unit filename="perlDialog.cpp" />
-		<Unit filename="perlDialog.h" />
-		<Unit filename="quickRDPApp.cpp" />
-		<Unit filename="quickRDPApp.h" />
-		<Unit filename="quickRDPMain.cpp" />
-		<Unit filename="quickRDPMain.h" />
-		<Unit filename="resource.rc">
+		<Unit filename="src\FileParser.h" />
+		<Unit filename="src\PerlDatabase.cpp" />
+		<Unit filename="src\PerlDatabase.h" />
+		<Unit filename="src\RDPDatabase.cpp" />
+		<Unit filename="src\RDPDatabase.h" />
+		<Unit filename="src\RDPFrame.cpp" />
+		<Unit filename="src\RDPFrame.h" />
+		<Unit filename="src\Resources.cpp" />
+		<Unit filename="src\Resources.h" />
+		<Unit filename="src\Settings.cpp" />
+		<Unit filename="src\Settings.h" />
+		<Unit filename="src\aboutDialog.cpp" />
+		<Unit filename="src\aboutDialog.h" />
+		<Unit filename="src\generalTabPanel.cpp" />
+		<Unit filename="src\generalTabPanel.h" />
+		<Unit filename="src\perlDialog.cpp" />
+		<Unit filename="src\perlDialog.h" />
+		<Unit filename="src\quickRDPApp.cpp" />
+		<Unit filename="src\quickRDPApp.h" />
+		<Unit filename="src\quickRDPMain.cpp" />
+		<Unit filename="src\quickRDPMain.h" />
+		<Unit filename="src\resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="resourcesTabPanel.cpp" />
-		<Unit filename="resourcesTabPanel.h" />
-		<Unit filename="settingsDialog.cpp" />
-		<Unit filename="settingsDialog.h" />
-		<Unit filename="windowTabPanel.cpp" />
-		<Unit filename="windowTabPanel.h" />
+		<Unit filename="src\resourcesTabPanel.cpp" />
+		<Unit filename="src\resourcesTabPanel.h" />
+		<Unit filename="src\settingsDialog.cpp" />
+		<Unit filename="src\settingsDialog.h" />
+		<Unit filename="src\windowTabPanel.cpp" />
+		<Unit filename="src\windowTabPanel.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
