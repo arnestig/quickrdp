@@ -52,7 +52,7 @@
 					<Add directory="$(#wx)\lib\gcc_lib" />
 				</Linker>
 				<ExtraCommands>
-					<Add after='cmd /c &quot;C:\Program Files\NSIS\makensis.exe&quot; $(PROJECT_DIR)\packages\windows\QuickRDP.nsi' />
+					<Add after="cmd /c makensis.exe $(PROJECT_DIR)\packages\windows\QuickRDP.nsi" />
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
