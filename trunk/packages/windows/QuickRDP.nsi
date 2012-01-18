@@ -1,7 +1,8 @@
     !define APPNAME "QuickRDP"
     !define COMPANYNAME "Tobias Eliasson"
-    !define VERSIONMAJOR 1
-    !define VERSIONMINOR 1
+    !ifndef VERSION
+    !define VERSION "1.1"
+    !endif
     !define HELPURL "http://sourceforge.net/projects/quickrdp/" # "Support Information" link
     !define UPDATEURL "http://sourceforge.net/projects/quickrdp/" # "Product Updates" link
     !define ABOUTURL "http://sourceforge.net/projects/quickrdp/" # "Publisher" link
@@ -14,7 +15,7 @@ InstallDir "$PROGRAMFILES\${APPNAME}"
     LicenseData "license.rtf"
     Name "${APPNAME}"
     Icon "../../data/${APPNAME}.ico"
-    outFile "${APPNAME}-${VERSIONMAJOR}.${VERSIONMINOR}-setup.exe"
+    outFile "${APPNAME}-${VERSION}-setup.exe"
 
 !include LogicLib.nsh
 
@@ -58,9 +59,8 @@ file "..\..\mingwm10.dll"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "HelpLink" "${HELPURL}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "URLUpdateInfo" "${UPDATEURL}"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "URLInfoAbout" "${ABOUTURL}"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "DisplayVersion" "${VERSIONMAJOR}.${VERSIONMINOR}"
-    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "VersionMajor" ${VERSIONMAJOR}
-    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "VersionMinor" ${VERSIONMINOR}
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "DisplayVersion" "${VERSION}"
+    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "VersionMajor" ${VERSION}
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "NoModify" 1
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "NoRepair" 1
     WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}" "EstimatedSize" ${INSTALLSIZE}
