@@ -69,7 +69,7 @@
 			<code_completion />
 			<debugger />
 			<wxsmith version="1">
-				<gui name="wxWidgets" src="QuickRDPApp.cpp" main="quickRDPframe" init_handlers="necessary" language="CPP" />
+				<gui name="wxWidgets" src="src/quickRDPApp.cpp" main="quickRDPframe" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxPanel wxs="wxsmith/windowTabPanel.wxs" src="src/windowTabPanel.cpp" hdr="src/windowTabPanel.h" name="windowTabPanel" language="CPP" />
 					<wxPanel wxs="wxsmith/generalTabPanel.wxs" src="src/generalTabPanel.cpp" hdr="src/generalTabPanel.h" name="generalTabPanel" language="CPP" />
