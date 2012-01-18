@@ -59,7 +59,6 @@
 		<Unit filename="src/quickRDPApp.h" />
 		<Unit filename="src/quickRDPMain.cpp" />
 		<Unit filename="src/quickRDPMain.h" />
-		<Unit filename="src/resource.rc" />
 		<Unit filename="src/resourcesTabPanel.cpp" />
 		<Unit filename="src/resourcesTabPanel.h" />
 		<Unit filename="src/settingsDialog.cpp" />
