@@ -1,0 +1,21 @@
+quickrdp 1.1 - 2011-01-15
+-------------------------
+ * Perl support added. Perl scripts can be executed against all connections.
+ * Adding dynamic arguments for external commands. %hostname%, %username%, %connectiontype% and %password% can be sent as arguments to commands.
+ * Integrated ping support (will be removed once custom commands are in place).
+
+quickrdp 1.0 - 2011-12-16
+-------------------------
+ * Added support for SSH and telnet connections.
+ * Settings page added. Ability to add specific executable for telnet and putty connections. Also which perl executable we wish to use.
+ * Multi connections supported (to execute several connections at once).
+ * Icon added for the main frame.
+
+quickrdp 0.2 - 2010-10-05
+-------------------------
+ * Lots of settings added for RDP connections.
+ * Bugfixes
+
+quickrdp 0.1 - 2010-09-24
+-------------------------
+ * Initial release.

@@ -28,7 +28,7 @@ INCLUDE_DIR=
 DEFAULT_DEFINE=-DDATA_PATH=\"$(DESTDIR)/usr/share/$(PROGNAME)/\" 
 
 
-OBJFILES := $(patsubst %.cpp,obj/%.o,$(wildcard *.cpp))
+OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 
 all: $(PROGNAME) $(TOOLS)
 
@@ -39,7 +39,7 @@ $(PROGNAME): $(OBJFILES)
 	@echo Linking $(PROGNAME)
 	$(CXX) -o $(PROGNAME) $(INCLUDE_DIR) $(OBJFILES) $(LIBS)
 
-obj/%.o: %.cpp 
+obj/%.o: src/%.cpp 
 	@mkdir -p obj
 	@echo Compiling $<
 	@$(CXX) -c $< -o $@ $(CFLAGS) $(LIBS) $(INCLUDE_DIR) $(DEFAULT_DEFINE)
