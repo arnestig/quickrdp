@@ -53,8 +53,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -77,8 +75,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer11" member="no">
@@ -101,8 +97,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer5" member="no">
@@ -135,8 +129,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer10" member="no">
@@ -159,8 +151,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer6" member="no">
@@ -183,8 +173,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer7" member="no">
@@ -207,8 +195,6 @@
 							</object>
 						</object>
 						<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer4" member="no">
