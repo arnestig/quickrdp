@@ -71,10 +71,10 @@ const long quickRDPFrame::ID_BITMAPBUTTON3 = wxNewId();
 const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
-const long quickRDPFrame::idMenuQuit = wxNewId();
 const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::idMenuAbout = wxNewId();
+const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_PING = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
@@ -88,6 +88,7 @@ const long quickRDPFrame::ID_MENUITEM9 = wxNewId();
 const long quickRDPFrame::ID_MENUITEM10 = wxNewId();
 const long quickRDPFrame::ID_MENUITEM4 = wxNewId();
 const long quickRDPFrame::ID_MENUITEM1 = wxNewId();
+const long quickRDPFrame::POPUPMENURDP = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
@@ -159,7 +160,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     SetSizer(BoxSizer1);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
-    MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
+    MenuItem1 = new wxMenuItem(Menu1, wxID_EXIT, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
     Menu3 = new wxMenu();
@@ -174,13 +175,17 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu2->Append(MenuItem2);
     MenuBar1->Append(Menu2, _("Help"));
     SetMenuBar(MenuBar1);
+    MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem17);
     MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
     PopupMenu1.AppendSeparator();
     MenuItem18 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_PING, _("Ping"), _("Starts a continuous ping session towards the target"), wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem18);
-    MenuItem4 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
-    PopupMenu1.Append(MenuItem4);
+    MenuItem19 = new wxMenu();
+    MenuItem4 = new wxMenuItem(MenuItem19, ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
+    MenuItem19->Append(MenuItem4);
+    MenuItem19->AppendSeparator();
     MenuItem5 = new wxMenu();
     MenuItem6 = new wxMenuItem(MenuItem5, ID_MENUDEFAULT, _("Default"), wxEmptyString, wxITEM_CHECK);
     MenuItem5->Append(MenuItem6);
@@ -200,7 +205,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem14 = new wxMenuItem(MenuItem8, ID_MENUITEM10, _("1400 x 1050"), wxEmptyString, wxITEM_CHECK);
     MenuItem8->Append(MenuItem14);
     MenuItem5->Append(ID_MENUITEM4, _("Custom"), MenuItem8, wxEmptyString);
-    PopupMenu1.Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
+    MenuItem19->Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
+    PopupMenu1.Append(POPUPMENURDP, _("RDP"), MenuItem19, wxEmptyString);
     BoxSizer1->SetSizeHints(this);
 
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
@@ -214,10 +220,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemActivated);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
-    Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
+    Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
     Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
+    Connect(POPUPMENUCONNECT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnect);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENU_PING,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuPing);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
@@ -414,16 +421,7 @@ void quickRDPFrame::clearListCtrl()
 
 void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
 {
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        for ( ;; ) {
-            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-            if ( itemIndex == -1 ) {
-                break;
-            }
-            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
-        }
-    }
+    execute_connections();
 }
 
 void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
@@ -467,7 +465,7 @@ void quickRDPFrame::clearPopupMenuChoices()
 
 void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
 {
-    // checkboxclick for console
+    /** prepare our RDP menu with checkboxes for console mode and resolutions **/
     if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
         long itemIndex = -1;
         itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
@@ -475,10 +473,9 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
             return;
         }
 
-        clearPopupMenuChoices();
-
         RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
 
+        clearPopupMenuChoices();
         if ( curRDP->getConsole() == wxT("1") )
         {
             MenuItem4->Check( true );
@@ -513,6 +510,12 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
         const long newPerlId = wxNewId();
         Connect( newPerlId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnPerlScriptSelected );
         wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, newPerlId, perlDb[ pId ], wxEmptyString, wxITEM_NORMAL );
+        perlMenu->Append( newPerlMenuItem );
+    }
+
+    if ( perlMenu->GetMenuItemCount() <= 0 ) {
+        wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, wxID_ANY, wxT("-- no perl script in database --") );
+        newPerlMenuItem->Enable( false );
         perlMenu->Append( newPerlMenuItem );
     }
 
@@ -802,6 +805,27 @@ void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
             } else {
                 wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
             }
+        }
+    }
+}
+
+void quickRDPFrame::OnMenuItemConnect(wxCommandEvent& event)
+{
+    wxMessageBox( wxT("Executing!" ) );
+    wxShell( wxT("xterm" ) );
+    execute_connections();
+}
+
+void quickRDPFrame::execute_connections()
+{
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
         }
     }
 }

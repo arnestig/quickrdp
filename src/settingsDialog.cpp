@@ -79,7 +79,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxBoxSizer* BoxSizer3;
-	
+
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(373,153));
 	Move(wxDefaultPosition);
@@ -171,7 +171,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	FileDialog2 = new wxFileDialog(this, _("Locate Perl executable"), wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	FileDialog3 = new wxFileDialog(this, _("Locate SSH executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetBrowseClick);
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetArgumentReset);
@@ -192,12 +192,30 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	TextCtrl2->SetValue( settings->getPerlExec() );
 	TextCtrl3->SetValue( settings->getSSHExec() );
 
-	/** set the file dialog for perl depending on windows or linux **/
+	/** set the perl file dialog for perl depending on windows or linux **/
     #if defined(__WXMSW__)
         FileDialog2->SetWildcard( wxT("Perl (perl.exe)|perl.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
-        FileDialog2->SetWildcard( wxT("Perl (perl)|perl|All files (*)|*"));
+        FileDialog2->SetWildcard( wxT("Gnome terminal (gnome-terminal)|gnome-terminal|All files (*)|*"));
+        FileDialog2->SetDirectory( wxT("/usr/bin" ) );
     #endif
+
+	/** set the telnet file dialog for perl depending on windows or linux **/
+    #if defined(__WXMSW__)
+        FileDialog1->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
+    #elif defined(__UNIX__)
+        FileDialog1->SetWildcard( wxT("Gnome terminal (gnome-terminal)|gnome-terminal|All files (*)|*"));
+        FileDialog1->SetDirectory( wxT("/usr/bin" ) );
+    #endif
+
+	/** set the ssh file dialog for perl depending on windows or linux **/
+    #if defined(__WXMSW__)
+        FileDialog3->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
+    #elif defined(__UNIX__)
+        FileDialog3->SetWildcard( wxT("Gnome terminal (gnome-terminal)|gnome-terminal|All files (*)|*"));
+        FileDialog3->SetDirectory( wxT("/usr/bin" ) );
+    #endif
+
 
     settings->getTelnetArgument().empty() == true ? resetTelnetArgument() : TextCtrl4->SetValue( settings->getTelnetArgument() );
     settings->getSSHArgument().empty() == true ? resetSSHArgument() : TextCtrl6->SetValue( settings->getSSHArgument() );
@@ -272,7 +290,7 @@ void settingsDialog::resetTelnetArgument()
     #if defined(__WXMSW__)
         TextCtrl4->SetValue( wxT("-telnet {%username%@}%hostname%") );
     #elif defined(__UNIX__)
-        TextCtrl4->SetValue( wxT("") );
+        TextCtrl4->SetValue( wxT("-e \"telnet {-l %username%} %hostname%\"") );
     #endif
 }
 
@@ -281,7 +299,7 @@ void settingsDialog::resetSSHArgument()
     #if defined(__WXMSW__)
         TextCtrl6->SetValue( wxT("-ssh {%username%@}%hostname%{ -pw %password%}") );
     #elif defined(__UNIX__)
-        TextCtrl6->SetValue( wxT("") );
+        TextCtrl6->SetValue( wxT("-e \"ssh {%username%@}%hostname%\"") );
     #endif
 }
 
