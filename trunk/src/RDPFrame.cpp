@@ -174,6 +174,7 @@ void RDPFrame::switchConnectionType( ConnectionType::ConnectionType connectionTy
             generalTab->CheckBox1->Hide();
         }
     }
+    generalTab->Layout();
 }
 
 void RDPFrame::checkForChanges()
