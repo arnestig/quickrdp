@@ -48,12 +48,12 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer7 = new wxBoxSizer(wxVERTICAL);
-	wxString __wxRadioBoxChoices_1[3] =
+	wxString __wxRadioBoxChoices_1[3] = 
 	{
 		_("Default resolution"),
 		_("Fullscreen"),
@@ -77,7 +77,7 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer1->Add(StaticLine1, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	wxString __wxRadioBoxChoices_2[2] =
+	wxString __wxRadioBoxChoices_2[2] = 
 	{
 		_("Default colors"),
 		_("Custom colors")
@@ -94,7 +94,7 @@ windowTabPanel::windowTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_RADIOBOX1,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnResoultionClick);
 	Connect(ID_COMBOBOX2,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnResoultionClick);
 	Connect(ID_RADIOBOX2,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&windowTabPanel::OnColorsClick);
