@@ -410,6 +410,7 @@ RDPConnection *RDPDatabase::getRDPConnectionByPointer( RDPConnection *rdpConnect
 
 void RDPDatabase::deleteRDPConnectionByPointer( RDPConnection *rdpConnection )
 {
+    wxRemoveFile( Resources::Instance()->getSettings()->getDatabasePath() + rdpConnection->getFilename() );
     for ( size_t index = 0; index < database.size(); index++ ) {
         if ( database[ index ] == rdpConnection ) {
             database.erase( database.begin() + index );
