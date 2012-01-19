@@ -811,8 +811,6 @@ void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItemConnect(wxCommandEvent& event)
 {
-    wxMessageBox( wxT("Executing!" ) );
-    wxShell( wxT("xterm" ) );
     execute_connections();
 }
 
