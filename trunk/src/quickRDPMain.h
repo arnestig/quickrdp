@@ -70,6 +70,7 @@ class quickRDPFrame: public wxFrame
         void OnPreferences(wxCommandEvent& event);
         void OnPopupMenuPing(wxCommandEvent& event);
         void OnMenuPerlScripts(wxCommandEvent& event);
+        void OnMenuItemConnect(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnPerlScriptSelected(wxCommandEvent& event);
@@ -82,10 +83,10 @@ class quickRDPFrame: public wxFrame
         static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
-        static const long idMenuQuit;
         static const long idMainMenuPerlScripts;
         static const long idMenuPreferences;
         static const long idMenuAbout;
+        static const long POPUPMENUCONNECT;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_PING;
         static const long ID_POPUPMENUCONSOLE;
@@ -99,9 +100,11 @@ class quickRDPFrame: public wxFrame
         static const long ID_MENUITEM10;
         static const long ID_MENUITEM4;
         static const long ID_MENUITEM1;
+        static const long POPUPMENURDP;
         //*)
 
         //(*Declarations(quickRDPFrame)
+        wxMenu* MenuItem19;
         wxMenuItem* MenuItem7;
         wxListCtrl* ListCtrl1;
         wxMenu PopupMenu1;
@@ -112,6 +115,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem15;
         wxPanel* Panel1;
         wxBitmapButton* BitmapButton2;
+        wxMenuItem* MenuItem17;
         wxMenuItem* MenuItem13;
         wxBitmapButton* BitmapButton1;
         wxMenu* MenuItem8;
@@ -134,6 +138,7 @@ class quickRDPFrame: public wxFrame
         void loadRDPFromDatabase();
         void clearListCtrl();
         void clearPopupMenuChoices();
+        void execute_connections();
 
         DECLARE_EVENT_TABLE()
 };
