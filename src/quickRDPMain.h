@@ -85,7 +85,6 @@ class quickRDPFrame: public wxFrame
         static const long ID_PANEL1;
         static const long idMainMenuPerlScripts;
         static const long idMenuPreferences;
-        static const long idMenuAbout;
         static const long POPUPMENUCONNECT;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_PING;

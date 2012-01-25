@@ -253,7 +253,55 @@ void RDPConnection::connect()
         wxString connectionTypeName = ConnectionType::getConnectionTypeName( getConnectionType() );
         switch ( getConnectionType() ) {
             case ConnectionType::RDP:
-                wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
+                {
+                    #if defined(__UNIX__)
+                        wxString RDPargument = settings->getRDPExec( useAdminString );
+                        /// setup resolution argument
+                        if ( getScreenMode() == wxT("1") && getDesktopHeight() != wxT("0") && getDesktopHeight() != wxT("0") ) {
+                            RDPargument.append( wxT(" -g") + getDesktopWidth() + wxT("x") + getDesktopHeight() );
+                        } else if ( getScreenMode() == wxT("2" ) ) {
+                            RDPargument.append( wxT(" -f" ) );
+                        }
+                        /// bits per pixel argument.
+                        if ( getDesktopBpp() != wxT("0") ) {
+                            RDPargument.append( wxT(" -a") + getDesktopBpp() );
+                        }
+                        /// attach to console argument
+                        if ( getConsole() == wxT("1" ) ) {
+                            RDPargument.append( wxT(" -0" ) );
+                        }
+                        ///audi settings
+                        if ( getSoundMode() == wxT("0") ) {
+                            RDPargument.append( wxT(" -r:local" ) );
+                        } else if ( getSoundMode() == wxT("1" ) ) {
+                            RDPargument.append( wxT(" -r:remote" ) );
+                        } else {
+                            RDPargument.append( wxT(" -r:off" ) );
+                        }
+                        ///window caption
+                        RDPargument.append( wxT(" -T") + getComment() );
+                        ///client hostname
+                        if ( getClientHostname().empty() == false ) {
+                            RDPargument.append( wxT(" -n") + getClientHostname() );
+                        }
+                        ///password
+                        if ( getPassword().empty() == false ) {
+                            RDPargument.append( wxT(" -p") + getPassword() );
+                        }
+                        ///domain
+                        if ( getDomain().empty() == false ) {
+                            RDPargument.append( wxT(" -d") + getDomain() );
+                        }
+                        ///username
+                        if ( getUsername().empty() == false ) {
+                            RDPargument.append( wxT(" -u") + getUsername() );
+                        }
+                        RDPargument.append( wxT(" ") + getHostname() );
+                        wxExecute( RDPargument );
+                    #elif(__WXMSW__)
+                        wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
+                    #endif
+                }
             break;
             case ConnectionType::SSH:
                 if ( settings->getSSHExec().empty() == false ) {

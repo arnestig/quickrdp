@@ -37,7 +37,7 @@ Settings::Settings()
     #if defined(__WXMSW__)
         RDPExec = wxT("mstsc ");
     #elif defined(__UNIX__)
-        RDPExec = wxT("tsclient -x ");
+        RDPExec = wxT("rdesktop ");
     #endif
 
     // settings path
