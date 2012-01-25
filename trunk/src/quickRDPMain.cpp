@@ -114,7 +114,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
     wxMenuItem* MenuItem18;
-    
+
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -207,7 +207,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem19->Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
     PopupMenu1.Append(POPUPMENURDP, _("RDP"), MenuItem19, wxEmptyString);
     BoxSizer1->SetSizeHints(this);
-    
+
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
@@ -255,12 +255,14 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     last_column_click = 0;
 
     loadRDPFromDatabase();
+    loadFrameSettings();
 }
 
 quickRDPFrame::~quickRDPFrame()
 {
     //(*Destroy(quickRDPFrame)
     //*)
+    saveFrameSettings();
 }
 
 void quickRDPFrame::OnQuit(wxCommandEvent& event)
@@ -388,22 +390,6 @@ void quickRDPFrame::loadRDPFromDatabase()
             ListCtrl1->SetItem( itemIndexCounter, 5, curRDP->getComment() );
             itemIndexCounter++;
         }
-    }
-
-    if ( ListCtrl1->GetItemCount() > 0 ) {
-        ListCtrl1->SetColumnWidth( 0, wxLIST_AUTOSIZE );
-        ListCtrl1->SetColumnWidth( 1, 90 );
-        ListCtrl1->SetColumnWidth( 2, 100 );
-        ListCtrl1->SetColumnWidth( 3, 100 );
-        ListCtrl1->SetColumnWidth( 4, 70 );
-        ListCtrl1->SetColumnWidth( 5, 110 );
-    } else {
-        ListCtrl1->SetColumnWidth( 0, 80 );
-        ListCtrl1->SetColumnWidth( 1, 123 );
-        ListCtrl1->SetColumnWidth( 2, 100 );
-        ListCtrl1->SetColumnWidth( 3, 100 );
-        ListCtrl1->SetColumnWidth( 4, 82 );
-        ListCtrl1->SetColumnWidth( 5, 107 );
     }
 }
 
@@ -825,4 +811,33 @@ void quickRDPFrame::execute_connections()
             rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
         }
     }
+}
+
+void quickRDPFrame::saveFrameSettings()
+{
+    Settings* settings = Resources::Instance()->getSettings();
+    settings->setMainFrameHeight( GetSize().GetHeight() );
+    settings->setMainFrameWidth( GetSize().GetWidth() );
+    settings->setColumn0Width( ListCtrl1->GetColumnWidth( 0 ) );
+    settings->setColumn1Width( ListCtrl1->GetColumnWidth( 1 ) );
+    settings->setColumn2Width( ListCtrl1->GetColumnWidth( 2 ) );
+    settings->setColumn3Width( ListCtrl1->GetColumnWidth( 3 ) );
+    settings->setColumn4Width( ListCtrl1->GetColumnWidth( 4 ) );
+    settings->setColumn5Width( ListCtrl1->GetColumnWidth( 5 ) );
+    settings->saveSettings();
+}
+
+void quickRDPFrame::loadFrameSettings()
+{
+    Settings* settings = Resources::Instance()->getSettings();
+    /** frames size **/
+    SetSize( wxDefaultCoord, wxDefaultCoord, settings->getMainFrameWidth(), settings->getMainFrameHeight() );
+
+    /** column widths **/
+    ListCtrl1->SetColumnWidth( 0, settings->getColumn0Width() );
+    ListCtrl1->SetColumnWidth( 1, settings->getColumn1Width() );
+    ListCtrl1->SetColumnWidth( 2, settings->getColumn2Width() );
+    ListCtrl1->SetColumnWidth( 3, settings->getColumn3Width() );
+    ListCtrl1->SetColumnWidth( 4, settings->getColumn4Width() );
+    ListCtrl1->SetColumnWidth( 5, settings->getColumn5Width() );
 }
