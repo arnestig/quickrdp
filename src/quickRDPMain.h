@@ -139,6 +139,9 @@ class quickRDPFrame: public wxFrame
         void clearPopupMenuChoices();
         void execute_connections();
 
+        void saveFrameSettings();
+        void loadFrameSettings();
+
         DECLARE_EVENT_TABLE()
 };
 

@@ -55,15 +55,14 @@ namespace FileParser
         return wxT("");
     };
 
-    inline wxString getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
+    inline int getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
     {
-        for ( size_t index = 0; index < file.size(); index++ ) {
-            int searchRet = file[ index ].Find( searchPattern );
-            if ( searchRet != wxNOT_FOUND ) {
-                return file[ index ].SubString( searchPattern.Len(), file[ index ].Len() );
-            }
+        wxString retVal = getStringFromFile( searchPattern, file );
+        if ( retVal == wxT("") ) {
+            return 0;
+        } else {
+            return wxAtoi( retVal );
         }
-        return wxT("0");
     };
 
     inline wxString getRealArgumentString( wxString argument, RDPConnection* connection )
