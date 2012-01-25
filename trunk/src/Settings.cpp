@@ -106,7 +106,7 @@ wxString Settings::getDataPath() const
 void Settings::saveSettings()
 {
     std::ofstream ofile;
-    ofile.open( wxString( Resources::Instance()->getSettings()->getSettingsPath() + wxT("settings") ).mb_str(), std::ios::out|std::ios::binary );
+    ofile.open( wxString( getSettingsPath() + wxT("settings") ).mb_str(), std::ios::out|std::ios::binary );
 
     FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
     FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
@@ -131,61 +131,67 @@ void Settings::loadSettings()
 {
     wxString filename( getSettingsPath() + wxT("settings") );
 
-    if ( wxFileExists( filename ) == true ) {
-        std::ifstream rfile;
-
-        rfile.open( filename.mb_str(), std::ios::in|std::ios::binary );
-
-        rfile.seekg (0, std::ios::end);
-        int length = rfile.tellg();
-        rfile.seekg (0, std::ios::beg);
-
-        if (length == -1) {
-            return;
-        }
-        std::string inputData;
-
-        if (length > 0) {
-            char *buffer;
-            buffer = new char [length];
-            std::vector<wxString> allLines;
-            while ( getline(rfile,inputData) ) {
-                wxString input( inputData.c_str(), wxConvUTF8 );
-                input.Replace(wxT("\r"),wxT(""));
-                input.Replace(wxT("\n"),wxT(""));
-                allLines.push_back( input );
-            }
-            delete[] buffer;
-            setTelnetExec( FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
-            setSSHExec( FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
-            setPerlExec( FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
-            setTelnetArgument( FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
-            setSSHArgument( FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
-            setPerlArgument( FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
-
-            setMainFrameHeight( wxAtoi( FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
-            setMainFrameWidth( wxAtoi( FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
-
-            int col0width = FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
-            col0width == 0 ? setColumn0Width( 80 ) : setColumn0Width( col0width );
-
-            int col1width = FileParser::getIntegerFromFile( wxT("column1width:i:"), allLines );
-            col1width == 0 ? setColumn1Width( 123 ) : setColumn1Width( col1width );
-
-            int col2width = FileParser::getIntegerFromFile( wxT("column2width:i:"), allLines );
-            col2width == 0 ? setColumn2Width( 100 ) : setColumn2Width( col2width );
-
-            int col3width = FileParser::getIntegerFromFile( wxT("column3width:i:"), allLines );
-            col3width == 0 ? setColumn3Width( 100 ) : setColumn3Width( col3width );
-
-            int col4width = FileParser::getIntegerFromFile( wxT("column4width:i:"), allLines );
-            col4width == 0 ? setColumn4Width( 82 ) : setColumn4Width( col4width );
-
-            int col5width = FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
-            col5width == 0 ? setColumn5Width( 107 ) : setColumn5Width( col5width );
-        }
-        rfile.close();
+    /** make sure our settings file exist, even if it's empty ;) **/
+    if ( wxFileExists( filename ) == false ) {
+        std::ofstream ofile;
+        ofile.open( filename.mb_str(), std::ios::out|std::ios::binary );
+        FileParser::writeLineToFile( ofile, wxT("" ) );
+        ofile.close();
     }
+
+    std::ifstream rfile;
+
+    rfile.open( filename.mb_str(), std::ios::in|std::ios::binary );
+
+    rfile.seekg (0, std::ios::end);
+    int length = rfile.tellg();
+    rfile.seekg (0, std::ios::beg);
+
+    if (length == -1) {
+        return;
+    }
+    std::string inputData;
+
+    if (length > 0) {
+        char *buffer;
+        buffer = new char [length];
+        std::vector<wxString> allLines;
+        while ( getline(rfile,inputData) ) {
+            wxString input( inputData.c_str(), wxConvUTF8 );
+            input.Replace(wxT("\r"),wxT(""));
+            input.Replace(wxT("\n"),wxT(""));
+            allLines.push_back( input );
+        }
+        delete[] buffer;
+        setTelnetExec( FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
+        setSSHExec( FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
+        setPerlExec( FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
+        setTelnetArgument( FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
+        setSSHArgument( FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
+        setPerlArgument( FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
+
+        setMainFrameHeight( wxAtoi( FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
+        setMainFrameWidth( wxAtoi( FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
+
+        int col0width = FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
+        col0width == 0 ? setColumn0Width( 80 ) : setColumn0Width( col0width );
+
+        int col1width = FileParser::getIntegerFromFile( wxT("column1width:i:"), allLines );
+        col1width == 0 ? setColumn1Width( 90 ) : setColumn1Width( col1width );
+
+        int col2width = FileParser::getIntegerFromFile( wxT("column2width:i:"), allLines );
+        col2width == 0 ? setColumn2Width( 100 ) : setColumn2Width( col2width );
+
+        int col3width = FileParser::getIntegerFromFile( wxT("column3width:i:"), allLines );
+        col3width == 0 ? setColumn3Width( 87 ) : setColumn3Width( col3width );
+
+        int col4width = FileParser::getIntegerFromFile( wxT("column4width:i:"), allLines );
+        col4width == 0 ? setColumn4Width( 82 ) : setColumn4Width( col4width );
+
+        int col5width = FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
+        col5width == 0 ? setColumn5Width( 107 ) : setColumn5Width( col5width );
+    }
+    rfile.close();
 }
 
 wxString Settings::getRDPExec( bool useAdminString ) const
