@@ -7,6 +7,7 @@ PROGNAME=quickrdp
 CXX = g++
 LDFLAGS =
 INSTALL = install -s
+INSTALL_DATA = install
 CFLAGS = -O2 -g -Wall $(shell wx-config --cxxflags)
 LIBS = $(shell wx-config --libs)
 
@@ -37,7 +38,7 @@ install:
 	test -d $(DESTDIR)/usr/share/$(PROGNAME)/data || mkdir -p $(DESTDIR)/usr/share/$(PROGNAME)/data
 	test -d $(DESTDIR)/usr/bin || mkdir -p $(DESTDIR)/usr/bin
 	$(INSTALL) -m 0755 $(PROGNAME) $(DESTDIR)/usr/bin
-	$(INSTALL) -m 0644 data/*.* $(DESTDIR)/usr/share/$(PROGNAME)/data
+	$(INSTALL_DATA) -m 0644 data/*.* $(DESTDIR)/usr/share/$(PROGNAME)/data
 
 uninstall:
 	rm -rf $(DESTDIR)/usr/share/$(PROGNAME)
