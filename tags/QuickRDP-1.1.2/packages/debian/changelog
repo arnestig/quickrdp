@@ -1,0 +1,5 @@
+quickrdp (1.1.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #655156)
+
+ -- Tobias Eliasson <arnestig@gmail.com>  Sun, 08 Jan 2012 18:56:14 +0100
