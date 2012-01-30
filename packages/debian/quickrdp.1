@@ -30,24 +30,24 @@ This manual page documents briefly describes
 .\" respectively.
 \fBquickrdp\fP is a connection manager program for your remote desktop, telnet
 or SSH connections. Makes it easy to keep track of all your connections.
-Write your own perl scripts and execute them on your connections,
+Write your own Perl scripts and execute them on your connections,
 connect to all hosts selected with one command, easily locate your
 connections with a simple search bar.
 
 Used with your own favorite RDP, SSH or telnet application, tailor the
 arguments passed to the program of your choice to gain the most of QuickRDP.
 .PP
-\fBExternal applications and command-line arguments\fP
+\fBExternal applications and command\(hyline arguments\fP
 .br
 Remote desktop connections are currently executed by tsclient, only the connection file is passed as argument to tsclient when executing an RDP connection.
-SSH and telnet connections uses specific command settings when executing. What commands and arguments are being executed can be customized under \fBSettings -> Preferences\fP.
-Commandline-arguments sent to the telnet and ssh application will be parsed before sent.
+SSH and telnet connections uses specific command settings when executing. What commands and arguments are being executed can be customized under \fBSettings \-> Preferences\fP.
+Commandline\(hyarguments sent to the telnet and ssh application will be parsed before sent.
 
-Example: A connection with hostname \fItelnet.example.com\fP and username \fIfoobar\fP connecting with the argument string \fB"-telnet %username%@%hostname%"\fP would expand to \fB"-telnet foobar@telnet.example.com"\fP.
+Example: A connection with hostname \fItelnet.example.com\fP and username \fIfoobar\fP connecting with the argument string \fB"\-telnet %username%@%hostname%"\fP would expand to \fB"\-telnet foobar@telnet.example.com"\fP.
 
 To avoid expanding part of the argument if a specific string is \fBempty\fP you can define this using brackets '{' and '}'.
 
-Example: A connection without a password would expand the following argument \fB"-ssh {%username%@}%hostname%{ -pw %password%}"\fP to this: \fB"-ssh foobar@ssh.example.com"\fP.
+Example: A connection without a password would expand the following argument \fB"\-ssh {%username%@}%hostname%{ \-pw %password%}"\fP to this: \fB"\-ssh foobar@ssh.example.com"\fP.
 .TP
 Following strings can be used:
 .IP \bu
@@ -58,19 +58,6 @@ Following strings can be used:
 %username%
 .br
 %password%
-
-.SH OPTIONS
-These programs follow the usual GNU command line syntax, with long options
-starting with two dashes (`-'). A summary of options for the \fBquickrdp\fP
-command is included below.
-
-.TP
-.B -h, --help
-display this help and exit
-
-.TP
-.B -v, --version
-output version information and exit
 
 .SH AUTHOR
 This manual page was written by Tobias Eliasson <arnestig@gmail.com>.
