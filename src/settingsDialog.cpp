@@ -196,7 +196,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
     #if defined(__WXMSW__)
         FileDialog2->SetWildcard( wxT("Perl (perl.exe)|perl.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
-        FileDialog2->SetWildcard( wxT("Gnome terminal (gnome-terminal)|gnome-terminal|All files (*)|*"));
+        FileDialog1->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
         FileDialog2->SetDirectory( wxT("/usr/bin" ) );
     #endif
 
@@ -204,7 +204,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
     #if defined(__WXMSW__)
         FileDialog1->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
-        FileDialog1->SetWildcard( wxT("Gnome terminal (gnome-terminal)|gnome-terminal|All files (*)|*"));
+        FileDialog1->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
         FileDialog1->SetDirectory( wxT("/usr/bin" ) );
     #endif
 
@@ -212,7 +212,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
     #if defined(__WXMSW__)
         FileDialog3->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
-        FileDialog3->SetWildcard( wxT("Gnome terminal (gnome-terminal)|gnome-terminal|All files (*)|*"));
+        FileDialog1->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
         FileDialog3->SetDirectory( wxT("/usr/bin" ) );
     #endif
 
