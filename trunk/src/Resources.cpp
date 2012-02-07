@@ -24,7 +24,7 @@
 Resources* Resources::instance = NULL;
 
 Resources::Resources()
-    :   version( wxT("QuickRDP 1.1.2") ),
+    :   version( wxT("QuickRDP 1.1.3") ),
         settings( NULL ),
         conDatabase( NULL ),
         perlDatabase( NULL )

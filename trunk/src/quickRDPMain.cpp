@@ -395,6 +395,12 @@ void quickRDPFrame::loadRDPFromDatabase()
 
 void quickRDPFrame::clearListCtrl()
 {
+    /** save the column with that we use before clearing the list **/
+    int columnWidth[6];
+    for ( int colId = 0; colId < 6; ++colId ) {
+        columnWidth[ colId ] = ListCtrl1->GetColumnWidth( colId );
+    }
+
     ListCtrl1->ClearAll();
     ListCtrl1->InsertColumn( 0, wxT("Host") );
     ListCtrl1->InsertColumn( 1, wxT("Username") );
@@ -402,6 +408,12 @@ void quickRDPFrame::clearListCtrl()
     ListCtrl1->InsertColumn( 3, wxT("Use console") );
     ListCtrl1->InsertColumn( 4, wxT("Resolution") );
     ListCtrl1->InsertColumn( 5, wxT("Comment") );
+
+    /** restore the column width **/
+    for ( int colId = 0; colId < 6; ++colId ) {
+        ListCtrl1->SetColumnWidth( colId, columnWidth[ colId ] );
+    }
+
 }
 
 void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
