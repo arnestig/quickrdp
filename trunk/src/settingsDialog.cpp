@@ -200,7 +200,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
         FileDialog2->SetDirectory( wxT("/usr/bin" ) );
     #endif
 
-	/** set the telnet file dialog for perl depending on windows or linux **/
+	/** set the telnet file dialog for telnet depending on windows or linux **/
     #if defined(__WXMSW__)
         FileDialog1->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
@@ -208,7 +208,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
         FileDialog1->SetDirectory( wxT("/usr/bin" ) );
     #endif
 
-	/** set the ssh file dialog for perl depending on windows or linux **/
+	/** set the ssh file dialog for ssh depending on windows or linux **/
     #if defined(__WXMSW__)
         FileDialog3->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
