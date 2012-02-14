@@ -1,7 +1,7 @@
 aaaa ICON "data/QuickRDP.ico"
 
 #ifndef PRODUCTVERSION_STR
-#define PRODUCTVERSION_STR "1.1.3"
+#define PRODUCTVERSION_STR "1.1.4"
 #endif
 
 1 VERSIONINFO
