@@ -1,0 +1,26 @@
+aaaa ICON "data/QuickRDP.ico"
+
+#ifndef PRODUCTVERSION_STR
+#define PRODUCTVERSION_STR "1.1.4"
+#endif
+
+1 VERSIONINFO
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"
+    BEGIN
+      VALUE "CompanyName", "Tobias Eliasson"
+      VALUE "FileDescription", "Manages RDP, telnet and SSH connections"
+      VALUE "LegalCopyright", "Copyright © 2010-2012 Tobias Eliasson"
+      VALUE "OriginalFilename", "QuickRDP.exe"
+      VALUE "ProductName", "QuickRDP"
+      VALUE "ProductVersion", PRODUCTVERSION_STR
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252
+  END
+END
+#include "wx/msw/wx.rc"
