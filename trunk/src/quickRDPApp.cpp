@@ -38,7 +38,7 @@ bool quickRDPApp::OnInit()
     {
     	quickRDPFrame* Frame = new quickRDPFrame(0);
         #if defined(__UNIX__)
-            SetIcon( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("quickrdp.xpm") ) );
+            Frame->SetIcon( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("quickrdp.xpm") ) );
         #else
             Frame->SetIcon(wxICON(aaaa));
         #endif
