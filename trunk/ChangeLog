@@ -1,3 +1,7 @@
+quickrdp 1.1.4 - 2011-02-14
+-------------------------
+ * Frame icon is now properly displayed on Windows system. This was previously not displayed correctly in the top left frame corner and in the task manager for example.
+
 quickrdp 1.1.3 - 2011-02-08
 -------------------------
  * Column widths are not ignored and autosized after searching for a connection any longer.
