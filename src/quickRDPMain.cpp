@@ -251,7 +251,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BitmapButton4->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("network-workgroup.png") ) ) );
     BitmapButton4->SetBitmapDisabled(wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("network-workgroup-disabled.png"))));
 
-	SetIcon( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("quickrdp.xpm") ) );
     last_column_click = 0;
 
     loadRDPFromDatabase();
