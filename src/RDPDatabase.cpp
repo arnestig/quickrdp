@@ -395,13 +395,10 @@ void RDPConnection::parseFile()
 bool RDPConnection::doesRDPHasString( wxString searchString ) const
 {
     bool foundAnything = false;
-
-    if ( getUsername().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getDomain().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getHostname().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getHostname().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getComment().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-
+    if ( FileParser::searchForString( std::string( getUsername().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getDomain().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getHostname().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getComment().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
     return foundAnything;
 }
 ///END RDPConnection
