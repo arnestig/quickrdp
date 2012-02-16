@@ -96,6 +96,44 @@ namespace FileParser
         argument.Replace( wxT("%password%"), connection->getPassword() );
         return argument;
     }
+
+    inline bool searchForString( std::string str, std::string pattern )
+    {
+        /** locate our first wildcard (if any) **/
+        size_t wildcardPos = pattern.find( "*" );
+        size_t foundPos = 0;
+
+        /** load up our pattern list with the first word. **/
+        foundPos = str.find( pattern.substr( 0, wildcardPos ), foundPos );
+        if ( foundPos == std::string::npos ) {
+            return false;
+        }
+
+        while ( wildcardPos != std::string::npos )
+        {
+            std::string substring = "";
+            wildcardPos++;
+
+            /** locate our wildcards and get the subpatterns between them **/
+            size_t nextWildcard = pattern.find( "*", wildcardPos );
+            if ( nextWildcard == std::string::npos ) {
+                substring = pattern.substr( wildcardPos, nextWildcard );
+            } else {
+                substring = pattern.substr( wildcardPos, nextWildcard-wildcardPos );
+            }
+
+            /** now search the string using the pattern we found **/
+            foundPos = str.find( substring, foundPos );
+            if ( foundPos == std::string::npos ) {
+                return false;
+            }
+
+            wildcardPos = pattern.find( "*", wildcardPos );
+        }
+
+        return true;
+    }
+
 }
 
 #endif
