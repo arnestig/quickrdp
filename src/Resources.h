@@ -31,7 +31,6 @@ class Resources
     public:
         static Resources* Instance();
 
-        wxString getVersion() const;
         Settings* getSettings() const;
         RDPDatabase* getConDatabase() const;
         PerlDatabase* getPerlDatabase() const;
@@ -41,7 +40,6 @@ class Resources
         Resources();
         Resources( Resources const& ) {};
 
-        wxString version;
         Settings *settings;
         RDPDatabase *conDatabase;
         PerlDatabase *perlDatabase;

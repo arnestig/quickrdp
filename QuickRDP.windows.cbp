@@ -68,6 +68,7 @@
 			<Add option="-D__GNUWIN32__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-DSVN_REVISION=0" />
 			<Add directory="$(#wx)\include" />
 			<Add directory="$(#wx)\contrib\include" />
 		</Compiler>
@@ -119,6 +120,7 @@
 		<Unit filename="src\resourcesTabPanel.h" />
 		<Unit filename="src\settingsDialog.cpp" />
 		<Unit filename="src\settingsDialog.h" />
+		<Unit filename="src\version.h" />
 		<Unit filename="src\windowTabPanel.cpp" />
 		<Unit filename="src\windowTabPanel.h" />
 		<Extensions>

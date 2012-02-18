@@ -29,6 +29,7 @@
 			<Add option="-Wall" />
 			<Add option="`wx-config --cflags`" />
 			<Add option="-DwxUSE_UNICODE" />
+			<Add option="-DSVN_REVISION=0" />
 			<Add directory="$(#wx)/include" />
 			<Add directory="$(#wx)/contrib/include" />
 		</Compiler>
