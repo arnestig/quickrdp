@@ -23,7 +23,7 @@ endif
 
 INCLUDE_DIR=
 DEFAULT_DEFINE=-DDATA_PATH=\"$(DESTDIR)/usr/share/$(PROGNAME)/\" 
-SVN_REVISION=-DSVN_REVISION=0
+SVN_DEFINE=-DSVN_REVISION=0
 
 OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 
@@ -37,7 +37,7 @@ $(PROGNAME): $(OBJFILES)
 
 obj/%.o: src/%.cpp 
 	@mkdir -p obj
-	$(CXX) -c $< -o $@ $(CFLAGS) $(LIBS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_REVISION)
+	$(CXX) -c $< -o $@ $(CFLAGS) $(LIBS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_DEFINE)
 
 clean:
 	rm -f $(OBJFILES) $(PROGNAME)
