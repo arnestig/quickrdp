@@ -1,7 +1,3 @@
-ifndef CFG
-CFG=release
-endif
-
 PROGNAME=quickrdp
 
 CXX = g++
@@ -27,6 +23,7 @@ endif
 
 INCLUDE_DIR=
 DEFAULT_DEFINE=-DDATA_PATH=\"$(DESTDIR)/usr/share/$(PROGNAME)/\" 
+SUBVERSION_REV=-DSUBVERSION_REV=0
 
 OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 
@@ -40,7 +37,7 @@ $(PROGNAME): $(OBJFILES)
 
 obj/%.o: src/%.cpp 
 	@mkdir -p obj
-	$(CXX) -c $< -o $@ $(CFLAGS) $(LIBS) $(INCLUDE_DIR) $(DEFAULT_DEFINE)
+	$(CXX) -c $< -o $@ $(CFLAGS) $(LIBS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SUBVERSION_REV)
 
 clean:
 	rm -f $(OBJFILES) $(PROGNAME)

@@ -8,12 +8,11 @@
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
 					<object class="wxBoxSizer" variable="BoxSizer2" member="no">
-						<orient>wxVERTICAL</orient>
 						<object class="sizeritem">
 							<object class="wxBoxSizer" variable="BoxSizer4" member="no">
 								<object class="sizeritem">
 									<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="StaticBitmap1" member="yes">
-										<size>64,64</size>
+										<size>256,256</size>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -27,18 +26,37 @@
 							<object class="wxBoxSizer" variable="BoxSizer3" member="no">
 								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
-									<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-										<label>QuickRDP x.x</label>
-										<font>
-											<size>16</size>
-											<style>normal</style>
-											<weight>bold</weight>
-											<underlined>0</underlined>
-											<family>swiss</family>
-											<face>Sans</face>
-										</font>
+									<object class="wxBoxSizer" variable="BoxSizer7" member="no">
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+												<label>QuickRDP</label>
+												<fg>#292929</fg>
+												<font>
+													<size>18</size>
+													<style>normal</style>
+													<weight>bold</weight>
+													<underlined>0</underlined>
+													<family>swiss</family>
+													<face>Arial</face>
+												</font>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										</object>
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT8" variable="VersionText" member="yes">
+												<label>Version</label>
+											</object>
+											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
 									</object>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+								</object>
+								<object class="spacer">
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
@@ -58,9 +76,8 @@
 											<face>Sans</face>
 										</font>
 									</object>
-									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
-									<option>1</option>
 								</object>
 								<object class="sizeritem">
 									<object class="wxBoxSizer" variable="BoxSizer6" member="no">
@@ -87,7 +104,6 @@
 								</object>
 								<object class="spacer">
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-									<option>1</option>
 								</object>
 								<object class="sizeritem">
 									<object class="wxBoxSizer" variable="BoxSizer5" member="no">
@@ -98,7 +114,6 @@
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
-											<option>1</option>
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
@@ -108,7 +123,6 @@
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
-											<option>1</option>
 										</object>
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

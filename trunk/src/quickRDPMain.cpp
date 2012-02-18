@@ -27,6 +27,7 @@
 #include "FileParser.h"
 #include "Resources.h"
 #include "perlDialog.h"
+#include "version.h"
 
 #include <wx/msgdlg.h>
 #include <memory>
@@ -240,7 +241,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     perlMenu = new wxMenu();
     PopupMenu1.AppendSubMenu( perlMenu, wxT("Perl") );
 
-    SetTitle( Resources::Instance()->getVersion() );
+    SetTitle( Version::getShortVersion() );
 
     /** set our button images **/
     BitmapButton1->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("document-new.png") ) ) );
@@ -272,7 +273,7 @@ void quickRDPFrame::OnQuit(wxCommandEvent& event)
 void quickRDPFrame::OnAbout(wxCommandEvent& event)
 {
     aboutDialog *about = new aboutDialog( this, 0 );
-    about->StaticText1->SetLabel( Resources::Instance()->getVersion() );
+    about->VersionText->SetLabel( Version::getLongVersion() );
     about->ShowModal();
     delete about;
 }
