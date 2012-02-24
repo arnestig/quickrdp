@@ -71,6 +71,9 @@ class quickRDPFrame: public wxFrame
         void OnPopupMenuPing(wxCommandEvent& event);
         void OnMenuPerlScripts(wxCommandEvent& event);
         void OnMenuItemConnect(wxCommandEvent& event);
+        void OnListCtrlKeyDown(wxListEvent& event);
+        void OnPopupMenuDuplicate(wxCommandEvent& event);
+        void OnPopupMenuDelete(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnPerlScriptSelected(wxCommandEvent& event);
@@ -87,6 +90,8 @@ class quickRDPFrame: public wxFrame
         static const long idMenuPreferences;
         static const long POPUPMENUCONNECT;
         static const long ID_POPUPMENUPROPERTIES;
+        static const long ID_POPUPMENU_DUPLICATE;
+        static const long ID_POPUPMENU_DELETE;
         static const long ID_POPUPMENU_PING;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;

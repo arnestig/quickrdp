@@ -76,6 +76,8 @@ const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
+const long quickRDPFrame::ID_POPUPMENU_DUPLICATE = wxNewId();
+const long quickRDPFrame::ID_POPUPMENU_DELETE = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_PING = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
 const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
@@ -109,9 +111,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
     wxMenu* Menu1;
+    wxMenuItem* MenuItem20;
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
+    wxMenuItem* MenuItem21;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
     wxMenuItem* MenuItem18;
@@ -177,8 +181,12 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     SetMenuBar(MenuBar1);
     MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem17);
-    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties\tCTRL+P"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
+    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate\tCTRL+D"), wxEmptyString, wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem20);
+    MenuItem21 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DELETE, _("Delete\tDEL"), wxEmptyString, wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem21);
     PopupMenu1.AppendSeparator();
     MenuItem18 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_PING, _("Ping"), _("Starts a continuous ping session towards the target"), wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem18);
@@ -219,6 +227,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemDeselect);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemActivated);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
+    Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_KEY_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnListCtrlKeyDown);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
     Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
@@ -226,6 +235,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(POPUPMENUCONNECT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnect);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
+    Connect(ID_POPUPMENU_DUPLICATE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDuplicate);
+    Connect(ID_POPUPMENU_DELETE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDelete);
     Connect(ID_POPUPMENU_PING,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuPing);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
     Connect(ID_MENUDEFAULT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemDefaultClick);
@@ -316,12 +327,14 @@ void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
-        rdpDatabase->deleteRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        loadRDPFromDatabase();
-        if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
-            BitmapButton2->Disable();
-            BitmapButton3->Disable();
-            BitmapButton4->Disable();
+        if ( wxMessageBox( wxT("Are you sure you want to delete this connection?"), wxT("Delete this connection?"), wxYES_NO ) == wxYES ) {
+            rdpDatabase->deleteRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+            loadRDPFromDatabase();
+            if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
+                BitmapButton2->Disable();
+                BitmapButton3->Disable();
+                BitmapButton4->Disable();
+            }
         }
     }
 }
@@ -852,4 +865,31 @@ void quickRDPFrame::loadFrameSettings()
     ListCtrl1->SetColumnWidth( 3, settings->getColumn3Width() );
     ListCtrl1->SetColumnWidth( 4, settings->getColumn4Width() );
     ListCtrl1->SetColumnWidth( 5, settings->getColumn5Width() );
+}
+
+void quickRDPFrame::OnListCtrlKeyDown(wxListEvent& event)
+{
+    /** our keybindings for our popupmenu.. or accelerators if you wish. **/
+    wxCommandEvent ourEvent;
+    switch ( event.GetKeyCode() ) {
+        case 80:      /** 'P' key - open properties **/
+            if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
+        break;
+        case 68:      /** 'D' key - duplicate connection **/
+            if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
+        break;
+        case 127:     /** 'DEL' key - delete connection **/
+            OnDeleteButtonClick( ourEvent );
+        break;
+    }
+}
+
+void quickRDPFrame::OnPopupMenuDuplicate(wxCommandEvent& event)
+{
+    OnDuplicateButtonClick( event );
+}
+
+void quickRDPFrame::OnPopupMenuDelete(wxCommandEvent& event)
+{
+    OnDeleteButtonClick( event );
 }
