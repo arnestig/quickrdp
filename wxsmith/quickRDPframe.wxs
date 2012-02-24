@@ -95,6 +95,7 @@
 								<handler function="OnListCtrl1ItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
 								<handler function="OnListCtrl1ItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
 								<handler function="OnListCtrl1ItemRClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
+								<handler function="OnListCtrlKeyDown" entry="EVT_LIST_KEY_DOWN" />
 								<handler function="OnListCtrl1ColumnClick" entry="EVT_LIST_COL_CLICK" />
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -146,7 +147,16 @@
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUPROPERTIES" variable="MenuItem3" member="yes">
 				<label>Properties</label>
+				<accel>CTRL+P</accel>
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />
+			</object>
+			<object class="wxMenuItem" name="ID_POPUPMENU_DUPLICATE" variable="MenuItem20" member="yes">
+				<label>Duplicate</label>
+				<accel>CTRL+D</accel>
+			</object>
+			<object class="wxMenuItem" name="ID_POPUPMENU_DELETE" variable="MenuItem21" member="yes">
+				<label>Delete</label>
+				<accel>DEL</accel>
 			</object>
 			<object class="separator" />
 			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
