@@ -1,3 +1,7 @@
+quickrdp 1.1.5 - 2011-02-26
+-------------------------
+ * Fixed bug on Linux causing passwords for RDP connections being displayed as the title of the connection if no the connection has no comment.
+
 quickrdp 1.1.4 - 2011-02-14
 -------------------------
  * Frame icon is now properly displayed on Windows system. This was previously not displayed correctly in the top left frame corner and in the task manager for example.

@@ -279,7 +279,11 @@ void RDPConnection::connect()
                             RDPargument.append( wxT(" -r:off" ) );
                         }
                         ///window caption
-                        RDPargument.append( wxT(" -T") + getComment() );
+						if ( getComment().empty() == true ) {
+							RDPargument.append( wxT(" -T") + getHostname() );
+						} else {
+							RDPargument.append( wxT(" -T") + getComment() );
+						}
                         ///client hostname
                         if ( getClientHostname().empty() == false ) {
                             RDPargument.append( wxT(" -n") + getClientHostname() );
