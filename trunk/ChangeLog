@@ -1,6 +1,8 @@
-quickrdp 1.1.5 - 2011-02-26
+quickrdp 1.1.5 - 2011-02-28
 -------------------------
- * Fixed bug on Linux causing passwords for RDP connections being displayed as the title of the connection if no the connection has no comment.
+ * Fixed bug on Linux causing passwords for RDP connections being displayed as the title of the connection if the connection has no comment.
+ * Wildcard searches using '*' is now possible. Searching for Farm*-Citrix will return matches on both Farm06-Citrix-32 and Farm8-Citrix-64
+ * Shortcuts or accelerators are now added. Ctrl+P will bring up properties of a connection. Ctrl+D will duplicate, etc.. These can be seen when right-clicking on a connection.
 
 quickrdp 1.1.4 - 2011-02-14
 -------------------------
