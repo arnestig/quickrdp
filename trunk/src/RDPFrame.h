@@ -66,7 +66,6 @@ class RDPFrame: public wxDialog
 		//(*Identifiers(RDPFrame)
 		static const long ID_NOTEBOOK1;
 		static const long ID_BUTTON1;
-		static const long ID_BUTTON2;
 		static const long ID_PANEL1;
 		//*)
 
