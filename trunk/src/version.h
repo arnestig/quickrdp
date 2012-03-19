@@ -28,7 +28,7 @@
 
 namespace Version {
 	static wxString name = wxT("QuickRDP");
-	static wxString version = wxT("1.1.5");
+	static wxString version = wxT("1.1.6");
 
 	inline wxString getShortVersion()
 	{
