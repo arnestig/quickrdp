@@ -32,7 +32,6 @@
 //(*IdInit(RDPFrame)
 const long RDPFrame::ID_NOTEBOOK1 = wxNewId();
 const long RDPFrame::ID_BUTTON1 = wxNewId();
-const long RDPFrame::ID_BUTTON2 = wxNewId();
 const long RDPFrame::ID_PANEL1 = wxNewId();
 //*)
 
@@ -63,7 +62,7 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	Button1 = new wxButton(Panel1, ID_BUTTON1, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	Button1->Disable();
 	BoxSizer3->Add(Button1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button2 = new wxButton(Panel1, ID_BUTTON2, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	Button2 = new wxButton(Panel1, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer3->Add(Button2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	Panel1->SetSizer(BoxSizer2);
@@ -74,7 +73,7 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	BoxSizer1->SetSizeHints(this);
 
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onSaveClick);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onCloseClick);
+	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&RDPFrame::onCloseClick);
 	Connect(wxID_ANY,wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&RDPFrame::OnClose);
 	//*)
 	generalTab = new generalTabPanel( Notebook1, wxID_ANY );
