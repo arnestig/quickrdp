@@ -37,7 +37,7 @@
 			<Add directory="$(#wx)/include" />
 		</ResourceCompiler>
 		<Linker>
-			<Add option="`wx-config --libs`" />
+			<Add option="`wx-config --libs base,core,adv`" />
 		</Linker>
 		<Unit filename="src/FileParser.h" />
 		<Unit filename="src/PerlDatabase.cpp" />
