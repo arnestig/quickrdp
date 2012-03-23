@@ -74,6 +74,7 @@ class quickRDPFrame: public wxFrame
         void OnListCtrlKeyDown(wxListEvent& event);
         void OnPopupMenuDuplicate(wxCommandEvent& event);
         void OnPopupMenuDelete(wxCommandEvent& event);
+        void OnMenuCommands(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnPerlScriptSelected(wxCommandEvent& event);
@@ -87,6 +88,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
         static const long idMainMenuPerlScripts;
+        static const long idMenuCommands;
         static const long idMenuPreferences;
         static const long POPUPMENUCONNECT;
         static const long ID_POPUPMENUPROPERTIES;
@@ -117,6 +119,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem14;
         wxMenuItem* MenuItem11;
         wxMenuItem* MenuItem15;
+        wxMenuItem* MenuItem22;
         wxPanel* Panel1;
         wxBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem17;
@@ -126,11 +129,13 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem10;
         wxMenuItem* MenuItem12;
         wxMenuItem* MenuItem3;
+        wxMenuItem* MenuItem20;
         wxMenuItem* MenuItem6;
         wxBitmapButton* BitmapButton4;
         wxTextCtrl* TextCtrl1;
         wxBitmapButton* BitmapButton3;
         wxMenu* MenuItem5;
+        wxMenuItem* MenuItem21;
         wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         //*)
