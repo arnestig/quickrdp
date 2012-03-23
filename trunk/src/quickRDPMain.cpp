@@ -27,6 +27,7 @@
 #include "FileParser.h"
 #include "Resources.h"
 #include "perlDialog.h"
+#include "CommandDialog.h"
 #include "version.h"
 
 #include <wx/msgdlg.h>
@@ -73,6 +74,7 @@ const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
+const long quickRDPFrame::idMenuCommands = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
@@ -111,11 +113,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
     wxMenu* Menu1;
-    wxMenuItem* MenuItem20;
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
-    wxMenuItem* MenuItem21;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
     wxMenuItem* MenuItem18;
@@ -170,6 +170,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu3 = new wxMenu();
     MenuItem16 = new wxMenuItem(Menu3, idMainMenuPerlScripts, _("Perl scripts"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem16);
+    MenuItem22 = new wxMenuItem(Menu3, idMenuCommands, _("Commands"), wxEmptyString, wxITEM_NORMAL);
+    Menu3->Append(MenuItem22);
     Menu3->AppendSeparator();
     MenuItem15 = new wxMenuItem(Menu3, idMenuPreferences, _("Preferences"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem15);
@@ -231,6 +233,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
     Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
+    Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(POPUPMENUCONNECT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnect);
@@ -892,4 +895,11 @@ void quickRDPFrame::OnPopupMenuDuplicate(wxCommandEvent& event)
 void quickRDPFrame::OnPopupMenuDelete(wxCommandEvent& event)
 {
     OnDeleteButtonClick( event );
+}
+
+void quickRDPFrame::OnMenuCommands(wxCommandEvent& event)
+{
+    CommandDialog *commandDlg = new CommandDialog( this, 0 );
+    commandDlg->ShowModal();
+    delete commandDlg;
 }

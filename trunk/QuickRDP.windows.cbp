@@ -21,7 +21,9 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u.a" />
+					<Add library="libwxmsw28u_adv.a" />
+					<Add library="libwxmsw28u_core.a" />
+					<Add library="libwxbase28u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
@@ -44,7 +46,9 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u.a" />
+					<Add library="libwxmsw28u_adv.a" />
+					<Add library="libwxmsw28u_core.a" />
+					<Add library="libwxbase28u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
@@ -92,6 +96,8 @@
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
+		<Unit filename="src\CommandDialog.cpp" />
+		<Unit filename="src\CommandDialog.h" />
 		<Unit filename="src\FileParser.h" />
 		<Unit filename="src\PerlDatabase.cpp" />
 		<Unit filename="src\PerlDatabase.h" />
@@ -137,6 +143,7 @@
 					<wxFrame wxs="wxsmith/quickRDPframe.wxs" src="src/quickRDPMain.cpp" hdr="src/quickRDPMain.h" name="quickRDPFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="src/settingsDialog.cpp" hdr="src/settingsDialog.h" name="settingsDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/perlDialog.wxs" src="src/perlDialog.cpp" hdr="src/perlDialog.h" name="perlDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/CommandDialog.wxs" src="src/CommandDialog.cpp" hdr="src/CommandDialog.h" name="CommandDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

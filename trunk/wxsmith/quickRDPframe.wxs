@@ -124,6 +124,10 @@
 					<label>Perl scripts</label>
 					<handler function="OnMenuPerlScripts" entry="EVT_MENU" />
 				</object>
+				<object class="wxMenuItem" name="idMenuCommands" variable="MenuItem22" member="yes">
+					<label>Commands</label>
+					<handler function="OnMenuCommands" entry="EVT_MENU" />
+				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="idMenuPreferences" variable="MenuItem15" member="yes">
 					<label>Preferences</label>
@@ -153,10 +157,12 @@
 			<object class="wxMenuItem" name="ID_POPUPMENU_DUPLICATE" variable="MenuItem20" member="yes">
 				<label>Duplicate</label>
 				<accel>CTRL+D</accel>
+				<handler function="OnPopupMenuDuplicate" entry="EVT_MENU" />
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DELETE" variable="MenuItem21" member="yes">
 				<label>Delete</label>
 				<accel>DEL</accel>
+				<handler function="OnPopupMenuDelete" entry="EVT_MENU" />
 			</object>
 			<object class="separator" />
 			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
