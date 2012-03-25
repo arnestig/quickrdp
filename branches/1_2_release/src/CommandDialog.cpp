@@ -1,4 +1,6 @@
 #include "CommandDialog.h"
+#include "Resources.h"
+#include <vector>
 
 //(*InternalHeaders(CommandDialog)
 #include <wx/intl.h>
@@ -16,7 +18,6 @@ const long CommandDialog::ID_TEXTCTRL3 = wxNewId();
 const long CommandDialog::ID_BUTTON2 = wxNewId();
 const long CommandDialog::ID_STATICLINE1 = wxNewId();
 const long CommandDialog::ID_LISTBOX1 = wxNewId();
-const long CommandDialog::ID_BUTTON3 = wxNewId();
 const long CommandDialog::ID_BUTTON4 = wxNewId();
 const long CommandDialog::ID_BUTTON5 = wxNewId();
 const long CommandDialog::ID_PANEL1 = wxNewId();
@@ -71,19 +72,17 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer3->Add(BoxSizer6, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveButton = new wxButton(Panel1, ID_BUTTON2, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	saveButton->Disable();
 	BoxSizer7->Add(saveButton, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticLine1 = new wxStaticLine(Panel1, ID_STATICLINE1, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
 	BoxSizer2->Add(StaticLine1, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-	CommandList = new wxListBox(Panel1, ID_LISTBOX1, wxDefaultPosition, wxSize(195,270), 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOX1"));
-	CommandList->Append(_("reboot"));
+	CommandList = new wxListBox(Panel1, ID_LISTBOX1, wxDefaultPosition, wxSize(195,270), 0, 0, wxLB_SORT, wxDefaultValidator, _T("ID_LISTBOX1"));
 	BoxSizer9->Add(CommandList, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer8->Add(BoxSizer9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer10 = new wxBoxSizer(wxVERTICAL);
-	editButton = new wxButton(Panel1, ID_BUTTON3, _("Edit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
-	BoxSizer10->Add(editButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	RemoveButton = new wxButton(Panel1, ID_BUTTON4, _("Remove"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
 	RemoveButton->Disable();
 	BoxSizer10->Add(RemoveButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -100,9 +99,14 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
 
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnNameTextChange);
+	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnSaveButton);
+	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&CommandDialog::OnCommandListClick);
 	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&CommandDialog::OnListDoubleClick);
+	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnRemoveButton);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
 	//*)
+	reloadCommandList();
 }
 
 CommandDialog::~CommandDialog()
@@ -111,6 +115,18 @@ CommandDialog::~CommandDialog()
 	//*)
 }
 
+void CommandDialog::reloadCommandList()
+{
+    CommandList->Clear();
+	std::vector< Command* > commands = Resources::Instance()->getCommandDatabase()->getCommands();
+
+	for ( size_t sId = 0; sId < commands.size(); ++sId ) {
+        CommandList->Append( commands[ sId ]->getName() );
+	}
+    nameTextCtrl->Clear();
+    programTextCtrl->Clear();
+    argumentTextCtrl->Clear();
+}
 
 void CommandDialog::OnCloseButton(wxCommandEvent& event)
 {
@@ -121,11 +137,46 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& event)
 {
     wxString selectedItem = CommandList->GetStringSelection();
     if ( selectedItem != wxT("") ) {
-        nameTextCtrl->SetValue( selectedItem );
+        Command *curCommand = Resources::Instance()->getCommandDatabase()->getCommand( selectedItem );
+        if ( curCommand != NULL ) {
+            nameTextCtrl->SetValue( curCommand->getName() );
+            programTextCtrl->SetValue( curCommand->getProgram() );
+            argumentTextCtrl->SetValue( curCommand->getArgument() );
+        }
     }
 }
 
 void CommandDialog::OnCommandListClick(wxCommandEvent& event)
 {
-    //if ( CommandList->GetCount()  )
+    wxString selectedItem = CommandList->GetStringSelection();
+    if ( selectedItem != wxT("") ) {
+        RemoveButton->Enable( true );
+    } else {
+        RemoveButton->Enable( false );
+    }
+}
+
+void CommandDialog::OnNameTextChange(wxCommandEvent& event)
+{
+    if ( nameTextCtrl->IsEmpty() == true ) {
+        saveButton->Enable( false );
+    } else {
+        saveButton->Enable( true );
+    }
+}
+
+void CommandDialog::OnSaveButton(wxCommandEvent& event)
+{
+    Resources::Instance()->getCommandDatabase()->saveCommand( nameTextCtrl->GetValue(), programTextCtrl->GetValue(), argumentTextCtrl->GetValue() );
+    reloadCommandList();
+}
+
+void CommandDialog::OnRemoveButton(wxCommandEvent& event)
+{
+    wxString selectedItem = CommandList->GetStringSelection();
+    if ( selectedItem != wxT("") ) {
+        Resources::Instance()->getCommandDatabase()->deleteCommand( selectedItem );
+        reloadCommandList();
+        RemoveButton->Enable( false );
+    }
 }

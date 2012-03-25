@@ -48,6 +48,7 @@ class Settings
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
         wxString getPerlDatabasePath() const;
+        wxString getCommandDatabasePath() const;
 
         int getMainFrameWidth() const;
         int getMainFrameHeight() const;
@@ -83,6 +84,7 @@ class Settings
         wxString settingsPath;
         wxString databasePath;
         wxString perlDatabasePath;
+        wxString commandDatabasePath;
 
         int mainFrameWidth;
         int mainFrameHeight;

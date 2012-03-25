@@ -31,6 +31,7 @@ Resources::Resources()
     settings = new Settings();
     //conDatabase = new RDPDatabase();
     perlDatabase = new PerlDatabase();
+    commandDatabase = new CommandDatabase();
 }
 
 Resources* Resources::Instance()
@@ -54,5 +55,10 @@ RDPDatabase* Resources::getConDatabase() const
 PerlDatabase* Resources::getPerlDatabase() const
 {
     return perlDatabase;
+}
+
+CommandDatabase* Resources::getCommandDatabase() const
+{
+    return commandDatabase;
 }
 

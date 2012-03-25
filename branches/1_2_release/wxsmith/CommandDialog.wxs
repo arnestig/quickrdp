@@ -25,6 +25,7 @@
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="nameTextCtrl" member="yes">
 														<size>170,21</size>
+														<handler function="OnNameTextChange" entry="EVT_TEXT" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
@@ -90,6 +91,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON2" variable="saveButton" member="yes">
 										<label>Save</label>
+										<handler function="OnSaveButton" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -111,9 +113,6 @@
 									<object class="wxBoxSizer" variable="BoxSizer9" member="no">
 										<object class="sizeritem">
 											<object class="wxListBox" name="ID_LISTBOX1" variable="CommandList" member="yes">
-												<content>
-													<item>reboot</item>
-												</content>
 												<default>-1</default>
 												<size>195,270</size>
 												<handler function="OnListDoubleClick" entry="EVT_LISTBOX_DCLICK" />

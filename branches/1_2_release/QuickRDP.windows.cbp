@@ -96,6 +96,8 @@
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
 		</Linker>
+		<Unit filename="src\CommandDatabase.cpp" />
+		<Unit filename="src\CommandDatabase.h" />
 		<Unit filename="src\CommandDialog.cpp" />
 		<Unit filename="src\CommandDialog.h" />
 		<Unit filename="src\FileParser.h" />

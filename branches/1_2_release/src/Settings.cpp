@@ -63,6 +63,13 @@ Settings::Settings()
         perlDatabasePath = getSettingsPath() + wxT("perl/");
     #endif
 
+    // command database path
+    #if defined(__WXMSW__)
+        commandDatabasePath = getSettingsPath() + wxT("commands\\");
+    #elif defined(__UNIX__)
+        commandDatabasePath = getSettingsPath() + wxT("commands/");
+    #endif
+
     /** make sure we have the folders created for our settings, connection database and perl database **/
     if ( wxDirExists( getSettingsPath() ) == false ) {
         #if defined(__WXMSW__)
@@ -85,6 +92,14 @@ Settings::Settings()
             wxMkDir( getPerlDatabasePath().fn_str() );
         #elif defined(__UNIX__)
             wxMkDir( getPerlDatabasePath().fn_str(), 0700 );
+        #endif
+    }
+
+    if ( wxDirExists( getCommandDatabasePath() ) == false ) {
+        #if defined(__WXMSW__)
+            wxMkDir( getCommandDatabasePath().fn_str() );
+        #elif defined(__UNIX__)
+            wxMkDir( getCommandDatabasePath().fn_str(), 0700 );
         #endif
     }
 
@@ -276,6 +291,11 @@ wxString Settings::getDatabasePath() const
 wxString Settings::getPerlDatabasePath() const
 {
     return perlDatabasePath;
+}
+
+wxString Settings::getCommandDatabasePath() const
+{
+    return commandDatabasePath;
 }
 
 int Settings::getMainFrameWidth() const

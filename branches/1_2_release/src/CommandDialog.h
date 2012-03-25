@@ -33,8 +33,9 @@ class CommandDialog: public wxDialog
 		wxStaticLine* StaticLine1;
 		wxTextCtrl* programTextCtrl;
 		wxButton* RemoveButton;
-		wxButton* editButton;
 		//*)
+
+		void reloadCommandList();
 
 	protected:
 
@@ -49,7 +50,6 @@ class CommandDialog: public wxDialog
 		static const long ID_BUTTON2;
 		static const long ID_STATICLINE1;
 		static const long ID_LISTBOX1;
-		static const long ID_BUTTON3;
 		static const long ID_BUTTON4;
 		static const long ID_BUTTON5;
 		static const long ID_PANEL1;
@@ -61,6 +61,9 @@ class CommandDialog: public wxDialog
 		void OnCloseButton(wxCommandEvent& event);
 		void OnListDoubleClick(wxCommandEvent& event);
 		void OnCommandListClick(wxCommandEvent& event);
+		void OnNameTextChange(wxCommandEvent& event);
+		void OnSaveButton(wxCommandEvent& event);
+		void OnRemoveButton(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

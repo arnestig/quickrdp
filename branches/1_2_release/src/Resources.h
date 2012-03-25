@@ -25,6 +25,7 @@
 #include "Settings.h"
 #include "RDPDatabase.h"
 #include "PerlDatabase.h"
+#include "CommandDatabase.h"
 
 class Resources
 {
@@ -34,6 +35,7 @@ class Resources
         Settings* getSettings() const;
         RDPDatabase* getConDatabase() const;
         PerlDatabase* getPerlDatabase() const;
+        CommandDatabase* getCommandDatabase() const;
 
     private:
         static Resources* instance;
@@ -43,6 +45,7 @@ class Resources
         Settings *settings;
         RDPDatabase *conDatabase;
         PerlDatabase *perlDatabase;
+        CommandDatabase *commandDatabase;
 };
 
 #endif
