@@ -253,7 +253,59 @@ void RDPConnection::connect()
         wxString connectionTypeName = ConnectionType::getConnectionTypeName( getConnectionType() );
         switch ( getConnectionType() ) {
             case ConnectionType::RDP:
-                wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
+                {
+                    #if defined(__UNIX__)
+                        wxString RDPargument = settings->getRDPExec( useAdminString );
+                        /// setup resolution argument
+                        if ( getScreenMode() == wxT("1") && getDesktopHeight() != wxT("0") && getDesktopHeight() != wxT("0") ) {
+                            RDPargument.append( wxT(" -g") + getDesktopWidth() + wxT("x") + getDesktopHeight() );
+                        } else if ( getScreenMode() == wxT("2" ) ) {
+                            RDPargument.append( wxT(" -f" ) );
+                        }
+                        /// bits per pixel argument.
+                        if ( getDesktopBpp() != wxT("0") ) {
+                            RDPargument.append( wxT(" -a") + getDesktopBpp() );
+                        }
+                        /// attach to console argument
+                        if ( getConsole() == wxT("1" ) ) {
+                            RDPargument.append( wxT(" -0" ) );
+                        }
+                        ///audi settings
+                        if ( getSoundMode() == wxT("0") ) {
+                            RDPargument.append( wxT(" -r:local" ) );
+                        } else if ( getSoundMode() == wxT("1" ) ) {
+                            RDPargument.append( wxT(" -r:remote" ) );
+                        } else {
+                            RDPargument.append( wxT(" -r:off" ) );
+                        }
+                        ///window caption
+						if ( getComment().empty() == true ) {
+							RDPargument.append( wxT(" -T") + getHostname() );
+						} else {
+							RDPargument.append( wxT(" -T") + getComment() );
+						}
+                        ///client hostname
+                        if ( getClientHostname().empty() == false ) {
+                            RDPargument.append( wxT(" -n") + getClientHostname() );
+                        }
+                        ///password
+                        if ( getPassword().empty() == false ) {
+                            RDPargument.append( wxT(" -p") + getPassword() );
+                        }
+                        ///domain
+                        if ( getDomain().empty() == false ) {
+                            RDPargument.append( wxT(" -d") + getDomain() );
+                        }
+                        ///username
+                        if ( getUsername().empty() == false ) {
+                            RDPargument.append( wxT(" -u") + getUsername() );
+                        }
+                        RDPargument.append( wxT(" ") + getHostname() );
+                        wxExecute( RDPargument );
+                    #elif(__WXMSW__)
+                        wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
+                    #endif
+                }
             break;
             case ConnectionType::SSH:
                 if ( settings->getSSHExec().empty() == false ) {
@@ -325,20 +377,20 @@ void RDPConnection::parseFile()
             allLines.push_back( input );
 		}
 		delete[] buffer;
-        setConnectionType( static_cast< ConnectionType::ConnectionType >( wxAtoi( FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) ) );
+        setConnectionType( static_cast< ConnectionType::ConnectionType >( FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) );
         setUsername( FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
         setDomain( FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );
         setPassword( FileParser::getStringFromFile( wxT("password:s:"), allLines ) );
         setHostname( FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
         setClientHostname( FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
         setComment( FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
-        setDesktopHeight( FileParser::getIntegerFromFile( wxT("desktopheight:i:"), allLines ) );
-        setDesktopWidth( FileParser::getIntegerFromFile( wxT("desktopwidth:i:"), allLines ) );
-        setDesktopBpp( FileParser::getIntegerFromFile( wxT("session bpp:i:"), allLines ) );
-        setScreenMode( FileParser::getIntegerFromFile( wxT("screen mode id:i:"), allLines ) );
-        setConsole( FileParser::getIntegerFromFile( wxT("attach to console:i:"), allLines ) );
-        setSoundMode( FileParser::getIntegerFromFile( wxT("audiomode:i:"), allLines ) );
-        setDiskMapping( FileParser::getIntegerFromFile( wxT("diskmapping:i:"), allLines ) );
+        setDesktopHeight( FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
+        setDesktopWidth( FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
+        setDesktopBpp( FileParser::getStringFromFile( wxT("session bpp:i:"), allLines ) );
+        setScreenMode( FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
+        setConsole( FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
+        setSoundMode( FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
+        setDiskMapping( FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
 	}
 	rfile.close();
     }
@@ -347,13 +399,10 @@ void RDPConnection::parseFile()
 bool RDPConnection::doesRDPHasString( wxString searchString ) const
 {
     bool foundAnything = false;
-
-    if ( getUsername().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getDomain().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getHostname().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getHostname().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-    if ( getComment().Lower().Find( searchString.Lower() ) != wxNOT_FOUND ) { foundAnything = true; }
-
+    if ( FileParser::searchForString( std::string( getUsername().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getDomain().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getHostname().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getComment().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
     return foundAnything;
 }
 ///END RDPConnection

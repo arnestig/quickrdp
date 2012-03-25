@@ -19,40 +19,30 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#include "Resources.h"
+#ifndef __VERSION_H__
+#define __VERSION_H__
 
-Resources* Resources::instance = NULL;
+#ifndef SVN_REVISION
+#define SVN_REVISION 0
+#endif
 
-Resources::Resources()
-    :   settings( NULL ),
-        conDatabase( NULL ),
-        perlDatabase( NULL )
-{
-    settings = new Settings();
-    //conDatabase = new RDPDatabase();
-    perlDatabase = new PerlDatabase();
-}
+namespace Version {
+	static wxString name = wxT("QuickRDP");
+	static wxString version = wxT("1.1.6");
 
-Resources* Resources::Instance()
-{
-    if ( instance == NULL ) {
-        instance = new Resources();
-    }
-    return instance;
-}
+	inline wxString getShortVersion()
+	{
+	    return name + wxT(" ") + version;
+	}
 
-Settings* Resources::getSettings() const
-{
-    return settings;
-}
+	inline wxString getLongVersion()
+	{
+	    wxString retval = version;
+	    if ( SVN_REVISION > 0 ) {
+            retval << wxT("-") + wxString::Format( wxT("%d"), SVN_REVISION );
+	    }
+	    return retval;
+	}
+};
 
-RDPDatabase* Resources::getConDatabase() const
-{
-    return conDatabase;
-}
-
-PerlDatabase* Resources::getPerlDatabase() const
-{
-    return perlDatabase;
-}
-
+#endif

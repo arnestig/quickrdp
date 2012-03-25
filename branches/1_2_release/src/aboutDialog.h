@@ -46,6 +46,7 @@ class aboutDialog: public wxDialog
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
 		wxStaticText* StaticText3;
+		wxStaticText* VersionText;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
 		wxStaticText* StaticText4;
@@ -58,6 +59,7 @@ class aboutDialog: public wxDialog
 		//(*Identifiers(aboutDialog)
 		static const long ID_STATICBITMAP1;
 		static const long ID_STATICTEXT1;
+		static const long ID_STATICTEXT8;
 		static const long ID_STATICTEXT2;
 		static const long ID_STATICTEXT3;
 		static const long ID_STATICTEXT4;

@@ -55,15 +55,14 @@ namespace FileParser
         return wxT("");
     };
 
-    inline wxString getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
+    inline int getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
     {
-        for ( size_t index = 0; index < file.size(); index++ ) {
-            int searchRet = file[ index ].Find( searchPattern );
-            if ( searchRet != wxNOT_FOUND ) {
-                return file[ index ].SubString( searchPattern.Len(), file[ index ].Len() );
-            }
+        wxString retVal = getStringFromFile( searchPattern, file );
+        if ( retVal == wxT("") ) {
+            return 0;
+        } else {
+            return wxAtoi( retVal );
         }
-        return wxT("0");
     };
 
     inline wxString getRealArgumentString( wxString argument, RDPConnection* connection )
@@ -97,6 +96,44 @@ namespace FileParser
         argument.Replace( wxT("%password%"), connection->getPassword() );
         return argument;
     }
+
+    inline bool searchForString( std::string str, std::string pattern )
+    {
+        /** locate our first wildcard (if any) **/
+        size_t wildcardPos = pattern.find( "*" );
+        size_t foundPos = 0;
+
+        /** load up our pattern list with the first word. **/
+        foundPos = str.find( pattern.substr( 0, wildcardPos ), foundPos );
+        if ( foundPos == std::string::npos ) {
+            return false;
+        }
+
+        while ( wildcardPos != std::string::npos )
+        {
+            std::string substring = "";
+            wildcardPos++;
+
+            /** locate our wildcards and get the subpatterns between them **/
+            size_t nextWildcard = pattern.find( "*", wildcardPos );
+            if ( nextWildcard == std::string::npos ) {
+                substring = pattern.substr( wildcardPos, nextWildcard );
+            } else {
+                substring = pattern.substr( wildcardPos, nextWildcard-wildcardPos );
+            }
+
+            /** now search the string using the pattern we found **/
+            foundPos = str.find( substring, foundPos );
+            if ( foundPos == std::string::npos ) {
+                return false;
+            }
+
+            wildcardPos = pattern.find( "*", wildcardPos );
+        }
+
+        return true;
+    }
+
 }
 
 #endif

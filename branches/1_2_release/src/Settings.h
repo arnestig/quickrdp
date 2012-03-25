@@ -49,6 +49,27 @@ class Settings
         wxString getDatabasePath() const;
         wxString getPerlDatabasePath() const;
 
+        int getMainFrameWidth() const;
+        int getMainFrameHeight() const;
+        void setMainFrameWidth( int mainFrameWidth );
+        void setMainFrameHeight( int mainFrameHeight );
+
+        /** column functions. will be replaced in 1.2 or 1.3 once dynamic columns are in place **/
+        void setColumn0Width( int column0Width );
+        void setColumn1Width( int column1Width );
+        void setColumn2Width( int column2Width );
+        void setColumn3Width( int column3Width );
+        void setColumn4Width( int column4Width );
+        void setColumn5Width( int column5Width );
+
+        int getColumn0Width() const;
+        int getColumn1Width() const;
+        int getColumn2Width() const;
+        int getColumn3Width() const;
+        int getColumn4Width() const;
+        int getColumn5Width() const;
+
+
     private:
         void loadSettings();
 
@@ -62,6 +83,16 @@ class Settings
         wxString settingsPath;
         wxString databasePath;
         wxString perlDatabasePath;
+
+        int mainFrameWidth;
+        int mainFrameHeight;
+
+        int column0Width;
+        int column1Width;
+        int column2Width;
+        int column3Width;
+        int column4Width;
+        int column5Width;
 };
 
 #endif

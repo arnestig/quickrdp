@@ -20,6 +20,7 @@
 **/
 
 #include "quickRDPApp.h"
+#include "Resources.h"
 
 //(*AppHeaders
 #include "quickRDPMain.h"
@@ -36,6 +37,11 @@ bool quickRDPApp::OnInit()
     if ( wxsOK )
     {
     	quickRDPFrame* Frame = new quickRDPFrame(0);
+        #if defined(__UNIX__)
+            Frame->SetIcon( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("quickrdp.xpm") ) );
+        #else
+            Frame->SetIcon(wxICON(aaaa));
+        #endif
     	Frame->Show();
     	SetTopWindow(Frame);
     }
