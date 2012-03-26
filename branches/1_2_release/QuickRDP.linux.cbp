@@ -41,6 +41,8 @@
 		</Linker>
 		<Unit filename="src/CommandDatabase.cpp" />
 		<Unit filename="src/CommandDatabase.h" />
+		<Unit filename="src/CommandDialog.cpp" />
+		<Unit filename="src/CommandDialog.h" />
 		<Unit filename="src/FileParser.h" />
 		<Unit filename="src/PerlDatabase.cpp" />
 		<Unit filename="src/PerlDatabase.h" />
