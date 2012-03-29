@@ -52,7 +52,7 @@ perlDialog::perlDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const w
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxDefaultSize);
 	Move(wxPoint(100,100));
@@ -88,7 +88,7 @@ perlDialog::perlDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const w
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&perlDialog::OnScriptListActivated);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&perlDialog::OnTextNameInput);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&perlDialog::OnNewScriptButton);

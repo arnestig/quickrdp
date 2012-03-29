@@ -68,7 +68,6 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1400(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnPreferences(wxCommandEvent& event);
-        void OnPopupMenuPing(wxCommandEvent& event);
         void OnMenuPerlScripts(wxCommandEvent& event);
         void OnMenuItemConnect(wxCommandEvent& event);
         void OnListCtrlKeyDown(wxListEvent& event);
@@ -78,6 +77,7 @@ class quickRDPFrame: public wxFrame
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnPerlScriptSelected(wxCommandEvent& event);
+        void OnCommandSelected(wxCommandEvent& event);
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -94,7 +94,6 @@ class quickRDPFrame: public wxFrame
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_DUPLICATE;
         static const long ID_POPUPMENU_DELETE;
-        static const long ID_POPUPMENU_PING;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;
@@ -141,6 +140,8 @@ class quickRDPFrame: public wxFrame
         //*)
 
         wxMenu *perlMenu;
+        wxMenu *commandMenu;
+        std::vector< wxMenuItem* > favoriteCommandMenuItems;
 
         int last_column_click;
 

@@ -77,14 +77,14 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer3->Add(BoxSizer6, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Favorite"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
-	BoxSizer12->Add(StaticText4, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer12->Add(StaticText4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText9 = new wxStaticText(Panel1, ID_STATICTEXT9, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT9"));
 	StaticText9->SetForegroundColour(wxColour(255,0,0));
 	StaticText9->SetToolTip(_("Favorite commands will appear in the top right-click menu instead of in the sub-menu called \"Commands\"."));
 	BoxSizer12->Add(StaticText9, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	CheckBox1 = new wxCheckBox(Panel1, ID_CHECKBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
-	CheckBox1->SetValue(false);
-	BoxSizer12->Add(CheckBox1, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	favoriteCheckbox = new wxCheckBox(Panel1, ID_CHECKBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+	favoriteCheckbox->SetValue(false);
+	BoxSizer12->Add(favoriteCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer12, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveButton = new wxButton(Panel1, ID_BUTTON2, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
@@ -158,6 +158,7 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& event)
             nameTextCtrl->SetValue( curCommand->getName() );
             programTextCtrl->SetValue( curCommand->getProgram() );
             argumentTextCtrl->SetValue( curCommand->getArgument() );
+            favoriteCheckbox->SetValue( curCommand->getFavorite() );
         }
     }
 }
@@ -183,7 +184,7 @@ void CommandDialog::OnNameTextChange(wxCommandEvent& event)
 
 void CommandDialog::OnSaveButton(wxCommandEvent& event)
 {
-    Resources::Instance()->getCommandDatabase()->saveCommand( nameTextCtrl->GetValue(), programTextCtrl->GetValue(), argumentTextCtrl->GetValue() );
+    Resources::Instance()->getCommandDatabase()->saveCommand( nameTextCtrl->GetValue(), programTextCtrl->GetValue(), argumentTextCtrl->GetValue(), favoriteCheckbox->GetValue() );
     reloadCommandList();
 }
 

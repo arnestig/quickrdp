@@ -29,8 +29,8 @@ class CommandDialog: public wxDialog
 		wxButton* saveButton;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
+		wxCheckBox* favoriteCheckbox;
 		wxStaticText* StaticText3;
-		wxCheckBox* CheckBox1;
 		wxTextCtrl* nameTextCtrl;
 		wxListBox* CommandList;
 		wxStaticLine* StaticLine1;

@@ -65,6 +65,16 @@ namespace FileParser
         }
     };
 
+    inline bool getBoolFromFile( wxString searchPattern, std::vector<wxString> file )
+    {
+        wxString retVal = getStringFromFile( searchPattern, file );
+        if ( retVal == wxT("") ) {
+            return false;
+        } else {
+            return bool( wxAtoi( retVal ) );
+        }
+    };
+
     inline wxString getRealArgumentString( wxString argument, RDPConnection* connection )
     {
         /** check if our argument is empty and inside a conditional output '{ }'. If so, we remove that from the argument **/

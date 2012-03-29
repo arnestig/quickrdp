@@ -165,11 +165,6 @@
 				<handler function="OnPopupMenuDelete" entry="EVT_MENU" />
 			</object>
 			<object class="separator" />
-			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
-				<label>Ping</label>
-				<help>Starts a continuous ping session towards the target</help>
-				<handler function="OnPopupMenuPing" entry="EVT_MENU" />
-			</object>
 			<object class="wxMenu" name="POPUPMENURDP" variable="MenuItem19" member="yes">
 				<label>RDP</label>
 				<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">

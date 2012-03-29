@@ -25,26 +25,30 @@
 #include <wx/string.h>
 #include <map>
 #include <vector>
+#include "RDPDatabase.h"
 
 class Command
 {
     public:
-        Command( wxString name, wxString program, wxString argument );
+        Command( wxString name, wxString program, wxString argument, bool favorite );
         ~Command();
 
         wxString getName() const;
         wxString getProgram() const;
         wxString getArgument() const;
+        bool getFavorite() const;
 
         void setName( wxString name );
         void setProgram( wxString program );
         void setArgument( wxString argument );
-        void execute();
+        void setFavorite( bool favorite );
+        void execute( RDPConnection *connection );
 
     private:
         wxString name;
         wxString program;
         wxString argument;
+        bool favorite;
 };
 
 class CommandDatabase
@@ -56,7 +60,7 @@ class CommandDatabase
         std::vector< Command* > getCommands();
         Command* getCommand( wxString name );
         void deleteCommand( wxString name );
-        void saveCommand( wxString name, wxString program, wxString argument );
+        void saveCommand( wxString name, wxString program, wxString argument, bool favorite );
 
     private:
         void loadDatabase();

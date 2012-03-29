@@ -80,7 +80,6 @@ const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DUPLICATE = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DELETE = wxNewId();
-const long quickRDPFrame::ID_POPUPMENU_PING = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
 const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
 const long quickRDPFrame::ID_MENUFULLSCREEN = wxNewId();
@@ -118,7 +117,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-    wxMenuItem* MenuItem18;
 
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
@@ -190,8 +188,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem21 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DELETE, _("Delete\tDEL"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem21);
     PopupMenu1.AppendSeparator();
-    MenuItem18 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_PING, _("Ping"), _("Starts a continuous ping session towards the target"), wxITEM_NORMAL);
-    PopupMenu1.Append(MenuItem18);
     MenuItem19 = new wxMenu();
     MenuItem4 = new wxMenuItem(MenuItem19, ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
     MenuItem19->Append(MenuItem4);
@@ -240,7 +236,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENU_DUPLICATE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDuplicate);
     Connect(ID_POPUPMENU_DELETE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDelete);
-    Connect(ID_POPUPMENU_PING,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuPing);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
     Connect(ID_MENUDEFAULT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemDefaultClick);
     Connect(ID_MENUFULLSCREEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemFullscreenClick);
@@ -253,7 +248,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
     perlMenu = new wxMenu();
+    commandMenu = new wxMenu();
     PopupMenu1.AppendSubMenu( perlMenu, wxT("Perl") );
+    PopupMenu1.AppendSubMenu( commandMenu, wxT("Commands") );
 
     SetTitle( Version::getShortVersion() );
 
@@ -509,8 +506,9 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
         }
     }
 
-    /** prepare our perl part of the popup menu before we display it. **/
+    /** prepare our perl and command part of the popup menu before we display it. **/
 
+    /** perl menu here **/
     // erase all items in the submenu.
     wxMenuItemList perlMenuList = perlMenu->GetMenuItems();
     for ( wxMenuItemList::iterator it = perlMenuList.begin(); it != perlMenuList.end(); ++it ) {
@@ -530,6 +528,49 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
         wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, wxID_ANY, wxT("-- no perl script in database --") );
         newPerlMenuItem->Enable( false );
         perlMenu->Append( newPerlMenuItem );
+    }
+
+    /** command menu here **/
+    // erase all items in the submenu.
+    wxMenuItemList commandMenuList = commandMenu->GetMenuItems();
+    for ( wxMenuItemList::iterator it = commandMenuList.begin(); it != commandMenuList.end(); ++it ) {
+        commandMenu->Destroy( (*it)->GetId() );
+    }
+    /** also clear and destroy all items in the favorite command menu vector **/
+    for ( std::vector< wxMenuItem* >::iterator it = favoriteCommandMenuItems.begin(); it != favoriteCommandMenuItems.end(); ++it ) {
+        PopupMenu1.Destroy( (*it)->GetId() );
+    }
+    favoriteCommandMenuItems.clear();
+
+    // add all perl scripts to the menu from the perldatabase
+    std::vector< Command* > commandDb = Resources::Instance()->getCommandDatabase()->getCommands();
+    for ( size_t cId = 0; cId < commandDb.size(); ++cId ) {
+        const long newCommandId = wxNewId();
+        Connect( newCommandId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnCommandSelected );
+        wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, newCommandId, commandDb[ cId ]->getName(), wxEmptyString, wxITEM_NORMAL );
+
+        /** if we have favorite commands, insert them before the "RDP" submenu **/
+        if ( commandDb[ cId ]->getFavorite() == true ) {
+            PopupMenu1.Insert( 5, newCommandMenuItem );
+            /** we also need to add the reference to all favorite commands we create so that we can destroy them once we reload the popup menu **/
+            favoriteCommandMenuItems.push_back( newCommandMenuItem );
+        } else { /** otherwise just add them to the command submenu **/
+            commandMenu->Append( newCommandMenuItem );
+        }
+    }
+
+    /** insert a seperator if we added any favorite commands **/
+    if ( favoriteCommandMenuItems.size() > 0 ) {
+        wxMenuItem *separator = PopupMenu1.InsertSeparator( favoriteCommandMenuItems.size() + 5 );
+        favoriteCommandMenuItems.push_back( separator );
+    }
+
+
+    /** and append our command submenu as well **/
+    if ( commandMenu->GetMenuItemCount() <= 0 ) {
+        wxMenuItem *newCommandMenuItem = new wxMenuItem( perlMenu, wxID_ANY, wxT("-- no commands in database --") );
+        newCommandMenuItem->Enable( false );
+        commandMenu->Append( newCommandMenuItem );
     }
 
     PopupMenu(&PopupMenu1 );
@@ -773,24 +814,6 @@ void quickRDPFrame::OnPreferences(wxCommandEvent& event)
     delete settings;
 }
 
-void quickRDPFrame::OnPopupMenuPing(wxCommandEvent& event)
-{
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        for ( ;; ) {
-            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-            if ( itemIndex == -1 ) {
-                break;
-            }
-            #if defined(__WXMSW__)
-                wxExecute( wxT("ping -t ") + rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getHostname() );
-            #elif defined(__UNIX__)
-                wxExecute( wxT("ping ") + rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->getHostname() );
-            #endif
-        }
-    }
-}
-
 void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
 {
     perlDialog *perldlg= new perlDialog( this, 0 );
@@ -817,6 +840,28 @@ void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
                 wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + myCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( myCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
             } else {
                 wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
+            }
+        }
+    }
+}
+
+void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
+{
+    wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
+    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+        long itemIndex = -1;
+        for ( ;; ) {
+            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+            if ( itemIndex == -1 ) {
+                break;
+            }
+
+            RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+            Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetLabel() );
+            if ( executeCommand != NULL && myCon != NULL ) {
+                executeCommand->execute( myCon );
+            } else {
+                wxMessageBox( wxT("Command or connection not found!"), wxT("Error"), wxICON_ERROR );
             }
         }
     }
