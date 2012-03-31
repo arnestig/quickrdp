@@ -9,6 +9,7 @@
 #include <wx/listbox.h>
 #include <wx/statline.h>
 #include <wx/panel.h>
+#include <wx/filedlg.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
@@ -29,6 +30,7 @@ class CommandDialog: public wxDialog
 		wxButton* saveButton;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
+		wxFileDialog* FileDialog1;
 		wxCheckBox* favoriteCheckbox;
 		wxStaticText* StaticText3;
 		wxTextCtrl* nameTextCtrl;
@@ -74,6 +76,7 @@ class CommandDialog: public wxDialog
 		void OnSaveButton(wxCommandEvent& event);
 		void OnRemoveButton(wxCommandEvent& event);
 		void OnInit(wxInitDialogEvent& event);
+		void OnButtonEdit(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

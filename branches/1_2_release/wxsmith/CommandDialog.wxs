@@ -161,6 +161,7 @@
 										<object class="sizeritem">
 											<object class="wxButton" name="ID_BUTTON3" variable="editButton" member="yes">
 												<label>Edit</label>
+												<handler function="OnButtonEdit" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
@@ -201,6 +202,9 @@
 				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 				<option>1</option>
 			</object>
+		</object>
+		<object class="wxFileDialog" variable="FileDialog1" member="yes">
+			<message>Select file</message>
 		</object>
 	</object>
 </wxsmith>
