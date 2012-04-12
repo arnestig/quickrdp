@@ -76,6 +76,8 @@ const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
 const long quickRDPFrame::idMenuCommands = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
+const long quickRDPFrame::ID_MENUITEM2 = wxNewId();
+const long quickRDPFrame::ID_MENUITEM3 = wxNewId();
 const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DUPLICATE = wxNewId();
@@ -112,6 +114,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
     wxMenu* Menu1;
+    wxMenuItem* MenuItem23;
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
@@ -175,6 +178,12 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu3->Append(MenuItem15);
     MenuBar1->Append(Menu3, _("&Settings"));
     Menu2 = new wxMenu();
+    MenuItem18 = new wxMenuItem(Menu2, ID_MENUITEM2, _("Report a bug"), wxEmptyString, wxITEM_NORMAL);
+    Menu2->Append(MenuItem18);
+    Menu2->AppendSeparator();
+    MenuItem23 = new wxMenuItem(Menu2, ID_MENUITEM3, _("Search for updates"), wxEmptyString, wxITEM_NORMAL);
+    Menu2->Append(MenuItem23);
+    Menu2->AppendSeparator();
     MenuItem2 = new wxMenuItem(Menu2, wxID_ABOUT, _("About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
     Menu2->Append(MenuItem2);
     MenuBar1->Append(Menu2, _("Help"));
@@ -231,6 +240,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
     Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
+    Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnReportBugClick);
     Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(POPUPMENUCONNECT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnect);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
@@ -952,4 +962,9 @@ void quickRDPFrame::OnMenuCommands(wxCommandEvent& event)
     CommandDialog *commandDlg = new CommandDialog( this, 0 );
     commandDlg->ShowModal();
     delete commandDlg;
+}
+
+void quickRDPFrame::OnReportBugClick(wxCommandEvent& event)
+{
+    wxLaunchDefaultBrowser( wxT("http://www.0x134.net/redmine/projects/quickrdp/issues/new") );
 }
