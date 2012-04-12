@@ -55,7 +55,7 @@
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
 														<label>...</label>
-														<size>25,23</size>
+														<size>25,21</size>
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
@@ -72,7 +72,6 @@
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
-													<option>1</option>
 												</object>
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="argumentTextCtrl" member="yes">
@@ -176,6 +175,20 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxBoxSizer" variable="BoxSizer11" member="no">
+												<orient>wxVERTICAL</orient>
+												<object class="spacer">
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON6" variable="exampleButton" member="yes">
+														<label>Examples</label>
+														<handler function="OnExamplesButton" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM</flag>
+													<border>5</border>
+												</object>
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON5" variable="closeButton" member="yes">
 														<label>Close</label>

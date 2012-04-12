@@ -28,11 +28,12 @@
 
 /** BEGIN COMMAND **/
 
-Command::Command( wxString name, wxString program, wxString argument, bool favorite )
+Command::Command( wxString name, wxString program, wxString argument, bool favorite, bool safety )
     :   name( name ),
         program( program ),
         argument( argument ),
-        favorite( favorite)
+        favorite( favorite ),
+        safety( safety )
 {
 }
 
@@ -60,6 +61,11 @@ bool Command::getFavorite() const
     return favorite;
 }
 
+bool Command::getSafety() const
+{
+    return safety;
+}
+
 void Command::setName( wxString name )
 {
     this->name = name;
@@ -80,13 +86,25 @@ void Command::setFavorite( bool favorite )
     this->favorite = favorite;
 }
 
-void Command::execute( RDPConnection *connection )
+void Command::setSafety( bool safety )
+{
+    this->safety = safety;
+}
+
+bool Command::execute( RDPConnection *connection )
 {
     if ( connection != NULL ) {
+        if ( getSafety() == true ) {
+            if ( wxMessageBox( wxT("Do you want to run the command ") + getName() + wxT("?"), wxT("Run command?"), wxYES_NO ) != wxYES ) {
+                return false;
+            }
+        }
         wxExecute( getProgram() + wxT(" ") + FileParser::getRealArgumentString( getArgument(), connection ) );
     } else {
         wxMessageBox( wxT("Invalid connection received when executing command!"), wxT("Error"), wxICON_ERROR );
+        return false;
     }
+    return true;
 }
 
 /** END COMMAND **/
@@ -182,14 +200,15 @@ bool CommandDatabase::addCommand( wxString name )
             wxString program = FileParser::getStringFromFile( wxT("program:s:"), allLines );
             wxString argument = FileParser::getStringFromFile( wxT("argument:s:"), allLines );
             bool favorite = FileParser::getBoolFromFile( wxT("favorite:b:"), allLines );
-            commands.push_back( new Command( name, program, argument, favorite ) );
+            bool safety = FileParser::getBoolFromFile( wxT("safety:b:"), allLines );
+            commands.push_back( new Command( name, program, argument, favorite, safety ) );
             return true;
         }
     }
     return false;
 }
 
-void CommandDatabase::saveCommand( wxString name, wxString program, wxString argument, bool favorite )
+void CommandDatabase::saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety )
 {
     Command *command = getCommand( name );
     if ( command != NULL ) { /** the command exists, overwrite the old **/
@@ -197,8 +216,9 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
         command->setProgram( program );
         command->setArgument( argument );
         command->setFavorite( favorite );
+        command->setSafety( safety );
     } else { /** command doesn't exist, create a new one **/
-        commands.push_back( new Command( name, program, argument, favorite ) );
+        commands.push_back( new Command( name, program, argument, favorite, safety ) );
     }
 
     /** write to the file as well **/
@@ -207,6 +227,7 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
     FileParser::writeLineToFile( ofile, wxT("program:s:") + program );
     FileParser::writeLineToFile( ofile, wxT("argument:s:") + argument );
     FileParser::writeLineToFile( ofile, wxString::Format( wxT("favorite:b:%d"), favorite ) );
+    FileParser::writeLineToFile( ofile, wxString::Format( wxT("safety:b:%d"), safety ) );
     ofile.close();
 }
 

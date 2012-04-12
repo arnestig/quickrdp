@@ -30,25 +30,28 @@
 class Command
 {
     public:
-        Command( wxString name, wxString program, wxString argument, bool favorite );
+        Command( wxString name, wxString program, wxString argument, bool favorite, bool safety );
         ~Command();
 
         wxString getName() const;
         wxString getProgram() const;
         wxString getArgument() const;
         bool getFavorite() const;
+        bool getSafety() const;
 
         void setName( wxString name );
         void setProgram( wxString program );
         void setArgument( wxString argument );
         void setFavorite( bool favorite );
-        void execute( RDPConnection *connection );
+        void setSafety( bool safety );
+        bool execute( RDPConnection *connection );
 
     private:
         wxString name;
         wxString program;
         wxString argument;
         bool favorite;
+        bool safety;
 };
 
 class CommandDatabase
@@ -60,7 +63,7 @@ class CommandDatabase
         std::vector< Command* > getCommands();
         Command* getCommand( wxString name );
         void deleteCommand( wxString name );
-        void saveCommand( wxString name, wxString program, wxString argument, bool favorite );
+        void saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety );
 
     private:
         void loadDatabase();

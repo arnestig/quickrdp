@@ -22,11 +22,15 @@ class CommandDialog: public wxDialog
 		virtual ~CommandDialog();
 
 		//(*Declarations(CommandDialog)
+		wxButton* ArgumentHelpButton;
 		wxStaticText* StaticText9;
 		wxTextCtrl* argumentTextCtrl;
 		wxButton* closeButton;
 		wxStaticText* StaticText2;
+		wxButton* exampleButton;
 		wxButton* Button1;
+		wxStaticText* StaticText6;
+		wxCheckBox* safetyCheckbox;
 		wxButton* saveButton;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
@@ -34,6 +38,7 @@ class CommandDialog: public wxDialog
 		wxCheckBox* favoriteCheckbox;
 		wxStaticText* StaticText3;
 		wxTextCtrl* nameTextCtrl;
+		wxStaticText* StaticText5;
 		wxListBox* CommandList;
 		wxStaticLine* StaticLine1;
 		wxTextCtrl* programTextCtrl;
@@ -54,14 +59,19 @@ class CommandDialog: public wxDialog
 		static const long ID_BUTTON1;
 		static const long ID_STATICTEXT3;
 		static const long ID_TEXTCTRL3;
+		static const long ID_BUTTON7;
 		static const long ID_STATICTEXT4;
 		static const long ID_STATICTEXT9;
 		static const long ID_CHECKBOX1;
+		static const long ID_STATICTEXT5;
+		static const long ID_STATICTEXT6;
+		static const long ID_CHECKBOX2;
 		static const long ID_BUTTON2;
 		static const long ID_STATICLINE1;
 		static const long ID_LISTBOX1;
 		static const long ID_BUTTON3;
 		static const long ID_BUTTON4;
+		static const long ID_BUTTON6;
 		static const long ID_BUTTON5;
 		static const long ID_PANEL1;
 		//*)
@@ -77,6 +87,9 @@ class CommandDialog: public wxDialog
 		void OnRemoveButton(wxCommandEvent& event);
 		void OnInit(wxInitDialogEvent& event);
 		void OnButtonEdit(wxCommandEvent& event);
+		void OnExamplesButton(wxCommandEvent& event);
+		void OnArgumentHelpButton(wxCommandEvent& event);
+		void OnFileDialogClick(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

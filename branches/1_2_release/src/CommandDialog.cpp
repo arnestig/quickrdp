@@ -1,6 +1,7 @@
 #include "CommandDialog.h"
 #include "Resources.h"
 #include <vector>
+#include "ExampleDialog.h"
 
 //(*InternalHeaders(CommandDialog)
 #include <wx/intl.h>
@@ -15,14 +16,19 @@ const long CommandDialog::ID_TEXTCTRL2 = wxNewId();
 const long CommandDialog::ID_BUTTON1 = wxNewId();
 const long CommandDialog::ID_STATICTEXT3 = wxNewId();
 const long CommandDialog::ID_TEXTCTRL3 = wxNewId();
+const long CommandDialog::ID_BUTTON7 = wxNewId();
 const long CommandDialog::ID_STATICTEXT4 = wxNewId();
 const long CommandDialog::ID_STATICTEXT9 = wxNewId();
 const long CommandDialog::ID_CHECKBOX1 = wxNewId();
+const long CommandDialog::ID_STATICTEXT5 = wxNewId();
+const long CommandDialog::ID_STATICTEXT6 = wxNewId();
+const long CommandDialog::ID_CHECKBOX2 = wxNewId();
 const long CommandDialog::ID_BUTTON2 = wxNewId();
 const long CommandDialog::ID_STATICLINE1 = wxNewId();
 const long CommandDialog::ID_LISTBOX1 = wxNewId();
 const long CommandDialog::ID_BUTTON3 = wxNewId();
 const long CommandDialog::ID_BUTTON4 = wxNewId();
+const long CommandDialog::ID_BUTTON6 = wxNewId();
 const long CommandDialog::ID_BUTTON5 = wxNewId();
 const long CommandDialog::ID_PANEL1 = wxNewId();
 //*)
@@ -41,6 +47,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
 	wxBoxSizer* BoxSizer8;
+	wxBoxSizer* BoxSizer13;
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer11;
 	wxBoxSizer* BoxSizer12;
@@ -48,7 +55,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
 
-	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(391,253));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -66,14 +73,16 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer5->Add(StaticText2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	programTextCtrl = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(135,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	BoxSizer5->Add(programTextCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button1 = new wxButton(Panel1, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	Button1 = new wxButton(Panel1, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer5->Add(Button1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer5, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	BoxSizer6->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	argumentTextCtrl = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(170,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+	BoxSizer6->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	argumentTextCtrl = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(135,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	BoxSizer6->Add(argumentTextCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ArgumentHelpButton = new wxButton(Panel1, ID_BUTTON7, _("\?"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON7"));
+	BoxSizer6->Add(ArgumentHelpButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer6, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Favorite"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
@@ -86,6 +95,17 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	favoriteCheckbox->SetValue(false);
 	BoxSizer12->Add(favoriteCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer12, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer13 = new wxBoxSizer(wxHORIZONTAL);
+	StaticText5 = new wxStaticText(Panel1, ID_STATICTEXT5, _("Safety check"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	BoxSizer13->Add(StaticText5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText6 = new wxStaticText(Panel1, ID_STATICTEXT6, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT6"));
+	StaticText6->SetForegroundColour(wxColour(255,0,0));
+	StaticText6->SetToolTip(_("Running commands with safety check will require you to confirm the command before actually running it."));
+	BoxSizer13->Add(StaticText6, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	safetyCheckbox = new wxCheckBox(Panel1, ID_CHECKBOX2, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX2"));
+	safetyCheckbox->SetValue(false);
+	BoxSizer13->Add(safetyCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer3->Add(BoxSizer13, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveButton = new wxButton(Panel1, ID_BUTTON2, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	BoxSizer7->Add(saveButton, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -103,7 +123,10 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	RemoveButton = new wxButton(Panel1, ID_BUTTON4, _("Remove"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
 	RemoveButton->Disable();
 	BoxSizer10->Add(RemoveButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
+	BoxSizer11 = new wxBoxSizer(wxVERTICAL);
+	BoxSizer11->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	exampleButton = new wxButton(Panel1, ID_BUTTON6, _("Examples"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
+	BoxSizer11->Add(exampleButton, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
 	closeButton = new wxButton(Panel1, ID_BUTTON5, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
 	BoxSizer11->Add(closeButton, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
 	BoxSizer10->Add(BoxSizer11, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
@@ -118,13 +141,24 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer1->SetSizeHints(this);
 
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnNameTextChange);
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnFileDialogClick);
+	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnSaveButton);
 	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&CommandDialog::OnListDoubleClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnButtonEdit);
+	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnExamplesButton);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&CommandDialog::OnInit);
 	//*)
 	reloadCommandList();
+
+    /** set the perl file dialog for perl depending on windows or linux **/
+    #if defined(__WXMSW__)
+        FileDialog1->SetWildcard( wxT("Executable (*.exe)|*.exe|All files (*.*)|*.*"));
+    #elif defined(__UNIX__)
+        FileDialog1->SetWildcard( wxT("All files (*)|*"));
+        FileDialog2->SetDirectory( wxT("/usr/bin" ) );
+    #endif
 }
 
 CommandDialog::~CommandDialog()
@@ -144,6 +178,8 @@ void CommandDialog::reloadCommandList()
     nameTextCtrl->Clear();
     programTextCtrl->Clear();
     argumentTextCtrl->Clear();
+    favoriteCheckbox->SetValue( false );
+    safetyCheckbox->SetValue( false );
 }
 
 void CommandDialog::OnCloseButton(wxCommandEvent& event)
@@ -161,6 +197,7 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& event)
             programTextCtrl->SetValue( curCommand->getProgram() );
             argumentTextCtrl->SetValue( curCommand->getArgument() );
             favoriteCheckbox->SetValue( curCommand->getFavorite() );
+            safetyCheckbox->SetValue( curCommand->getSafety() );
         }
     }
 }
@@ -186,7 +223,7 @@ void CommandDialog::OnNameTextChange(wxCommandEvent& event)
 
 void CommandDialog::OnSaveButton(wxCommandEvent& event)
 {
-    Resources::Instance()->getCommandDatabase()->saveCommand( nameTextCtrl->GetValue(), programTextCtrl->GetValue(), argumentTextCtrl->GetValue(), favoriteCheckbox->GetValue() );
+    Resources::Instance()->getCommandDatabase()->saveCommand( nameTextCtrl->GetValue(), programTextCtrl->GetValue(), argumentTextCtrl->GetValue(), favoriteCheckbox->GetValue(), safetyCheckbox->GetValue() );
     reloadCommandList();
 }
 
@@ -207,4 +244,30 @@ void CommandDialog::OnInit(wxInitDialogEvent& event)
 void CommandDialog::OnButtonEdit(wxCommandEvent& event)
 {
     OnListDoubleClick( event ); /** same action as when we double click **/
+}
+
+void CommandDialog::OnExamplesButton(wxCommandEvent& event)
+{
+    ExampleDialog *example;
+    #if defined(__WXMSW__)
+        example = new ExampleDialog( wxT("Example: Filezilla FTP connection\nProgram: C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe\nArgument: ftp://%username%:%password%@%hostname%\n\nExample: Mount and open shared folder\nProgram: cmd.exe\nArgument: /C \"net use X: /DELETE & net use X: \\\\172.251.61.162\\C$ %password% /USER:%username% & explorer X:\"\n\nExample: Continuously ping host\nProgram: ping.exe\nArgument: %hostname% -t"), this );
+    #elif defined(__UNIX__)
+        example = new ExampleDialog( wxT("Example: Scan host on port 21,22,23 and 80 with nmap\nProgram: nmap\nArgument: -p21-23,80 %hostname%"), this );
+    #endif
+    example->ShowModal();
+    delete example;
+}
+
+void CommandDialog::OnArgumentHelpButton(wxCommandEvent& event)
+{
+    ExampleDialog *example = new ExampleDialog( wxT("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%"), this );
+    example->ShowModal();
+    delete example;
+}
+
+void CommandDialog::OnFileDialogClick(wxCommandEvent& event)
+{
+    if ( FileDialog1->ShowModal() == wxID_OK ) {
+        programTextCtrl->SetValue( FileDialog1->GetPath() );
+    }
 }
