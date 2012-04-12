@@ -629,8 +629,13 @@ void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
 
 void quickRDPFrame::OnTextCtrlClick(wxCommandEvent& event)
 {
-    TextCtrl1->SetSelection(-1,-1);
-    TextCtrl1->SetFocus();
+    /** clicking in the box will select all text unless all text was already selected **/
+    if ( TextCtrl1->GetStringSelection().empty() == true ) {
+        TextCtrl1->SetSelection(-1,-1);
+        TextCtrl1->SetFocus();
+    } else {
+        event.Skip();
+    }
 }
 
 void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& event)

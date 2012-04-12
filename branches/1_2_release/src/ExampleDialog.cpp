@@ -22,7 +22,7 @@ ExampleDialog::ExampleDialog(wxString example, wxWindow* parent,wxWindowID id)
 	//(*Initialize(ExampleDialog)
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
-
+	
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -39,7 +39,7 @@ ExampleDialog::ExampleDialog(wxString example, wxWindow* parent,wxWindowID id)
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExampleDialog::OnCloseButton);
 	//*)
 	exampleTextCtrl->ChangeValue( example );
