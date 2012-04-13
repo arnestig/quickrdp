@@ -157,7 +157,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
         FileDialog1->SetWildcard( wxT("Executable (*.exe)|*.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
         FileDialog1->SetWildcard( wxT("All files (*)|*"));
-        FileDialog2->SetDirectory( wxT("/usr/bin" ) );
+        FileDialog1->SetDirectory( wxT("/usr/bin" ) );
     #endif
 }
 
