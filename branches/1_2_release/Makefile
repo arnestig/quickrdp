@@ -6,7 +6,7 @@ INSTALL = install -o root -g root -m 755
 INSTALL_DIR = install -p -d -o root -g root -m 755
 INSTALL_DATA = install -p -o root -g root -m 644
 CFLAGS = -g -Wall $(shell wx-config --cxxflags)
-LIBS = $(shell wx-config --libs base,core,adv)
+LIBS = $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
 
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
