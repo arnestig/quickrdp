@@ -143,6 +143,7 @@
 				<object class="separator" />
 				<object class="wxMenuItem" name="ID_MENUITEM3" variable="MenuItem23" member="yes">
 					<label>Search for updates</label>
+					<handler function="OnMenuSearchForUpdates" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="wxID_ABOUT" variable="MenuItem2" member="no">

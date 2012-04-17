@@ -19,45 +19,33 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef EXAMPLEDIALOG_H
-#define EXAMPLEDIALOG_H
+#ifndef __VERSIONCHECKER_H__
+#define __VERSIONCHECKER_H__
 
-//(*Headers(ExampleDialog)
-#include <wx/sizer.h>
-#include <wx/textctrl.h>
-#include <wx/panel.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
-//*)
+#include <wx/string.h>
+#include <curl/curl.h>
+#include <iostream>
+#include <wx/thread.h>
+#include <wx/event.h>
 
-class ExampleDialog: public wxDialog
+BEGIN_DECLARE_EVENT_TYPES()
+    DECLARE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE, -1 )
+END_DECLARE_EVENT_TYPES()
+
+class VersionChecker : public wxThread
 {
-	public:
+    public:
+        VersionChecker( wxEvtHandler *parent, std::string url );
+        ~VersionChecker();
 
-		ExampleDialog(wxString example, wxWindow* parent,wxWindowID id=wxID_ANY);
-		virtual ~ExampleDialog();
+    private:
+        static int writer( char *data, size_t size, size_t nmemb, std::string *buffer_in );
+        std::string get( const char* url );
+        bool execute( wxString &version);
+        virtual void *Entry();
 
-		//(*Declarations(ExampleDialog)
-		wxButton* Button1;
-		wxPanel* Panel1;
-		wxTextCtrl* exampleTextCtrl;
-		//*)
-
-	protected:
-
-		//(*Identifiers(ExampleDialog)
-		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON1;
-		static const long ID_PANEL1;
-		//*)
-
-	private:
-
-		//(*Handlers(ExampleDialog)
-		void OnCloseButton(wxCommandEvent& event);
-		//*)
-
-		DECLARE_EVENT_TABLE()
+        wxEvtHandler *parent;
+        std::string url;
 };
 
 #endif

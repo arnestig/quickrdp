@@ -73,8 +73,10 @@
 			<Add option="-D__WXMSW__" />
 			<Add option="-DwxUSE_UNICODE" />
 			<Add option="-DSVN_REVISION=0" />
+			<Add option="-DCURL_STATICLIB" />
 			<Add directory="$(#wx)\include" />
 			<Add directory="$(#wx)\contrib\include" />
+			<Add directory="$(#curl)\include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="$(#wx)\include" />
@@ -95,6 +97,10 @@
 			<Add library="libcomctl32.a" />
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
+			<Add library="libcurl.a" />
+			<Add library="ws2_32" />
+			<Add library="wldap32" />
+			<Add directory="$(#curl)\lib" />
 		</Linker>
 		<Unit filename="src\CommandDatabase.cpp" />
 		<Unit filename="src\CommandDatabase.h" />
@@ -113,6 +119,8 @@
 		<Unit filename="src\Resources.h" />
 		<Unit filename="src\Settings.cpp" />
 		<Unit filename="src\Settings.h" />
+		<Unit filename="src\VersionChecker.cpp" />
+		<Unit filename="src\VersionChecker.h" />
 		<Unit filename="src\aboutDialog.cpp" />
 		<Unit filename="src\aboutDialog.h" />
 		<Unit filename="src\generalTabPanel.cpp" />

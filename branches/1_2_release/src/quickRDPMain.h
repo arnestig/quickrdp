@@ -75,10 +75,12 @@ class quickRDPFrame: public wxFrame
         void OnPopupMenuDelete(wxCommandEvent& event);
         void OnMenuCommands(wxCommandEvent& event);
         void OnReportBugClick(wxCommandEvent& event);
+        void OnMenuSearchForUpdates(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnPerlScriptSelected(wxCommandEvent& event);
         void OnCommandSelected(wxCommandEvent& event);
+        void onVersionCheckExecuted( wxCommandEvent &evt );
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -133,6 +135,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItem20;
         wxMenuItem* MenuItem6;
+        wxMenuItem* MenuItem23;
         wxBitmapButton* BitmapButton4;
         wxTextCtrl* TextCtrl1;
         wxBitmapButton* BitmapButton3;

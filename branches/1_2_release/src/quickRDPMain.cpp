@@ -29,6 +29,7 @@
 #include "perlDialog.h"
 #include "CommandDialog.h"
 #include "version.h"
+#include "VersionChecker.h"
 
 #include <wx/msgdlg.h>
 #include <memory>
@@ -99,6 +100,7 @@ const long quickRDPFrame::POPUPMENURDP = wxNewId();
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     //(*EventTable(quickRDPFrame)
     //*)
+    EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE,quickRDPFrame::onVersionCheckExecuted)
 END_EVENT_TABLE()
 
 std::auto_ptr<RDPDatabase> rdpDatabase;
@@ -114,7 +116,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
     wxMenu* Menu1;
-    wxMenuItem* MenuItem23;
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
@@ -241,6 +242,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnReportBugClick);
+    Connect(ID_MENUITEM3,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuSearchForUpdates);
     Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(POPUPMENUCONNECT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnect);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
@@ -967,4 +969,27 @@ void quickRDPFrame::OnMenuCommands(wxCommandEvent& event)
 void quickRDPFrame::OnReportBugClick(wxCommandEvent& event)
 {
     wxLaunchDefaultBrowser( wxT("http://www.0x134.net/redmine/projects/quickrdp/issues/new") );
+}
+
+void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& event)
+{
+    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
+    if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
+        wxMessageBox( wxT("Error while creating HTTP thread!") );
+    } else {
+        if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
+            wxMessageBox( wxT("Error while running HTTP thread!") );
+        }
+    }
+}
+
+void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &evt )
+{
+    if ( evt.GetInt() == 1 ) {
+        if ( wxMessageBox( wxT("Version ") + evt.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
+            wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
+        }
+    } else {
+        wxMessageBox( wxT("You already got the latest version of QuickRDP.") );
+    }
 }
