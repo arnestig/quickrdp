@@ -45,7 +45,7 @@
 		<Unit filename="src/CommandDialog.h" />
 		<Unit filename="src/ExampleDialog.cpp" />
 		<Unit filename="src/ExampleDialog.h" />
-		<Unit filename="src/FileParser.h" />
+		<Unit filename="src/QuickrdpFunctions.h" />
 		<Unit filename="src/PerlDatabase.cpp" />
 		<Unit filename="src/PerlDatabase.h" />
 		<Unit filename="src/RDPDatabase.cpp" />
