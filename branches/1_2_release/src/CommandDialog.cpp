@@ -272,7 +272,7 @@ void CommandDialog::OnExamplesButton(wxCommandEvent& event)
     ExampleDialog *example;
     #if defined(__WXMSW__)
         example = new ExampleDialog( wxT("Example: Filezilla FTP connection\nProgram: C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe\nArgument: ftp://%username%:%password%@%hostname%\n\nExample: Mount and open shared folder\nProgram: cmd.exe\nArgument: /C \"net use X: /DELETE & net use X: \\\\172.251.61.162\\C$ %password% /USER:%username% & explorer X:\"\n\nExample: Continuously ping host\nProgram: ping.exe\nArgument: %hostname% -t"), this );
-    #elif defined(__UNIX__)
+    #else
         example = new ExampleDialog( wxT("Example: Scan host on port 21,22,23 and 80 with nmap\nProgram: nmap\nArgument: -p21-23,80 %hostname%"), this );
     #endif
     example->ShowModal();

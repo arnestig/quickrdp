@@ -43,7 +43,6 @@ setOutPath "$INSTDIR\data" # Files added here should be removed by the uninstall
 file "..\..\data\*.*" # Add any other files for the install directory (license files, app data, etc) here
 setOutPath $INSTDIR # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\QuickRDP.exe"
-file "..\..\mingwm10.dll"
 
     writeUninstaller "$INSTDIR\uninstall.exe"
 
@@ -81,7 +80,6 @@ section "uninstall"
     rmDir "$SMPROGRAMS\${APPNAME}"
 
     delete $INSTDIR\QuickRDP.exe
-    delete $INSTDIR\mingwm10.dll
     delete $INSTDIR\QuickRDP.ico
 	delete "$INSTDIR\data\*.*"
     rmDir "$INSTDIR\data"

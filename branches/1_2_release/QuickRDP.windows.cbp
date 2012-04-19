@@ -83,7 +83,6 @@
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-s" />
-			<Add option="-mthreads" />
 			<Add library="libkernel32.a" />
 			<Add library="libuser32.a" />
 			<Add library="libgdi32.a" />
