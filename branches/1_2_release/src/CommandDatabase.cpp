@@ -99,7 +99,7 @@ bool Command::execute( RDPConnection *connection )
                 return false;
             }
         }
-        wxExecute( getProgram() + wxT(" ") + FileParser::getRealArgumentString( getArgument(), connection ) );
+        wxExecute( getProgram() + wxT(" ") + quickRDP::FileParser::getRealArgumentString( getArgument(), connection ) );
     } else {
         wxMessageBox( wxT("Invalid connection received when executing command!"), wxT("Error"), wxICON_ERROR );
         return false;
@@ -197,10 +197,10 @@ bool CommandDatabase::addCommand( wxString name )
             }
             delete[] buffer;
 
-            wxString program = FileParser::getStringFromFile( wxT("program:s:"), allLines );
-            wxString argument = FileParser::getStringFromFile( wxT("argument:s:"), allLines );
-            bool favorite = FileParser::getBoolFromFile( wxT("favorite:b:"), allLines );
-            bool safety = FileParser::getBoolFromFile( wxT("safety:b:"), allLines );
+            wxString program = quickRDP::FileParser::getStringFromFile( wxT("program:s:"), allLines );
+            wxString argument = quickRDP::FileParser::getStringFromFile( wxT("argument:s:"), allLines );
+            bool favorite = quickRDP::FileParser::getBoolFromFile( wxT("favorite:b:"), allLines );
+            bool safety = quickRDP::FileParser::getBoolFromFile( wxT("safety:b:"), allLines );
             commands.push_back( new Command( name, program, argument, favorite, safety ) );
             return true;
         }
@@ -224,10 +224,10 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
     /** write to the file as well **/
     std::ofstream ofile;
     ofile.open( wxString( Resources::Instance()->getSettings()->getCommandDatabasePath() + name ).mb_str(), std::ios::out|std::ios::binary );
-    FileParser::writeLineToFile( ofile, wxT("program:s:") + program );
-    FileParser::writeLineToFile( ofile, wxT("argument:s:") + argument );
-    FileParser::writeLineToFile( ofile, wxString::Format( wxT("favorite:b:%d"), favorite ) );
-    FileParser::writeLineToFile( ofile, wxString::Format( wxT("safety:b:%d"), safety ) );
+    quickRDP::FileParser::writeLineToFile( ofile, wxT("program:s:") + program );
+    quickRDP::FileParser::writeLineToFile( ofile, wxT("argument:s:") + argument );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("favorite:b:%d"), favorite ) );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("safety:b:%d"), safety ) );
     ofile.close();
 }
 

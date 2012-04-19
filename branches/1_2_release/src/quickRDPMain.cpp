@@ -103,12 +103,8 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE,quickRDPFrame::onVersionCheckExecuted)
 END_EVENT_TABLE()
 
-std::auto_ptr<RDPDatabase> rdpDatabase;
-std::vector<RDPConnection*> ListCtrlRDPRelation;
-
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
 {
-    rdpDatabase = std::auto_ptr<RDPDatabase> ( new RDPDatabase() );
     //(*Initialize(quickRDPFrame)
     wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer5;
@@ -317,10 +313,10 @@ void quickRDPFrame::OnListCtrl1ItemDeselect(wxListEvent& event)
 
 void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
 {
-    wxString filename = FileParser::generateFilename();
+    wxString filename = quickRDP::FileParser::generateFilename();
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
-    newFrame->loadRDPConnection( rdpDatabase->addRDPConnection( filename ) );
+    newFrame->loadRDPConnection( Resources::Instance()->getConnectionDatabase()->addRDPConnection( filename ) );
     newFrame->ShowModal();
     loadRDPFromDatabase();
     delete newFrame;
@@ -333,14 +329,11 @@ void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
 {
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+
+    if ( curCon != NULL ) {
         if ( wxMessageBox( wxT("Are you sure you want to delete this connection?"), wxT("Delete this connection?"), wxYES_NO ) == wxYES ) {
-            rdpDatabase->deleteRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
+            Resources::Instance()->getConnectionDatabase()->deleteRDPConnectionByPointer( curCon );
             loadRDPFromDatabase();
             if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
                 BitmapButton2->Disable();
@@ -351,16 +344,16 @@ void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnEditButtonClick(wxCommandEvent& event)
+void quickRDPFrame::OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection)
 {
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( editConnection != NULL ) { /** if we're using an connection as an argument (default is NULL) then we will use this connection instead of what's selected in our ListCtrl **/
+        curCon = editConnection;
+    }
+
+    if ( curCon != NULL ) {
         RDPFrame *newFrame = new RDPFrame( this, 0 );
-        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
+        newFrame->loadRDPConnection( curCon );
         newFrame->ShowModal();
         loadRDPFromDatabase();
         delete newFrame;
@@ -375,16 +368,16 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& event)
 void quickRDPFrame::loadRDPFromDatabase()
 {
     clearListCtrl();
+    Resources::Instance()->getConnectionDatabase()->clearRDPListCtrl();
 
-    std::vector<RDPConnection*> database = rdpDatabase->getDatabase();
-    ListCtrlRDPRelation.clear();
+    std::vector<RDPConnection*> database = Resources::Instance()->getConnectionDatabase()->getDatabase();
     long itemIndexCounter = 0;
 
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
         // if we have a filter in place, we search the RDPConnection and checks if any value matches our pattern. if it doesn't, we hop to the next item in the database.
         if ( curRDP->doesRDPHasString( TextCtrl1->GetValue() ) == true || TextCtrl1->GetValue() == wxT("Search ...") ) {
-            ListCtrlRDPRelation.push_back( curRDP );
+            Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
             wxListItem item;
             item.SetId( index );
             ListCtrl1->InsertItem( item );
@@ -448,22 +441,11 @@ void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
 
 void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 {
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-
-        wxString filename = FileParser::generateFilename();
-        rdpDatabase->duplicateRDPConnection( filename, rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
-
-        loadRDPFromDatabase();
-        if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
-            BitmapButton2->Disable();
-            BitmapButton3->Disable();
-            BitmapButton4->Disable();
-        }
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        wxString filename = quickRDP::FileParser::generateFilename();
+        RDPConnection *myNewCon = Resources::Instance()->getConnectionDatabase()->duplicateRDPConnection( filename, curCon );
+        OnEditButtonClick( event, myNewCon );
     }
 }
 
@@ -487,28 +469,21 @@ void quickRDPFrame::clearPopupMenuChoices()
 
 void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
 {
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     /** prepare our RDP menu with checkboxes for console mode and resolutions **/
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-
+    if ( curCon != NULL ) {
         clearPopupMenuChoices();
-        if ( curRDP->getConsole() == wxT("1") )
+        if ( curCon->getConsole() == wxT("1") )
         {
             MenuItem4->Check( true );
         }
 
-        if ( curRDP->getScreenMode() == wxT("2") ) {
+        if ( curCon->getScreenMode() == wxT("2") ) {
             MenuItem7->Check( true );
-        } else if ( curRDP->getScreenMode() == wxT("1") && curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
+        } else if ( curCon->getScreenMode() == wxT("1") && curCon->getDesktopHeight() == wxT("0") && curCon->getDesktopWidth() == wxT("0") ) {
             MenuItem6->Check( true );
         } else {
-            wxString resolutionString = curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight();
+            wxString resolutionString = curCon->getDesktopWidth() + wxT(" x ") + curCon->getDesktopHeight();
             if ( resolutionString == wxT("640 x 480") ) { MenuItem9->Check( true ); }
             if ( resolutionString == wxT("800 x 600") ) { MenuItem10->Check( true ); }
             if ( resolutionString == wxT("1024 x 768") ) { MenuItem11->Check( true ); }
@@ -590,16 +565,11 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
 
 void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event)
 {
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     // popup properties choice
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-
+    if ( curCon != NULL ) {
         RDPFrame *newFrame = new RDPFrame( this, 0 );
-        newFrame->loadRDPConnection( rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] ) );
+        newFrame->loadRDPConnection( curCon );
         newFrame->ShowModal();
 
         loadRDPFromDatabase();
@@ -614,8 +584,8 @@ void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
         long itemIndex = -1;
         itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
         if ( itemIndex == -1 ) {
@@ -623,12 +593,12 @@ void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
         }
 
         if ( MenuItem4->IsChecked() == true ) {
-            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->setConsole( wxT("1") );
+            curCon->setConsole( wxT("1") );
         } else {
-            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->setConsole( wxT("0") );
+            curCon->setConsole( wxT("0") );
         }
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
             BitmapButton2->Disable();
@@ -652,19 +622,13 @@ void quickRDPFrame::OnTextCtrlClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("0") );
-        curRDP->setDesktopHeight( wxT("0") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("0") );
+        curCon->setDesktopHeight( wxT("0") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -672,19 +636,13 @@ void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItemFullscreenClick(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("2") );
-        curRDP->setDesktopWidth( wxT("0") );
-        curRDP->setDesktopHeight( wxT("0") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("2") );
+        curCon->setDesktopWidth( wxT("0") );
+        curCon->setDesktopHeight( wxT("0") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -692,19 +650,13 @@ void quickRDPFrame::OnMenuItemFullscreenClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem640(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("640") );
-        curRDP->setDesktopHeight( wxT("480") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("640") );
+        curCon->setDesktopHeight( wxT("480") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -712,19 +664,13 @@ void quickRDPFrame::OnMenuItem640(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem800(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("800") );
-        curRDP->setDesktopHeight( wxT("600") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("800") );
+        curCon->setDesktopHeight( wxT("600") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -732,19 +678,13 @@ void quickRDPFrame::OnMenuItem800(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem1024(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("1024") );
-        curRDP->setDesktopHeight( wxT("768") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("1024") );
+        curCon->setDesktopHeight( wxT("768") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -752,19 +692,13 @@ void quickRDPFrame::OnMenuItem1024(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem1152(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("1152") );
-        curRDP->setDesktopHeight( wxT("864") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("1152") );
+        curCon->setDesktopHeight( wxT("864") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -772,19 +706,13 @@ void quickRDPFrame::OnMenuItem1152(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem1280(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("1280") );
-        curRDP->setDesktopHeight( wxT("960") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("1280") );
+        curCon->setDesktopHeight( wxT("960") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -792,19 +720,13 @@ void quickRDPFrame::OnMenuItem1280(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuItem1400(wxCommandEvent& event)
 {
-    // checkboxclick for console
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( itemIndex == -1 ) {
-            return;
-        }
-        RDPConnection *curRDP = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-        curRDP->setScreenMode( wxT("1") );
-        curRDP->setDesktopWidth( wxT("1400") );
-        curRDP->setDesktopHeight( wxT("1050") );
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->setScreenMode( wxT("1") );
+        curCon->setDesktopWidth( wxT("1400") );
+        curCon->setDesktopHeight( wxT("1050") );
 
-        rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->saveFile();
+        curCon->saveFile();
 
         loadRDPFromDatabase();
     }
@@ -812,6 +734,7 @@ void quickRDPFrame::OnMenuItem1400(wxCommandEvent& event)
 
 void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
 {
+    RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
     if ( last_column_click == event.GetColumn() ) {
         // change sort order.
         rdpDatabase->setSortOrder( !rdpDatabase->isSortOrderAscending() );
@@ -842,22 +765,15 @@ void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
 void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
 {
     wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        for ( ;; ) {
-            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-            if ( itemIndex == -1 ) {
-                break;
-            }
-            if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
-                RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-                wxString username = myCon->getUsername().empty() ? wxT("NO_USER") : myCon->getUsername();
-                wxString password = myCon->getPassword().empty() ? wxT("NO_PASS") : myCon->getPassword();
-                wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
-                wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + myCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( myCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
-            } else {
-                wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
-            }
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
+            wxString username = curCon->getUsername().empty() ? wxT("NO_USER") : curCon->getUsername();
+            wxString password = curCon->getPassword().empty() ? wxT("NO_PASS") : curCon->getPassword();
+            wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
+            wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + curCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( curCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
+        } else {
+            wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
         }
     }
 }
@@ -865,21 +781,13 @@ void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
 void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
 {
     wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        for ( ;; ) {
-            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-            if ( itemIndex == -1 ) {
-                break;
-            }
-
-            RDPConnection* myCon = rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] );
-            Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetLabel() );
-            if ( executeCommand != NULL && myCon != NULL ) {
-                executeCommand->execute( myCon );
-            } else {
-                wxMessageBox( wxT("Command or connection not found!"), wxT("Error"), wxICON_ERROR );
-            }
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetLabel() );
+        if ( executeCommand != NULL && curCon != NULL ) {
+            executeCommand->execute( curCon );
+        } else {
+            wxMessageBox( wxT("Command or connection not found!"), wxT("Error"), wxICON_ERROR );
         }
     }
 }
@@ -891,45 +799,43 @@ void quickRDPFrame::OnMenuItemConnect(wxCommandEvent& event)
 
 void quickRDPFrame::execute_connections()
 {
-    if ( ListCtrl1->GetSelectedItemCount() > 0 ) {
-        long itemIndex = -1;
-        for ( ;; ) {
-            itemIndex = ListCtrl1->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-            if ( itemIndex == -1 ) {
-                break;
-            }
-            rdpDatabase->getRDPConnectionByPointer( ListCtrlRDPRelation[ itemIndex ] )->connect();
-        }
+    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
+    if ( curCon != NULL ) {
+        curCon->connect();
     }
 }
 
 void quickRDPFrame::saveFrameSettings()
 {
     Settings* settings = Resources::Instance()->getSettings();
-    settings->setMainFrameHeight( GetSize().GetHeight() );
-    settings->setMainFrameWidth( GetSize().GetWidth() );
-    settings->setColumn0Width( ListCtrl1->GetColumnWidth( 0 ) );
-    settings->setColumn1Width( ListCtrl1->GetColumnWidth( 1 ) );
-    settings->setColumn2Width( ListCtrl1->GetColumnWidth( 2 ) );
-    settings->setColumn3Width( ListCtrl1->GetColumnWidth( 3 ) );
-    settings->setColumn4Width( ListCtrl1->GetColumnWidth( 4 ) );
-    settings->setColumn5Width( ListCtrl1->GetColumnWidth( 5 ) );
-    settings->saveSettings();
+    if ( settings != NULL ) {
+        settings->setMainFrameHeight( GetSize().GetHeight() );
+        settings->setMainFrameWidth( GetSize().GetWidth() );
+        settings->setColumn0Width( ListCtrl1->GetColumnWidth( 0 ) );
+        settings->setColumn1Width( ListCtrl1->GetColumnWidth( 1 ) );
+        settings->setColumn2Width( ListCtrl1->GetColumnWidth( 2 ) );
+        settings->setColumn3Width( ListCtrl1->GetColumnWidth( 3 ) );
+        settings->setColumn4Width( ListCtrl1->GetColumnWidth( 4 ) );
+        settings->setColumn5Width( ListCtrl1->GetColumnWidth( 5 ) );
+        settings->saveSettings();
+    }
 }
 
 void quickRDPFrame::loadFrameSettings()
 {
     Settings* settings = Resources::Instance()->getSettings();
-    /** frames size **/
-    SetSize( wxDefaultCoord, wxDefaultCoord, settings->getMainFrameWidth(), settings->getMainFrameHeight() );
+    if ( settings != NULL ) {
+        /** frames size **/
+        SetSize( wxDefaultCoord, wxDefaultCoord, settings->getMainFrameWidth(), settings->getMainFrameHeight() );
 
-    /** column widths **/
-    ListCtrl1->SetColumnWidth( 0, settings->getColumn0Width() );
-    ListCtrl1->SetColumnWidth( 1, settings->getColumn1Width() );
-    ListCtrl1->SetColumnWidth( 2, settings->getColumn2Width() );
-    ListCtrl1->SetColumnWidth( 3, settings->getColumn3Width() );
-    ListCtrl1->SetColumnWidth( 4, settings->getColumn4Width() );
-    ListCtrl1->SetColumnWidth( 5, settings->getColumn5Width() );
+        /** column widths **/
+        ListCtrl1->SetColumnWidth( 0, settings->getColumn0Width() );
+        ListCtrl1->SetColumnWidth( 1, settings->getColumn1Width() );
+        ListCtrl1->SetColumnWidth( 2, settings->getColumn2Width() );
+        ListCtrl1->SetColumnWidth( 3, settings->getColumn3Width() );
+        ListCtrl1->SetColumnWidth( 4, settings->getColumn4Width() );
+        ListCtrl1->SetColumnWidth( 5, settings->getColumn5Width() );
+    }
 }
 
 void quickRDPFrame::OnListCtrlKeyDown(wxListEvent& event)

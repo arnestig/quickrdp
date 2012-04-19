@@ -123,21 +123,21 @@ void Settings::saveSettings()
     std::ofstream ofile;
     ofile.open( wxString( getSettingsPath() + wxT("settings") ).mb_str(), std::ios::out|std::ios::binary );
 
-    FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("perlexec:s:")) + getPerlExec() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("telnetargument:s:")) + getTelnetArgument() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("perlargument:s:")) + getPerlArgument() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("frameheight:i:")) << getMainFrameHeight() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("framewidth:i:")) << getMainFrameWidth() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("perlexec:s:")) + getPerlExec() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("telnetargument:s:")) + getTelnetArgument() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("perlargument:s:")) + getPerlArgument() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("frameheight:i:")) << getMainFrameHeight() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("framewidth:i:")) << getMainFrameWidth() );
 
-    FileParser::writeLineToFile( ofile, wxString(wxT("column0width:i:")) << getColumn0Width() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("column1width:i:")) << getColumn1Width() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("column2width:i:")) << getColumn2Width() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("column3width:i:")) << getColumn3Width() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("column4width:i:")) << getColumn4Width() );
-    FileParser::writeLineToFile( ofile, wxString(wxT("column5width:i:")) << getColumn5Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column0width:i:")) << getColumn0Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column1width:i:")) << getColumn1Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column2width:i:")) << getColumn2Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column3width:i:")) << getColumn3Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column4width:i:")) << getColumn4Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column5width:i:")) << getColumn5Width() );
 
     ofile.close();
 }
@@ -150,7 +150,7 @@ void Settings::loadSettings()
     if ( wxFileExists( filename ) == false ) {
         std::ofstream ofile;
         ofile.open( filename.mb_str(), std::ios::out|std::ios::binary );
-        FileParser::writeLineToFile( ofile, wxT("" ) );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("" ) );
         ofile.close();
     }
 
@@ -178,32 +178,32 @@ void Settings::loadSettings()
             allLines.push_back( input );
         }
         delete[] buffer;
-        setTelnetExec( FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
-        setSSHExec( FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
-        setPerlExec( FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
-        setTelnetArgument( FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
-        setSSHArgument( FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
-        setPerlArgument( FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
+        setTelnetExec( quickRDP::FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
+        setSSHExec( quickRDP::FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
+        setPerlExec( quickRDP::FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
+        setTelnetArgument( quickRDP::FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
+        setSSHArgument( quickRDP::FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
+        setPerlArgument( quickRDP::FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
 
-        setMainFrameHeight( wxAtoi( FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
-        setMainFrameWidth( wxAtoi( FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
+        setMainFrameHeight( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
+        setMainFrameWidth( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
 
-        int col0width = FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
+        int col0width = quickRDP::FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
         col0width == 0 ? setColumn0Width( 80 ) : setColumn0Width( col0width );
 
-        int col1width = FileParser::getIntegerFromFile( wxT("column1width:i:"), allLines );
+        int col1width = quickRDP::FileParser::getIntegerFromFile( wxT("column1width:i:"), allLines );
         col1width == 0 ? setColumn1Width( 90 ) : setColumn1Width( col1width );
 
-        int col2width = FileParser::getIntegerFromFile( wxT("column2width:i:"), allLines );
+        int col2width = quickRDP::FileParser::getIntegerFromFile( wxT("column2width:i:"), allLines );
         col2width == 0 ? setColumn2Width( 100 ) : setColumn2Width( col2width );
 
-        int col3width = FileParser::getIntegerFromFile( wxT("column3width:i:"), allLines );
+        int col3width = quickRDP::FileParser::getIntegerFromFile( wxT("column3width:i:"), allLines );
         col3width == 0 ? setColumn3Width( 87 ) : setColumn3Width( col3width );
 
-        int col4width = FileParser::getIntegerFromFile( wxT("column4width:i:"), allLines );
+        int col4width = quickRDP::FileParser::getIntegerFromFile( wxT("column4width:i:"), allLines );
         col4width == 0 ? setColumn4Width( 82 ) : setColumn4Width( col4width );
 
-        int col5width = FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
+        int col5width = quickRDP::FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
         col5width == 0 ? setColumn5Width( 107 ) : setColumn5Width( col5width );
     }
     rfile.close();

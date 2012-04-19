@@ -51,7 +51,6 @@ class quickRDPFrame: public wxFrame
         void OnListCtrl1ItemDeselect(wxListEvent& event);
         void OnNewButtonClick(wxCommandEvent& event);
         void OnDeleteButtonClick(wxCommandEvent& event);
-        void OnEditButtonClick(wxCommandEvent& event);
         void OnListCtrl1ItemActivated(wxListEvent& event);
         void OnDuplicateButtonClick(wxCommandEvent& event);
         void OnSearchTextEnter(wxCommandEvent& event);
@@ -81,6 +80,7 @@ class quickRDPFrame: public wxFrame
         void OnPerlScriptSelected(wxCommandEvent& event);
         void OnCommandSelected(wxCommandEvent& event);
         void onVersionCheckExecuted( wxCommandEvent &evt );
+        void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;

@@ -33,7 +33,7 @@ class Resources
         static Resources* Instance();
 
         Settings* getSettings() const;
-        RDPDatabase* getConDatabase() const;
+        RDPDatabase* getConnectionDatabase() const;
         PerlDatabase* getPerlDatabase() const;
         CommandDatabase* getCommandDatabase() const;
 
@@ -43,7 +43,7 @@ class Resources
         Resources( Resources const& ) {};
 
         Settings *settings;
-        RDPDatabase *conDatabase;
+        RDPDatabase *connectionDatabase;
         PerlDatabase *perlDatabase;
         CommandDatabase *commandDatabase;
 };

@@ -114,9 +114,13 @@ class RDPDatabase
         ~RDPDatabase();
         RDPConnection *addRDPConnection( wxString filename );
         RDPConnection *duplicateRDPConnection( wxString filename, RDPConnection *copy );
-        RDPConnection *getRDPConnectionByPointer( RDPConnection *rdpConnection );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
         std::vector<RDPConnection*> getDatabase();
+
+        RDPConnection* getRDPFromListCtrl( long index );
+        void clearRDPListCtrl();
+        void addRDPToListCtrl( RDPConnection *connection );
+
         void sortById( int id );
         bool isSortOrderAscending() const;
         void setSortOrder( bool database_sort_ascending );
@@ -125,6 +129,7 @@ class RDPDatabase
         bool database_sort_ascending;
         void loadRDPFiles();
         std::vector<RDPConnection*> database;
+        std::vector<RDPConnection*> listCtrlRelation;
 
         static bool hostnameCompareAsc( RDPConnection* left, RDPConnection* right )
         {
