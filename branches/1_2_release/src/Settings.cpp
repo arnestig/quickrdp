@@ -21,7 +21,7 @@
 
 #include "Settings.h"
 #include "Resources.h"
-#include "FileParser.h"
+#include "QuickrdpFunctions.h"
 #include <wx/stdpaths.h>
 #include <fstream>
 

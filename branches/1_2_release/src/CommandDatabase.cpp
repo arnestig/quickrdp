@@ -24,7 +24,7 @@
 #include <fstream>
 #include <wx/filefn.h>
 #include <wx/filename.h>
-#include "FileParser.h"
+#include "QuickrdpFunctions.h"
 
 /** BEGIN COMMAND **/
 

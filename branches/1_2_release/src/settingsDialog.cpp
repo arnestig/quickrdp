@@ -21,7 +21,7 @@
 
 #include "settingsDialog.h"
 #include "Resources.h"
-#include "FileParser.h"
+#include "QuickrdpFunctions.h"
 
 //(*InternalHeaders(settingsDialog)
 #include <wx/settings.h>

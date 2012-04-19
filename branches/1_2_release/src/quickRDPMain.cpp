@@ -24,7 +24,7 @@
 #include "RDPDatabase.h"
 #include "aboutDialog.h"
 #include "settingsDialog.h"
-#include "FileParser.h"
+#include "QuickrdpFunctions.h"
 #include "Resources.h"
 #include "perlDialog.h"
 #include "CommandDialog.h"

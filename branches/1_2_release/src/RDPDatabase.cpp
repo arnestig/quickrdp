@@ -20,7 +20,7 @@
 **/
 
 #include "RDPDatabase.h"
-#include "FileParser.h"
+#include "QuickrdpFunctions.h"
 #include "Resources.h"
 #include <wx/filefn.h>
 #include <wx/filename.h>
