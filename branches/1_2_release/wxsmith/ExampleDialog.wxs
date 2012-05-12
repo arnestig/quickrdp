@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
-	<object class="wxDialog" name="exampleDialog">
+	<object class="wxDialog" name="ExampleDialog">
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
@@ -17,7 +17,7 @@
 							<option>1</option>
 						</object>
 						<object class="sizeritem">
-							<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
+							<object class="wxButton" name="wxID_CANCEL" variable="Button1" member="yes">
 								<label>Close</label>
 								<handler function="OnCloseButton" entry="EVT_BUTTON" />
 							</object>

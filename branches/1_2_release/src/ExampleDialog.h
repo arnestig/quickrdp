@@ -47,7 +47,6 @@ class ExampleDialog: public wxDialog
 
 		//(*Identifiers(ExampleDialog)
 		static const long ID_TEXTCTRL1;
-		static const long ID_BUTTON1;
 		static const long ID_PANEL1;
 		//*)
 

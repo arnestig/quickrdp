@@ -29,7 +29,6 @@
 
 //(*IdInit(ExampleDialog)
 const long ExampleDialog::ID_TEXTCTRL1 = wxNewId();
-const long ExampleDialog::ID_BUTTON1 = wxNewId();
 const long ExampleDialog::ID_PANEL1 = wxNewId();
 //*)
 
@@ -51,7 +50,7 @@ ExampleDialog::ExampleDialog(wxString example, wxWindow* parent,wxWindowID id)
 	exampleTextCtrl = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(610,183), wxTE_MULTILINE|wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL1"));
 	exampleTextCtrl->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_INFOBK));
 	BoxSizer2->Add(exampleTextCtrl, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button1 = new wxButton(Panel1, ID_BUTTON1, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	Button1 = new wxButton(Panel1, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer2->Add(Button1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
 	Panel1->SetSizer(BoxSizer2);
 	BoxSizer2->Fit(Panel1);
@@ -61,7 +60,7 @@ ExampleDialog::ExampleDialog(wxString example, wxWindow* parent,wxWindowID id)
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 
-	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExampleDialog::OnCloseButton);
+	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExampleDialog::OnCloseButton);
 	//*)
 	exampleTextCtrl->ChangeValue( example );
 	Button1->SetFocus();
