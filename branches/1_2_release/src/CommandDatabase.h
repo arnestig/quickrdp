@@ -30,12 +30,13 @@
 class Command
 {
     public:
-        Command( wxString name, wxString program, wxString argument, bool favorite, bool safety );
+        Command( wxString name, wxString program, wxString argument, wxString filename, bool favorite, bool safety );
         ~Command();
 
         wxString getName() const;
         wxString getProgram() const;
         wxString getArgument() const;
+        wxString getFilename() const;
         bool getFavorite() const;
         bool getSafety() const;
 
@@ -50,6 +51,7 @@ class Command
         wxString name;
         wxString program;
         wxString argument;
+        wxString filename;
         bool favorite;
         bool safety;
 };

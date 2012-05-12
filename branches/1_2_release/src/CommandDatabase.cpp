@@ -28,10 +28,11 @@
 
 /** BEGIN COMMAND **/
 
-Command::Command( wxString name, wxString program, wxString argument, bool favorite, bool safety )
+Command::Command( wxString name, wxString program, wxString argument, wxString filename, bool favorite, bool safety )
     :   name( name ),
         program( program ),
         argument( argument ),
+        filename( filename ),
         favorite( favorite ),
         safety( safety )
 {
@@ -54,6 +55,11 @@ wxString Command::getProgram() const
 wxString Command::getArgument() const
 {
     return argument;
+}
+
+wxString Command::getFilename() const
+{
+    return filename;
 }
 
 bool Command::getFavorite() const
@@ -197,11 +203,15 @@ bool CommandDatabase::addCommand( wxString name )
             }
             delete[] buffer;
 
+            wxString properName = quickRDP::FileParser::getStringFromFile( wxT("name:s:"), allLines );
             wxString program = quickRDP::FileParser::getStringFromFile( wxT("program:s:"), allLines );
             wxString argument = quickRDP::FileParser::getStringFromFile( wxT("argument:s:"), allLines );
             bool favorite = quickRDP::FileParser::getBoolFromFile( wxT("favorite:b:"), allLines );
             bool safety = quickRDP::FileParser::getBoolFromFile( wxT("safety:b:"), allLines );
-            commands.push_back( new Command( name, program, argument, favorite, safety ) );
+            if ( properName.empty() == true ) {
+                properName = name;
+            }
+            commands.push_back( new Command( properName, program, argument, filename, favorite, safety ) );
             return true;
         }
     }
@@ -210,6 +220,7 @@ bool CommandDatabase::addCommand( wxString name )
 
 void CommandDatabase::saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety )
 {
+    wxString filename;
     Command *command = getCommand( name );
     if ( command != NULL ) { /** the command exists, overwrite the old **/
         command->setName( name );
@@ -217,13 +228,16 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
         command->setArgument( argument );
         command->setFavorite( favorite );
         command->setSafety( safety );
+        filename = command->getFilename();
     } else { /** command doesn't exist, create a new one **/
-        commands.push_back( new Command( name, program, argument, favorite, safety ) );
+        filename = quickRDP::FileParser::generateFilename();
+        commands.push_back( new Command( name, program, argument, filename, favorite, safety ) );
     }
 
     /** write to the file as well **/
     std::ofstream ofile;
-    ofile.open( wxString( Resources::Instance()->getSettings()->getCommandDatabasePath() + name ).mb_str(), std::ios::out|std::ios::binary );
+    ofile.open( wxString( Resources::Instance()->getSettings()->getCommandDatabasePath() + filename ).mb_str(), std::ios::out|std::ios::binary );
+    quickRDP::FileParser::writeLineToFile( ofile, wxT("name:s:") + name );
     quickRDP::FileParser::writeLineToFile( ofile, wxT("program:s:") + program );
     quickRDP::FileParser::writeLineToFile( ofile, wxT("argument:s:") + argument );
     quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("favorite:b:%d"), favorite ) );
