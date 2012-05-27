@@ -165,6 +165,24 @@ namespace quickRDP
             }
             return NULL;
         }
+
+        inline std::vector< RDPConnection* > getAllSelectedConnections( wxListCtrl *listCtrl )
+        {
+            std::vector< RDPConnection* > retVec;
+            if ( listCtrl->GetSelectedItemCount() > 0 ) {
+                long itemIndex = -1;
+                for ( ;; ) {
+                    itemIndex = listCtrl->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+                    if ( itemIndex == -1 ) {
+                        break;
+                    }
+
+                    retVec.push_back( Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( itemIndex ) );
+
+                }
+            }
+            return retVec;
+        }
     }
 }
 #endif

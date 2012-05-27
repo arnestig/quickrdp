@@ -291,7 +291,7 @@
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
-									<object class="wxButton" name="ID_BUTTON4" variable="Button4" member="yes">
+									<object class="wxButton" name="wxID_CANCEL" variable="Button4" member="yes">
 										<label>Cancel</label>
 										<size>75,23</size>
 										<handler function="OnButtonCancel" entry="EVT_BUTTON" />

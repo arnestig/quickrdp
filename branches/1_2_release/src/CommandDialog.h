@@ -80,7 +80,7 @@ class CommandDialog: public wxDialog
 		static const long ID_BUTTON1;
 		static const long ID_STATICTEXT3;
 		static const long ID_TEXTCTRL3;
-		static const long ID_BUTTON7;
+		static const long ID_BUTTON5;
 		static const long ID_STATICTEXT4;
 		static const long ID_STATICTEXT9;
 		static const long ID_CHECKBOX1;
@@ -93,7 +93,6 @@ class CommandDialog: public wxDialog
 		static const long ID_BUTTON3;
 		static const long ID_BUTTON4;
 		static const long ID_BUTTON6;
-		static const long ID_BUTTON5;
 		static const long ID_PANEL1;
 		//*)
 

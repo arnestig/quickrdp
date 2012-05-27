@@ -56,6 +56,7 @@
 													<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
 														<label>...</label>
 														<size>25,21</size>
+														<handler function="OnFileDialogClick" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
@@ -75,10 +76,20 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="argumentTextCtrl" member="yes">
-														<size>170,21</size>
+														<size>135,21</size>
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON5" variable="ArgumentHelpButton" member="yes">
+														<label>?</label>
+														<size>25,21</size>
+														<handler function="OnArgumentHelpButton" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
 												</object>
 											</object>
 											<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -105,6 +116,34 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxCheckBox" name="ID_CHECKBOX1" variable="favoriteCheckbox" member="yes" />
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+												</object>
+											</object>
+											<flag>wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxBoxSizer" variable="BoxSizer13" member="no">
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
+														<label>Safety check</label>
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
+														<label> ? </label>
+														<fg>#FF0000</fg>
+														<tooltip>Running commands with safety check will require you to confirm the command before actually running it.</tooltip>
+														<style>wxSIMPLE_BORDER</style>
+													</object>
+													<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+												</object>
+												<object class="sizeritem">
+													<object class="wxCheckBox" name="ID_CHECKBOX2" variable="safetyCheckbox" member="yes" />
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 												</object>
@@ -190,7 +229,7 @@
 													<border>5</border>
 												</object>
 												<object class="sizeritem">
-													<object class="wxButton" name="ID_BUTTON5" variable="closeButton" member="yes">
+													<object class="wxButton" name="wxID_CANCEL" variable="closeButton" member="yes">
 														<label>Close</label>
 														<handler function="OnCloseButton" entry="EVT_BUTTON" />
 													</object>

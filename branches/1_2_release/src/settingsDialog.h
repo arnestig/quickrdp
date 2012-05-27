@@ -94,7 +94,6 @@ class settingsDialog: public wxDialog
 		static const long ID_BUTTON11;
 		static const long ID_BUTTON7;
 		static const long ID_BUTTON3;
-		static const long ID_BUTTON4;
 		static const long ID_PANEL1;
 		//*)
 

@@ -37,7 +37,7 @@ const long CommandDialog::ID_TEXTCTRL2 = wxNewId();
 const long CommandDialog::ID_BUTTON1 = wxNewId();
 const long CommandDialog::ID_STATICTEXT3 = wxNewId();
 const long CommandDialog::ID_TEXTCTRL3 = wxNewId();
-const long CommandDialog::ID_BUTTON7 = wxNewId();
+const long CommandDialog::ID_BUTTON5 = wxNewId();
 const long CommandDialog::ID_STATICTEXT4 = wxNewId();
 const long CommandDialog::ID_STATICTEXT9 = wxNewId();
 const long CommandDialog::ID_CHECKBOX1 = wxNewId();
@@ -50,7 +50,6 @@ const long CommandDialog::ID_LISTBOX1 = wxNewId();
 const long CommandDialog::ID_BUTTON3 = wxNewId();
 const long CommandDialog::ID_BUTTON4 = wxNewId();
 const long CommandDialog::ID_BUTTON6 = wxNewId();
-const long CommandDialog::ID_BUTTON5 = wxNewId();
 const long CommandDialog::ID_PANEL1 = wxNewId();
 //*)
 
@@ -76,7 +75,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
 
-	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
+	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(391,253));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -102,7 +101,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer6->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	argumentTextCtrl = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(135,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	BoxSizer6->Add(argumentTextCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	ArgumentHelpButton = new wxButton(Panel1, ID_BUTTON7, _("\?"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON7"));
+	ArgumentHelpButton = new wxButton(Panel1, ID_BUTTON5, _("\?"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON5"));
 	BoxSizer6->Add(ArgumentHelpButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer6, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
@@ -148,7 +147,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer11->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	exampleButton = new wxButton(Panel1, ID_BUTTON6, _("Examples"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	BoxSizer11->Add(exampleButton, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
-	closeButton = new wxButton(Panel1, ID_BUTTON5, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
+	closeButton = new wxButton(Panel1, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer11->Add(closeButton, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
 	BoxSizer10->Add(BoxSizer11, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer8->Add(BoxSizer10, 0, wxTOP|wxBOTTOM|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -163,12 +162,12 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnNameTextChange);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnFileDialogClick);
-	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);
+	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnSaveButton);
 	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&CommandDialog::OnListDoubleClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnButtonEdit);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnExamplesButton);
-	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
+	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&CommandDialog::OnInit);
 	//*)
 	reloadCommandList();

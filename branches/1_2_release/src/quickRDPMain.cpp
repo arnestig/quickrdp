@@ -765,27 +765,40 @@ void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
 void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
 {
     wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
-    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
-    if ( curCon != NULL ) {
-        if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
-            wxString username = curCon->getUsername().empty() ? wxT("NO_USER") : curCon->getUsername();
-            wxString password = curCon->getPassword().empty() ? wxT("NO_PASS") : curCon->getPassword();
-            wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
-            wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + curCon->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( curCon->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
-        } else {
-            wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+    for ( size_t con = 0; con < connections.size(); ++con ) {
+        if ( connections[ con ] != NULL ) {
+            if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
+                wxString username = connections[ con ]->getUsername().empty() ? wxT("NO_USER") : connections[ con ]->getUsername();
+                wxString password = connections[ con ]->getPassword().empty() ? wxT("NO_PASS") : connections[ con ]->getPassword();
+                wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
+                wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + connections[ con ]->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( connections[ con ]->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
+            } else {
+                wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
+            }
         }
     }
 }
 
 void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
 {
+    bool doneSafetyCheck = false;
     wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
-    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
-    if ( curCon != NULL ) {
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+    for ( size_t con = 0; con < connections.size(); ++con ) {
         Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetLabel() );
-        if ( executeCommand != NULL && curCon != NULL ) {
-            executeCommand->execute( curCon );
+        if ( executeCommand != NULL ) {
+            if ( executeCommand->getSafety() == true && doneSafetyCheck == false ) {
+                if ( wxMessageBox( wxT("Do you want to run the command ") + executeCommand->getName() + wxT("?"), wxT("Run command?"), wxYES_NO ) != wxYES ) {
+                    break;
+                } else {
+                    doneSafetyCheck = true;
+                }
+            }
+        }
+
+        if ( executeCommand != NULL && connections[ con ] != NULL ) {
+            executeCommand->execute( connections[ con ] );
         } else {
             wxMessageBox( wxT("Command or connection not found!"), wxT("Error"), wxICON_ERROR );
         }
@@ -799,9 +812,11 @@ void quickRDPFrame::OnMenuItemConnect(wxCommandEvent& event)
 
 void quickRDPFrame::execute_connections()
 {
-    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
-    if ( curCon != NULL ) {
-        curCon->connect();
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+    for ( size_t con = 0; con < connections.size(); ++con ) {
+        if ( connections[ con ] != NULL ) {
+            connections[ con ]->connect();
+        }
     }
 }
 

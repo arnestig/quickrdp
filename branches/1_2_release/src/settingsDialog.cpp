@@ -52,7 +52,6 @@ const long settingsDialog::ID_TEXTCTRL5 = wxNewId();
 const long settingsDialog::ID_BUTTON11 = wxNewId();
 const long settingsDialog::ID_BUTTON7 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
-const long settingsDialog::ID_BUTTON4 = wxNewId();
 const long settingsDialog::ID_PANEL1 = wxNewId();
 //*)
 
@@ -79,7 +78,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(373,153));
 	Move(wxDefaultPosition);
@@ -159,7 +158,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button3 = new wxButton(Panel1, ID_BUTTON3, _("Ok"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer5->Add(Button3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button4 = new wxButton(Panel1, ID_BUTTON4, _("Cancel"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON4"));
+	Button4 = new wxButton(Panel1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer5->Add(Button4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel1->SetSizer(BoxSizer2);
@@ -171,7 +170,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	FileDialog2 = new wxFileDialog(this, _("Locate Perl executable"), wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	FileDialog3 = new wxFileDialog(this, _("Locate SSH executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetBrowseClick);
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetArgumentReset);
@@ -182,7 +181,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnPerlArgumentReset);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonSave);
-	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
+	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&settingsDialog::OnInit);
 	//*)
 
