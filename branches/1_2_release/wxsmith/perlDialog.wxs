@@ -5,6 +5,7 @@
 		<pos_arg>1</pos_arg>
 		<size_arg>1</size_arg>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
 					<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -17,85 +18,90 @@
 							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<border>5</border>
 						</object>
+						<object class="spacer">
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<size>61,20</size>
+						</object>
+						<object class="sizeritem">
+							<object class="wxBoxSizer" variable="BoxSizer4" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxBoxSizer" variable="BoxSizer5" member="no">
+										<object class="sizeritem">
+											<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
+												<label>Name</label>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCtrl2" member="yes">
+												<size>223,21</size>
+												<handler function="OnTextNameInput" entry="EVT_TEXT" />
+											</object>
+											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON1" variable="Button1" member="yes">
+														<label>New</label>
+														<handler function="OnNewScriptButton" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON2" variable="Button2" member="yes">
+														<label>Save</label>
+														<handler function="OnButtonSave" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxButton" name="ID_BUTTON3" variable="Button3" member="yes">
+														<label>Delete</label>
+														<enabled>0</enabled>
+														<handler function="OnButtonDelete" entry="EVT_BUTTON" />
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+									</object>
+									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+								</object>
+								<object class="sizeritem">
+									<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCtrl1" member="yes">
+										<size>578,425</size>
+										<style>wxTE_MULTILINE</style>
+										<handler function="OnScriptTextInput" entry="EVT_TEXT" />
+									</object>
+									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
+						</object>
 					</object>
 				</object>
 				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
 				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxBoxSizer" variable="BoxSizer5" member="no">
-					<orient>wxVERTICAL</orient>
-					<object class="sizeritem">
-						<object class="wxBoxSizer" variable="BoxSizer3" member="no">
-							<object class="sizeritem">
-								<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-									<label>Name</label>
-								</object>
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-								<option>1</option>
-							</object>
-							<object class="sizeritem">
-								<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="scriptNameText" member="yes">
-									<size>131,21</size>
-									<handler function="OnTextNameInput" entry="EVT_TEXT" />
-								</object>
-								<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-							</object>
-						</object>
-						<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BUTTON1" variable="newButton" member="yes">
-							<label>New</label>
-							<enabled>0</enabled>
-							<handler function="OnNewScriptButton" entry="EVT_BUTTON" />
-						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BUTTON3" variable="deleteButton" member="yes">
-							<label>Delete</label>
-							<enabled>0</enabled>
-							<handler function="OnButtonDelete" entry="EVT_BUTTON" />
-						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BUTTON4" variable="editButton" member="yes">
-							<label>Edit</label>
-						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="spacer">
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
-						<object class="wxBoxSizer" variable="BoxSizer4" member="no">
-							<object class="sizeritem">
-								<object class="wxButton" name="wxID_CANCEL" variable="cancelButton" member="yes">
-									<label>Close</label>
-									<handler function="OnCancelClick" entry="EVT_BUTTON" />
-								</object>
-								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-								<border>5</border>
-								<option>1</option>
-							</object>
-						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
 			</object>
 		</object>
 	</object>

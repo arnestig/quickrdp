@@ -40,26 +40,27 @@ class perlDialog: public wxDialog
 		virtual ~perlDialog();
 
 		//(*Declarations(perlDialog)
-		wxButton* deleteButton;
 		wxListCtrl* ListCtrl1;
+		wxButton* Button1;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
-		wxButton* newButton;
-		wxButton* editButton;
-		wxTextCtrl* scriptNameText;
-		wxButton* cancelButton;
+		wxButton* Button2;
+		wxButton* Button3;
+		wxTextCtrl* TextCtrl2;
+		wxTextCtrl* TextCtrl1;
 		//*)
 
 	protected:
 
 		//(*Identifiers(perlDialog)
 		static const long ID_LISTCTRL1;
-		static const long ID_PANEL1;
 		static const long ID_STATICTEXT1;
 		static const long ID_TEXTCTRL2;
 		static const long ID_BUTTON1;
+		static const long ID_BUTTON2;
 		static const long ID_BUTTON3;
-		static const long ID_BUTTON4;
+		static const long ID_TEXTCTRL1;
+		static const long ID_PANEL1;
 		//*)
 
 	private:
@@ -70,9 +71,10 @@ class perlDialog: public wxDialog
 		void OnScriptListSelected(wxListEvent& event);
 		void OnScriptListActivated(wxListEvent& event);
 		void OnListScriptDeselected(wxListEvent& event);
+		void OnButtonSave(wxCommandEvent& event);
 		void OnButtonDelete(wxCommandEvent& event);
 		void OnNewScriptButton(wxCommandEvent& event);
-		void OnCancelClick(wxCommandEvent& event);
+		void OnScriptTextInput(wxCommandEvent& event);
 		//*)
 
 		void reloadScriptList();
