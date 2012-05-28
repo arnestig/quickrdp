@@ -48,6 +48,7 @@ install:
 	$(INSTALL_DIR) mkdir -p $(DESTDIR)/usr/share/$(PROGNAME)/data
 	$(INSTALL_DIR) $(DESTDIR)/usr/bin
 	$(INSTALL_DATA) data/*.* $(DESTDIR)/usr/share/$(PROGNAME)/data
+	$(INSTALL_DATA) ChangeLog $(DESTDIR)/usr/share/$(PROGNAME)
 	$(INSTALL) $(PROGNAME) $(DESTDIR)/usr/bin
 
 uninstall:

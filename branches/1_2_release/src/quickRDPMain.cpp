@@ -30,7 +30,7 @@
 #include "CommandDialog.h"
 #include "version.h"
 #include "VersionChecker.h"
-
+#include "ExampleDialog.h"
 #include <wx/msgdlg.h>
 #include <memory>
 
@@ -275,6 +275,12 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
 
     loadRDPFromDatabase();
     loadFrameSettings();
+    if ( wxFileExists( Resources::Instance()->getSettings()->getDataPath() + wxT("ChangeLog") ) ) {
+        const long newMenuId = wxNewId();
+        wxMenuItem *changelogDialogItem = new wxMenuItem( Menu2, newMenuId, wxT("View changelog"), wxT("View the changelog to see recent changes introduced to QuickRDP"), wxITEM_NORMAL);
+        Menu2->Insert( 2, changelogDialogItem );
+        Connect( newMenuId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnChangelogClick );
+    }
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -912,5 +918,36 @@ void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &evt )
         }
     } else {
         wxMessageBox( wxT("You already got the latest version of QuickRDP.") );
+    }
+}
+
+void quickRDPFrame::OnChangelogClick( wxCommandEvent& event )
+{
+    wxString filename = Resources::Instance()->getSettings()->getDataPath() + wxT("ChangeLog");
+    if ( wxFileExists( filename ) == true ) {
+        std::ifstream rfile;
+
+        rfile.open( filename.mb_str(), std::ios::in|std::ios::binary );
+
+        rfile.seekg (0, std::ios::end);
+        int length = rfile.tellg();
+        rfile.seekg (0, std::ios::beg);
+
+        std::string inputData;
+
+        if (length > 0) {
+            char *buffer;
+            buffer = new char [length];
+            wxString strline;
+            while ( getline(rfile,inputData) ) {
+                wxString input( inputData.c_str(), wxConvUTF8 );
+                strline.append( input + wxT("\n") );
+            }
+            delete[] buffer;
+
+            ExampleDialog *changelogDlg = new ExampleDialog( strline, this );
+            changelogDlg->ShowModal();
+            delete changelogDlg;
+        }
     }
 }

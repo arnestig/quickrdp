@@ -30,13 +30,12 @@
 
 //(*IdInit(perlDialog)
 const long perlDialog::ID_LISTCTRL1 = wxNewId();
+const long perlDialog::ID_PANEL1 = wxNewId();
 const long perlDialog::ID_STATICTEXT1 = wxNewId();
 const long perlDialog::ID_TEXTCTRL2 = wxNewId();
 const long perlDialog::ID_BUTTON1 = wxNewId();
-const long perlDialog::ID_BUTTON2 = wxNewId();
 const long perlDialog::ID_BUTTON3 = wxNewId();
-const long perlDialog::ID_TEXTCTRL1 = wxNewId();
-const long perlDialog::ID_PANEL1 = wxNewId();
+const long perlDialog::ID_BUTTON4 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(perlDialog,wxDialog)
@@ -56,35 +55,36 @@ perlDialog::perlDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const w
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxDefaultSize);
 	Move(wxPoint(100,100));
-	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(274,347), wxLC_REPORT|wxLC_NO_HEADER|wxLC_SINGLE_SEL, wxDefaultValidator, _T("ID_LISTCTRL1"));
 	BoxSizer2->Add(ListCtrl1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer2->Add(61,20,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer4 = new wxBoxSizer(wxVERTICAL);
-	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-	BoxSizer5->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl2 = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(223,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	BoxSizer5->Add(TextCtrl2, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-	Button1 = new wxButton(Panel1, ID_BUTTON1, _("New"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
-	BoxSizer3->Add(Button1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button2 = new wxButton(Panel1, ID_BUTTON2, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	BoxSizer3->Add(Button2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button3 = new wxButton(Panel1, ID_BUTTON3, _("Delete"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
-	Button3->Disable();
-	BoxSizer3->Add(Button3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer5->Add(BoxSizer3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer4->Add(BoxSizer5, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(578,425), wxTE_MULTILINE, wxDefaultValidator, _T("ID_TEXTCTRL1"));
-	BoxSizer4->Add(TextCtrl1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer2->Add(BoxSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel1->SetSizer(BoxSizer2);
 	BoxSizer2->Fit(Panel1);
 	BoxSizer2->SetSizeHints(Panel1);
 	BoxSizer1->Add(Panel1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer5 = new wxBoxSizer(wxVERTICAL);
+	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	BoxSizer3->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	scriptNameText = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(131,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	BoxSizer3->Add(scriptNameText, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer5->Add(BoxSizer3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+	newButton = new wxButton(this, ID_BUTTON1, _("New"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	newButton->Disable();
+	BoxSizer5->Add(newButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	deleteButton = new wxButton(this, ID_BUTTON3, _("Delete"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	deleteButton->Disable();
+	BoxSizer5->Add(deleteButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	editButton = new wxButton(this, ID_BUTTON4, _("Edit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
+	BoxSizer5->Add(editButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+	cancelButton = new wxButton(this, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
+	BoxSizer4->Add(cancelButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer5->Add(BoxSizer4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer1->Add(BoxSizer5, 0, wxALL|wxEXPAND|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
@@ -92,9 +92,8 @@ perlDialog::perlDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const w
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&perlDialog::OnScriptListActivated);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&perlDialog::OnTextNameInput);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&perlDialog::OnNewScriptButton);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&perlDialog::OnButtonSave);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&perlDialog::OnButtonDelete);
-	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&perlDialog::OnScriptTextInput);
+	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&perlDialog::OnCancelClick);
 	//*)
 
     reloadScriptList();
@@ -122,7 +121,11 @@ void perlDialog::reloadScriptList()
 
 void perlDialog::OnTextNameInput(wxCommandEvent& event)
 {
-
+    if ( scriptNameText->IsEmpty() == true ) {
+        newButton->Enable( false );
+    } else {
+        newButton->Enable( true );
+    }
 }
 
 void perlDialog::OnScriptListActivated(wxListEvent& event)
@@ -133,26 +136,16 @@ void perlDialog::OnScriptListActivated(wxListEvent& event)
         if ( itemIndex == -1 ) {
             return;
         }
-        TextCtrl1->SetValue( Resources::Instance()->getPerlDatabase()->getScriptContent( ListCtrl1->GetItemText( itemIndex ) ) );
-        TextCtrl2->SetValue( ListCtrl1->GetItemText( itemIndex ) );
-        Button2->Disable();
-    }
-}
-
-void perlDialog::OnButtonSave(wxCommandEvent& event)
-{
-    if ( TextCtrl2->IsEmpty() == false ) {
-        Resources::Instance()->getPerlDatabase()->saveScript( TextCtrl2->GetValue(), TextCtrl1->GetValue() );
-        reloadScriptList();
-        Button2->Disable();
+        /** HERE WE WILL ALSO LAUNCH THE EDITOR **/ //codeTextCtrl->SetText( Resources::Instance()->getPerlDatabase()->getScriptContent( ListCtrl1->GetItemText( itemIndex ) ) );
+        scriptNameText->SetValue( ListCtrl1->GetItemText( itemIndex ) );
     }
 }
 
 void perlDialog::OnButtonDelete(wxCommandEvent& event)
 {
-    if ( TextCtrl2->IsEmpty() == false ) {
-        if ( wxMessageBox( wxT("Are you sure you want to delete ") + TextCtrl2->GetValue() + wxT("?"), wxT("Confirm action"), wxYES_NO ) == wxYES ) {
-            Resources::Instance()->getPerlDatabase()->deleteScript( TextCtrl2->GetValue() );
+    if ( scriptNameText->IsEmpty() == false ) {
+        if ( wxMessageBox( wxT("Are you sure you want to delete ") + scriptNameText->GetValue() + wxT("?"), wxT("Confirm action"), wxYES_NO ) == wxYES ) {
+            Resources::Instance()->getPerlDatabase()->deleteScript( scriptNameText->GetValue() );
             reloadScriptList();
         }
     }
@@ -161,15 +154,13 @@ void perlDialog::OnButtonDelete(wxCommandEvent& event)
 void perlDialog::OnNewScriptButton(wxCommandEvent& event)
 {
     /** set default text to our perl script. **/
-    TextCtrl1->SetValue(wxT("#!/usr/bin/perl -w\r\n\r\n# Arguments sent from QuickRDP to the perl interpreter:\r\n# $ARGV[0]     -   Hostname / IP-address\r\n# $ARGV[1]     -   Connection (RDP,SSH,TELNET)\r\n# $ARGV[2]     -   Username (if any, otherwise \"NO_USER\")\r\n# $ARGV[3]     -   Password (if any, otherwise \"NO_PASS\")\r\n\r\n"));
-    TextCtrl2->Clear();
+    /**codeTextCtrl->SetText(wxT("#!/usr/bin/perl -w\r\n\r\n# Arguments sent from QuickRDP to the perl interpreter:\r\n# $ARGV[0]     -   Hostname / IP-address\r\n# $ARGV[1]     -   Connection (RDP,SSH,TELNET)\r\n# $ARGV[2]     -   Username (if any, otherwise \"NO_USER\")\r\n# $ARGV[3]     -   Password (if any, otherwise \"NO_PASS\")\r\n\r\n"));
+    TextCtrl2->Clear(); **/
+    /// HERE WE WILL LAUNCH THE EXTERNAL COMMAND!
+    reloadScriptList();
 }
 
-void perlDialog::OnScriptTextInput(wxCommandEvent& event)
+void perlDialog::OnCancelClick(wxCommandEvent& event)
 {
-    if ( Resources::Instance()->getPerlDatabase()->getScriptContent( TextCtrl2->GetValue() ) == TextCtrl1->GetValue() ) {
-        Button2->Disable();
-    } else {
-        Button2->Enable();
-    }
+    EndModal( 0 );
 }
