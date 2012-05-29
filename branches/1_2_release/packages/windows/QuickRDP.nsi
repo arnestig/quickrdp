@@ -41,9 +41,9 @@ functionEnd
 section "install" # Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
 setOutPath "$INSTDIR\data" # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\data\*.*" # Add any other files for the install directory (license files, app data, etc) here
+file "..\..\ChangeLog"
 setOutPath $INSTDIR # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\QuickRDP.exe"
-file "..\..\ChangeLog"
 
     writeUninstaller "$INSTDIR\uninstall.exe"
 
@@ -82,7 +82,6 @@ section "uninstall"
 
     delete $INSTDIR\QuickRDP.exe
     delete $INSTDIR\QuickRDP.ico
-    delete $INSTDIR\ChangeLog
 	delete "$INSTDIR\data\*.*"
     rmDir "$INSTDIR\data"
 
