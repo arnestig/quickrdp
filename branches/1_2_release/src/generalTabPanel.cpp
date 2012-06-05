@@ -34,6 +34,8 @@ const long generalTabPanel::ID_STATICTEXT1 = wxNewId();
 const long generalTabPanel::ID_CHOICE1 = wxNewId();
 const long generalTabPanel::ID_STATICTEXT2 = wxNewId();
 const long generalTabPanel::ID_TEXTCTRL2 = wxNewId();
+const long generalTabPanel::ID_STATICTEXT10 = wxNewId();
+const long generalTabPanel::ID_TEXTCTRL1 = wxNewId();
 const long generalTabPanel::ID_STATICTEXT8 = wxNewId();
 const long generalTabPanel::ID_TEXTCTRL7 = wxNewId();
 const long generalTabPanel::ID_STATICTEXT3 = wxNewId();
@@ -67,7 +69,7 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxDefaultPosition, wxSize(261,344), wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
@@ -84,13 +86,18 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	Choice1->SetSelection( Choice1->Append(_("Remote desktop")) );
 	Choice1->Append(_("Telnet"));
 	Choice1->Append(_("SSH"));
+	Choice1->Append(_("VNC"));
 	BoxSizer13->Add(Choice1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer13, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Hostname:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer2->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl2 = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	BoxSizer2->Add(TextCtrl2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	TextCtrl2 = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(101,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	BoxSizer2->Add(TextCtrl2, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _(":"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+	BoxSizer2->Add(StaticText10, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
+	PortText = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(39,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	BoxSizer2->Add(PortText, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
@@ -134,9 +141,10 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	BoxSizer1->Add(BoxSizer3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_TOP, 5);
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&generalTabPanel::onConnectionChoice);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
 	Connect(ID_TEXTCTRL7,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
 	Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
 	Connect(ID_TEXTCTRL6,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);

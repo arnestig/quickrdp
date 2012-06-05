@@ -160,11 +160,16 @@ Command* CommandDatabase::getCommand( wxString name )
 
 void CommandDatabase::deleteCommand( wxString name )
 {
-    wxRemoveFile( Resources::Instance()->getSettings()->getCommandDatabasePath() + name );
-    for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
-        if ( commands[ commandId ]->getName() == name ) {
-            delete commands[ commandId ];
-            commands.erase( commands.begin() + commandId );
+    Command *curCommand = getCommand( name );
+    if ( curCommand != NULL ) {
+        if ( wxRemoveFile( Resources::Instance()->getSettings()->getCommandDatabasePath() + curCommand->getFilename() ) == false ) {
+            wxMessageBox( wxString::Format( wxT("Unable to remove the command. Failure when deleting the file: %s"), wxSysErrorMsg( wxSysErrorCode() ) ) );
+        }
+        for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
+            if ( commands[ commandId ]->getName() == name ) {
+                delete commands[ commandId ];
+                commands.erase( commands.begin() + commandId );
+            }
         }
     }
 }

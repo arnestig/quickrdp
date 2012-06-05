@@ -182,6 +182,7 @@
 											<object class="wxListBox" name="ID_LISTBOX1" variable="CommandList" member="yes">
 												<default>-1</default>
 												<size>195,270</size>
+												<handler function="OnCommandListClick" entry="EVT_LISTBOX" />
 												<handler function="OnListDoubleClick" entry="EVT_LISTBOX_DCLICK" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -208,6 +209,7 @@
 											<object class="wxButton" name="ID_BUTTON4" variable="RemoveButton" member="yes">
 												<label>Remove</label>
 												<enabled>0</enabled>
+												<handler function="OnRemoveButton" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>

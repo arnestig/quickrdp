@@ -164,8 +164,10 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnFileDialogClick);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnSaveButton);
+	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&CommandDialog::OnCommandListClick);
 	Connect(ID_LISTBOX1,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&CommandDialog::OnListDoubleClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnButtonEdit);
+	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnRemoveButton);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnExamplesButton);
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&CommandDialog::OnInit);
@@ -270,7 +272,7 @@ void CommandDialog::OnExamplesButton(wxCommandEvent& event)
 {
     ExampleDialog *example;
     #if defined(__WXMSW__)
-        example = new ExampleDialog( wxT("Example: Filezilla FTP connection\nProgram: C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe\nArgument: ftp://%username%:%password%@%hostname%\n\nExample: Mount and open shared folder\nProgram: cmd.exe\nArgument: /C \"net use X: /DELETE & net use X: \\\\172.251.61.162\\C$ %password% /USER:%username% & explorer X:\"\n\nExample: Continuously ping host\nProgram: ping.exe\nArgument: %hostname% -t"), this );
+        example = new ExampleDialog( wxT("Example: Filezilla FTP connection\nProgram: C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe\nArgument: ftp://%username%:%password%@%hostname%\n\nExample: Mount and open shared folder\nProgram: cmd.exe\nArgument: /C \"net use X: /DELETE & net use X: \\\\%hostname%\\C$ %password% /USER:%username% & explorer X:\"\n\nExample: Continuously ping host\nProgram: ping.exe\nArgument: %hostname% -t"), this );
     #else
         example = new ExampleDialog( wxT("Example: Scan host on port 21,22,23 and 80 with nmap\nProgram: nmap\nArgument: -p21-23,80 %hostname%"), this );
     #endif

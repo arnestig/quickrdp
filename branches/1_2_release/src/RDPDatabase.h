@@ -31,7 +31,8 @@ namespace ConnectionType
     {
         RDP,
         TELNET,
-        SSH
+        SSH,
+        VNC
     };
 
     inline wxString getConnectionTypeName( ConnectionType::ConnectionType connectionType )
@@ -40,14 +41,16 @@ namespace ConnectionType
         {
             default:
             case ConnectionType::RDP:
-                return wxT( "Remote Desktop" );
+                return wxT("Remote Desktop");
             break;
             case ConnectionType::TELNET:
-                return wxT( "Telnet" );
+                return wxT("Telnet");
             break;
             case ConnectionType::SSH:
-                return wxT( "SSH" );
+                return wxT("SSH");
             break;
+            case ConnectionType::VNC:
+                return wxT("VNC");
         }
     }
 }
@@ -74,6 +77,8 @@ class RDPConnection
         wxString getConsole() const;
         wxString getSoundMode() const;
         wxString getDiskMapping() const;
+        wxString getPort() const;
+        wxString getPortTrueValue() const; // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -96,6 +101,7 @@ class RDPConnection
         void setConsole( wxString console );
         void setSoundMode( wxString soundmode );
         void setDiskMapping( wxString diskmapping );
+        void setPort( wxString port );
 
         void saveFile();
 
@@ -104,7 +110,7 @@ class RDPConnection
     private:
         void parseFile();
         ConnectionType::ConnectionType connectionType;
-        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping;
+        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping, port;
 };
 
 class RDPDatabase

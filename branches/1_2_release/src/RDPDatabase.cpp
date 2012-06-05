@@ -37,7 +37,8 @@ RDPConnection::RDPConnection( wxString filename )
         console( wxT("0") ),
         screenmode( wxT("1") ),
         soundmode( wxT("0") ),
-        diskmapping( wxT("0") )
+        diskmapping( wxT("0") ),
+        port( wxT("-1") )
 {
     parseFile();
 }
@@ -59,6 +60,7 @@ RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     setUsername( copy->getUsername() );
     setSoundMode( copy->getSoundMode() );
     setDiskMapping( copy->getDiskMapping() );
+    setPort( copy->getPort() );
     saveFile();
 }
 
@@ -139,6 +141,35 @@ wxString RDPConnection::getSoundMode() const
 wxString RDPConnection::getDiskMapping() const
 {
     return diskmapping;
+}
+
+wxString RDPConnection::getPort() const
+{
+    if ( getPortTrueValue() == wxT("-1") ) {
+        switch ( getConnectionType() ) {
+            case ConnectionType::RDP:
+                return wxT("3306");
+            break;
+            case ConnectionType::TELNET:
+                return wxT("23");
+            break;
+            case ConnectionType::SSH:
+                return wxT("22");
+            break;
+            case ConnectionType::VNC:
+                return wxT("5900");
+            break;
+            default:
+                return wxT("");
+        }
+    } else {
+        return port;
+    }
+}
+
+wxString RDPConnection::getPortTrueValue() const
+{
+    return port;
 }
 
 wxString RDPConnection::getResolutionString() const
@@ -244,6 +275,19 @@ void RDPConnection::setSoundMode( wxString soundmode )
     this->soundmode = soundmode;
 }
 
+void RDPConnection::setPort( wxString port )
+{
+    if (( port == wxT("3306") && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
+        ( port == wxT("23") && getConnectionType() == ConnectionType::TELNET ) ||
+        ( port == wxT("22") && getConnectionType() == ConnectionType::SSH ) ||
+        ( port == wxT("5900") && getConnectionType() == ConnectionType::VNC ) ||
+        ( port.empty() == true ) ) {
+            this->port = wxT("-1");
+        } else {
+            this->port = port;
+        }
+}
+
 void RDPConnection::connect()
 {
     Settings *settings = Resources::Instance()->getSettings();
@@ -321,6 +365,11 @@ void RDPConnection::connect()
                     wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
                 }
             break;
+            case ConnectionType::VNC:
+            /** TODO:
+            ADD VNC CONNECTION SUPPORT HERE
+            **/
+            break;
         }
     }
 }
@@ -344,6 +393,7 @@ void RDPConnection::saveFile()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
+	quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("port:i:")) + getPort() );
 
 	ofile.close();
 }
@@ -391,6 +441,7 @@ void RDPConnection::parseFile()
         setConsole( quickRDP::FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
         setSoundMode( quickRDP::FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
         setDiskMapping( quickRDP::FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
+		setPort( quickRDP::FileParser::getStringFromFile( wxT("port:i:"), allLines ) );
 	}
 	rfile.close();
     }
