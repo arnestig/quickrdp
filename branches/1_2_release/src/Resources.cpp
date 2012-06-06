@@ -26,12 +26,10 @@ Resources* Resources::instance = NULL;
 Resources::Resources()
     :   settings( NULL ),
         connectionDatabase( NULL ),
-        perlDatabase( NULL ),
         commandDatabase( NULL )
 {
     settings = new Settings();
     connectionDatabase = new RDPDatabase();
-    perlDatabase = new PerlDatabase();
     commandDatabase = new CommandDatabase();
 }
 
@@ -51,11 +49,6 @@ Settings* Resources::getSettings() const
 RDPDatabase* Resources::getConnectionDatabase() const
 {
     return connectionDatabase;
-}
-
-PerlDatabase* Resources::getPerlDatabase() const
-{
-    return perlDatabase;
 }
 
 CommandDatabase* Resources::getCommandDatabase() const

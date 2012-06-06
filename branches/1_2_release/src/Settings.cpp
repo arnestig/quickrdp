@@ -56,13 +56,6 @@ Settings::Settings()
         databasePath = getSettingsPath() + wxT("connections/");
     #endif
 
-    // perl database path
-    #if defined(__WXMSW__)
-        perlDatabasePath = getSettingsPath() + wxT("perl\\");
-    #elif defined(__UNIX__)
-        perlDatabasePath = getSettingsPath() + wxT("perl/");
-    #endif
-
     // command database path
     #if defined(__WXMSW__)
         commandDatabasePath = getSettingsPath() + wxT("commands\\");
@@ -70,7 +63,7 @@ Settings::Settings()
         commandDatabasePath = getSettingsPath() + wxT("commands/");
     #endif
 
-    /** make sure we have the folders created for our settings, connection database and perl database **/
+    /** make sure we have the folders created for our settings, connection database and command database **/
     if ( wxDirExists( getSettingsPath() ) == false ) {
         #if defined(__WXMSW__)
             wxMkDir( getSettingsPath().fn_str() );
@@ -84,14 +77,6 @@ Settings::Settings()
             wxMkDir( getDatabasePath().fn_str() );
         #elif defined(__UNIX__)
             wxMkDir( getDatabasePath().fn_str(), 0700 );
-        #endif
-    }
-
-    if ( wxDirExists( getPerlDatabasePath() ) == false ) {
-        #if defined(__WXMSW__)
-            wxMkDir( getPerlDatabasePath().fn_str() );
-        #elif defined(__UNIX__)
-            wxMkDir( getPerlDatabasePath().fn_str(), 0700 );
         #endif
     }
 
@@ -125,10 +110,8 @@ void Settings::saveSettings()
 
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("perlexec:s:")) + getPerlExec() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("telnetargument:s:")) + getTelnetArgument() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("perlargument:s:")) + getPerlArgument() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("frameheight:i:")) << getMainFrameHeight() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("framewidth:i:")) << getMainFrameWidth() );
 
@@ -180,10 +163,8 @@ void Settings::loadSettings()
         delete[] buffer;
         setTelnetExec( quickRDP::FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
         setSSHExec( quickRDP::FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
-        setPerlExec( quickRDP::FileParser::getStringFromFile( wxT("perlexec:s:"), allLines ) );
         setTelnetArgument( quickRDP::FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
         setSSHArgument( quickRDP::FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
-        setPerlArgument( quickRDP::FileParser::getStringFromFile( wxT("perlargument:s:"), allLines ) );
 
         setMainFrameHeight( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
         setMainFrameWidth( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
@@ -238,16 +219,6 @@ wxString Settings::getSSHArgument() const
     return SSHArgument;
 }
 
-wxString Settings::getPerlExec() const
-{
-    return perlExec;
-}
-
-wxString Settings::getPerlArgument() const
-{
-    return perlArgument;
-}
-
 void Settings::setTelnetExec( wxString telnetExec )
 {
     this->telnetExec = telnetExec;
@@ -268,16 +239,6 @@ void Settings::setSSHArgument( wxString SSHArgument)
     this->SSHArgument = SSHArgument;
 }
 
-void Settings::setPerlExec( wxString perlExec )
-{
-    this->perlExec = perlExec;
-}
-
-void Settings::setPerlArgument( wxString perlArgument )
-{
-    this->perlArgument = perlArgument;
-}
-
 wxString Settings::getSettingsPath() const
 {
     return settingsPath;
@@ -286,11 +247,6 @@ wxString Settings::getSettingsPath() const
 wxString Settings::getDatabasePath() const
 {
     return databasePath;
-}
-
-wxString Settings::getPerlDatabasePath() const
-{
-    return perlDatabasePath;
 }
 
 wxString Settings::getCommandDatabasePath() const

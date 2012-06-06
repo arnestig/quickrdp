@@ -26,7 +26,6 @@
 #include "settingsDialog.h"
 #include "QuickrdpFunctions.h"
 #include "Resources.h"
-#include "perlDialog.h"
 #include "CommandDialog.h"
 #include "version.h"
 #include "VersionChecker.h"
@@ -74,7 +73,6 @@ const long quickRDPFrame::ID_BITMAPBUTTON3 = wxNewId();
 const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
-const long quickRDPFrame::idMainMenuPerlScripts = wxNewId();
 const long quickRDPFrame::idMenuCommands = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::ID_MENUITEM2 = wxNewId();
@@ -166,8 +164,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
     Menu3 = new wxMenu();
-    MenuItem16 = new wxMenuItem(Menu3, idMainMenuPerlScripts, _("Perl scripts"), wxEmptyString, wxITEM_NORMAL);
-    Menu3->Append(MenuItem16);
     MenuItem22 = new wxMenuItem(Menu3, idMenuCommands, _("Commands"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem22);
     Menu3->AppendSeparator();
@@ -231,10 +227,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemDeselect);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemActivated);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
-    Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_KEY_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnListCtrlKeyDown);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
     Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
-    Connect(idMainMenuPerlScripts,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuPerlScripts);
     Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnReportBugClick);
@@ -255,9 +249,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
-    perlMenu = new wxMenu();
     commandMenu = new wxMenu();
-    PopupMenu1.AppendSubMenu( perlMenu, wxT("Perl") );
     PopupMenu1.AppendSubMenu( commandMenu, wxT("Commands") );
 
     SetTitle( Version::getShortVersion() );
@@ -290,12 +282,12 @@ quickRDPFrame::~quickRDPFrame()
     saveFrameSettings();
 }
 
-void quickRDPFrame::OnQuit(wxCommandEvent& event)
+void quickRDPFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
 {
     Close();
 }
 
-void quickRDPFrame::OnAbout(wxCommandEvent& event)
+void quickRDPFrame::OnAbout(wxCommandEvent& WXUNUSED(event) )
 {
     aboutDialog *about = new aboutDialog( this, 0 );
     about->VersionText->SetLabel( Version::getLongVersion() );
@@ -303,21 +295,21 @@ void quickRDPFrame::OnAbout(wxCommandEvent& event)
     delete about;
 }
 
-void quickRDPFrame::OnListCtrl1ItemSelect(wxListEvent& event)
+void quickRDPFrame::OnListCtrl1ItemSelect(wxListEvent& WXUNUSED(event) )
 {
     BitmapButton2->Enable();
     BitmapButton3->Enable();
     BitmapButton4->Enable();
 }
 
-void quickRDPFrame::OnListCtrl1ItemDeselect(wxListEvent& event)
+void quickRDPFrame::OnListCtrl1ItemDeselect(wxListEvent& WXUNUSED(event) )
 {
     BitmapButton2->Disable();
     BitmapButton3->Disable();
     BitmapButton4->Disable();
 }
 
-void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
+void quickRDPFrame::OnNewButtonClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxString filename = quickRDP::FileParser::generateFilename();
 
@@ -333,7 +325,7 @@ void quickRDPFrame::OnNewButtonClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
+void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
 
@@ -350,7 +342,7 @@ void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection)
+void quickRDPFrame::OnEditButtonClick(wxCommandEvent& WXUNUSED(event) , RDPConnection *editConnection)
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( editConnection != NULL ) { /** if we're using an connection as an argument (default is NULL) then we will use this connection instead of what's selected in our ListCtrl **/
@@ -440,7 +432,7 @@ void quickRDPFrame::clearListCtrl()
 
 }
 
-void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& event)
+void quickRDPFrame::OnListCtrl1ItemActivated(wxListEvent& WXUNUSED(event) )
 {
     execute_connections();
 }
@@ -455,7 +447,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& event)
+void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& WXUNUSED(event) )
 {
     loadRDPFromDatabase();
 }
@@ -473,7 +465,7 @@ void quickRDPFrame::clearPopupMenuChoices()
     MenuItem14->Check( false );
 }
 
-void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
+void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     /** prepare our RDP menu with checkboxes for console mode and resolutions **/
@@ -499,31 +491,7 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
         }
     }
 
-    /** prepare our perl and command part of the popup menu before we display it. **/
-
-    /** perl menu here **/
-    // erase all items in the submenu.
-    wxMenuItemList perlMenuList = perlMenu->GetMenuItems();
-    for ( wxMenuItemList::iterator it = perlMenuList.begin(); it != perlMenuList.end(); ++it ) {
-        perlMenu->Destroy( (*it)->GetId() );
-    }
-
-    // add all perl scripts to the menu from the perldatabase
-    std::vector< wxString > perlDb = Resources::Instance()->getPerlDatabase()->getScripts();
-    for ( size_t pId = 0; pId < perlDb.size(); ++pId ) {
-        const long newPerlId = wxNewId();
-        Connect( newPerlId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnPerlScriptSelected );
-        wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, newPerlId, perlDb[ pId ], wxEmptyString, wxITEM_NORMAL );
-        perlMenu->Append( newPerlMenuItem );
-    }
-
-    if ( perlMenu->GetMenuItemCount() <= 0 ) {
-        wxMenuItem *newPerlMenuItem = new wxMenuItem( perlMenu, wxID_ANY, wxT("-- no perl script in database --") );
-        newPerlMenuItem->Enable( false );
-        perlMenu->Append( newPerlMenuItem );
-    }
-
-    /** command menu here **/
+    /** prepare our command part of the popup menu before we display it. **/
     // erase all items in the submenu.
     wxMenuItemList commandMenuList = commandMenu->GetMenuItems();
     for ( wxMenuItemList::iterator it = commandMenuList.begin(); it != commandMenuList.end(); ++it ) {
@@ -535,7 +503,7 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
     }
     favoriteCommandMenuItems.clear();
 
-    // add all perl scripts to the menu from the perldatabase
+    // add all commands to the menu from the command database
     std::vector< Command* > commandDb = Resources::Instance()->getCommandDatabase()->getCommands();
     for ( size_t cId = 0; cId < commandDb.size(); ++cId ) {
         const long newCommandId = wxNewId();
@@ -561,7 +529,7 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
 
     /** and append our command submenu as well **/
     if ( commandMenu->GetMenuItemCount() <= 0 ) {
-        wxMenuItem *newCommandMenuItem = new wxMenuItem( perlMenu, wxID_ANY, wxT("-- no commands in database --") );
+        wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, wxID_ANY, wxT("-- no commands in database --") );
         newCommandMenuItem->Enable( false );
         commandMenu->Append( newCommandMenuItem );
     }
@@ -569,7 +537,7 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& event)
     PopupMenu(&PopupMenu1 );
 }
 
-void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     // popup properties choice
@@ -588,7 +556,7 @@ void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -626,7 +594,7 @@ void quickRDPFrame::OnTextCtrlClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -640,7 +608,7 @@ void quickRDPFrame::OnMenuItemDefaultClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItemFullscreenClick(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItemFullscreenClick(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -654,7 +622,7 @@ void quickRDPFrame::OnMenuItemFullscreenClick(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem640(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem640(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -668,7 +636,7 @@ void quickRDPFrame::OnMenuItem640(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem800(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem800(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -682,7 +650,7 @@ void quickRDPFrame::OnMenuItem800(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem1024(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem1024(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -696,7 +664,7 @@ void quickRDPFrame::OnMenuItem1024(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem1152(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem1152(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -710,7 +678,7 @@ void quickRDPFrame::OnMenuItem1152(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem1280(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem1280(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -724,7 +692,7 @@ void quickRDPFrame::OnMenuItem1280(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItem1400(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItem1400(wxCommandEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
     if ( curCon != NULL ) {
@@ -753,37 +721,11 @@ void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
     loadRDPFromDatabase();
 }
 
-void quickRDPFrame::OnPreferences(wxCommandEvent& event)
+void quickRDPFrame::OnPreferences(wxCommandEvent& WXUNUSED(event) )
 {
     settingsDialog *settings = new settingsDialog( this, 0 );
     settings->ShowModal();
     delete settings;
-}
-
-void quickRDPFrame::OnMenuPerlScripts(wxCommandEvent& event)
-{
-    perlDialog *perldlg= new perlDialog( this, 0 );
-    perldlg->ShowModal();
-    delete perldlg;
-
-}
-
-void quickRDPFrame::OnPerlScriptSelected(wxCommandEvent& event)
-{
-    wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
-    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
-    for ( size_t con = 0; con < connections.size(); ++con ) {
-        if ( connections[ con ] != NULL ) {
-            if ( Resources::Instance()->getSettings()->getPerlExec().empty() == false ) {
-                wxString username = connections[ con ]->getUsername().empty() ? wxT("NO_USER") : connections[ con ]->getUsername();
-                wxString password = connections[ con ]->getPassword().empty() ? wxT("NO_PASS") : connections[ con ]->getPassword();
-                wxString myScript = Resources::Instance()->getSettings()->getPerlDatabasePath() + usedMenuItem->GetLabel();
-                wxExecute( Resources::Instance()->getSettings()->getPerlExec() + wxT(" ") + myScript + wxT(" \"") + connections[ con ]->getHostname() + wxT("\" ") + wxT("\"") + ConnectionType::getConnectionTypeName( connections[ con ]->getConnectionType() ) + wxT("\" ") + wxT("\"") + username + wxT("\" ") + wxT("\"") + password + wxT("\"") );
-            } else {
-                wxMessageBox( wxT("You have not defined an executable for Perl. Please do so under Settings -> Preferences."), wxT("Unable to locate Perl"), wxICON_ERROR );
-            }
-        }
-    }
 }
 
 void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
@@ -811,7 +753,7 @@ void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::OnMenuItemConnect(wxCommandEvent& event)
+void quickRDPFrame::OnMenuItemConnect(wxCommandEvent& WXUNUSED(event) )
 {
     execute_connections();
 }
@@ -859,10 +801,6 @@ void quickRDPFrame::loadFrameSettings()
     }
 }
 
-void quickRDPFrame::OnListCtrlKeyDown(wxListEvent& event)
-{
-}
-
 void quickRDPFrame::OnPopupMenuDuplicate(wxCommandEvent& event)
 {
     OnDuplicateButtonClick( event );
@@ -873,19 +811,19 @@ void quickRDPFrame::OnPopupMenuDelete(wxCommandEvent& event)
     OnDeleteButtonClick( event );
 }
 
-void quickRDPFrame::OnMenuCommands(wxCommandEvent& event)
+void quickRDPFrame::OnMenuCommands(wxCommandEvent& WXUNUSED(event) )
 {
     CommandDialog *commandDlg = new CommandDialog( this, 0 );
     commandDlg->ShowModal();
     delete commandDlg;
 }
 
-void quickRDPFrame::OnReportBugClick(wxCommandEvent& event)
+void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxLaunchDefaultBrowser( wxT("http://www.0x134.net/redmine/projects/quickrdp/issues/new") );
 }
 
-void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& event)
+void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
     VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
     if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
@@ -897,10 +835,10 @@ void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& event)
     }
 }
 
-void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &evt )
+void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
 {
-    if ( evt.GetInt() == 1 ) {
-        if ( wxMessageBox( wxT("Version ") + evt.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
+    if ( event.GetInt() == 1 ) {
+        if ( wxMessageBox( wxT("Version ") + event.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
             wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
         }
     } else {
@@ -908,7 +846,7 @@ void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &evt )
     }
 }
 
-void quickRDPFrame::OnChangelogClick( wxCommandEvent& event )
+void quickRDPFrame::OnChangelogClick( wxCommandEvent& WXUNUSED(event)  )
 {
     wxString filename = Resources::Instance()->getSettings()->getDataPath() + wxT("ChangeLog");
     if ( wxFileExists( filename ) == true ) {

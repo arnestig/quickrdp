@@ -193,7 +193,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 
 	reloadCommandList();
 
-    /** set the perl file dialog for perl depending on windows or linux **/
+    /** set the command file dialog depending on windows or linux **/
     #if defined(__WXMSW__)
         FileDialog1->SetWildcard( wxT("Executable (*.exe)|*.exe|All files (*.*)|*.*"));
     #elif defined(__UNIX__)
@@ -231,12 +231,12 @@ void CommandDialog::reloadCommandList()
 
 }
 
-void CommandDialog::OnCloseButton(wxCommandEvent& event)
+void CommandDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
 {
    this->EndModal( 0 );
 }
 
-void CommandDialog::OnListDoubleClick(wxCommandEvent& event)
+void CommandDialog::OnListDoubleClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxString selectedItem = CommandList->GetStringSelection();
     if ( selectedItem != wxT("") ) {
@@ -252,7 +252,7 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& event)
     }
 }
 
-void CommandDialog::OnCommandListClick(wxCommandEvent& event)
+void CommandDialog::OnCommandListClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxString selectedItem = CommandList->GetStringSelection();
     if ( selectedItem != wxT("") ) {
@@ -264,7 +264,7 @@ void CommandDialog::OnCommandListClick(wxCommandEvent& event)
     }
 }
 
-void CommandDialog::OnNameTextChange(wxCommandEvent& event)
+void CommandDialog::OnNameTextChange(wxCommandEvent& WXUNUSED(event) )
 {
     if ( nameTextCtrl->IsEmpty() == true ) {
         saveButton->Enable( false );
@@ -273,7 +273,7 @@ void CommandDialog::OnNameTextChange(wxCommandEvent& event)
     }
 }
 
-void CommandDialog::OnSaveButton(wxCommandEvent& event)
+void CommandDialog::OnSaveButton(wxCommandEvent& WXUNUSED(event) )
 {
     Resources::Instance()->getCommandDatabase()->saveCommand(
                                                         nameTextCtrl->GetValue(),
@@ -286,7 +286,7 @@ void CommandDialog::OnSaveButton(wxCommandEvent& event)
     reloadCommandList();
 }
 
-void CommandDialog::OnRemoveButton(wxCommandEvent& event)
+void CommandDialog::OnRemoveButton(wxCommandEvent& WXUNUSED(event) )
 {
     wxString selectedItem = CommandList->GetStringSelection();
     if ( selectedItem != wxT("") ) {
@@ -295,7 +295,7 @@ void CommandDialog::OnRemoveButton(wxCommandEvent& event)
     }
 }
 
-void CommandDialog::OnInit(wxInitDialogEvent& event)
+void CommandDialog::OnInit(wxInitDialogEvent& WXUNUSED(event) )
 {
 }
 
@@ -304,7 +304,7 @@ void CommandDialog::OnButtonEdit(wxCommandEvent& event)
     OnListDoubleClick( event ); /** same action as when we double click **/
 }
 
-void CommandDialog::OnExamplesButton(wxCommandEvent& event)
+void CommandDialog::OnExamplesButton(wxCommandEvent& WXUNUSED(event) )
 {
     ExampleDialog *example;
     #if defined(__WXMSW__)
@@ -316,14 +316,14 @@ void CommandDialog::OnExamplesButton(wxCommandEvent& event)
     delete example;
 }
 
-void CommandDialog::OnArgumentHelpButton(wxCommandEvent& event)
+void CommandDialog::OnArgumentHelpButton(wxCommandEvent& WXUNUSED(event) )
 {
     ExampleDialog *example = new ExampleDialog( wxT("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%"), this );
     example->ShowModal();
     delete example;
 }
 
-void CommandDialog::OnFileDialogClick(wxCommandEvent& event)
+void CommandDialog::OnFileDialogClick(wxCommandEvent& WXUNUSED(event) )
 {
     if ( FileDialog1->ShowModal() == wxID_OK ) {
         programTextCtrl->SetValue( FileDialog1->GetPath() );

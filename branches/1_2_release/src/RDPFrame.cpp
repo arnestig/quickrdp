@@ -40,7 +40,7 @@ BEGIN_EVENT_TABLE(RDPFrame,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
+RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 
 	//(*Initialize(RDPFrame)
@@ -266,12 +266,12 @@ void RDPFrame::checkForChanges()
     }
 }
 
-void RDPFrame::onCloseClick(wxCommandEvent& event)
+void RDPFrame::onCloseClick(wxCommandEvent& WXUNUSED(event) )
 {
     Close();
 }
 
-void RDPFrame::onSaveClick(wxCommandEvent& event)
+void RDPFrame::onSaveClick(wxCommandEvent& WXUNUSED(event) )
 {
     rdpConnection->setConnectionType( static_cast< ConnectionType::ConnectionType > ( generalTab->Choice1->GetCurrentSelection() ) );
     rdpConnection->setHostname( generalTab->TextCtrl2->GetValue() );
@@ -331,7 +331,7 @@ void RDPFrame::onSaveClick(wxCommandEvent& event)
     Close();
 }
 
-void RDPFrame::OnClose(wxCloseEvent& event)
+void RDPFrame::OnClose(wxCloseEvent& WXUNUSED(event) )
 {
     if ( rdpConnection->getHostname().IsEmpty() == true ) {
         Resources::Instance()->getConnectionDatabase()->deleteRDPConnectionByPointer( rdpConnection );

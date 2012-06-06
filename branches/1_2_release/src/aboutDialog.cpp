@@ -50,7 +50,7 @@ BEGIN_EVENT_TABLE(aboutDialog,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-aboutDialog::aboutDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
+aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(aboutDialog)
 	wxBoxSizer* BoxSizer4;
@@ -128,7 +128,7 @@ aboutDialog::~aboutDialog()
 }
 
 
-void aboutDialog::OnCloseButton(wxCommandEvent& event)
+void aboutDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
 {
     EndModal( 0 );
 }

@@ -72,7 +72,7 @@ ExampleDialog::~ExampleDialog()
 	//*)
 }
 
-void ExampleDialog::OnCloseButton(wxCommandEvent& event)
+void ExampleDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
 {
     EndModal( 0 );
 }

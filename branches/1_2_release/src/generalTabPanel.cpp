@@ -55,7 +55,7 @@ BEGIN_EVENT_TABLE(generalTabPanel,wxPanel)
 	//*)
 END_EVENT_TABLE()
 
-generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
+generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(generalTabPanel)
 	wxBoxSizer* BoxSizer4;
@@ -69,7 +69,7 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
-	
+
 	Create(parent, wxID_ANY, wxDefaultPosition, wxSize(261,344), wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
@@ -141,7 +141,7 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID id,const wxPoint& p
 	BoxSizer1->Add(BoxSizer3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_TOP, 5);
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&generalTabPanel::onConnectionChoice);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
@@ -165,12 +165,12 @@ void generalTabPanel::setOwner( RDPFrame *owner )
     this->owner = owner;
 }
 
-void generalTabPanel::onTextUpdates(wxCommandEvent& event)
+void generalTabPanel::onTextUpdates(wxCommandEvent& WXUNUSED(event) )
 {
     owner->checkForChanges();
 }
 
-void generalTabPanel::onConnectionChoice(wxCommandEvent& event)
+void generalTabPanel::onConnectionChoice(wxCommandEvent& WXUNUSED(event) )
 {
     owner->checkForChanges();
     owner->switchConnectionType( static_cast<ConnectionType::ConnectionType> ( Choice1->GetCurrentSelection() ) );

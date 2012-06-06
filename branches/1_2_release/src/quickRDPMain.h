@@ -68,9 +68,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1400(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnPreferences(wxCommandEvent& event);
-        void OnMenuPerlScripts(wxCommandEvent& event);
         void OnMenuItemConnect(wxCommandEvent& event);
-        void OnListCtrlKeyDown(wxListEvent& event);
         void OnPopupMenuDuplicate(wxCommandEvent& event);
         void OnPopupMenuDelete(wxCommandEvent& event);
         void OnMenuCommands(wxCommandEvent& event);
@@ -78,7 +76,6 @@ class quickRDPFrame: public wxFrame
         void OnMenuSearchForUpdates(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
-        void OnPerlScriptSelected(wxCommandEvent& event);
         void OnCommandSelected(wxCommandEvent& event);
         void onVersionCheckExecuted( wxCommandEvent &evt );
         void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
@@ -92,7 +89,6 @@ class quickRDPFrame: public wxFrame
         static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
-        static const long idMainMenuPerlScripts;
         static const long idMenuCommands;
         static const long idMenuPreferences;
         static const long ID_MENUITEM2;
@@ -143,12 +139,10 @@ class quickRDPFrame: public wxFrame
         wxBitmapButton* BitmapButton3;
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
-        wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         wxMenuItem* MenuItem18;
         //*)
 
-        wxMenu *perlMenu;
         wxMenu *commandMenu;
         std::vector< wxMenuItem* > favoriteCommandMenuItems;
 
