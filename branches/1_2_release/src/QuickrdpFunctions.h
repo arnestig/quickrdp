@@ -184,5 +184,50 @@ namespace quickRDP
             return retVec;
         }
     }
+
+    namespace Keybinder
+    {
+        inline wxString ModifierString( int modmask )
+        {
+            wxString retval;
+
+            if ( modmask & wxMOD_ALT ) {
+                retval << wxT("Alt+");
+            }
+
+            if (modmask & wxMOD_CONTROL)
+            {
+                retval << wxT("Ctrl+");
+            }
+
+            if (modmask & wxMOD_SHIFT)
+            {
+                retval << wxT("Shift+");
+            }
+            return retval;
+        }
+
+        inline wxString KeycodeString( int keycode )
+        {
+            wxString retval;
+
+            switch (keycode) {
+
+                /** F1 - F12 **/
+                case WXK_F1: case WXK_F2: case WXK_F3: case WXK_F4: case WXK_F5: case WXK_F6: case WXK_F7: case WXK_F8: case WXK_F9: case WXK_F10: case WXK_F11: case WXK_F12:
+                    retval << wxT('F') << keycode - WXK_F1 + 1;
+                break;
+
+                default:
+                /** ASCI chars **/
+                if ( keycode < 256 && wxIsalnum( keycode ) ) {
+                    retval << (wxChar)keycode;
+                }
+                break;
+            }
+
+            return retval;
+        }
+    }
 }
 #endif

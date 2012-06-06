@@ -30,7 +30,7 @@
 class Command
 {
     public:
-        Command( wxString name, wxString program, wxString argument, wxString filename, bool favorite, bool safety );
+        Command( wxString name, wxString program, wxString argument, wxString filename, bool favorite, bool safety, int shortcutModifier, int shortcutKey );
         ~Command();
 
         wxString getName() const;
@@ -39,12 +39,18 @@ class Command
         wxString getFilename() const;
         bool getFavorite() const;
         bool getSafety() const;
+        bool hasShortcut() const;
+        int getShortcutModifier() const;
+        int getShortcutKey() const;
 
         void setName( wxString name );
         void setProgram( wxString program );
         void setArgument( wxString argument );
         void setFavorite( bool favorite );
         void setSafety( bool safety );
+        void setShortcutModifier( int shortcutModifier );
+        void setShortcutKey( int shortcutKey );
+
         bool execute( RDPConnection *connection );
 
     private:
@@ -54,6 +60,8 @@ class Command
         wxString filename;
         bool favorite;
         bool safety;
+        int shortcutModifier;
+        int shortcutKey;
 };
 
 class CommandDatabase
@@ -64,8 +72,9 @@ class CommandDatabase
 
         std::vector< Command* > getCommands();
         Command* getCommand( wxString name );
+        Command* getCommandWithShortcut( int shortcutModifier, int shortcutKey );
         void deleteCommand( wxString name );
-        void saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety );
+        void saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey );
 
     private:
         void loadDatabase();

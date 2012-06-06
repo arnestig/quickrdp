@@ -23,6 +23,7 @@
 #include "Resources.h"
 #include <vector>
 #include "ExampleDialog.h"
+#include "QuickrdpFunctions.h"
 
 //(*InternalHeaders(CommandDialog)
 #include <wx/intl.h>
@@ -44,6 +45,9 @@ const long CommandDialog::ID_CHECKBOX1 = wxNewId();
 const long CommandDialog::ID_STATICTEXT5 = wxNewId();
 const long CommandDialog::ID_STATICTEXT6 = wxNewId();
 const long CommandDialog::ID_CHECKBOX2 = wxNewId();
+const long CommandDialog::ID_STATICTEXT7 = wxNewId();
+const long CommandDialog::ID_STATICTEXT8 = wxNewId();
+const long CommandDialog::ID_TEXTCTRL4 = wxNewId();
 const long CommandDialog::ID_BUTTON2 = wxNewId();
 const long CommandDialog::ID_STATICLINE1 = wxNewId();
 const long CommandDialog::ID_LISTBOX1 = wxNewId();
@@ -71,6 +75,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer11;
 	wxBoxSizer* BoxSizer12;
+	wxBoxSizer* BoxSizer14;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
@@ -98,11 +103,11 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer3->Add(BoxSizer5, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	BoxSizer6->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer6->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	argumentTextCtrl = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(135,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	BoxSizer6->Add(argumentTextCtrl, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ArgumentHelpButton = new wxButton(Panel1, ID_BUTTON5, _("\?"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON5"));
-	BoxSizer6->Add(ArgumentHelpButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer6->Add(ArgumentHelpButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer6, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Favorite"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
@@ -126,6 +131,16 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	safetyCheckbox->SetValue(false);
 	BoxSizer13->Add(safetyCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer13, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
+	StaticText7 = new wxStaticText(Panel1, ID_STATICTEXT7, _("Key shortcut"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+	BoxSizer14->Add(StaticText7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText8 = new wxStaticText(Panel1, ID_STATICTEXT8, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT8"));
+	StaticText8->SetForegroundColour(wxColour(255,0,0));
+	StaticText8->SetToolTip(_("Create a shortcut key combination for executing the command on the selected connections.\nAvailable combinations are A-Z, 0-9 or F1-F12 combined with Alt,Ctrl and/or Shift.\n\nUse the textbox to input your combination."));
+	BoxSizer14->Add(StaticText8, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	TextShortcut = new wxTextCtrl(Panel1, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_TEXTCTRL4"));
+	BoxSizer14->Add(TextShortcut, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer3->Add(BoxSizer14, 1, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveButton = new wxButton(Panel1, ID_BUTTON2, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	BoxSizer7->Add(saveButton, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -139,6 +154,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer8->Add(BoxSizer9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer10 = new wxBoxSizer(wxVERTICAL);
 	editButton = new wxButton(Panel1, ID_BUTTON3, _("Edit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	editButton->Disable();
 	BoxSizer10->Add(editButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	RemoveButton = new wxButton(Panel1, ID_BUTTON4, _("Remove"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
 	RemoveButton->Disable();
@@ -172,6 +188,9 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&CommandDialog::OnInit);
 	//*)
+
+	TextShortcut->Connect(wxEVT_KEY_DOWN,(wxObjectEventFunction)&CommandDialog::HandlePanelKeyDown,0,this);
+
 	reloadCommandList();
 
     /** set the perl file dialog for perl depending on windows or linux **/
@@ -181,6 +200,10 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
         FileDialog1->SetWildcard( wxT("All files (*)|*"));
         FileDialog1->SetDirectory( wxT("/usr/bin" ) );
     #endif
+
+    /** make sure our shortcut modifiers are 0 **/
+    curShortcutMod = 0;
+    curShortcutKey = 0;
 }
 
 CommandDialog::~CommandDialog()
@@ -202,6 +225,10 @@ void CommandDialog::reloadCommandList()
     argumentTextCtrl->Clear();
     favoriteCheckbox->SetValue( false );
     safetyCheckbox->SetValue( false );
+    TextShortcut->Clear();
+    RemoveButton->Enable( false );
+    editButton->Enable( false );
+
 }
 
 void CommandDialog::OnCloseButton(wxCommandEvent& event)
@@ -220,6 +247,7 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& event)
             argumentTextCtrl->SetValue( curCommand->getArgument() );
             favoriteCheckbox->SetValue( curCommand->getFavorite() );
             safetyCheckbox->SetValue( curCommand->getSafety() );
+            TextShortcut->ChangeValue( quickRDP::Keybinder::ModifierString( curCommand->getShortcutModifier() ) << quickRDP::Keybinder::KeycodeString(curCommand->getShortcutKey() ) );
         }
     }
 }
@@ -229,8 +257,10 @@ void CommandDialog::OnCommandListClick(wxCommandEvent& event)
     wxString selectedItem = CommandList->GetStringSelection();
     if ( selectedItem != wxT("") ) {
         RemoveButton->Enable( true );
+        editButton->Enable( true );
     } else {
         RemoveButton->Enable( false );
+        editButton->Enable( false );
     }
 }
 
@@ -245,7 +275,14 @@ void CommandDialog::OnNameTextChange(wxCommandEvent& event)
 
 void CommandDialog::OnSaveButton(wxCommandEvent& event)
 {
-    Resources::Instance()->getCommandDatabase()->saveCommand( nameTextCtrl->GetValue(), programTextCtrl->GetValue(), argumentTextCtrl->GetValue(), favoriteCheckbox->GetValue(), safetyCheckbox->GetValue() );
+    Resources::Instance()->getCommandDatabase()->saveCommand(
+                                                        nameTextCtrl->GetValue(),
+                                                        programTextCtrl->GetValue(),
+                                                        argumentTextCtrl->GetValue(),
+                                                        favoriteCheckbox->GetValue(),
+                                                        safetyCheckbox->GetValue(),
+                                                        curShortcutMod,
+                                                        curShortcutKey );
     reloadCommandList();
 }
 
@@ -255,7 +292,6 @@ void CommandDialog::OnRemoveButton(wxCommandEvent& event)
     if ( selectedItem != wxT("") ) {
         Resources::Instance()->getCommandDatabase()->deleteCommand( selectedItem );
         reloadCommandList();
-        RemoveButton->Enable( false );
     }
 }
 
@@ -292,4 +328,15 @@ void CommandDialog::OnFileDialogClick(wxCommandEvent& event)
     if ( FileDialog1->ShowModal() == wxID_OK ) {
         programTextCtrl->SetValue( FileDialog1->GetPath() );
     }
+}
+
+void CommandDialog::HandlePanelKeyDown(wxKeyEvent& event)
+{
+    curShortcutMod = 0;
+    curShortcutKey = 0;
+    TextShortcut->Clear();
+    TextShortcut->AppendText( quickRDP::Keybinder::ModifierString(event.GetModifiers() ) );
+    TextShortcut->AppendText( quickRDP::Keybinder::KeycodeString(event.GetKeyCode() ) );
+    curShortcutMod = event.GetModifiers();
+    curShortcutKey = event.GetKeyCode();
 }

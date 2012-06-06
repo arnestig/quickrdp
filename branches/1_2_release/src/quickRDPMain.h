@@ -41,6 +41,7 @@ class quickRDPFrame: public wxFrame
 
         quickRDPFrame(wxWindow* parent,wxWindowID id = -1);
         virtual ~quickRDPFrame();
+        bool handleShortcutKeys( wxKeyEvent &event );
 
     private:
 

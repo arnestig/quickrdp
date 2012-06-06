@@ -52,6 +52,8 @@ class CommandDialog: public wxDialog
 		wxButton* Button1;
 		wxStaticText* StaticText6;
 		wxCheckBox* safetyCheckbox;
+		wxTextCtrl* TextShortcut;
+		wxStaticText* StaticText8;
 		wxButton* saveButton;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
@@ -60,6 +62,7 @@ class CommandDialog: public wxDialog
 		wxStaticText* StaticText3;
 		wxTextCtrl* nameTextCtrl;
 		wxStaticText* StaticText5;
+		wxStaticText* StaticText7;
 		wxListBox* CommandList;
 		wxStaticLine* StaticLine1;
 		wxTextCtrl* programTextCtrl;
@@ -87,6 +90,9 @@ class CommandDialog: public wxDialog
 		static const long ID_STATICTEXT5;
 		static const long ID_STATICTEXT6;
 		static const long ID_CHECKBOX2;
+		static const long ID_STATICTEXT7;
+		static const long ID_STATICTEXT8;
+		static const long ID_TEXTCTRL4;
 		static const long ID_BUTTON2;
 		static const long ID_STATICLINE1;
 		static const long ID_LISTBOX1;
@@ -110,7 +116,12 @@ class CommandDialog: public wxDialog
 		void OnExamplesButton(wxCommandEvent& event);
 		void OnArgumentHelpButton(wxCommandEvent& event);
 		void OnFileDialogClick(wxCommandEvent& event);
+		void HandlePanelKeyDown(wxKeyEvent& event);
+		void OnBindKeyClick(wxCommandEvent& event);
 		//*)
+
+        int curShortcutMod;
+        int curShortcutKey;
 
 		DECLARE_EVENT_TABLE()
 };

@@ -338,7 +338,7 @@ void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& event)
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( ListCtrl1 );
 
     if ( curCon != NULL ) {
-        if ( wxMessageBox( wxT("Are you sure you want to delete this connection?"), wxT("Delete this connection?"), wxYES_NO ) == wxYES ) {
+        if ( wxMessageBox( wxT("Are you sure you want to delete this connection?"), wxT("Delete this connection?"), wxOK | wxCANCEL ) == wxOK ) {
             Resources::Instance()->getConnectionDatabase()->deleteRDPConnectionByPointer( curCon );
             loadRDPFromDatabase();
             if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
@@ -795,7 +795,7 @@ void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
         Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetLabel() );
         if ( executeCommand != NULL ) {
             if ( executeCommand->getSafety() == true && doneSafetyCheck == false ) {
-                if ( wxMessageBox( wxT("Do you want to run the command ") + executeCommand->getName() + wxT("?"), wxT("Run command?"), wxYES_NO ) != wxYES ) {
+                if ( wxMessageBox( wxT("Do you want to run the command ") + executeCommand->getName() + wxT("?"), wxT("Run command?"), wxOK | wxCANCEL ) != wxOK ) {
                     break;
                 } else {
                     doneSafetyCheck = true;
@@ -861,19 +861,6 @@ void quickRDPFrame::loadFrameSettings()
 
 void quickRDPFrame::OnListCtrlKeyDown(wxListEvent& event)
 {
-    /** our keybindings for our popupmenu.. or accelerators if you wish. **/
-    wxCommandEvent ourEvent;
-    switch ( event.GetKeyCode() ) {
-        case 80:      /** 'P' key - open properties **/
-            if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
-        break;
-        case 68:      /** 'D' key - duplicate connection **/
-            if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
-        break;
-        case 127:     /** 'DEL' key - delete connection **/
-            OnDeleteButtonClick( ourEvent );
-        break;
-    }
 }
 
 void quickRDPFrame::OnPopupMenuDuplicate(wxCommandEvent& event)
@@ -950,4 +937,34 @@ void quickRDPFrame::OnChangelogClick( wxCommandEvent& event )
             delete changelogDlg;
         }
     }
+}
+
+bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
+{
+    /** first we look for commands that have this specific keycombination and try to execute it **/
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+    Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
+    if ( curCommand != NULL ) {
+        for ( size_t con = 0; con < connections.size(); ++con ) {
+            if ( connections[ con ] != NULL ) {
+                curCommand->execute( connections[ con ] );
+                return true;
+            }
+        }
+    } else {
+        /** no comand found, then we look for popup menu shortcuts... **/
+        wxCommandEvent ourEvent;
+        switch ( event.GetKeyCode() ) {
+            case 80:      /** 'P' key - open properties **/
+                if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
+            break;
+            case 68:      /** 'D' key - duplicate connection **/
+                if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
+            break;
+            case 127:     /** 'DEL' key - delete connection **/
+                OnDeleteButtonClick( ourEvent );
+            break;
+        }
+    }
+    return false;
 }
