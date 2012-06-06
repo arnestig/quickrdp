@@ -74,16 +74,6 @@ bool Command::getSafety() const
     return safety;
 }
 
-bool Command::hasShortcut() const
-{
-    if ( getShortcutModifier() == wxMOD_NONE && getShortcutKey() == 0 )
-    {
-        return false;
-    } else {
-        return true;
-    }
-}
-
 int Command::getShortcutModifier() const
 {
     return shortcutModifier;

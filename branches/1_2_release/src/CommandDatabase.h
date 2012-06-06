@@ -39,7 +39,6 @@ class Command
         wxString getFilename() const;
         bool getFavorite() const;
         bool getSafety() const;
-        bool hasShortcut() const;
         int getShortcutModifier() const;
         int getShortcutKey() const;
 

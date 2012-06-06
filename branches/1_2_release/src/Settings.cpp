@@ -31,7 +31,13 @@
 
 Settings::Settings()
     :   mainFrameWidth(0),
-        mainFrameHeight(0)
+        mainFrameHeight(0),
+        column0Width(0),
+        column1Width(0),
+        column2Width(0),
+        column3Width(0),
+        column4Width(0),
+        column5Width(0)
 {
     /** load all settings for quickRDP **/
 
