@@ -132,7 +132,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 	BoxSizer13->Add(safetyCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer13, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText7 = new wxStaticText(Panel1, ID_STATICTEXT7, _("Key shortcut"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
+	StaticText7 = new wxStaticText(Panel1, ID_STATICTEXT7, _("Keyboard shortcut"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
 	BoxSizer14->Add(StaticText7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText8 = new wxStaticText(Panel1, ID_STATICTEXT8, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT8"));
 	StaticText8->SetForegroundColour(wxColour(255,0,0));
