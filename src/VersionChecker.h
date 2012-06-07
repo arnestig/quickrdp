@@ -19,29 +19,33 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef __PERL_DATABASE__H_
-#define __PERL_DATABASE__H_
+#ifndef __VERSIONCHECKER_H__
+#define __VERSIONCHECKER_H__
 
 #include <wx/string.h>
-#include <map>
-#include <vector>
+#include <curl/curl.h>
+#include <iostream>
+#include <wx/thread.h>
+#include <wx/event.h>
 
-class PerlDatabase
+BEGIN_DECLARE_EVENT_TYPES()
+    DECLARE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE, -1 )
+END_DECLARE_EVENT_TYPES()
+
+class VersionChecker : public wxThread
 {
     public:
-        PerlDatabase();
-        ~PerlDatabase();
-
-        std::vector< wxString > getScripts();
-        const wxString getScriptContent( wxString script );
-        void deleteScript( wxString name );
-        bool addScript( wxString name );
-        void saveScript( wxString name, wxString content );
+        VersionChecker( wxEvtHandler *parent, std::string url );
+        ~VersionChecker();
 
     private:
-        void loadDatabase();
-        bool isDatabaseLoaded() const;
-        std::map< wxString, wxString > scripts;
+        static int writer( char *data, size_t size, size_t nmemb, std::string *buffer_in );
+        std::string get( const char* url );
+        bool execute( wxString &version);
+        virtual void *Entry();
+
+        wxEvtHandler *parent;
+        std::string url;
 };
 
 #endif

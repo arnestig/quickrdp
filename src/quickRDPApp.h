@@ -23,11 +23,15 @@
 #define QUICKRDPAPP_H
 
 #include <wx/app.h>
+#include "quickRDPMain.h"
 
 class quickRDPApp : public wxApp
 {
     public:
         virtual bool OnInit();
+        virtual int FilterEvent( wxEvent& event );
+    private:
+        quickRDPFrame* Frame;
 };
 
 #endif // QUICKRDPAPP_H

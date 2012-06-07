@@ -36,7 +36,7 @@ bool quickRDPApp::OnInit()
     wxInitAllImageHandlers();
     if ( wxsOK )
     {
-    	quickRDPFrame* Frame = new quickRDPFrame(0);
+    	Frame = new quickRDPFrame(0);
         #if defined(__UNIX__)
             Frame->SetIcon( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("quickrdp.xpm") ) );
         #else
@@ -48,4 +48,18 @@ bool quickRDPApp::OnInit()
     //*)
     return wxsOK;
 
+}
+
+int quickRDPApp::FilterEvent(wxEvent& event)
+{
+
+    if ( event.GetEventType() == wxEVT_KEY_DOWN ) {
+        if ( Frame->handleShortcutKeys( (wxKeyEvent&) event ) == false ) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+
+    return -1;
 }

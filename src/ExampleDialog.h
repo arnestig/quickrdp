@@ -19,63 +19,40 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef ABOUTDIALOG_H
-#define ABOUTDIALOG_H
+#ifndef EXAMPLEDIALOG_H
+#define EXAMPLEDIALOG_H
 
-#include <wx/hyperlink.h>
-
-//(*Headers(aboutDialog)
+//(*Headers(ExampleDialog)
 #include <wx/sizer.h>
-#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/panel.h>
-#include <wx/statbmp.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
 
-class aboutDialog: public wxDialog
+class ExampleDialog: public wxDialog
 {
 	public:
 
-		aboutDialog(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
-		virtual ~aboutDialog();
+		ExampleDialog(wxString example, wxWindow* parent,wxWindowID id=wxID_ANY);
+		virtual ~ExampleDialog();
 
-		//(*Declarations(aboutDialog)
-		wxStaticText* StaticText2;
+		//(*Declarations(ExampleDialog)
 		wxButton* Button1;
-		wxStaticText* StaticText6;
-		wxStaticBitmap* StaticBitmap1;
 		wxPanel* Panel1;
-		wxStaticText* StaticText1;
-		wxStaticText* StaticText3;
-		wxStaticText* VersionText;
-		wxStaticText* StaticText5;
-		wxStaticText* StaticText7;
-		wxStaticText* StaticText4;
+		wxTextCtrl* exampleTextCtrl;
 		//*)
-		wxHyperlinkCtrl* Hyperlink1;
-		wxHyperlinkCtrl* Hyperlink2;
 
 	protected:
 
-		//(*Identifiers(aboutDialog)
-		static const long ID_STATICBITMAP1;
-		static const long ID_STATICTEXT1;
-		static const long ID_STATICTEXT8;
-		static const long ID_STATICTEXT2;
-		static const long ID_STATICTEXT3;
-		static const long ID_STATICTEXT4;
-		static const long ID_STATICTEXT5;
-		static const long ID_STATICTEXT7;
-		static const long ID_STATICTEXT6;
+		//(*Identifiers(ExampleDialog)
+		static const long ID_TEXTCTRL1;
 		static const long ID_PANEL1;
 		//*)
-		static const long ID_HYPERLINK1;
-		static const long ID_HYPERLINK2;
 
 	private:
 
-		//(*Handlers(aboutDialog)
+		//(*Handlers(ExampleDialog)
 		void OnCloseButton(wxCommandEvent& event);
 		//*)
 

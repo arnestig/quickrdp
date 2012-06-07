@@ -21,7 +21,7 @@
 
 #include "settingsDialog.h"
 #include "Resources.h"
-#include "FileParser.h"
+#include "QuickrdpFunctions.h"
 
 //(*InternalHeaders(settingsDialog)
 #include <wx/settings.h>
@@ -44,15 +44,7 @@ const long settingsDialog::ID_STATICTEXT6 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL6 = wxNewId();
 const long settingsDialog::ID_BUTTON10 = wxNewId();
 const long settingsDialog::ID_BUTTON8 = wxNewId();
-const long settingsDialog::ID_STATICTEXT3 = wxNewId();
-const long settingsDialog::ID_TEXTCTRL2 = wxNewId();
-const long settingsDialog::ID_BUTTON2 = wxNewId();
-const long settingsDialog::ID_STATICTEXT5 = wxNewId();
-const long settingsDialog::ID_TEXTCTRL5 = wxNewId();
-const long settingsDialog::ID_BUTTON11 = wxNewId();
-const long settingsDialog::ID_BUTTON7 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
-const long settingsDialog::ID_BUTTON4 = wxNewId();
 const long settingsDialog::ID_PANEL1 = wxNewId();
 //*)
 
@@ -61,22 +53,18 @@ BEGIN_EVENT_TABLE(settingsDialog,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size)
+settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(settingsDialog)
-	wxBoxSizer* BoxSizer4;
 	wxStaticBoxSizer* StaticBoxSizer2;
 	wxBoxSizer* BoxSizer6;
 	wxBoxSizer* BoxSizer5;
-	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
 	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer11;
 	wxBoxSizer* BoxSizer12;
-	wxStaticBoxSizer* StaticBoxSizer3;
 	wxBoxSizer* BoxSizer1;
-	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxBoxSizer* BoxSizer3;
 
@@ -132,34 +120,11 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	StaticBoxSizer1->Add(BoxSizer12, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer6->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer4 = new wxBoxSizer(wxVERTICAL);
-	StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, Panel1, _("Perl"));
-	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-	BoxSizer9->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl2 = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-	TextCtrl2->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
-	BoxSizer9->Add(TextCtrl2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button2 = new wxButton(Panel1, ID_BUTTON2, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	BoxSizer9->Add(Button2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer3->Add(BoxSizer9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
-	BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText5 = new wxStaticText(Panel1, ID_STATICTEXT5, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
-	BoxSizer10->Add(StaticText5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl5 = new wxTextCtrl(Panel1, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL5"));
-	BoxSizer10->Add(TextCtrl5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button11 = new wxButton(Panel1, ID_BUTTON11, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON11"));
-	BoxSizer10->Add(Button11, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button7 = new wxButton(Panel1, ID_BUTTON7, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON7"));
-	BoxSizer10->Add(Button7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer3->Add(BoxSizer10, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
-	BoxSizer4->Add(StaticBoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer2->Add(BoxSizer4, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button3 = new wxButton(Panel1, ID_BUTTON3, _("Ok"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer5->Add(Button3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Button4 = new wxButton(Panel1, ID_BUTTON4, _("Cancel"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON4"));
+	Button4 = new wxButton(Panel1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer5->Add(Button4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel1->SetSizer(BoxSizer2);
@@ -168,7 +133,6 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	BoxSizer1->Add(Panel1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	FileDialog1 = new wxFileDialog(this, _("Locate telnet executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
-	FileDialog2 = new wxFileDialog(this, _("Locate Perl executable"), wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	FileDialog3 = new wxFileDialog(this, _("Locate SSH executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
 
@@ -178,48 +142,34 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& pos
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnSSHBrowseClick);
 	Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnSSHArgumentReset);
-	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnPerlBrowseClick);
-	Connect(ID_BUTTON11,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
-	Connect(ID_BUTTON7,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnPerlArgumentReset);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonSave);
-	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
+	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&settingsDialog::OnInit);
 	//*)
 
 	Settings* settings = Resources::Instance()->getSettings();
 
 	TextCtrl1->SetValue( settings->getTelnetExec() );
-	TextCtrl2->SetValue( settings->getPerlExec() );
 	TextCtrl3->SetValue( settings->getSSHExec() );
 
-	/** set the perl file dialog for perl depending on windows or linux **/
-    #if defined(__WXMSW__)
-        FileDialog2->SetWildcard( wxT("Perl (perl.exe)|perl.exe|All files (*.*)|*.*"));
-    #elif defined(__UNIX__)
-        FileDialog1->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
-        FileDialog2->SetDirectory( wxT("/usr/bin" ) );
-    #endif
 
-	/** set the telnet file dialog for telnet depending on windows or linux **/
+
+	/** set the telnet and ssh file dialog default values depending on windows or linux **/
     #if defined(__WXMSW__)
-        FileDialog1->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
+        FileDialog1->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*")); /** telnet **/
+        FileDialog3->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*")); /** ssh **/
     #elif defined(__UNIX__)
+        /** telnet **/
         FileDialog1->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
         FileDialog1->SetDirectory( wxT("/usr/bin" ) );
-    #endif
 
-	/** set the ssh file dialog for ssh depending on windows or linux **/
-    #if defined(__WXMSW__)
-        FileDialog3->SetWildcard( wxT("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"));
-    #elif defined(__UNIX__)
-        FileDialog1->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
+        /** ssh **/
+        FileDialog3->SetWildcard( wxT("Default terminal (x-terminal-emulator)|x-terminal-emulator|Gnome terminal (gnome-terminal)|gnome-terminal|KDE terminal (konsole)|konsole|All files (*)|*"));
         FileDialog3->SetDirectory( wxT("/usr/bin" ) );
     #endif
 
-
     settings->getTelnetArgument().empty() == true ? resetTelnetArgument() : TextCtrl4->SetValue( settings->getTelnetArgument() );
     settings->getSSHArgument().empty() == true ? resetSSHArgument() : TextCtrl6->SetValue( settings->getSSHArgument() );
-    settings->getPerlArgument().empty() == true ? resetPerlArgument() : TextCtrl5->SetValue( settings->getPerlArgument() );
 }
 
 settingsDialog::~settingsDialog()
@@ -228,61 +178,47 @@ settingsDialog::~settingsDialog()
 	//*)
 }
 
-void settingsDialog::OnInit(wxInitDialogEvent& event)
+void settingsDialog::OnInit(wxInitDialogEvent& WXUNUSED(event) )
 {
 }
 
-void settingsDialog::OnButtonSave(wxCommandEvent& event)
+void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
 {
     Resources::Instance()->getSettings()->setTelnetExec( TextCtrl1->GetValue() );
     Resources::Instance()->getSettings()->setTelnetArgument( TextCtrl4->GetValue() );
-    Resources::Instance()->getSettings()->setPerlExec( TextCtrl2->GetValue() );
-    Resources::Instance()->getSettings()->setPerlArgument( TextCtrl5->GetValue() );
     Resources::Instance()->getSettings()->setSSHExec( TextCtrl3->GetValue() );
     Resources::Instance()->getSettings()->setSSHArgument( TextCtrl6->GetValue() );
     Resources::Instance()->getSettings()->saveSettings();
     this->EndModal( 0 );
 }
 
-void settingsDialog::OnButtonCancel(wxCommandEvent& event)
+void settingsDialog::OnButtonCancel(wxCommandEvent& WXUNUSED(event) )
 {
     this->EndModal( 1 );
 }
 
-void settingsDialog::OnPerlBrowseClick(wxCommandEvent& event)
-{
-    if ( FileDialog2->ShowModal() == wxID_OK ) {
-        TextCtrl2->SetValue( FileDialog2->GetPath() );
-    }
-}
-
-void settingsDialog::OnTelnetBrowseClick(wxCommandEvent& event)
+void settingsDialog::OnTelnetBrowseClick(wxCommandEvent& WXUNUSED(event) )
 {
     if ( FileDialog1->ShowModal() == wxID_OK ) {
         TextCtrl1->SetValue( FileDialog1->GetPath() );
     }
 }
 
-void settingsDialog::OnSSHBrowseClick(wxCommandEvent& event)
+void settingsDialog::OnSSHBrowseClick(wxCommandEvent& WXUNUSED(event) )
 {
     if ( FileDialog3->ShowModal() == wxID_OK ) {
         TextCtrl3->SetValue( FileDialog3->GetPath() );
     }
 }
 
-void settingsDialog::OnTelnetArgumentReset(wxCommandEvent& event)
+void settingsDialog::OnTelnetArgumentReset(wxCommandEvent& WXUNUSED(event) )
 {
     resetTelnetArgument();
 }
 
-void settingsDialog::OnSSHArgumentReset(wxCommandEvent& event)
+void settingsDialog::OnSSHArgumentReset(wxCommandEvent& WXUNUSED(event) )
 {
     resetSSHArgument();
-}
-
-void settingsDialog::OnPerlArgumentReset(wxCommandEvent& event)
-{
-    resetPerlArgument();
 }
 
 void settingsDialog::resetTelnetArgument()
@@ -303,16 +239,7 @@ void settingsDialog::resetSSHArgument()
     #endif
 }
 
-void settingsDialog::resetPerlArgument()
-{
-    #if defined(__WXMSW__)
-        TextCtrl5->SetValue( wxT("") );
-    #elif defined(__UNIX__)
-        TextCtrl5->SetValue( wxT("") );
-    #endif
-}
-
-void settingsDialog::OnHelpArgumentClick(wxCommandEvent& event)
+void settingsDialog::OnHelpArgumentClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxMessageBox( wxT("Commandline-arguments sent to the choosen application will be parsed before sent.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%"), wxT("Command-line arguments"), wxICON_INFORMATION );
 }
