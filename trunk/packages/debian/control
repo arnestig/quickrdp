@@ -11,7 +11,7 @@ Package: quickrdp
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Recommends: rdesktop
-Suggests: perl (>= 5.10.0), openssh-client, telnet-client
+Suggests: openssh-client, telnet-client
 Description: Manages RDP, telnet and SSH connections
  QuickRDP is a connection manager program for your remote desktop, telnet
  or SSH connections. Makes it easy to keep track of all your connections.

@@ -95,7 +95,6 @@
 								<handler function="OnListCtrl1ItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
 								<handler function="OnListCtrl1ItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
 								<handler function="OnListCtrl1ItemRClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
-								<handler function="OnListCtrlKeyDown" entry="EVT_LIST_KEY_DOWN" />
 								<handler function="OnListCtrl1ColumnClick" entry="EVT_LIST_COL_CLICK" />
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -120,10 +119,6 @@
 			</object>
 			<object class="wxMenu" variable="Menu3" member="yes">
 				<label>&amp;Settings</label>
-				<object class="wxMenuItem" name="idMainMenuPerlScripts" variable="MenuItem16" member="yes">
-					<label>Perl scripts</label>
-					<handler function="OnMenuPerlScripts" entry="EVT_MENU" />
-				</object>
 				<object class="wxMenuItem" name="idMenuCommands" variable="MenuItem22" member="yes">
 					<label>Commands</label>
 					<handler function="OnMenuCommands" entry="EVT_MENU" />
@@ -136,6 +131,16 @@
 			</object>
 			<object class="wxMenu" variable="Menu2" member="no">
 				<label>Help</label>
+				<object class="wxMenuItem" name="ID_MENUITEM2" variable="MenuItem18" member="yes">
+					<label>Report a bug</label>
+					<handler function="OnReportBugClick" entry="EVT_MENU" />
+				</object>
+				<object class="separator" />
+				<object class="wxMenuItem" name="ID_MENUITEM3" variable="MenuItem23" member="yes">
+					<label>Search for updates</label>
+					<handler function="OnMenuSearchForUpdates" entry="EVT_MENU" />
+				</object>
+				<object class="separator" />
 				<object class="wxMenuItem" name="wxID_ABOUT" variable="MenuItem2" member="no">
 					<label>About</label>
 					<accel>F1</accel>
@@ -151,12 +156,12 @@
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUPROPERTIES" variable="MenuItem3" member="yes">
 				<label>Properties</label>
-				<accel>CTRL+P</accel>
+				<accel>Ctrl+P</accel>
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DUPLICATE" variable="MenuItem20" member="yes">
 				<label>Duplicate</label>
-				<accel>CTRL+D</accel>
+				<accel>Ctrl+D</accel>
 				<handler function="OnPopupMenuDuplicate" entry="EVT_MENU" />
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DELETE" variable="MenuItem21" member="yes">
@@ -165,11 +170,6 @@
 				<handler function="OnPopupMenuDelete" entry="EVT_MENU" />
 			</object>
 			<object class="separator" />
-			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
-				<label>Ping</label>
-				<help>Starts a continuous ping session towards the target</help>
-				<handler function="OnPopupMenuPing" entry="EVT_MENU" />
-			</object>
 			<object class="wxMenu" name="POPUPMENURDP" variable="MenuItem19" member="yes">
 				<label>RDP</label>
 				<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">

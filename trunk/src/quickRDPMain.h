@@ -41,6 +41,7 @@ class quickRDPFrame: public wxFrame
 
         quickRDPFrame(wxWindow* parent,wxWindowID id = -1);
         virtual ~quickRDPFrame();
+        bool handleShortcutKeys( wxKeyEvent &event );
 
     private:
 
@@ -51,7 +52,6 @@ class quickRDPFrame: public wxFrame
         void OnListCtrl1ItemDeselect(wxListEvent& event);
         void OnNewButtonClick(wxCommandEvent& event);
         void OnDeleteButtonClick(wxCommandEvent& event);
-        void OnEditButtonClick(wxCommandEvent& event);
         void OnListCtrl1ItemActivated(wxListEvent& event);
         void OnDuplicateButtonClick(wxCommandEvent& event);
         void OnSearchTextEnter(wxCommandEvent& event);
@@ -68,16 +68,18 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1400(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnPreferences(wxCommandEvent& event);
-        void OnPopupMenuPing(wxCommandEvent& event);
-        void OnMenuPerlScripts(wxCommandEvent& event);
         void OnMenuItemConnect(wxCommandEvent& event);
-        void OnListCtrlKeyDown(wxListEvent& event);
         void OnPopupMenuDuplicate(wxCommandEvent& event);
         void OnPopupMenuDelete(wxCommandEvent& event);
         void OnMenuCommands(wxCommandEvent& event);
+        void OnReportBugClick(wxCommandEvent& event);
+        void OnMenuSearchForUpdates(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
-        void OnPerlScriptSelected(wxCommandEvent& event);
+        void OnCommandSelected(wxCommandEvent& event);
+        void onVersionCheckExecuted( wxCommandEvent &evt );
+        void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
+        void OnChangelogClick( wxCommandEvent& event );
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -87,14 +89,14 @@ class quickRDPFrame: public wxFrame
         static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
-        static const long idMainMenuPerlScripts;
         static const long idMenuCommands;
         static const long idMenuPreferences;
+        static const long ID_MENUITEM2;
+        static const long ID_MENUITEM3;
         static const long POPUPMENUCONNECT;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_DUPLICATE;
         static const long ID_POPUPMENU_DELETE;
-        static const long ID_POPUPMENU_PING;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;
@@ -131,16 +133,18 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItem20;
         wxMenuItem* MenuItem6;
+        wxMenuItem* MenuItem23;
         wxBitmapButton* BitmapButton4;
         wxTextCtrl* TextCtrl1;
         wxBitmapButton* BitmapButton3;
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
-        wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
+        wxMenuItem* MenuItem18;
         //*)
 
-        wxMenu *perlMenu;
+        wxMenu *commandMenu;
+        std::vector< wxMenuItem* > favoriteCommandMenuItems;
 
         int last_column_click;
 

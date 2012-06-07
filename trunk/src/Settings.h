@@ -36,18 +36,14 @@ class Settings
         wxString getTelnetArgument() const;
         wxString getSSHExec() const;
         wxString getSSHArgument() const;
-        wxString getPerlExec() const;
-        wxString getPerlArgument() const;
         void setTelnetExec( wxString telnetExec );
         void setTelnetArgument( wxString telnetArgument );
         void setSSHExec( wxString SSHExec );
         void setSSHArgument( wxString SSHArgujment );
-        void setPerlExec( wxString perlExec );
-        void setPerlArgument( wxString perlArgument );
         wxString getDataPath() const;
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
-        wxString getPerlDatabasePath() const;
+        wxString getCommandDatabasePath() const;
 
         int getMainFrameWidth() const;
         int getMainFrameHeight() const;
@@ -76,13 +72,11 @@ class Settings
         wxString RDPExec;
         wxString telnetExec;
         wxString SSHExec;
-        wxString perlExec;
         wxString telnetArgument;
         wxString SSHArgument;
-        wxString perlArgument;
         wxString settingsPath;
         wxString databasePath;
-        wxString perlDatabasePath;
+        wxString commandDatabasePath;
 
         int mainFrameWidth;
         int mainFrameHeight;
