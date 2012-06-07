@@ -156,12 +156,12 @@
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUPROPERTIES" variable="MenuItem3" member="yes">
 				<label>Properties</label>
-				<accel>CTRL+P</accel>
+				<accel>Ctrl+P</accel>
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DUPLICATE" variable="MenuItem20" member="yes">
 				<label>Duplicate</label>
-				<accel>CTRL+D</accel>
+				<accel>Ctrl+D</accel>
 				<handler function="OnPopupMenuDuplicate" entry="EVT_MENU" />
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DELETE" variable="MenuItem21" member="yes">

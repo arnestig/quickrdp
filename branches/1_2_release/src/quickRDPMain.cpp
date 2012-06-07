@@ -183,9 +183,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     SetMenuBar(MenuBar1);
     MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem17);
-    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties\tCTRL+P"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties\tCtrl+P"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
-    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate\tCTRL+D"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem20);
     MenuItem21 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DELETE, _("Delete\tDEL"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem21);
@@ -508,7 +508,11 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& WXUNUSED(event) )
     for ( size_t cId = 0; cId < commandDb.size(); ++cId ) {
         const long newCommandId = wxNewId();
         Connect( newCommandId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnCommandSelected );
-        wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, newCommandId, commandDb[ cId ]->getName(), wxEmptyString, wxITEM_NORMAL );
+        wxString commandName = commandDb[ cId ]->getName();
+        if ( commandDb[ cId ]->getShortcutKey() > 0 ) {
+            commandName << wxT("\t") << quickRDP::Keybinder::ModifierString( commandDb[ cId ]->getShortcutModifier() ) << quickRDP::Keybinder::KeycodeString( commandDb[ cId ]->getShortcutKey() );
+        }
+        wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, newCommandId, commandName, wxEmptyString, wxITEM_NORMAL );
 
         /** if we have favorite commands, insert them before the "RDP" submenu **/
         if ( commandDb[ cId ]->getFavorite() == true ) {
@@ -886,9 +890,9 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
         for ( size_t con = 0; con < connections.size(); ++con ) {
             if ( connections[ con ] != NULL ) {
                 curCommand->execute( connections[ con ] );
-                return true;
             }
         }
+        return true;
     } else {
         /** no comand found, then we look for popup menu shortcuts... **/
         wxCommandEvent ourEvent;
