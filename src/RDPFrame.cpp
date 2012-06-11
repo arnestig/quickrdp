@@ -150,9 +150,11 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
 void RDPFrame::switchConnectionType( ConnectionType::ConnectionType connectionType )
 {
     if ( rdpConnection->getPortTrueValue() == wxT("-1") ) {
+        generalTab->PortText->Enable( true );
         switch ( connectionType) {
             case ConnectionType::RDP:
-                generalTab->PortText->ChangeValue( wxT("3306") );
+                generalTab->PortText->ChangeValue( wxT("3389") );
+                generalTab->PortText->Enable( false );
             break;
             case ConnectionType::SSH:
                 generalTab->PortText->ChangeValue( wxT("22") );
