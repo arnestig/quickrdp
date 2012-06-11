@@ -366,9 +366,11 @@ void RDPConnection::connect()
                 }
             break;
             case ConnectionType::VNC:
-            /** TODO:
-            ADD VNC CONNECTION SUPPORT HERE
-            **/
+                if ( settings->getVNCExec().empty() == false ) {
+                    wxExecute( settings->getVNCExec() + wxT(" ") + quickRDP::FileParser::getRealArgumentString( settings->getVNCArgument(), this ) );
+                } else {
+                    wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
+                }
             break;
         }
     }

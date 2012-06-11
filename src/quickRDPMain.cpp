@@ -273,6 +273,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
         Menu2->Insert( 2, changelogDialogItem );
         Connect( newMenuId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnChangelogClick );
     }
+    globalhotkeys = true;
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -291,7 +292,7 @@ void quickRDPFrame::OnAbout(wxCommandEvent& WXUNUSED(event) )
 {
     aboutDialog *about = new aboutDialog( this, 0 );
     about->VersionText->SetLabel( Version::getLongVersion() );
-    about->ShowModal();
+    showDialog( about );
     delete about;
 }
 
@@ -315,7 +316,7 @@ void quickRDPFrame::OnNewButtonClick(wxCommandEvent& WXUNUSED(event) )
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
     newFrame->loadRDPConnection( Resources::Instance()->getConnectionDatabase()->addRDPConnection( filename ) );
-    newFrame->ShowModal();
+    showDialog( newFrame );
     loadRDPFromDatabase();
     delete newFrame;
     if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
@@ -352,7 +353,7 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& WXUNUSED(event) , RDPConne
     if ( curCon != NULL ) {
         RDPFrame *newFrame = new RDPFrame( this, 0 );
         newFrame->loadRDPConnection( curCon );
-        newFrame->ShowModal();
+        showDialog( newFrame );
         loadRDPFromDatabase();
         delete newFrame;
         if ( ListCtrl1->GetSelectedItemCount() <= 0 ) {
@@ -548,7 +549,7 @@ void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& WXUNUSED(event) )
     if ( curCon != NULL ) {
         RDPFrame *newFrame = new RDPFrame( this, 0 );
         newFrame->loadRDPConnection( curCon );
-        newFrame->ShowModal();
+        showDialog( newFrame );
 
         loadRDPFromDatabase();
         delete newFrame;
@@ -728,7 +729,7 @@ void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
 void quickRDPFrame::OnPreferences(wxCommandEvent& WXUNUSED(event) )
 {
     settingsDialog *settings = new settingsDialog( this, 0 );
-    settings->ShowModal();
+    showDialog( settings );
     delete settings;
 }
 
@@ -818,7 +819,7 @@ void quickRDPFrame::OnPopupMenuDelete(wxCommandEvent& event)
 void quickRDPFrame::OnMenuCommands(wxCommandEvent& WXUNUSED(event) )
 {
     CommandDialog *commandDlg = new CommandDialog( this, 0 );
-    commandDlg->ShowModal();
+    showDialog( commandDlg, true ); /** Enable hotkey capture in this dialog due to keybinding requirements **/
     delete commandDlg;
 }
 
@@ -875,7 +876,7 @@ void quickRDPFrame::OnChangelogClick( wxCommandEvent& WXUNUSED(event)  )
             delete[] buffer;
 
             ExampleDialog *changelogDlg = new ExampleDialog( strline, this );
-            changelogDlg->ShowModal();
+            showDialog( changelogDlg );
             delete changelogDlg;
         }
     }
@@ -883,30 +884,44 @@ void quickRDPFrame::OnChangelogClick( wxCommandEvent& WXUNUSED(event)  )
 
 bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
 {
-    /** first we look for commands that have this specific keycombination and try to execute it **/
-    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
-    Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
-    if ( curCommand != NULL ) {
-        for ( size_t con = 0; con < connections.size(); ++con ) {
-            if ( connections[ con ] != NULL ) {
-                curCommand->execute( connections[ con ] );
+    if ( wantGlobalHotkeys() == true ) {
+        /** first we look for commands that have this specific keycombination and try to execute it **/
+        std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+        Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
+        if ( curCommand != NULL ) {
+            for ( size_t con = 0; con < connections.size(); ++con ) {
+                if ( connections[ con ] != NULL ) {
+                    curCommand->execute( connections[ con ] );
+                }
             }
-        }
-        return true;
-    } else {
-        /** no comand found, then we look for popup menu shortcuts... **/
-        wxCommandEvent ourEvent;
-        switch ( event.GetKeyCode() ) {
-            case 80:      /** 'P' key - open properties **/
-                if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
-            break;
-            case 68:      /** 'D' key - duplicate connection **/
-                if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
-            break;
-            case 127:     /** 'DEL' key - delete connection **/
-                OnDeleteButtonClick( ourEvent );
-            break;
+            return true;
+        } else {
+            /** no comand found, then we look for popup menu shortcuts... **/
+            wxCommandEvent ourEvent;
+            switch ( event.GetKeyCode() ) {
+                case 80:      /** 'P' key - open properties **/
+                    if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
+                break;
+                case 68:      /** 'D' key - duplicate connection **/
+                    if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
+                break;
+                case 127:     /** 'DEL' key - delete connection **/
+                    OnDeleteButtonClick( ourEvent );
+                break;
+            }
         }
     }
     return false;
+}
+
+bool quickRDPFrame::wantGlobalHotkeys() const
+{
+    return globalhotkeys;
+}
+
+void quickRDPFrame::showDialog( wxDialog* dialog, bool captureHotkeys )
+{
+    globalhotkeys = captureHotkeys;
+    dialog->ShowModal();
+    globalhotkeys = true;
 }
