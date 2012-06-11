@@ -147,6 +147,7 @@ class quickRDPFrame: public wxFrame
         std::vector< wxMenuItem* > favoriteCommandMenuItems;
 
         int last_column_click;
+        bool globalhotkeys;
 
         void loadRDPFromDatabase();
         void clearListCtrl();
@@ -155,6 +156,8 @@ class quickRDPFrame: public wxFrame
 
         void saveFrameSettings();
         void loadFrameSettings();
+        void showDialog( wxDialog* dialog, bool captureHotkeys = false ); /** NEED TO USE THIS FUNCTION WHEN SHOWING DIALOGS DUE TO GLOBAL HOTKEY CAPTURE! **/
+        bool wantGlobalHotkeys() const;
 
         DECLARE_EVENT_TABLE()
 };
