@@ -88,6 +88,8 @@ namespace quickRDP
             strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%connectiontype%"), ConnectionType::getConnectionTypeName( connection->getConnectionType() ) ) );
             strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%username%"), connection->getUsername() ) );
             strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%password%"), connection->getPassword() ) );
+            strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%port%"), connection->getPort() ) );
+
 
             for ( size_t stringId = 0; stringId < strings_to_parse.size(); ++stringId ) {
                 if ( strings_to_parse[ stringId ].second.empty() == true ) {
@@ -109,6 +111,7 @@ namespace quickRDP
             argument.Replace( wxT("%connectiontype%"), ConnectionType::getConnectionTypeName( connection->getConnectionType() ) );
             argument.Replace( wxT("%username%"), connection->getUsername() );
             argument.Replace( wxT("%password%"), connection->getPassword() );
+            argument.Replace( wxT("%port%"), connection->getPort() );
             return argument;
         }
 

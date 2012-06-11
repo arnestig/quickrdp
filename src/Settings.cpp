@@ -225,6 +225,16 @@ wxString Settings::getSSHArgument() const
     return SSHArgument;
 }
 
+wxString Settings::getVNCExec() const
+{
+    return VNCExec;
+}
+
+wxString Settings::getVNCArgument() const
+{
+    return VNCArgument;
+}
+
 void Settings::setTelnetExec( wxString telnetExec )
 {
     this->telnetExec = telnetExec;
@@ -243,6 +253,16 @@ void Settings::setSSHExec( wxString SSHExec )
 void Settings::setSSHArgument( wxString SSHArgument)
 {
     this->SSHArgument = SSHArgument;
+}
+
+void Settings::setVNCExec( wxString VNCExec )
+{
+    this->VNCExec = VNCExec;
+}
+
+void Settings::setVNCArgument( wxString VNCArgument )
+{
+    this->VNCArgument = VNCArgument;
 }
 
 wxString Settings::getSettingsPath() const

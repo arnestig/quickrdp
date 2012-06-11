@@ -40,25 +40,33 @@ class settingsDialog: public wxDialog
 		virtual ~settingsDialog();
 
 		//(*Declarations(settingsDialog)
-		wxFileDialog* FileDialog3;
-		wxTextCtrl* TextCtrl4;
-		wxButton* Button4;
+		wxButton* TelnetArgumentHelpButton;
+		wxFileDialog* TelnetExecDialog;
+		wxButton* OKButton;
+		wxButton* VNCArgumentResetButton;
+		wxFileDialog* VNCExecDialog;
 		wxStaticText* StaticText2;
-		wxButton* Button1;
+		wxButton* VNCArgumentHelpButton;
+		wxButton* VNCExecutableBrowseButton;
 		wxStaticText* StaticText6;
-		wxTextCtrl* TextCtrl6;
+		wxTextCtrl* VNCExecutableText;
+		wxTextCtrl* SSHArgumentText;
+		wxButton* SSHExecutableBrowseButton;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
-		wxFileDialog* FileDialog1;
-		wxButton* Button6;
-		wxButton* Button10;
-		wxButton* Button5;
-		wxButton* Button3;
-		wxButton* Button9;
-		wxTextCtrl* TextCtrl1;
+		wxTextCtrl* VNCArgumentText;
+		wxStaticText* StaticText3;
+		wxTextCtrl* TelnetExecutableText;
+		wxTextCtrl* TelnetArgumentText;
+		wxButton* SSHArgumentHelpButton;
+		wxButton* TelnetExecutableBrowseButton;
+		wxStaticText* StaticText5;
+		wxFileDialog* SSHExecDialog;
+		wxButton* TelnetArgumentResetButton;
+		wxButton* SSHArgumentResetButton;
 		wxStaticText* StaticText4;
-		wxTextCtrl* TextCtrl3;
-		wxButton* Button8;
+		wxButton* CancelButton;
+		wxTextCtrl* SSHExecutableText;
 		//*)
 
 	protected:
@@ -71,6 +79,13 @@ class settingsDialog: public wxDialog
 		static const long ID_TEXTCTRL4;
 		static const long ID_BUTTON9;
 		static const long ID_BUTTON6;
+		static const long ID_STATICTEXT3;
+		static const long ID_TEXTCTRL2;
+		static const long ID_BUTTON2;
+		static const long ID_STATICTEXT5;
+		static const long ID_TEXTCTRL5;
+		static const long ID_BUTTON4;
+		static const long ID_BUTTON7;
 		static const long ID_STATICTEXT2;
 		static const long ID_TEXTCTRL3;
 		static const long ID_BUTTON5;
@@ -93,10 +108,13 @@ class settingsDialog: public wxDialog
 		void OnSSHBrowseClick(wxCommandEvent& event);
 		void OnSSHArgumentReset(wxCommandEvent& event);
 		void OnHelpArgumentClick(wxCommandEvent& event);
+		void OnVNCArgumentResetButtonClick(wxCommandEvent& event);
+		void OnVNCBrowseClick(wxCommandEvent& event);
 		//*)
 
 		void resetTelnetArgument();
 		void resetSSHArgument();
+		void resetVNCArgument();
 
 		DECLARE_EVENT_TABLE()
 };
