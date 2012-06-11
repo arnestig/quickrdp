@@ -318,7 +318,7 @@ void CommandDialog::OnExamplesButton(wxCommandEvent& WXUNUSED(event) )
 
 void CommandDialog::OnArgumentHelpButton(wxCommandEvent& WXUNUSED(event) )
 {
-    ExampleDialog *example = new ExampleDialog( wxT("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%"), this );
+    ExampleDialog *example = new ExampleDialog( wxT("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%\n%port%"), this );
     example->ShowModal();
     delete example;
 }
