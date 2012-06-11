@@ -148,7 +148,7 @@ wxString RDPConnection::getPort() const
     if ( getPortTrueValue() == wxT("-1") ) {
         switch ( getConnectionType() ) {
             case ConnectionType::RDP:
-                return wxT("3306");
+                return wxT("3389");
             break;
             case ConnectionType::TELNET:
                 return wxT("23");
@@ -277,7 +277,7 @@ void RDPConnection::setSoundMode( wxString soundmode )
 
 void RDPConnection::setPort( wxString port )
 {
-    if (( port == wxT("3306") && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
+    if (( port == wxT("3389") && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
         ( port == wxT("23") && getConnectionType() == ConnectionType::TELNET ) ||
         ( port == wxT("22") && getConnectionType() == ConnectionType::SSH ) ||
         ( port == wxT("5900") && getConnectionType() == ConnectionType::VNC ) ||
