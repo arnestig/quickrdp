@@ -257,7 +257,7 @@
 													<object class="wxButton" name="ID_BUTTON8" variable="VNCArgumentResetButton" member="yes">
 														<label>reset</label>
 														<size>60,23</size>
-														<handler function="OnSSHArgumentReset" entry="EVT_BUTTON" />
+														<handler function="OnVNCArgumentResetButtonClick" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
