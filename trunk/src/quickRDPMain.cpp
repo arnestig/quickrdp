@@ -381,7 +381,7 @@ void quickRDPFrame::loadRDPFromDatabase()
             item.SetId( index );
             ListCtrl1->InsertItem( item );
             wxString username;
-            if ( curRDP->getDomain().Len() > 0 ) {
+            if ( curRDP->getDomain().Len() > 0 && curRDP->getConnectionType() == ConnectionType::RDP ) {
                 username.Append( curRDP->getDomain() + wxT("\\") );
             }
             username.Append( curRDP->getUsername() );
