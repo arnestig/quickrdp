@@ -117,41 +117,57 @@ namespace quickRDP
 
         inline bool searchForString( std::string str, std::string pattern )
         {
-            /** locate our first wildcard (if any) **/
-            size_t wildcardPos = pattern.find( "*" );
-            size_t foundPos = 0;
-
-            /** load up our pattern list with the first word. **/
-            foundPos = str.find( pattern.substr( 0, wildcardPos ), foundPos );
-            if ( foundPos == std::string::npos ) {
-                return false;
+            if ( pattern.empty() == true ) {
+                return true;
             }
 
-            while ( wildcardPos != std::string::npos )
-            {
-                std::string substring = "";
-                wildcardPos++;
-
-                /** locate our wildcards and get the subpatterns between them **/
-                size_t nextWildcard = pattern.find( "*", wildcardPos );
-                if ( nextWildcard == std::string::npos ) {
-                    substring = pattern.substr( wildcardPos, nextWildcard );
-                } else {
-                    substring = pattern.substr( wildcardPos, nextWildcard-wildcardPos );
-                }
-
-                /** now search the string using the pattern we found **/
-                foundPos = str.find( substring, foundPos );
-                if ( foundPos == std::string::npos ) {
-                    return false;
-                }
-
-                wildcardPos = pattern.find( "*", wildcardPos );
+            /** Tokenize our pattern string based on | characters. This will cause us to look for any of these patterns when searching later on. **/
+            std::vector< std::string > patterns;
+            bool retVal = false;
+            char *pch;
+            char *tempPattern = new char[ pattern.size()+1 ];
+            strcpy( tempPattern, pattern.c_str() );
+            pch = strtok( tempPattern, "|" );
+            while ( pch != NULL ) {
+                patterns.push_back( std::string( pch ) );
+                pch = strtok( NULL, "|" );
             }
+            delete tempPattern;
 
-            return true;
+            for ( std::vector< std::string >::const_iterator it = patterns.begin(); it != patterns.end(); ++it ) {
+                /** locate our first wildcard (if any) **/
+                size_t wildcardPos = (*it).find( "*" );
+
+                /** load up our pattern list with the first word. **/
+                size_t foundPos = str.find( (*it).substr( 0, wildcardPos ) );
+                if ( foundPos != std::string::npos ) {
+                    retVal = true;
+                }
+
+                while ( wildcardPos != std::string::npos )
+                {
+                    std::string substring = "";
+                    wildcardPos++;
+
+                    /** locate our wildcards and get the subpatterns between them **/
+                    size_t nextWildcard = (*it).find( "*", wildcardPos );
+                    if ( nextWildcard == std::string::npos ) {
+                        substring = (*it).substr( wildcardPos, nextWildcard );
+                    } else {
+                        substring = (*it).substr( wildcardPos, nextWildcard-wildcardPos );
+                    }
+
+                    /** now search the string using the pattern we found **/
+                    foundPos = str.find( substring, foundPos );
+                    if ( foundPos != std::string::npos ) {
+                        retVal = true;
+                    }
+
+                    wildcardPos = (*it).find( "*", wildcardPos );
+                }
+            }
+            return retVal;
         }
-
     }
 
     namespace Connections
