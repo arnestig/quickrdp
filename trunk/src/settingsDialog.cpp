@@ -258,7 +258,7 @@ void settingsDialog::OnSSHBrowseClick(wxCommandEvent& WXUNUSED(event) )
     }
 }
 
-void settingsDialog::OnVNCBrowseClick(wxCommandEvent& event)
+void settingsDialog::OnVNCBrowseClick(wxCommandEvent& WXUNUSED(event) )
 {
     if ( VNCExecDialog->ShowModal() == wxID_OK ) {
         VNCExecutableText->SetValue( VNCExecDialog->GetPath() );
@@ -275,7 +275,7 @@ void settingsDialog::OnSSHArgumentReset(wxCommandEvent& WXUNUSED(event) )
     resetSSHArgument();
 }
 
-void settingsDialog::OnVNCArgumentResetButtonClick(wxCommandEvent& event)
+void settingsDialog::OnVNCArgumentResetButtonClick(wxCommandEvent& WXUNUSED(event) )
 {
     resetVNCArgument();
 }

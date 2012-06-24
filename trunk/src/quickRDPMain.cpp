@@ -274,6 +274,15 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
         Connect( newMenuId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnChangelogClick );
     }
     globalhotkeys = true;
+
+    /** we also run a check of our current version and the saved version in the settings file..
+        if these two differ then we check if we should notify our user of any dramatic changes.. **/
+    wxString currentVersion = Version::getNumericVersion();
+    wxString oldVersion = Resources::Instance()->getSettings()->getVersion();
+
+    if ( ( currentVersion.empty() == false && oldVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
+        checkForVersionChangesAndNotifyUser( oldVersion );
+    }
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -924,4 +933,15 @@ void quickRDPFrame::showDialog( wxDialog* dialog, bool captureHotkeys )
     globalhotkeys = captureHotkeys;
     dialog->ShowModal();
     globalhotkeys = true;
+}
+
+void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
+{
+    /** all logic here is strictly static for now.. we'll see how we handle this in the future (perhaps there won't be too many of these drastic changes).. **/
+
+    /** Here is an example of how to alert users for now:
+    if ( oldVersion < wxT("1.2") ) {
+        wxMessageBox( wxT("New stuff in 1.2.. You should know that.. bla bla bla..." ) );
+    }
+    **/
 }

@@ -24,6 +24,7 @@
 #include "QuickrdpFunctions.h"
 #include <wx/stdpaths.h>
 #include <fstream>
+#include "version.h"
 
 #ifndef DATA_PATH
 #define DATA_PATH ""
@@ -120,6 +121,7 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("frameheight:i:")) << getMainFrameHeight() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("framewidth:i:")) << getMainFrameWidth() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("version:s:")) + Version::getNumericVersion() );
 
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column0width:i:")) << getColumn0Width() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column1width:i:")) << getColumn1Width() );
@@ -171,6 +173,7 @@ void Settings::loadSettings()
         setSSHExec( quickRDP::FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
         setTelnetArgument( quickRDP::FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
         setSSHArgument( quickRDP::FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
+        setVersion( quickRDP::FileParser::getStringFromFile( wxT("version:s:"), allLines ) );
 
         setMainFrameHeight( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
         setMainFrameWidth( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
@@ -235,6 +238,11 @@ wxString Settings::getVNCArgument() const
     return VNCArgument;
 }
 
+wxString Settings::getVersion() const
+{
+    return version;
+}
+
 void Settings::setTelnetExec( wxString telnetExec )
 {
     this->telnetExec = telnetExec;
@@ -263,6 +271,11 @@ void Settings::setVNCExec( wxString VNCExec )
 void Settings::setVNCArgument( wxString VNCArgument )
 {
     this->VNCArgument = VNCArgument;
+}
+
+void Settings::setVersion( wxString version )
+{
+    this->version = version;
 }
 
 wxString Settings::getSettingsPath() const
