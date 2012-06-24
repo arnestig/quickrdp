@@ -22,6 +22,7 @@
 #ifndef QUICKRDPMAIN_H
 #define QUICKRDPMAIN_H
 
+#include "QuickRDPBitmapButton.h"
 #include "RDPDatabase.h"
 #include <memory>
 
@@ -123,10 +124,10 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem15;
         wxMenuItem* MenuItem22;
         wxPanel* Panel1;
-        wxBitmapButton* BitmapButton2;
+        QuickRDPBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem17;
         wxMenuItem* MenuItem13;
-        wxBitmapButton* BitmapButton1;
+        QuickRDPBitmapButton* BitmapButton1;
         wxMenu* MenuItem8;
         wxMenuItem* MenuItem10;
         wxMenuItem* MenuItem12;
@@ -134,9 +135,9 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem20;
         wxMenuItem* MenuItem6;
         wxMenuItem* MenuItem23;
-        wxBitmapButton* BitmapButton4;
+        QuickRDPBitmapButton* BitmapButton4;
         wxTextCtrl* TextCtrl1;
-        wxBitmapButton* BitmapButton3;
+        QuickRDPBitmapButton* BitmapButton3;
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
         wxMenuItem* MenuItem9;
