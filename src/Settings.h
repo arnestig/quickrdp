@@ -38,12 +38,14 @@ class Settings
         wxString getSSHArgument() const;
         wxString getVNCExec() const;
         wxString getVNCArgument() const;
+        wxString getVersion() const;
         void setTelnetExec( wxString telnetExec );
         void setTelnetArgument( wxString telnetArgument );
         void setSSHExec( wxString SSHExec );
         void setSSHArgument( wxString SSHArgument );
         void setVNCExec( wxString VNCExec );
         void setVNCArgument( wxString VNCArgument );
+        void setVersion( wxString version );
         wxString getDataPath() const;
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
@@ -83,6 +85,7 @@ class Settings
         wxString settingsPath;
         wxString databasePath;
         wxString commandDatabasePath;
+        wxString version;
 
         int mainFrameWidth;
         int mainFrameHeight;

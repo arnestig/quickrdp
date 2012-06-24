@@ -159,6 +159,7 @@ class quickRDPFrame: public wxFrame
         void loadFrameSettings();
         void showDialog( wxDialog* dialog, bool captureHotkeys = false ); /** NEED TO USE THIS FUNCTION WHEN SHOWING DIALOGS DUE TO GLOBAL HOTKEY CAPTURE! **/
         bool wantGlobalHotkeys() const;
+        void checkForVersionChangesAndNotifyUser( wxString oldVersion );
 
         DECLARE_EVENT_TABLE()
 };
