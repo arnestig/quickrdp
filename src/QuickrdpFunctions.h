@@ -132,7 +132,7 @@ namespace quickRDP
                 patterns.push_back( std::string( pch ) );
                 pch = strtok( NULL, "|" );
             }
-            delete tempPattern;
+            delete []tempPattern;
 
             for ( std::vector< std::string >::const_iterator it = patterns.begin(); it != patterns.end(); ++it ) {
                 /** locate our first wildcard (if any) **/
