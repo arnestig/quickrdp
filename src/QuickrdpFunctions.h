@@ -247,6 +247,14 @@ namespace quickRDP
 
             return retval;
         }
+
+        inline bool IsValidKeycode( int keycode ) {
+            if ( ( keycode < 256 && wxIsalnum( keycode ) ) || ( keycode >= WXK_F1 && keycode <= WXK_F12 ) ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
 #endif

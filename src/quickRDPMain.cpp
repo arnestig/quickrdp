@@ -194,8 +194,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
-    Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnEditButtonClick);
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlInput);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemSelect);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemDeselect);
@@ -433,7 +432,13 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& WXUNUSED(event) )
 {
-    loadRDPFromDatabase();
+    if ( ListCtrl1->GetItemCount() > 0 ) {
+        ListCtrl1->SetItemState(ListCtrl1->GetTopItem(),wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED,wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED);
+        ListCtrl1->Update();
+        ListCtrl1->SetFocus();
+        ListCtrl1->EnsureVisible( ListCtrl1->GetTopItem() );
+
+    }
 }
 
 void quickRDPFrame::clearPopupMenuChoices()
@@ -917,4 +922,9 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
     if ( oldVersion < wxT("1.2") ) {
     //    wxMessageBox( wxT("New stuff in 1.2.. You should know that.. bla bla bla..." ) );
     }
+}
+
+void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
+{
+    loadRDPFromDatabase();
 }

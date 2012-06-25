@@ -28,6 +28,7 @@
 class quickRDPApp : public wxApp
 {
     public:
+        quickRDPApp();
         virtual bool OnInit();
         virtual int FilterEvent( wxEvent& event );
     private:
