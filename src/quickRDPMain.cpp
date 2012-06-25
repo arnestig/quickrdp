@@ -39,32 +39,6 @@
 #include <wx/string.h>
 //*)
 
-//helper functions
-enum wxbuildinfoformat {
-    short_f, long_f };
-
-wxString wxbuildinfo(wxbuildinfoformat format)
-{
-    wxString wxbuild(wxVERSION_STRING);
-
-    if (format == long_f )
-    {
-#if defined(__WXMSW__)
-        wxbuild << _T("-Windows");
-#elif defined(__UNIX__)
-        wxbuild << _T("-Linux");
-#endif
-
-#if wxUSE_UNICODE
-        wxbuild << _T("-Unicode build");
-#else
-        wxbuild << _T("-ANSI build");
-#endif // wxUSE_UNICODE
-    }
-
-    return wxbuild;
-}
-
 //(*IdInit(quickRDPFrame)
 const long quickRDPFrame::ID_BITMAPBUTTON1 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON4 = wxNewId();
@@ -939,9 +913,8 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
 {
     /** all logic here is strictly static for now.. we'll see how we handle this in the future (perhaps there won't be too many of these drastic changes).. **/
 
-    /** Here is an example of how to alert users for now:
+    /** Here is an example of how to alert users for now: **/
     if ( oldVersion < wxT("1.2") ) {
-        wxMessageBox( wxT("New stuff in 1.2.. You should know that.. bla bla bla..." ) );
+    //    wxMessageBox( wxT("New stuff in 1.2.. You should know that.. bla bla bla..." ) );
     }
-    **/
 }
