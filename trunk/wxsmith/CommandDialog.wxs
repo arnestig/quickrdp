@@ -2,6 +2,7 @@
 <wxsmith>
 	<object class="wxDialog" name="CommandDialog">
 		<size>391,253</size>
+		<id_arg>0</id_arg>
 		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
@@ -191,7 +192,6 @@
 									</object>
 									<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
-									<option>1</option>
 								</object>
 							</object>
 							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

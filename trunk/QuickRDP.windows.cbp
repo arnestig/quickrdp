@@ -21,7 +21,6 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u_stc.a" />
 					<Add library="libwxmsw28u_adv.a" />
 					<Add library="libwxmsw28u_core.a" />
 					<Add library="libwxbase28u.a" />
@@ -47,7 +46,6 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u_stc.a" />
 					<Add library="libwxmsw28u_adv.a" />
 					<Add library="libwxmsw28u_core.a" />
 					<Add library="libwxbase28u.a" />

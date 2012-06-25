@@ -75,6 +75,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuCommands(wxCommandEvent& event);
         void OnReportBugClick(wxCommandEvent& event);
         void OnMenuSearchForUpdates(wxCommandEvent& event);
+        void OnTextCtrlInput(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnCommandSelected(wxCommandEvent& event);
@@ -116,6 +117,7 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem19;
         wxMenuItem* MenuItem7;
         wxListCtrl* ListCtrl1;
+        QuickRDPBitmapButton* BitmapButton4;
         wxMenu PopupMenu1;
         wxMenu* Menu3;
         wxMenuItem* MenuItem4;
@@ -124,10 +126,8 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem15;
         wxMenuItem* MenuItem22;
         wxPanel* Panel1;
-        QuickRDPBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem17;
         wxMenuItem* MenuItem13;
-        QuickRDPBitmapButton* BitmapButton1;
         wxMenu* MenuItem8;
         wxMenuItem* MenuItem10;
         wxMenuItem* MenuItem12;
@@ -135,11 +135,12 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem20;
         wxMenuItem* MenuItem6;
         wxMenuItem* MenuItem23;
-        QuickRDPBitmapButton* BitmapButton4;
-        wxTextCtrl* TextCtrl1;
         QuickRDPBitmapButton* BitmapButton3;
+        QuickRDPBitmapButton* BitmapButton1;
+        wxTextCtrl* TextCtrl1;
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
+        QuickRDPBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem9;
         wxMenuItem* MenuItem18;
         //*)
