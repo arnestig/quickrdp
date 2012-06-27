@@ -29,6 +29,7 @@
 //(*Headers(quickRDPFrame)
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
 #include <wx/menu.h>
 #include <wx/textctrl.h>
 #include <wx/panel.h>
@@ -43,6 +44,7 @@ class quickRDPFrame: public wxFrame
         quickRDPFrame(wxWindow* parent,wxWindowID id = -1);
         virtual ~quickRDPFrame();
         bool handleShortcutKeys( wxKeyEvent &event );
+        void checkForNewAvailableVersion();
 
     private:
 
@@ -78,8 +80,10 @@ class quickRDPFrame: public wxFrame
         void OnTextCtrlInput(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
+        void OnNewVersionTextClick(wxCommandEvent& event);
         void OnCommandSelected(wxCommandEvent& event);
         void onVersionCheckExecuted( wxCommandEvent &evt );
+        void onAutomaticVersionCheckExecuted( wxCommandEvent &evt );
         void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
         void OnChangelogClick( wxCommandEvent& event );
 
@@ -88,6 +92,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_BITMAPBUTTON4;
         static const long ID_BITMAPBUTTON2;
         static const long ID_BITMAPBUTTON3;
+        static const long ID_STATICTEXT1;
         static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
@@ -120,6 +125,7 @@ class quickRDPFrame: public wxFrame
         QuickRDPBitmapButton* BitmapButton4;
         wxMenu PopupMenu1;
         wxMenu* Menu3;
+        wxStaticText* VersionNotifyText;
         wxMenuItem* MenuItem4;
         wxMenuItem* MenuItem14;
         wxMenuItem* MenuItem11;

@@ -35,6 +35,7 @@
 
 //(*InternalHeaders(quickRDPFrame)
 #include <wx/settings.h>
+#include <wx/font.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
@@ -44,6 +45,7 @@ const long quickRDPFrame::ID_BITMAPBUTTON1 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON4 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON2 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON3 = wxNewId();
+const long quickRDPFrame::ID_STATICTEXT1 = wxNewId();
 const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
@@ -72,14 +74,17 @@ const long quickRDPFrame::POPUPMENURDP = wxNewId();
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     //(*EventTable(quickRDPFrame)
     //*)
-    EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE,quickRDPFrame::onVersionCheckExecuted)
+    EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE, quickRDPFrame::onVersionCheckExecuted)
+    EVT_COMMAND(wxID_ANY, wxEVT_AUTOMATIC_VERSION_CHECK_DONE, quickRDPFrame::onAutomaticVersionCheckExecuted)
 END_EVENT_TABLE()
 
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
 {
     //(*Initialize(quickRDPFrame)
     wxBoxSizer* BoxSizer4;
+    wxBoxSizer* BoxSizer6;
     wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer7;
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
@@ -113,13 +118,26 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BitmapButton3->SetToolTip(_("View properties"));
     BoxSizer5->Add(BitmapButton3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer3->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer6 = new wxBoxSizer(wxVERTICAL);
+    BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizer7->Add(0,0,1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    VersionNotifyText = new wxStaticText(Panel1, ID_STATICTEXT1, _("New version available!"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    VersionNotifyText->SetForegroundColour(wxColour(255,0,0));
+    wxFont VersionNotifyTextFont = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
+    if ( !VersionNotifyTextFont.Ok() ) VersionNotifyTextFont = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
+    VersionNotifyTextFont.SetWeight(wxBOLD);
+    VersionNotifyTextFont.SetUnderlined(true);
+    VersionNotifyText->SetFont(VersionNotifyTextFont);
+    BoxSizer7->Add(VersionNotifyText, 0, wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer6->Add(BoxSizer7, 1, wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Panel1, _("Search"));
     TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(172,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     TextCtrl1->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
     StaticBoxSizer1->Add(TextCtrl1, 0, wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
-    BoxSizer4->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer3->Add(BoxSizer4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
+    BoxSizer4->Add(StaticBoxSizer1, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer6->Add(BoxSizer4, 0, wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
+    BoxSizer3->Add(BoxSizer6, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxRAISED_BORDER, wxDefaultValidator, _T("ID_LISTCTRL1"));
     ListCtrl1->InsertColumn( 0, wxT("Host") );
@@ -222,6 +240,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
+    VersionNotifyText->Connect(ID_STATICTEXT1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnNewVersionTextClick,0,this);
+
     commandMenu = new wxMenu();
     PopupMenu1.AppendSubMenu( commandMenu, wxT("Commands") );
 
@@ -256,6 +276,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     if ( ( currentVersion.empty() == false && oldVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
         checkForVersionChangesAndNotifyUser( oldVersion );
     }
+    VersionNotifyText->Hide();
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -818,7 +839,7 @@ void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
-    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
+    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/", false );
     if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
         wxMessageBox( wxT("Error while creating HTTP thread!") );
     } else {
@@ -830,12 +851,22 @@ void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
 {
+    /** event handler for when we're checking for a new version manually **/
     if ( event.GetInt() == 1 ) {
         if ( wxMessageBox( wxT("Version ") + event.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
             wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
         }
     } else {
         wxMessageBox( wxT("You already got the latest version of QuickRDP.") );
+    }
+}
+
+void quickRDPFrame::onAutomaticVersionCheckExecuted( wxCommandEvent &event )
+{
+    /** event handler for when we're checking for a new version automatically (during startup) **/
+    if ( event.GetInt() == 1 ) {
+        VersionNotifyText->Show( true );
+        VersionNotifyText->SetToolTip( wxT("Version ") + event.GetString() + wxT(" is available for download.") );
     }
 }
 
@@ -927,4 +958,21 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
 void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
 {
     loadRDPFromDatabase();
+}
+
+void quickRDPFrame::checkForNewAvailableVersion( )
+{
+    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
+    if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
+        wxMessageBox( wxT("Error while creating HTTP thread!") );
+    } else {
+        if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
+            wxMessageBox( wxT("Error while running HTTP thread!") );
+        }
+    }
+}
+
+void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
+{
+    wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
 }

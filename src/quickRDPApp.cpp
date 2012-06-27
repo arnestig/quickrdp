@@ -50,6 +50,8 @@ bool quickRDPApp::OnInit()
         #endif
     	Frame->Show();
     	SetTopWindow(Frame);
+    	/** Check if new version is available... **/
+    	Frame->checkForNewAvailableVersion();
     }
     //*)
     return wxsOK;
