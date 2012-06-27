@@ -94,7 +94,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-    
+
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -208,7 +208,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem19->Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
     PopupMenu1.Append(POPUPMENURDP, _("RDP"), MenuItem19, wxEmptyString);
     BoxSizer1->SetSizeHints(this);
-    
+
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
@@ -453,12 +453,20 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& WXUNUSED(event) )
 {
+    /** first delselect all items in the list control... **/
+    long item = -1;
+    for (;;) {
+        item = ListCtrl1->GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+        if ( item == -1 ) {
+            break;
+        }
+        ListCtrl1->SetItemState( item, 0, wxLIST_STATE_SELECTED );
+    }
+
+    /** now select our top one **/
     if ( ListCtrl1->GetItemCount() > 0 ) {
         ListCtrl1->SetItemState(ListCtrl1->GetTopItem(),wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED,wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED);
-        ListCtrl1->Update();
         ListCtrl1->SetFocus();
-        ListCtrl1->EnsureVisible( ListCtrl1->GetTopItem() );
-
     }
 }
 
