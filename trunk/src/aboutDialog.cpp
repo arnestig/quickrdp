@@ -60,7 +60,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(400,306));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
@@ -115,7 +115,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	BoxSizer1->Add(Panel1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&aboutDialog::OnCloseButton);
 	//*)
 	StaticBitmap1->SetBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("preferences-desktop-remote-desktop-256x256.png") ) );

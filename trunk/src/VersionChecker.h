@@ -30,12 +30,13 @@
 
 BEGIN_DECLARE_EVENT_TYPES()
     DECLARE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE, -1 )
+    DECLARE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE, -1 )
 END_DECLARE_EVENT_TYPES()
 
 class VersionChecker : public wxThread
 {
     public:
-        VersionChecker( wxEvtHandler *parent, std::string url );
+        VersionChecker( wxEvtHandler *parent, std::string url, bool automatic_check = true );
         ~VersionChecker();
 
     private:
@@ -46,6 +47,7 @@ class VersionChecker : public wxThread
 
         wxEvtHandler *parent;
         std::string url;
+        bool automatic_check;
 };
 
 #endif
