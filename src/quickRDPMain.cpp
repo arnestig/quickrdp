@@ -94,7 +94,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-
+    
     Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -120,7 +120,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer3->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer6 = new wxBoxSizer(wxVERTICAL);
     BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-    BoxSizer7->Add(0,0,1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer7->Add(-1,-1,1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     VersionNotifyText = new wxStaticText(Panel1, ID_STATICTEXT1, _("New version available!"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
     VersionNotifyText->SetForegroundColour(wxColour(255,0,0));
     wxFont VersionNotifyTextFont = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
@@ -208,7 +208,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     MenuItem19->Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
     PopupMenu1.Append(POPUPMENURDP, _("RDP"), MenuItem19, wxEmptyString);
     BoxSizer1->SetSizeHints(this);
-
+    
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
