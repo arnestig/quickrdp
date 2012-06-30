@@ -1,3 +1,15 @@
+quickrdp 1.2.1 - 2012-07-01
+-------------------------
+ * Global hotkey support added.
+ * Searching and pressing enter will set focus on connection list.
+ * Tabbing in main window will no longer stop on the buttons. So you can keep
+ tabbing between search box and connection list.
+ * OR-type searching with '|' are now available. Allow you to keep several
+ search results in the connection list.
+ * Bugfix - Domain field will now only show for RDP connections
+ * Bugfix - The GUI on Linux should now be ~identical to Windows GUI
+ * Bugfix - Hotkeys should now work properly on Linux
+
 quickrdp 1.2 - 2012-06-12
 -------------------------
  * Custom commands added. Tweak and add your own commands and execute them
