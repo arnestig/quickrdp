@@ -249,7 +249,7 @@ namespace quickRDP
         }
 
         inline bool IsValidKeycode( int keycode ) {
-            if ( ( keycode < 256 && wxIsalnum( keycode ) ) || ( keycode >= WXK_F1 && keycode <= WXK_F12 ) ) {
+            if ( ( keycode < 256 && wxIsalnum( keycode ) ) || ( keycode >= WXK_F1 && keycode <= WXK_F12 ) || ( keycode == 127 ) ) {
                 return true;
             } else {
                 return false;

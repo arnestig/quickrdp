@@ -175,9 +175,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     SetMenuBar(MenuBar1);
     MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem17);
-    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties\tCtrl+P"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
-    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem20);
     MenuItem21 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DELETE, _("Delete\tDEL"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem21);
@@ -277,6 +277,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
         checkForVersionChangesAndNotifyUser( oldVersion );
     }
     VersionNotifyText->Hide();
+
+    updatePopupmenuShortcuts();
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -746,8 +748,9 @@ void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
 void quickRDPFrame::OnPreferences(wxCommandEvent& WXUNUSED(event) )
 {
     settingsDialog *settings = new settingsDialog( this, 0 );
-    showDialog( settings );
+    showDialog( settings, true );
     delete settings;
+    updatePopupmenuShortcuts();
 }
 
 void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
@@ -923,18 +926,27 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
             }
             return true;
         } else {
-            /** no comand found, then we look for popup menu shortcuts... **/
+            /** no comand found, then we look for global shortcuts... **/
             wxCommandEvent ourEvent;
-            switch ( event.GetKeyCode() ) {
-                case 80:      /** 'P' key - open properties **/
-                    if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
-                break;
-                case 68:      /** 'D' key - duplicate connection **/
-                    if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
-                break;
-                case 127:     /** 'DEL' key - delete connection **/
-                    OnDeleteButtonClick( ourEvent );
-                break;
+            Settings *settings = Resources::Instance()->getSettings();
+            int keyCode = event.GetKeyCode();
+            int keyModifier = event.GetModifiers();
+
+            if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
+                OnNewButtonClick( ourEvent );
+                return true;
+            } else if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
+                OnDuplicateButtonClick( ourEvent );
+                return true;
+            } else if ( keyCode == settings->getPropConnectionShortcut().first && keyModifier == settings->getPropConnectionShortcut().second ) {
+                OnEditButtonClick( ourEvent );
+                return true;
+            } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
+                OnMenuCommands( ourEvent );
+                return true;
+            } else if ( keyCode == 127 ) {
+                OnDeleteButtonClick( ourEvent );
+                return true;
             }
         }
     }
@@ -957,9 +969,14 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
 {
     /** all logic here is strictly static for now.. we'll see how we handle this in the future (perhaps there won't be too many of these drastic changes).. **/
 
-    /** Here is an example of how to alert users for now: **/
-    if ( oldVersion < wxT("1.2") ) {
-    //    wxMessageBox( wxT("New stuff in 1.2.. You should know that.. bla bla bla..." ) );
+    /** Since 1.2.1 we implemented global hotkeys.. Users may want to remove these.
+    but we should allow new users upgrading to 1.2.1 to have the default old ones.
+    Setting them here if we're starting 1.2.1 for the first time now. **/
+    if ( oldVersion < wxT("1.2.1") ) {
+        wxMessageBox( wxT("yep...") );
+        Settings *settings = Resources::Instance()->getSettings();
+        settings->setDupConnectionShortcut( std::pair< int, int > ( 68, wxMOD_CONTROL ) ); /** Ctrl+D **/
+        settings->setPropConnectionShortcut( std::pair< int, int > ( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/
     }
 }
 
@@ -983,4 +1000,18 @@ void quickRDPFrame::checkForNewAvailableVersion( )
 void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
+}
+
+void quickRDPFrame::updatePopupmenuShortcuts()
+{
+    Settings *settings = Resources::Instance()->getSettings();
+    wxMenuItem *propConMenu = PopupMenu1.FindItem( ID_POPUPMENUPROPERTIES );
+    if ( propConMenu != NULL ) {
+        propConMenu->SetText( wxT("Properties\t") + quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
+    }
+
+    wxMenuItem *dupConMenu = PopupMenu1.FindItem( ID_POPUPMENU_DUPLICATE );
+    if ( dupConMenu != NULL ) {
+        dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
+    }
 }
