@@ -130,6 +130,15 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column4width:i:")) << getColumn4Width() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column5width:i:")) << getColumn5Width() );
 
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("newconkeycode:i:")) << getNewConnectionShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("newconmodifier:i:")) << getNewConnectionShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("dupconkeycode:i:")) << getDupConnectionShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("dupconmodifier:i:")) << getDupConnectionShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("propconkeycode:i:")) << getPropConnectionShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("propconmodifier:i:")) << getPropConnectionShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogkeycode:i:")) << getCommandDialogShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogmodifier:i:")) << getCommandDialogShortcut().second );
+
     ofile.close();
 }
 
@@ -195,6 +204,11 @@ void Settings::loadSettings()
 
         int col5width = quickRDP::FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
         col5width == 0 ? setColumn5Width( 107 ) : setColumn5Width( col5width );
+
+        setNewConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("newconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("newconmodifier:i:"), allLines ) ) );
+        setDupConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("dupconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("dupconmodifier:i:"), allLines ) ) );
+        setPropConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("propconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("propconmodifier:i:"), allLines ) ) );
+        setCommandDialogShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogmodifier:i:"), allLines ) ) );
     }
     rfile.close();
 }
@@ -243,6 +257,26 @@ wxString Settings::getVersion() const
     return version;
 }
 
+std::pair< int, int > Settings::getNewConnectionShortcut() const
+{
+    return newConnectionShortcut;
+}
+
+std::pair< int, int > Settings::getDupConnectionShortcut() const
+{
+    return dupConnectionShortcut;
+}
+
+std::pair< int, int > Settings::getPropConnectionShortcut() const
+{
+    return propConnectionShortcut;
+}
+
+std::pair< int, int > Settings::getCommandDialogShortcut() const
+{
+    return commandDialogShortcut;
+}
+
 void Settings::setTelnetExec( wxString telnetExec )
 {
     this->telnetExec = telnetExec;
@@ -276,6 +310,26 @@ void Settings::setVNCArgument( wxString VNCArgument )
 void Settings::setVersion( wxString version )
 {
     this->version = version;
+}
+
+void Settings::setNewConnectionShortcut( std::pair< int, int > value )
+{
+    newConnectionShortcut = value;
+}
+
+void Settings::setDupConnectionShortcut( std::pair< int, int > value )
+{
+    dupConnectionShortcut = value;
+}
+
+void Settings::setPropConnectionShortcut( std::pair< int, int > value )
+{
+    propConnectionShortcut = value;
+}
+
+void Settings::setCommandDialogShortcut( std::pair< int, int > value )
+{
+    commandDialogShortcut = value;
 }
 
 wxString Settings::getSettingsPath() const

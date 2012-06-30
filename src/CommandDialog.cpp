@@ -335,8 +335,7 @@ void CommandDialog::HandlePanelKeyDown(wxKeyEvent& event)
     curShortcutMod = 0;
     curShortcutKey = 0;
     TextShortcut->Clear();
-    TextShortcut->AppendText( quickRDP::Keybinder::ModifierString(event.GetModifiers() ) );
-    TextShortcut->AppendText( quickRDP::Keybinder::KeycodeString(event.GetKeyCode() ) );
+    TextShortcut->AppendText( quickRDP::Keybinder::ModifierString( event.GetModifiers() ) + quickRDP::Keybinder::KeycodeString( event.GetKeyCode() ));
     curShortcutMod = event.GetModifiers();
     curShortcutKey = event.GetKeyCode();
 }

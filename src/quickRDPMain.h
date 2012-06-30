@@ -45,6 +45,7 @@ class quickRDPFrame: public wxFrame
         virtual ~quickRDPFrame();
         bool handleShortcutKeys( wxKeyEvent &event );
         void checkForNewAvailableVersion();
+        void updatePopupmenuShortcuts();
 
     private:
 
