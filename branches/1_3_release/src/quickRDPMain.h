@@ -25,6 +25,7 @@
 #include "QuickRDPBitmapButton.h"
 #include "RDPDatabase.h"
 #include <memory>
+#include <wx/dialog.h>
 
 //(*Headers(quickRDPFrame)
 #include <wx/listctrl.h>
