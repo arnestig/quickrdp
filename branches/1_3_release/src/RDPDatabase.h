@@ -20,7 +20,7 @@
 **/
 
 #include <vector>
-#include <wx/wx.h>
+#include <wx/string.h>
 
 #ifndef __RDP_DATABASE_H__
 #define __RDP_DATABASE_H__
@@ -79,6 +79,8 @@ class RDPConnection
         wxString getDiskMapping() const;
         wxString getPort() const;
         wxString getPortTrueValue() const; // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
+        int getConnectionStatus() const;
+
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -102,6 +104,7 @@ class RDPConnection
         void setSoundMode( wxString soundmode );
         void setDiskMapping( wxString diskmapping );
         void setPort( wxString port );
+        void setConnectionStatus( int connectionStatus );
 
         void saveFile();
 
@@ -111,6 +114,7 @@ class RDPConnection
         void parseFile();
         ConnectionType::ConnectionType connectionType;
         wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping, port;
+        int connectionStatus;
 };
 
 class RDPDatabase
@@ -126,6 +130,8 @@ class RDPDatabase
         RDPConnection* getRDPFromListCtrl( long index );
         void clearRDPListCtrl();
         void addRDPToListCtrl( RDPConnection *connection );
+
+        long getListCtrlIndexFromFilename( wxString filename );
 
         void sortById( int id );
         bool isSortOrderAscending() const;

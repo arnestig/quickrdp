@@ -46,6 +46,7 @@ class quickRDPFrame: public wxFrame
         bool handleShortcutKeys( wxKeyEvent &event );
         void checkForNewAvailableVersion();
         void updatePopupmenuShortcuts();
+        void init();
 
     private:
 
@@ -87,6 +88,7 @@ class quickRDPFrame: public wxFrame
         void onAutomaticVersionCheckExecuted( wxCommandEvent &evt );
         void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
         void OnChangelogClick( wxCommandEvent& event );
+        void onConnectionCheckerUpdate( wxCommandEvent& event );
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -154,6 +156,7 @@ class quickRDPFrame: public wxFrame
 
         wxMenu *commandMenu;
         std::vector< wxMenuItem* > favoriteCommandMenuItems;
+        wxImageList *imageList;
 
         int last_column_click;
         bool globalhotkeys;
@@ -168,6 +171,7 @@ class quickRDPFrame: public wxFrame
         void showDialog( wxDialog* dialog, bool captureHotkeys = false ); /** NEED TO USE THIS FUNCTION WHEN SHOWING DIALOGS DUE TO GLOBAL HOTKEY CAPTURE! **/
         bool wantGlobalHotkeys() const;
         void checkForVersionChangesAndNotifyUser( wxString oldVersion );
+        void updateConnectionCheckerStatus();
 
         DECLARE_EVENT_TABLE()
 };

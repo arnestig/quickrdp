@@ -31,6 +31,7 @@
 #include "VersionChecker.h"
 #include "ExampleDialog.h"
 #include <wx/msgdlg.h>
+#include <wx/imaglist.h>
 #include <memory>
 
 //(*InternalHeaders(quickRDPFrame)
@@ -76,6 +77,7 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     //*)
     EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE, quickRDPFrame::onVersionCheckExecuted)
     EVT_COMMAND(wxID_ANY, wxEVT_AUTOMATIC_VERSION_CHECK_DONE, quickRDPFrame::onAutomaticVersionCheckExecuted)
+    EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_STATUS_UPDATE, quickRDPFrame::onConnectionCheckerUpdate)
 END_EVENT_TABLE()
 
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
@@ -279,6 +281,17 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     VersionNotifyText->Hide();
 
     updatePopupmenuShortcuts();
+
+    /** init our image list **/
+    imageList = new wxImageList( 16,16, true );
+    #if defined(__UNIX__)
+        imageList->Add( wxICON( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionerror.xpm") ) );
+        imageList->Add( wxICON( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionok.xpm") ) );
+    #else
+        imageList->Add( wxICON( connectionerror ) );
+        imageList->Add( wxICON( connectionok ) );
+    #endif
+    ListCtrl1->SetImageList( imageList, wxIMAGE_LIST_SMALL );
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -286,6 +299,14 @@ quickRDPFrame::~quickRDPFrame()
     //(*Destroy(quickRDPFrame)
     //*)
     saveFrameSettings();
+    delete imageList;
+}
+
+void quickRDPFrame::init()
+{
+    /** run stuff we can't run in our constructor here.. **/
+
+    updateConnectionCheckerStatus();
 }
 
 void quickRDPFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
@@ -384,7 +405,7 @@ void quickRDPFrame::loadRDPFromDatabase()
             Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
             wxListItem item;
             item.SetId( index );
-            ListCtrl1->InsertItem( item );
+            ListCtrl1->InsertItem( item, curRDP->getConnectionStatus() );
             wxString username;
             if ( curRDP->getDomain().Len() > 0 && curRDP->getConnectionType() == ConnectionType::RDP ) {
                 username.Append( curRDP->getDomain() + wxT("\\") );
@@ -413,6 +434,9 @@ void quickRDPFrame::loadRDPFromDatabase()
             itemIndexCounter++;
         }
     }
+
+    /** also update the connection status of the visible items in listctrl **/
+    updateConnectionCheckerStatus();
 }
 
 void quickRDPFrame::clearListCtrl()
@@ -852,9 +876,13 @@ void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
     VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/", false );
     if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
+        delete versionCheck;
+        versionCheck = NULL;
         wxMessageBox( wxT("Error while creating HTTP thread!") );
     } else {
         if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
+            delete versionCheck;
+            versionCheck = NULL;
             wxMessageBox( wxT("Error while running HTTP thread!") );
         }
     }
@@ -988,9 +1016,13 @@ void quickRDPFrame::checkForNewAvailableVersion( )
 {
     VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
     if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
+        delete versionCheck;
+        versionCheck = NULL;
         wxMessageBox( wxT("Error while creating HTTP thread!") );
     } else {
         if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
+            delete versionCheck;
+            versionCheck = NULL;
             wxMessageBox( wxT("Error while running HTTP thread!") );
         }
     }
@@ -999,6 +1031,17 @@ void quickRDPFrame::checkForNewAvailableVersion( )
 void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
+}
+
+void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
+{
+    RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
+    long itemIndex = rdpDatabase->getListCtrlIndexFromFilename( event.GetString() );
+
+    if ( itemIndex != -1 ) {
+        rdpDatabase->getRDPFromListCtrl( itemIndex )->setConnectionStatus( event.GetInt() );
+        ListCtrl1->SetItemImage( itemIndex, event.GetInt() );
+    }
 }
 
 void quickRDPFrame::updatePopupmenuShortcuts()
@@ -1012,5 +1055,18 @@ void quickRDPFrame::updatePopupmenuShortcuts()
     wxMenuItem *dupConMenu = PopupMenu1.FindItem( ID_POPUPMENU_DUPLICATE );
     if ( dupConMenu != NULL ) {
         dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
+    }
+}
+
+void quickRDPFrame::updateConnectionCheckerStatus()
+{
+    RDPConnection *rdpConnection = NULL;
+    ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
+    /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
+    for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem(); ++id  ) {
+        rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
+        if ( rdpConnection != NULL && connectionChecker != NULL ) {
+            connectionChecker->addTargets( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() );
+        }
     }
 }

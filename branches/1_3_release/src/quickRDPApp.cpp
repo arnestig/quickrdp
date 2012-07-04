@@ -50,8 +50,15 @@ bool quickRDPApp::OnInit()
         #endif
     	Frame->Show();
     	SetTopWindow(Frame);
+
     	/** Check if new version is available... **/
     	Frame->checkForNewAvailableVersion();
+
+        /** Initialize the connection checker **/
+        Resources::Instance()->addConnectionChecker( Frame );
+
+    	/** run our init method for stuff that couldn't be done during the constructor of main frame **/
+    	Frame->init();
     }
     //*)
     return wxsOK;

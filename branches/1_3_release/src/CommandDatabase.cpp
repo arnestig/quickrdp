@@ -148,6 +148,7 @@ void CommandDatabase::loadDatabase()
     // delete our previous command database
     for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
         delete commands[ commandId ];
+        commands[ commandId ] = NULL;
         commands.erase( commands.begin() + commandId );
     }
 
@@ -208,6 +209,7 @@ void CommandDatabase::deleteCommand( wxString name )
         for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
             if ( commands[ commandId ]->getName() == name ) {
                 delete commands[ commandId ];
+                commands[ commandId ] = NULL;
                 commands.erase( commands.begin() + commandId );
             }
         }

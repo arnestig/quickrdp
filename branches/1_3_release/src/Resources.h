@@ -25,6 +25,7 @@
 #include "Settings.h"
 #include "RDPDatabase.h"
 #include "CommandDatabase.h"
+#include "connectionchecker.h"
 
 class Resources
 {
@@ -34,6 +35,8 @@ class Resources
         Settings* getSettings() const;
         RDPDatabase* getConnectionDatabase() const;
         CommandDatabase* getCommandDatabase() const;
+        ConnectionChecker* getConnectionChecker() const;
+        void addConnectionChecker( wxEvtHandler *parent );
 
     private:
         static Resources* instance;
@@ -43,6 +46,7 @@ class Resources
         Settings *settings;
         RDPDatabase *connectionDatabase;
         CommandDatabase *commandDatabase;
+        ConnectionChecker *connectionChecker;
 };
 
 #endif

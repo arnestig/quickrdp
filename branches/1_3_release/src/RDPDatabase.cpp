@@ -38,13 +38,15 @@ RDPConnection::RDPConnection( wxString filename )
         screenmode( wxT("1") ),
         soundmode( wxT("0") ),
         diskmapping( wxT("0") ),
-        port( wxT("-1") )
+        port( wxT("-1") ),
+        connectionStatus( -1 )
 {
     parseFile();
 }
 
 RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
-    :   filename( filename_ )
+    :   filename( filename_ ),
+        connectionStatus( -1 )
 {
     setConnectionType( copy->getConnectionType() );
     setClientHostname( copy->getClientHostname() );
@@ -172,6 +174,11 @@ wxString RDPConnection::getPortTrueValue() const
     return port;
 }
 
+int RDPConnection::getConnectionStatus() const
+{
+    return connectionStatus;
+}
+
 wxString RDPConnection::getResolutionString() const
 {
     if ( getScreenMode() == wxT("2") ) {
@@ -286,6 +293,11 @@ void RDPConnection::setPort( wxString port )
         } else {
             this->port = port;
         }
+}
+
+void RDPConnection::setConnectionStatus( int connectionStatus )
+{
+    this->connectionStatus = connectionStatus;
 }
 
 void RDPConnection::connect()
@@ -501,9 +513,11 @@ RDPConnection *RDPDatabase::duplicateRDPConnection( wxString filename, RDPConnec
 
 void RDPDatabase::deleteRDPConnectionByPointer( RDPConnection *rdpConnection )
 {
-    wxRemoveFile( Resources::Instance()->getSettings()->getDatabasePath() + rdpConnection->getFilename() );
     for ( size_t index = 0; index < database.size(); index++ ) {
         if ( database[ index ] == rdpConnection ) {
+            wxRemoveFile( Resources::Instance()->getSettings()->getDatabasePath() + rdpConnection->getFilename() );
+            delete rdpConnection;
+            rdpConnection = NULL;
             database.erase( database.begin() + index );
         }
     }
@@ -519,7 +533,21 @@ std::vector<RDPConnection*> RDPDatabase::getDatabase()
 
 RDPConnection* RDPDatabase::getRDPFromListCtrl( long index )
 {
-    return listCtrlRelation[ index ];
+    if ( index < listCtrlRelation.size() && index >= 0 ) {
+        return listCtrlRelation[ index ];
+    } else {
+        return NULL;
+    }
+}
+
+long RDPDatabase::getListCtrlIndexFromFilename( wxString filename )
+{
+    for ( std::vector< RDPConnection* >::const_iterator it = listCtrlRelation.begin(); it != listCtrlRelation.end(); ++it ) {
+        if ( (*it)->getFilename() == filename ) {
+            return it - listCtrlRelation.begin();
+        }
+    }
+    return -1;
 }
 
 void RDPDatabase::clearRDPListCtrl()

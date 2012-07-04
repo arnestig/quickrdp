@@ -26,7 +26,8 @@ Resources* Resources::instance = NULL;
 Resources::Resources()
     :   settings( NULL ),
         connectionDatabase( NULL ),
-        commandDatabase( NULL )
+        commandDatabase( NULL ),
+        connectionChecker( NULL )
 {
     settings = new Settings();
     connectionDatabase = new RDPDatabase();
@@ -54,5 +55,28 @@ RDPDatabase* Resources::getConnectionDatabase() const
 CommandDatabase* Resources::getCommandDatabase() const
 {
     return commandDatabase;
+}
+
+ConnectionChecker* Resources::getConnectionChecker() const
+{
+    return connectionChecker;
+}
+
+void Resources::addConnectionChecker( wxEvtHandler *parent )
+{
+    if ( connectionChecker == NULL ) {
+        connectionChecker = new ConnectionChecker( parent );
+        if ( connectionChecker->Create() != wxTHREAD_NO_ERROR ) {
+            delete connectionChecker;
+            connectionChecker = NULL;
+            wxMessageBox( wxT("Error creating ConnectionChecker thread!"), wxT("Error!") );
+        } else {
+            if ( connectionChecker->Run() != wxTHREAD_NO_ERROR ) {
+                delete connectionChecker;
+                connectionChecker = NULL;
+                wxMessageBox( wxT("Error while running ConnectionChecker thread!") );
+            }
+        }
+    }
 }
 
