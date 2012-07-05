@@ -25,6 +25,7 @@
 #include <iostream>
 #include "Resources.h"
 
+DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 
 ConnectionTarget::ConnectionTarget( wxString hostname, wxString port, wxString filename )
@@ -164,6 +165,10 @@ void *ConnectionChecker::Entry()
         if ( targets.empty() == true ) {
             getNewTargets();
         }
+
+        wxCommandEvent evt_get_more_data( wxEVT_CONNECTION_CHECK_SEND_DATA, wxID_ANY );
+        wxPostEvent( parent, evt_get_more_data );
+        Sleep( 20 );
     }
     return 0;
 }

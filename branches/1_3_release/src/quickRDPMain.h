@@ -90,6 +90,7 @@ class quickRDPFrame: public wxFrame
         void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
         void OnChangelogClick( wxCommandEvent& event );
         void onConnectionCheckerUpdate( wxCommandEvent& event );
+        void onConnectionCheckerWantData( wxCommandEvent& event );
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;

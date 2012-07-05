@@ -80,6 +80,7 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE, quickRDPFrame::onVersionCheckExecuted)
     EVT_COMMAND(wxID_ANY, wxEVT_AUTOMATIC_VERSION_CHECK_DONE, quickRDPFrame::onAutomaticVersionCheckExecuted)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_STATUS_UPDATE, quickRDPFrame::onConnectionCheckerUpdate)
+    EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_SEND_DATA, quickRDPFrame::onConnectionCheckerWantData)
 END_EVENT_TABLE()
 
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
@@ -1063,6 +1064,11 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
             }
         }
     }
+}
+
+void quickRDPFrame::onConnectionCheckerWantData( wxCommandEvent& event )
+{
+    updateConnectionCheckerStatus();
 }
 
 void quickRDPFrame::updatePopupmenuShortcuts()
