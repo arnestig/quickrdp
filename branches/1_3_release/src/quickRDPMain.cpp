@@ -32,6 +32,7 @@
 #include "ExampleDialog.h"
 #include <wx/msgdlg.h>
 #include <wx/imaglist.h>
+#include <wx/image.h>
 #include <memory>
 
 //(*InternalHeaders(quickRDPFrame)
@@ -285,11 +286,11 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     /** init our image list **/
     imageList = new wxImageList( 16,16, true );
     #if defined(__UNIX__)
-        imageList->Add( wxICON( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionerror.xpm") ) );
-        imageList->Add( wxICON( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionok.xpm") ) );
+        imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionerror.xpm") ) );
+        imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionok.xpm") ) );
     #else
-        imageList->Add( wxICON( connectionerror ) );
-        imageList->Add( wxICON( connectionok ) );
+        imageList->Add( wxIcon( connectionerror ) );
+        imageList->Add( wxIcon( connectionok ) );
     #endif
     ListCtrl1->SetImageList( imageList, wxIMAGE_LIST_SMALL );
 }

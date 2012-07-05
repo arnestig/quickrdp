@@ -22,6 +22,7 @@
 #include "settingsDialog.h"
 #include "Resources.h"
 #include "QuickrdpFunctions.h"
+#include <wx/msgdlg.h>
 
 //(*InternalHeaders(settingsDialog)
 #include <wx/settings.h>
@@ -81,7 +82,7 @@ BEGIN_EVENT_TABLE(settingsDialog,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
+settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(settingsDialog)
 	wxBoxSizer* BoxSizer4;

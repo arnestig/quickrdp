@@ -22,6 +22,7 @@
 #include "quickRDPApp.h"
 #include "Resources.h"
 #include "QuickrdpFunctions.h"
+#include <wx/icon.h>
 
 //(*AppHeaders
 #include "quickRDPMain.h"

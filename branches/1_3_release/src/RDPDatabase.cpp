@@ -23,6 +23,7 @@
 #include "QuickrdpFunctions.h"
 #include "Resources.h"
 #include <wx/filefn.h>
+#include <wx/msgdlg.h>
 #include <wx/filename.h>
 #include <cstdarg>
 #include <algorithm>
