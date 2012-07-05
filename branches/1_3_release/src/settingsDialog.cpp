@@ -60,7 +60,17 @@ const long settingsDialog::ID_STATICTEXT12 = wxNewId();
 const long settingsDialog::ID_CONPROP = wxNewId();
 const long settingsDialog::ID_STATICTEXT11 = wxNewId();
 const long settingsDialog::ID_COMMANDDIALOG = wxNewId();
+const long settingsDialog::ID_STATICTEXT13 = wxNewId();
+const long settingsDialog::ID_MANUALCC = wxNewId();
 const long settingsDialog::ID_PANEL3 = wxNewId();
+const long settingsDialog::ID_STATICTEXT8 = wxNewId();
+const long settingsDialog::ID_TEXTCTRL7 = wxNewId();
+const long settingsDialog::ID_SLIDER1 = wxNewId();
+const long settingsDialog::ID_CHECKBOX1 = wxNewId();
+const long settingsDialog::ID_STATICTEXT10 = wxNewId();
+const long settingsDialog::ID_TEXTCTRL8 = wxNewId();
+const long settingsDialog::ID_SLIDER2 = wxNewId();
+const long settingsDialog::ID_PANEL4 = wxNewId();
 const long settingsDialog::ID_NOTEBOOK1 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
 const long settingsDialog::ID_PANEL1 = wxNewId();
@@ -71,7 +81,7 @@ BEGIN_EVENT_TABLE(settingsDialog,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
+settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(settingsDialog)
 	wxBoxSizer* BoxSizer4;
@@ -84,9 +94,13 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
 	wxBoxSizer* BoxSizer8;
+	wxBoxSizer* BoxSizer21;
 	wxBoxSizer* BoxSizer13;
+	wxBoxSizer* BoxSizer23;
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer11;
+	wxBoxSizer* BoxSizer16;
+	wxBoxSizer* BoxSizer18;
 	wxBoxSizer* BoxSizer12;
 	wxBoxSizer* BoxSizer14;
 	wxStaticBoxSizer* StaticBoxSizer3;
@@ -94,6 +108,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxBoxSizer* BoxSizer22;
 	wxBoxSizer* BoxSizer3;
 
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
@@ -203,12 +218,45 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	TextShortcutCommandDialog = new wxTextCtrl(Panel3, ID_COMMANDDIALOG, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COMMANDDIALOG"));
 	BoxSizer19->Add(TextShortcutCommandDialog, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(BoxSizer19, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer23 = new wxBoxSizer(wxHORIZONTAL);
+	ShortcutManualCCLabel = new wxStaticText(Panel3, ID_STATICTEXT13, _("Manual connection check"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+	BoxSizer23->Add(ShortcutManualCCLabel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ShortcutManualCCText = new wxTextCtrl(Panel3, ID_MANUALCC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_MANUALCC"));
+	BoxSizer23->Add(ShortcutManualCCText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer14->Add(BoxSizer23, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel3->SetSizer(BoxSizer14);
 	BoxSizer14->Fit(Panel3);
 	BoxSizer14->SetSizeHints(Panel3);
+	Panel4 = new wxPanel(Notebook1, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
+	BoxSizer16 = new wxBoxSizer(wxVERTICAL);
+	BoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
+	CCTimeoutLabel = new wxStaticText(Panel4, ID_STATICTEXT8, _("Connect scan timeout"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+	BoxSizer18->Add(CCTimeoutLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CCTimeoutTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL7, _("0000 ms"), wxDefaultPosition, wxSize(60,21), wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+	BoxSizer18->Add(CCTimeoutTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CCTimeoutSlider = new wxSlider(Panel4, ID_SLIDER1, 0, 20, 2000, wxDefaultPosition, wxSize(69,24), 0, wxDefaultValidator, _T("ID_SLIDER1"));
+	BoxSizer18->Add(CCTimeoutSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer16->Add(BoxSizer18, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer22 = new wxBoxSizer(wxHORIZONTAL);
+	CCAutoUpdateCheckbox = new wxCheckBox(Panel4, ID_CHECKBOX1, _("Enable automatic connection checks"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+	CCAutoUpdateCheckbox->SetValue(true);
+	BoxSizer22->Add(CCAutoUpdateCheckbox, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer16->Add(BoxSizer22, 0, wxTOP|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer21 = new wxBoxSizer(wxHORIZONTAL);
+	CCUpdateIntervalLabel = new wxStaticText(Panel4, ID_STATICTEXT10, _("Check connections every"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+	BoxSizer21->Add(CCUpdateIntervalLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CCUpdateIntervalTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL8, _("180 s"), wxDefaultPosition, wxSize(50,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
+	BoxSizer21->Add(CCUpdateIntervalTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CCUpdateIntervalSlider = new wxSlider(Panel4, ID_SLIDER2, 0, 10, 360, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER2"));
+	BoxSizer21->Add(CCUpdateIntervalSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer16->Add(BoxSizer21, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Panel4->SetSizer(BoxSizer16);
+	BoxSizer16->Fit(Panel4);
+	BoxSizer16->SetSizeHints(Panel4);
 	Notebook1->AddPage(Panel2, _("Programs"), false);
 	Notebook1->AddPage(Panel3, _("Hotkeys"), false);
+	Notebook1->AddPage(Panel4, _("Connection checker"), false);
 	BoxSizer13->Add(Notebook1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -236,6 +284,9 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnVNCBrowseClick);
 	Connect(ID_BUTTON10,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON8,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnVNCArgumentResetButtonClick);
+	Connect(ID_SLIDER1,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCTimeoutSliderCmdSliderUpdated);
+	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&settingsDialog::OnCCAutoUpdateCheckboxClick);
+	Connect(ID_SLIDER2,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCUpdateIntervalSliderCmdSliderUpdated);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonSave);
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&settingsDialog::OnInit);
@@ -245,6 +296,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     TextShortcutDupCon->Connect(ID_DUPCON, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     TextShortcutConProp->Connect(ID_CONPROP, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     TextShortcutCommandDialog->Connect(ID_COMMANDDIALOG, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
+    ShortcutManualCCText->Connect(ID_MANUALCC, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
 
 	Settings* settings = Resources::Instance()->getSettings();
 
@@ -256,6 +308,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     TextShortcutDupCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
     TextShortcutConProp->AppendText( quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
     TextShortcutCommandDialog->AppendText( quickRDP::Keybinder::ModifierString( settings->getCommandDialogShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCommandDialogShortcut().first ) );
+    ShortcutManualCCText->AppendText( quickRDP::Keybinder::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getManualCCShortcut().first ) );
 
 	/** set the telnet and ssh file dialog default values depending on windows or linux **/
     #if defined(__WXMSW__)
@@ -283,6 +336,16 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     shortcutMap[ ID_DUPCON ] = settings->getDupConnectionShortcut();
     shortcutMap[ ID_CONPROP ] = settings->getPropConnectionShortcut();
     shortcutMap[ ID_COMMANDDIALOG ] = settings->getCommandDialogShortcut();
+    shortcutMap[ ID_MANUALCC ] = settings->getManualCCShortcut();
+
+    CCTimeoutSlider->SetValue( settings->getCCTimeout() );
+    CCUpdateIntervalSlider->SetValue( settings->getCCUpdateInterval() );
+    CCAutoUpdateCheckbox->SetValue( settings->getCCAutomaticCheck() );
+
+    wxScrollEvent evt;
+    OnCCTimeoutSliderCmdSliderUpdated( evt );
+    OnCCUpdateIntervalSliderCmdSliderUpdated( evt );
+    OnCCAutoUpdateCheckboxClick( evt );
 }
 
 settingsDialog::~settingsDialog()
@@ -310,6 +373,12 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
     settings->setDupConnectionShortcut( shortcutMap[ settingsDialog::ID_DUPCON ] );
     settings->setPropConnectionShortcut( shortcutMap[ settingsDialog::ID_CONPROP ] );
     settings->setCommandDialogShortcut( shortcutMap[ settingsDialog::ID_COMMANDDIALOG ] );
+    settings->setManualCCShortcut( shortcutMap[ settingsDialog::ID_MANUALCC ] );
+
+    /** our connection checker settings **/
+    settings->setCCTimeout( CCTimeoutSlider->GetValue() );
+    settings->setCCUpdateInterval( CCUpdateIntervalSlider->GetValue() );
+    settings->setCCAutomaticCheck( CCAutoUpdateCheckbox->GetValue() );
 
     settings->saveSettings();
     this->EndModal( 0 );
@@ -401,10 +470,35 @@ void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
         modCtrl = TextShortcutConProp;
     } else if ( event.GetId() == settingsDialog::ID_COMMANDDIALOG ) {
         modCtrl = TextShortcutCommandDialog;
+    } else if ( event.GetId() == settingsDialog::ID_MANUALCC ) {
+        modCtrl = ShortcutManualCCText;
     }
 
     if ( modCtrl != NULL ) {
         modCtrl->Clear();
         modCtrl->AppendText( quickRDP::Keybinder::ModifierString( event.GetModifiers() ) + quickRDP::Keybinder::KeycodeString( event.GetKeyCode() ) );
+    }
+}
+
+void settingsDialog::OnCCTimeoutSliderCmdSliderUpdated( wxScrollEvent& WXUNUSED(event) )
+{
+    CCTimeoutTextDisplay->SetValue( wxString() << CCTimeoutSlider->GetValue() << wxT(" ms") );
+}
+
+void settingsDialog::OnCCUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& WXUNUSED(event) )
+{
+    CCUpdateIntervalTextDisplay->SetValue( wxString() << CCUpdateIntervalSlider->GetValue() << wxT(" s") );
+}
+
+void settingsDialog::OnCCAutoUpdateCheckboxClick(wxCommandEvent& WXUNUSED(event) )
+{
+    if ( CCAutoUpdateCheckbox->GetValue() == true ) {
+        CCUpdateIntervalLabel->Enable( true );
+        CCUpdateIntervalSlider->Enable( true );
+        CCUpdateIntervalTextDisplay->Enable( true );
+    } else {
+        CCUpdateIntervalLabel->Enable( false );
+        CCUpdateIntervalSlider->Enable( false );
+        CCUpdateIntervalTextDisplay->Enable( false );
     }
 }

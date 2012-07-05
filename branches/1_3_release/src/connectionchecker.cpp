@@ -23,6 +23,7 @@
 
 #include <wx/msgdlg.h>
 #include <iostream>
+#include "Resources.h"
 
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 
@@ -70,7 +71,7 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent )
 {
     /** setting up our socket select timeout, parameterized in the future? **/
     t.tv_sec = 0;
-    t.tv_usec = 10000;
+    t.tv_usec = Resources::Instance()->getSettings()->getCCTimeout() * 1000;
 
     /** socket settings **/
     sock_addr.sin_family = PF_INET;
@@ -93,8 +94,6 @@ void ConnectionChecker::addTargets( wxString hostname, wxString port, wxString f
     mutex.Lock();
     targetsQueue[ filename ] = std::make_pair( hostname, port );
     mutex.Unlock();
-    std::cout << "targetsQueue.size() = " << targetsQueue.size() << std::endl;
-
 }
 
 void ConnectionChecker::getNewTargets()
@@ -104,7 +103,7 @@ void ConnectionChecker::getNewTargets()
     for ( std::map< wxString, std::pair< wxString, wxString > >::iterator it = targetsQueue.begin(); it != targetsQueue.end(); ++it ) {
         targets.push_back( new ConnectionTarget( (*it).second.first, (*it).second.second, (*it).first ) );
         counter++;
-        if ( counter < 5) {
+        if ( counter < 10) {
             targetsQueue.erase( targetsQueue.begin() );
         } else {
             break;
@@ -116,24 +115,14 @@ void ConnectionChecker::getNewTargets()
 void *ConnectionChecker::Entry()
 {
     while ( 1 ) {
-        Sleep( 200 );
 
         /** Connec to all our designated targets **/
         for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
             sock_addr.sin_port = htons(wxAtoi( (*it)->getPort() ) );
-            sock_addr.sin_addr.s_addr = inet_addr((*it)->getHostname().mb_str());
+            sock_addr.sin_addr.s_addr = inet_addr( (*it)->getHostname().mb_str() );
             (*it)->socket = socket( AF_INET, SOCK_STREAM, 0 );
-            // Put the socket in non-blocking mode:
-            if ( ioctlsocket((*it)->socket, FIONBIO, &socket_mode) < 0 ) {
-                std::cout << "Unable to set socket non-blocking!" << std::endl;
-                //exit(-1);
-            }
-
-            if ( (*it)->socket == INVALID_SOCKET ) {
-                std::cout << "No on socket()" << std::endl;
-                //exit(-1);
-            }
-            int rc = connect( (*it)->socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
+            ioctlsocket( (*it)->socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
+            connect( (*it)->socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
         }
 
         /** select() from all sockets and check if we're connected or not.. this will tell if the port is open or not. **/
@@ -171,9 +160,10 @@ void *ConnectionChecker::Entry()
         }
         mutex.Unlock();
 
-        /** get us 5 new targets **/
+        /** get us 10 new targets **/
         if ( targets.empty() == true ) {
             getNewTargets();
         }
     }
+    return 0;
 }

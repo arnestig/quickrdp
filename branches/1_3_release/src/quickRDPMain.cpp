@@ -972,6 +972,9 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
             } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
                 OnMenuCommands( ourEvent );
                 return true;
+            } else if ( keyCode == settings->getManualCCShortcut().first && keyModifier == settings->getManualCCShortcut().second ) {
+                manuallyDoConnectionCheck( connections );
+                return true;
             } else if ( keyCode == 127 ) {
                 OnDeleteButtonClick( ourEvent );
                 return true;
@@ -997,13 +1000,18 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
 {
     /** all logic here is strictly static for now.. we'll see how we handle this in the future (perhaps there won't be too many of these drastic changes).. **/
 
+    Settings *settings = Resources::Instance()->getSettings();
     /** Since 1.2.1 we implemented global hotkeys.. Users may want to remove these.
     but we should allow new users upgrading to 1.2.1 to have the default old ones.
     Setting them here if we're starting 1.2.1 for the first time now. **/
     if ( oldVersion < wxT("1.2.1") ) {
-        Settings *settings = Resources::Instance()->getSettings();
         settings->setDupConnectionShortcut( std::pair< int, int > ( 68, wxMOD_CONTROL ) ); /** Ctrl+D **/
         settings->setPropConnectionShortcut( std::pair< int, int > ( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/
+    }
+
+    /** with the new connection checker in 1.3 we want to enable automatic checks it by default.. by setting it here **/
+    if ( oldVersion < wxT("1.3") ) {
+        settings->setCCAutomaticCheck( 1 );
     }
 }
 
@@ -1039,8 +1047,13 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     long itemIndex = rdpDatabase->getListCtrlIndexFromFilename( event.GetString() );
 
     if ( itemIndex != -1 ) {
-        rdpDatabase->getRDPFromListCtrl( itemIndex )->setConnectionStatus( event.GetInt() );
-        ListCtrl1->SetItemImage( itemIndex, event.GetInt() );
+        RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
+        if ( rdpConnection != NULL ) {
+            if ( rdpConnection->getConnectionStatus() != event.GetInt() ) {
+                rdpConnection->setConnectionStatus( event.GetInt() );
+                ListCtrl1->SetItemImage( itemIndex, event.GetInt() );
+            }
+        }
     }
 }
 
@@ -1060,13 +1073,25 @@ void quickRDPFrame::updatePopupmenuShortcuts()
 
 void quickRDPFrame::updateConnectionCheckerStatus()
 {
-    RDPConnection *rdpConnection = NULL;
+    if ( Resources::Instance()->getSettings()->getCCAutomaticCheck() == 1 ) {
+        RDPConnection *rdpConnection = NULL;
+        ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
+        /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
+        for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem(); ++id  ) {
+            rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
+            if ( rdpConnection != NULL && connectionChecker != NULL ) {
+                connectionChecker->addTargets( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() );
+            }
+        }
+    }
+}
+
+void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > connections )
+{
     ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
-    /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
-    for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem(); ++id  ) {
-        rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
-        if ( rdpConnection != NULL && connectionChecker != NULL ) {
-            connectionChecker->addTargets( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() );
+    if ( connectionChecker != NULL ) {
+        for ( std::vector< RDPConnection* >::const_iterator it = connections.begin(); it != connections.end(); ++it ) {
+            connectionChecker->addTargets( (*it)->getHostname(), (*it)->getPort(), (*it)->getFilename() );
         }
     }
 }

@@ -173,6 +173,7 @@ class quickRDPFrame: public wxFrame
         bool wantGlobalHotkeys() const;
         void checkForVersionChangesAndNotifyUser( wxString oldVersion );
         void updateConnectionCheckerStatus();
+        void manuallyDoConnectionCheck( std::vector< RDPConnection* > connections );
 
         DECLARE_EVENT_TABLE()
 };

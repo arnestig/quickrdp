@@ -39,16 +39,8 @@
 
 #if defined(__unix__)
     typedef int SOCKET;
-    #define INVALID_SOCKET -1
-#elif defined(WIN32)
-    //#define close(i) closesocket(i)
-    //#define ioctl(i,l,ul) ioctlsocket(i,l,ul)
-#endif
-
-#ifdef WIN32
-	#define socket_errno() WSAGetLastError()
-#else
-	#define socket_errno() errno
+    #define closesocket(i) close(i)
+    #define ioctlsocket(i,l,ul) ioctl(i,l,ul)
 #endif
 
 BEGIN_DECLARE_EVENT_TYPES()
@@ -67,7 +59,7 @@ class ConnectionTarget
         int getStatus() const;
         void setStatus( int status );
 
-        unsigned int socket;
+        SOCKET socket;
 
     private:
         wxString hostname;

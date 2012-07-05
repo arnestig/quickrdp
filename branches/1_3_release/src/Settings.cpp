@@ -138,6 +138,12 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("propconmodifier:i:")) << getPropConnectionShortcut().second );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogkeycode:i:")) << getCommandDialogShortcut().first );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogmodifier:i:")) << getCommandDialogShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("manualcckeycode:i:")) << getManualCCShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("manualccmodifier:i:")) << getManualCCShortcut().second );
+
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCTimeout:i:")) << getCCTimeout() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCUpdateInterval:i:")) << getCCUpdateInterval() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCAutomaticCheck:i:")) << getCCAutomaticCheck() );
 
     ofile.close();
 }
@@ -209,6 +215,24 @@ void Settings::loadSettings()
         setDupConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("dupconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("dupconmodifier:i:"), allLines ) ) );
         setPropConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("propconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("propconmodifier:i:"), allLines ) ) );
         setCommandDialogShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogmodifier:i:"), allLines ) ) );
+        setManualCCShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("manualcckeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("manualccmodifier:i:"), allLines ) ) );
+
+        /** Connection checker settings **/
+        int l_CCTimeout = quickRDP::FileParser::getIntegerFromFile( wxT("CCTimeout:i:"), allLines );
+        if ( l_CCTimeout  < 20 || l_CCTimeout > 2000 ) {
+            setCCTimeout( 200 );
+        } else {
+            setCCTimeout( l_CCTimeout );
+        }
+
+        int l_CCUpdateInterval = quickRDP::FileParser::getIntegerFromFile( wxT("CCUpdateInterval:i:"), allLines );
+        if ( l_CCUpdateInterval  < 10 || l_CCTimeout > 360 ) {
+            setCCUpdateInterval( 60 );
+        } else {
+            setCCUpdateInterval( l_CCUpdateInterval );
+        }
+
+        setCCAutomaticCheck( quickRDP::FileParser::getIntegerFromFile( wxT("CCAutomaticCheck:i:"), allLines ) );
     }
     rfile.close();
 }
@@ -277,6 +301,41 @@ std::pair< int, int > Settings::getCommandDialogShortcut() const
     return commandDialogShortcut;
 }
 
+std::pair< int, int > Settings::getManualCCShortcut() const
+{
+    return manualccShortcut;
+}
+
+int Settings::getCCTimeout() const
+{
+    return CCTimeout;
+}
+
+void Settings::setCCTimeout( int CCTimeout )
+{
+    this->CCTimeout = CCTimeout;
+}
+
+int Settings::getCCUpdateInterval() const
+{
+    return CCUpdateInterval;
+}
+
+void Settings::setCCUpdateInterval( int CCUpdateInterval )
+{
+    this->CCUpdateInterval = CCUpdateInterval;
+}
+
+int Settings::getCCAutomaticCheck() const
+{
+    return CCAutomaticCheck;
+}
+
+void Settings::setCCAutomaticCheck( int CCAutomaticCheck )
+{
+    this->CCAutomaticCheck = CCAutomaticCheck;
+}
+
 void Settings::setTelnetExec( wxString telnetExec )
 {
     this->telnetExec = telnetExec;
@@ -330,6 +389,11 @@ void Settings::setPropConnectionShortcut( std::pair< int, int > value )
 void Settings::setCommandDialogShortcut( std::pair< int, int > value )
 {
     commandDialogShortcut = value;
+}
+
+void Settings::setManualCCShortcut( std::pair< int, int > value )
+{
+    manualccShortcut = value;
 }
 
 wxString Settings::getSettingsPath() const
