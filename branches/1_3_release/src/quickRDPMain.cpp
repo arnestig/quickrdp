@@ -943,42 +943,45 @@ void quickRDPFrame::OnChangelogClick( wxCommandEvent& WXUNUSED(event)  )
 
 bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
 {
-    if ( wantGlobalHotkeys() == true ) {
-        /** first we look for commands that have this specific keycombination and try to execute it **/
-        std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
-        Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
-        if ( curCommand != NULL ) {
-            for ( size_t con = 0; con < connections.size(); ++con ) {
-                if ( connections[ con ] != NULL ) {
-                    curCommand->execute( connections[ con ] );
+    /** Make sure we have focus in ListCtrl control and no where else **/
+    if ( wxWindow::FindFocus()->GetId() == ID_LISTCTRL1 ) {
+        if ( wantGlobalHotkeys() == true ) {
+            /** first we look for commands that have this specific keycombination and try to execute it **/
+            std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+            Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
+            if ( curCommand != NULL ) {
+                for ( size_t con = 0; con < connections.size(); ++con ) {
+                    if ( connections[ con ] != NULL ) {
+                        curCommand->execute( connections[ con ] );
+                    }
                 }
-            }
-            return true;
-        } else {
-            /** no comand found, then we look for global shortcuts... **/
-            wxCommandEvent ourEvent;
-            Settings *settings = Resources::Instance()->getSettings();
-            int keyCode = event.GetKeyCode();
-            int keyModifier = event.GetModifiers();
+                return true;
+            } else {
+                /** no comand found, then we look for global shortcuts... **/
+                wxCommandEvent ourEvent;
+                Settings *settings = Resources::Instance()->getSettings();
+                int keyCode = event.GetKeyCode();
+                int keyModifier = event.GetModifiers();
 
-            if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
-                OnNewButtonClick( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
-                OnDuplicateButtonClick( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getPropConnectionShortcut().first && keyModifier == settings->getPropConnectionShortcut().second ) {
-                OnEditButtonClick( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
-                OnMenuCommands( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getManualCCShortcut().first && keyModifier == settings->getManualCCShortcut().second ) {
-                manuallyDoConnectionCheck( connections );
-                return true;
-            } else if ( keyCode == 127 ) {
-                OnDeleteButtonClick( ourEvent );
-                return true;
+                if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
+                    OnNewButtonClick( ourEvent );
+                    return true;
+                } else if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
+                    OnDuplicateButtonClick( ourEvent );
+                    return true;
+                } else if ( keyCode == settings->getPropConnectionShortcut().first && keyModifier == settings->getPropConnectionShortcut().second ) {
+                    OnEditButtonClick( ourEvent );
+                    return true;
+                } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
+                    OnMenuCommands( ourEvent );
+                    return true;
+                } else if ( keyCode == settings->getManualCCShortcut().first && keyModifier == settings->getManualCCShortcut().second ) {
+                    manuallyDoConnectionCheck( connections );
+                    return true;
+                } else if ( keyCode == 127 ) {
+                    OnDeleteButtonClick( ourEvent );
+                    return true;
+                }
             }
         }
     }
