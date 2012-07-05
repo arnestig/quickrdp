@@ -289,8 +289,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
         imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionerror.xpm") ) );
         imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionok.xpm") ) );
     #else
-        imageList->Add( wxIcon( connectionerror ) );
-        imageList->Add( wxIcon( connectionok ) );
+        imageList->Add( wxICON( connectionerror ) );
+        imageList->Add( wxICON( connectionok ) );
     #endif
     ListCtrl1->SetImageList( imageList, wxIMAGE_LIST_SMALL );
 }
