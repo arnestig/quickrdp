@@ -80,7 +80,7 @@ class RDPConnection
         wxString getPort() const;
         wxString getPortTrueValue() const; // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
         int getConnectionStatus() const;
-
+        long getLastChecked() const;
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -105,6 +105,7 @@ class RDPConnection
         void setDiskMapping( wxString diskmapping );
         void setPort( wxString port );
         void setConnectionStatus( int connectionStatus );
+        void setLastChecked( long lastchecked );
 
         void saveFile();
 
@@ -115,6 +116,7 @@ class RDPConnection
         ConnectionType::ConnectionType connectionType;
         wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping, port;
         int connectionStatus;
+        long lastchecked; /** seconds since a connection check was done. (seconds since 1970-01-01 00:00:00) **/
 };
 
 class RDPDatabase

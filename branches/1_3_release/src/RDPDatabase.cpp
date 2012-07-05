@@ -40,14 +40,16 @@ RDPConnection::RDPConnection( wxString filename )
         soundmode( wxT("0") ),
         diskmapping( wxT("0") ),
         port( wxT("-1") ),
-        connectionStatus( -1 )
+        connectionStatus( -1 ),
+        lastchecked( 0 )
 {
     parseFile();
 }
 
 RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     :   filename( filename_ ),
-        connectionStatus( -1 )
+        connectionStatus( -1 ),
+        lastchecked( 0 )
 {
     setConnectionType( copy->getConnectionType() );
     setClientHostname( copy->getClientHostname() );
@@ -180,6 +182,11 @@ int RDPConnection::getConnectionStatus() const
     return connectionStatus;
 }
 
+long RDPConnection::getLastChecked() const
+{
+    return lastchecked;
+}
+
 wxString RDPConnection::getResolutionString() const
 {
     if ( getScreenMode() == wxT("2") ) {
@@ -299,6 +306,11 @@ void RDPConnection::setPort( wxString port )
 void RDPConnection::setConnectionStatus( int connectionStatus )
 {
     this->connectionStatus = connectionStatus;
+}
+
+void RDPConnection::setLastChecked( long lastchecked )
+{
+    this->lastchecked = lastchecked;
 }
 
 void RDPConnection::connect()

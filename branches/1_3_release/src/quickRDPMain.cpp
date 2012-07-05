@@ -34,6 +34,7 @@
 #include <wx/imaglist.h>
 #include <wx/image.h>
 #include <memory>
+#include <time.h>
 
 //(*InternalHeaders(quickRDPFrame)
 #include <wx/settings.h>
@@ -1053,6 +1054,9 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     if ( itemIndex != -1 ) {
         RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
         if ( rdpConnection != NULL ) {
+            time_t seconds;
+            seconds = time (NULL);
+            rdpConnection->setLastChecked( seconds );
             if ( rdpConnection->getConnectionStatus() != event.GetInt() ) {
                 rdpConnection->setConnectionStatus( event.GetInt() );
                 ListCtrl1->SetItemImage( itemIndex, event.GetInt() );
@@ -1077,14 +1081,20 @@ void quickRDPFrame::updatePopupmenuShortcuts()
 
 void quickRDPFrame::updateConnectionCheckerStatus()
 {
-    if ( Resources::Instance()->getSettings()->getCCAutomaticCheck() == 1 ) {
+    Settings *settings = Resources::Instance()->getSettings();
+    if ( settings->getCCAutomaticCheck() == 1 ) {
+        time_t seconds;
+        seconds = time (NULL);
         RDPConnection *rdpConnection = NULL;
         ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
         /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
         for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem(); ++id  ) {
             rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
             if ( rdpConnection != NULL && connectionChecker != NULL ) {
-                connectionChecker->addTargets( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() );
+                /** make sure we update only targets who needs to be updated **/
+                if ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) {
+                    connectionChecker->addTargets( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() );
+                }
             }
         }
     }

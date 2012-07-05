@@ -58,6 +58,8 @@ class ConnectionTarget
         wxString getFilename() const;
         int getStatus() const;
         void setStatus( int status );
+        long getLastChecked() const;
+        void setLastChecked( long lastchecked );
 
         SOCKET socket;
 
@@ -66,6 +68,7 @@ class ConnectionTarget
         wxString port;
         wxString filename;
         int status;
+        long lastchecked;
 };
 
 class ConnectionChecker : public wxThread
