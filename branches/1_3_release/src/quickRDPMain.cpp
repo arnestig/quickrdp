@@ -309,7 +309,7 @@ void quickRDPFrame::init()
 {
     /** run stuff we can't run in our constructor here.. **/
 
-    updateConnectionCheckerStatus();
+    /** let's try without this one here... updateConnectionCheckerStatus(); **/
 }
 
 void quickRDPFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
@@ -439,7 +439,7 @@ void quickRDPFrame::loadRDPFromDatabase()
     }
 
     /** also update the connection status of the visible items in listctrl **/
-    updateConnectionCheckerStatus();
+    /** also skipping it here.. updateConnectionCheckerStatus(); **/
 }
 
 void quickRDPFrame::clearListCtrl()
