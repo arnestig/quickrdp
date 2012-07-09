@@ -128,7 +128,6 @@ void *ConnectionChecker::Entry()
 
         /** select() from all sockets and check if we're connected or not.. this will tell if the port is open or not. **/
         for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
-            std::cout << (*it)->getHostname().mb_str() << std::endl;
             fd_set wfds;
             FD_ZERO(&wfds);
             FD_SET((*it)->socket, &wfds);
