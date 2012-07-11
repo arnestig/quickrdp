@@ -40,7 +40,7 @@ RDPConnection::RDPConnection( wxString filename )
         soundmode( wxT("0") ),
         diskmapping( wxT("0") ),
         port( wxT("-1") ),
-        connectionStatus( -1 ),
+        connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
         lastchecked( 0 )
 {
     parseFile();
@@ -48,7 +48,7 @@ RDPConnection::RDPConnection( wxString filename )
 
 RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     :   filename( filename_ ),
-        connectionStatus( -1 ),
+        connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
         lastchecked( 0 )
 {
     setConnectionType( copy->getConnectionType() );
