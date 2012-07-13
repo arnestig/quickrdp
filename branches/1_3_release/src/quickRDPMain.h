@@ -29,6 +29,7 @@
 
 //(*Headers(quickRDPFrame)
 #include <wx/listctrl.h>
+#include <wx/notebook.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/menu.h>
@@ -81,6 +82,7 @@ class quickRDPFrame: public wxFrame
         void OnReportBugClick(wxCommandEvent& event);
         void OnMenuSearchForUpdates(wxCommandEvent& event);
         void OnTextCtrlInput(wxCommandEvent& event);
+        void OnNotebook1PageChanged(wxNotebookEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnNewVersionTextClick(wxCommandEvent& event);
@@ -100,6 +102,8 @@ class quickRDPFrame: public wxFrame
         static const long ID_STATICTEXT1;
         static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
+        static const long ID_PANEL2;
+        static const long ID_NOTEBOOK1;
         static const long ID_PANEL1;
         static const long idMenuCommands;
         static const long idMenuPreferences;
@@ -127,6 +131,7 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem19;
         wxMenuItem* MenuItem7;
         wxListCtrl* ListCtrl1;
+        wxNotebook* Notebook1;
         QuickRDPBitmapButton* BitmapButton4;
         wxMenu PopupMenu1;
         wxMenu* Menu3;
@@ -149,6 +154,7 @@ class quickRDPFrame: public wxFrame
         QuickRDPBitmapButton* BitmapButton3;
         QuickRDPBitmapButton* BitmapButton1;
         wxTextCtrl* TextCtrl1;
+        wxPanel* Panel2;
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
         QuickRDPBitmapButton* BitmapButton2;
@@ -156,6 +162,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem18;
         //*)
 
+        wxPanel *connectionListPanel;
         wxMenu *commandMenu;
         std::vector< wxMenuItem* > favoriteCommandMenuItems;
         wxImageList *imageList;

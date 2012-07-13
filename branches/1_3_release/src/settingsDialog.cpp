@@ -63,6 +63,10 @@ const long settingsDialog::ID_STATICTEXT11 = wxNewId();
 const long settingsDialog::ID_COMMANDDIALOG = wxNewId();
 const long settingsDialog::ID_STATICTEXT13 = wxNewId();
 const long settingsDialog::ID_MANUALCC = wxNewId();
+const long settingsDialog::ID_STATICTEXT15 = wxNewId();
+const long settingsDialog::ID_NEWTAB = wxNewId();
+const long settingsDialog::ID_STATICTEXT14 = wxNewId();
+const long settingsDialog::ID_CLOSETAB = wxNewId();
 const long settingsDialog::ID_PANEL3 = wxNewId();
 const long settingsDialog::ID_STATICTEXT8 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL7 = wxNewId();
@@ -106,11 +110,13 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer14;
 	wxStaticBoxSizer* StaticBoxSizer3;
 	wxBoxSizer* BoxSizer17;
+	wxBoxSizer* BoxSizer24;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
 	wxBoxSizer* BoxSizer22;
 	wxBoxSizer* BoxSizer3;
+	wxBoxSizer* BoxSizer25;
 
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(373,153));
@@ -225,6 +231,18 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	ShortcutManualCCText = new wxTextCtrl(Panel3, ID_MANUALCC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_MANUALCC"));
 	BoxSizer23->Add(ShortcutManualCCText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(BoxSizer23, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer24 = new wxBoxSizer(wxHORIZONTAL);
+	ShortcutNewTabLabel = new wxStaticText(Panel3, ID_STATICTEXT15, _("Open new tab"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+	BoxSizer24->Add(ShortcutNewTabLabel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ShortcutNewTabText = new wxTextCtrl(Panel3, ID_NEWTAB, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_NEWTAB"));
+	BoxSizer24->Add(ShortcutNewTabText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer14->Add(BoxSizer24, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer25 = new wxBoxSizer(wxHORIZONTAL);
+	ShortcutCloseTabLabel = new wxStaticText(Panel3, ID_STATICTEXT14, _("Close current tab"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+	BoxSizer25->Add(ShortcutCloseTabLabel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	ShortcutCloseTabText = new wxTextCtrl(Panel3, ID_CLOSETAB, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CLOSETAB"));
+	BoxSizer25->Add(ShortcutCloseTabText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer14->Add(BoxSizer25, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel3->SetSizer(BoxSizer14);
 	BoxSizer14->Fit(Panel3);
@@ -298,6 +316,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     TextShortcutConProp->Connect(ID_CONPROP, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     TextShortcutCommandDialog->Connect(ID_COMMANDDIALOG, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     ShortcutManualCCText->Connect(ID_MANUALCC, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
+    ShortcutNewTabText->Connect(ID_NEWTAB, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
+    ShortcutCloseTabText->Connect(ID_CLOSETAB, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
 
 	Settings* settings = Resources::Instance()->getSettings();
 
@@ -310,6 +330,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     TextShortcutConProp->AppendText( quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
     TextShortcutCommandDialog->AppendText( quickRDP::Keybinder::ModifierString( settings->getCommandDialogShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCommandDialogShortcut().first ) );
     ShortcutManualCCText->AppendText( quickRDP::Keybinder::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getManualCCShortcut().first ) );
+    ShortcutNewTabText->AppendText( quickRDP::Keybinder::ModifierString( settings->getNewTabShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getNewTabShortcut().first ) );
+    ShortcutCloseTabText->AppendText( quickRDP::Keybinder::ModifierString( settings->getCloseTabShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCloseTabShortcut().first ) );
 
 	/** set the telnet and ssh file dialog default values depending on windows or linux **/
     #if defined(__WXMSW__)
@@ -338,6 +360,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     shortcutMap[ ID_CONPROP ] = settings->getPropConnectionShortcut();
     shortcutMap[ ID_COMMANDDIALOG ] = settings->getCommandDialogShortcut();
     shortcutMap[ ID_MANUALCC ] = settings->getManualCCShortcut();
+    shortcutMap[ ID_NEWTAB ] = settings->getNewTabShortcut();
+    shortcutMap[ ID_CLOSETAB ] = settings->getCloseTabShortcut();
 
     CCTimeoutSlider->SetValue( settings->getCCTimeout() );
     CCUpdateIntervalSlider->SetValue( settings->getCCUpdateInterval() );
@@ -473,6 +497,10 @@ void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
         modCtrl = TextShortcutCommandDialog;
     } else if ( event.GetId() == settingsDialog::ID_MANUALCC ) {
         modCtrl = ShortcutManualCCText;
+    } else if ( event.GetId() == settingsDialog::ID_NEWTAB ) {
+        modCtrl = ShortcutNewTabText;
+    } else if ( event.GetId() == settingsDialog::ID_CLOSETAB ) {
+        modCtrl = ShortcutCloseTabText;
     }
 
     if ( modCtrl != NULL ) {

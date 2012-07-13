@@ -51,6 +51,8 @@ const long quickRDPFrame::ID_BITMAPBUTTON3 = wxNewId();
 const long quickRDPFrame::ID_STATICTEXT1 = wxNewId();
 const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
+const long quickRDPFrame::ID_PANEL2 = wxNewId();
+const long quickRDPFrame::ID_NOTEBOOK1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMenuCommands = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
@@ -90,6 +92,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer6;
     wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer8;
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
@@ -100,7 +103,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
 
-    Create(parent, id, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("id"));
+    Create(parent, wxID_ANY, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
     Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxSize(182,217), wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -144,13 +147,21 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer6->Add(BoxSizer4, 0, wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
     BoxSizer3->Add(BoxSizer6, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-    ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxRAISED_BORDER, wxDefaultValidator, _T("ID_LISTCTRL1"));
+    Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxDefaultSize, wxNO_BORDER, _T("ID_NOTEBOOK1"));
+    Panel2 = new wxPanel(Notebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL|wxWANTS_CHARS, _T("ID_PANEL2"));
+    BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
+    ListCtrl1 = new wxListCtrl(Panel2, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT, wxDefaultValidator, _T("ID_LISTCTRL1"));
     ListCtrl1->InsertColumn( 0, wxT("Host") );
     ListCtrl1->InsertColumn( 1, wxT("Username") );
     ListCtrl1->InsertColumn( 2, wxT("Use console") );
     ListCtrl1->InsertColumn( 3, wxT("Resolution") );
     ListCtrl1->InsertColumn( 4, wxT("Comment") );
-    BoxSizer2->Add(ListCtrl1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(ListCtrl1, 1, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+    Panel2->SetSizer(BoxSizer8);
+    BoxSizer8->Fit(Panel2);
+    BoxSizer8->SetSizeHints(Panel2);
+    Notebook1->AddPage(Panel2, wxEmptyString, false);
+    BoxSizer2->Add(Notebook1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     Panel1->SetSizer(BoxSizer2);
     BoxSizer2->SetSizeHints(Panel1);
     BoxSizer1->Add(Panel1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
@@ -224,6 +235,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemActivated);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemRClick);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ColumnClick);
+    Connect(ID_NOTEBOOK1,wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED,(wxObjectEventFunction)&quickRDPFrame::OnNotebook1PageChanged);
     Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
     Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
@@ -406,7 +418,7 @@ void quickRDPFrame::loadRDPFromDatabase()
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
         // if we have a filter in place, we search the RDPConnection and checks if any value matches our pattern. if it doesn't, we hop to the next item in the database.
-        if ( curRDP->doesRDPHasString( TextCtrl1->GetValue() ) == true || TextCtrl1->GetValue() == wxT("Search ...") ) {
+        if ( curRDP->doesRDPHasString( Notebook1->GetPageText( Notebook1->GetSelection() ) ) == true ) {
             Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
             wxListItem item;
             item.SetId( index );
@@ -947,9 +959,32 @@ void quickRDPFrame::OnChangelogClick( wxCommandEvent& WXUNUSED(event)  )
 
 bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
 {
-    /** Make sure we have focus in ListCtrl control and no where else **/
-    if ( wxWindow::FindFocus()->GetId() == ID_LISTCTRL1 ) {
-        if ( wantGlobalHotkeys() == true ) {
+    /** TODO: We need to remake this shortcut handling.
+        Best way I see it is that we have a shortcut handler in our resource singleton.
+        Iterate through that first.
+        After it is done and we're still in this function then we can go ahead and loop through
+        all the command's shortcuts as well.
+    **/
+
+    if ( wantGlobalHotkeys() == true ) {
+        /** check if we matches any of our "non-connection" shortcuts **/
+        if ( event.GetKeyCode() == 84 &&  event.GetModifiers() == wxMOD_CONTROL ) {
+            Notebook1->AddPage(Panel2, wxT(""), true );
+            return true;
+        } else if ( event.GetKeyCode() == 87 && event.GetModifiers() == wxMOD_CONTROL ) {
+            if ( Notebook1->GetPageCount() > 1 ) {
+                Notebook1->RemovePage( Notebook1->GetSelection() );
+            }
+            return true;
+        } else if ( event.GetKeyCode() == WXK_TAB && event.GetModifiers() == wxMOD_NONE ) {
+            if ( wxWindow::FindFocus()->GetId() == ID_TEXTCTRL1 ) {
+                ListCtrl1->SetFocus();
+            } else {
+                TextCtrl1->SetFocus();
+            }
+            return true;
+        /** Okay, now we only check our connection only shortcuts.. (ListCtrl is in focus) **/
+        } else if ( wxWindow::FindFocus()->GetId() == ID_LISTCTRL1 ) {
             /** first we look for commands that have this specific keycombination and try to execute it **/
             std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
             Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
@@ -1013,18 +1048,22 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
     but we should allow new users upgrading to 1.2.1 to have the default old ones.
     Setting them here if we're starting 1.2.1 for the first time now. **/
     if ( oldVersion < wxT("1.2.1") ) {
-        settings->setDupConnectionShortcut( std::pair< int, int > ( 68, wxMOD_CONTROL ) ); /** Ctrl+D **/
-        settings->setPropConnectionShortcut( std::pair< int, int > ( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/
+        settings->setDupConnectionShortcut( std::make_pair( 68, wxMOD_CONTROL ) ); /** Ctrl+D **/
+        settings->setPropConnectionShortcut( std::make_pair( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/
     }
 
     /** with the new connection checker in 1.3 we want to enable automatic checks it by default.. by setting it here **/
     if ( oldVersion < wxT("1.3") ) {
         settings->setCCAutomaticCheck( 1 );
+        settings->setNewTabShortcut( std::make_pair( 84, wxMOD_CONTROL ) );
+        settings->setCloseTabShortcut( std::make_pair( 87, wxMOD_CONTROL ) );
+        wxMessageBox( wxT("Starting in QuickRDP 1.3 you can now open new connection tabs with Ctrl+T and close the current one with Ctrl+W. Go into options if you like to change these keybindings."), wxT("New features in 1.3"), wxICON_INFORMATION );
     }
 }
 
 void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
 {
+    Notebook1->SetPageText( Notebook1->GetSelection(), TextCtrl1->GetValue() );
     loadRDPFromDatabase();
 }
 
@@ -1117,3 +1156,13 @@ void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > con
         }
     }
 }
+
+void quickRDPFrame::OnNotebook1PageChanged(wxNotebookEvent& event)
+{
+    loadRDPFromDatabase();
+    TextCtrl1->ChangeValue( Notebook1->GetPageText( Notebook1->GetSelection() ) );
+    TextCtrl1->SetInsertionPointEnd();
+    TextCtrl1->SetFocus();
+}
+
+

@@ -52,6 +52,7 @@ class settingsDialog: public wxDialog
 		wxButton* OKButton;
 		wxNotebook* Notebook1;
 		wxButton* VNCArgumentResetButton;
+		wxStaticText* ShortcutNewTabLabel;
 		wxFileDialog* VNCExecDialog;
 		wxStaticText* StaticText2;
 		wxPanel* Panel4;
@@ -68,6 +69,7 @@ class settingsDialog: public wxDialog
 		wxButton* SSHExecutableBrowseButton;
 		wxStaticText* CCUpdateIntervalLabel;
 		wxPanel* Panel1;
+		wxTextCtrl* ShortcutNewTabText;
 		wxStaticText* StaticText1;
 		wxTextCtrl* VNCArgumentText;
 		wxStaticText* StaticText3;
@@ -90,9 +92,11 @@ class settingsDialog: public wxDialog
 		wxPanel* Panel2;
 		wxButton* SSHArgumentResetButton;
 		wxStaticText* StaticText4;
+		wxStaticText* ShortcutCloseTabLabel;
 		wxButton* CancelButton;
 		wxTextCtrl* SSHExecutableText;
 		wxTextCtrl* TextShortcutConProp;
+		wxTextCtrl* ShortcutCloseTabText;
 		//*)
 
 	protected:
@@ -130,6 +134,10 @@ class settingsDialog: public wxDialog
 		static const long ID_COMMANDDIALOG;
 		static const long ID_STATICTEXT13;
 		static const long ID_MANUALCC;
+		static const long ID_STATICTEXT15;
+		static const long ID_NEWTAB;
+		static const long ID_STATICTEXT14;
+		static const long ID_CLOSETAB;
 		static const long ID_PANEL3;
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL7;

@@ -44,12 +44,16 @@ class Settings
         std::pair< int, int > getPropConnectionShortcut() const;
         std::pair< int, int > getCommandDialogShortcut() const;
         std::pair< int, int > getManualCCShortcut() const;
+        std::pair< int, int > getNewTabShortcut() const;
+        std::pair< int, int > getCloseTabShortcut() const;
 
         void setNewConnectionShortcut( std::pair< int, int > value );
         void setDupConnectionShortcut( std::pair< int, int > value );
         void setPropConnectionShortcut( std::pair< int, int > value );
         void setCommandDialogShortcut( std::pair< int, int > value );
         void setManualCCShortcut( std::pair< int, int > value );
+        void setNewTabShortcut( std::pair< int, int > value );
+        void setCloseTabShortcut( std::pair< int, int > value );
 
         void setTelnetExec( wxString telnetExec );
         void setTelnetArgument( wxString telnetArgument );
@@ -111,6 +115,8 @@ class Settings
         std::pair< int, int > propConnectionShortcut;
         std::pair< int, int > commandDialogShortcut;
         std::pair< int, int > manualccShortcut;
+        std::pair< int, int > newTabShortcut;
+        std::pair< int, int > closeTabShortcut;
 
         int mainFrameWidth;
         int mainFrameHeight;

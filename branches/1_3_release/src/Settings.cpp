@@ -140,6 +140,10 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogmodifier:i:")) << getCommandDialogShortcut().second );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("manualcckeycode:i:")) << getManualCCShortcut().first );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("manualccmodifier:i:")) << getManualCCShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("newtabkeycode:i:")) << getNewTabShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("newtabmodifier:i:")) << getNewTabShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("closetabkeycode:i:")) << getCloseTabShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("closetabmodifier:i:")) << getCloseTabShortcut().second );
 
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCTimeout:i:")) << getCCTimeout() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCUpdateInterval:i:")) << getCCUpdateInterval() );
@@ -216,6 +220,8 @@ void Settings::loadSettings()
         setPropConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("propconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("propconmodifier:i:"), allLines ) ) );
         setCommandDialogShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogmodifier:i:"), allLines ) ) );
         setManualCCShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("manualcckeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("manualccmodifier:i:"), allLines ) ) );
+        setNewTabShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("newtabkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("newtabmodifier:i:"), allLines ) ) );
+        setCloseTabShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("closetabkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("closetabmodifier:i:"), allLines ) ) );
 
         /** Connection checker settings **/
         int l_CCTimeout = quickRDP::FileParser::getIntegerFromFile( wxT("CCTimeout:i:"), allLines );
@@ -306,6 +312,16 @@ std::pair< int, int > Settings::getManualCCShortcut() const
     return manualccShortcut;
 }
 
+std::pair< int, int > Settings::getNewTabShortcut() const
+{
+    return newTabShortcut;
+}
+
+std::pair< int, int > Settings::getCloseTabShortcut() const
+{
+    return closeTabShortcut;
+}
+
 int Settings::getCCTimeout() const
 {
     return CCTimeout;
@@ -394,6 +410,16 @@ void Settings::setCommandDialogShortcut( std::pair< int, int > value )
 void Settings::setManualCCShortcut( std::pair< int, int > value )
 {
     manualccShortcut = value;
+}
+
+void Settings::setNewTabShortcut( std::pair< int, int > value )
+{
+    newTabShortcut = value;
+}
+
+void Settings::setCloseTabShortcut( std::pair< int, int > value )
+{
+    closeTabShortcut = value;
 }
 
 wxString Settings::getSettingsPath() const
