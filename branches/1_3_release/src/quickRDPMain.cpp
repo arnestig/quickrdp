@@ -85,7 +85,7 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_SEND_DATA, quickRDPFrame::onConnectionCheckerWantData)
 END_EVENT_TABLE()
 
-quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
+quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
 {
     //(*Initialize(quickRDPFrame)
     wxBoxSizer* BoxSizer4;
@@ -285,14 +285,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     }
     globalhotkeys = true;
 
-    /** we also run a check of our current version and the saved version in the settings file..
-        if these two differ then we check if we should notify our user of any dramatic changes.. **/
-    wxString currentVersion = Version::getNumericVersion();
-    wxString oldVersion = Resources::Instance()->getSettings()->getVersion();
 
-    if ( ( currentVersion.empty() == false && oldVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
-        checkForVersionChangesAndNotifyUser( oldVersion );
-    }
     VersionNotifyText->Hide();
 
     updatePopupmenuShortcuts();
@@ -323,7 +316,15 @@ void quickRDPFrame::init()
 {
     /** run stuff we can't run in our constructor here.. **/
 
-    /** let's try without this one here... updateConnectionCheckerStatus(); **/
+
+    /** run a check of our current version and the saved version in the settings file..
+        if these two differ then we check if we should notify our user of any dramatic changes.. **/
+    wxString currentVersion = Version::getNumericVersion();
+    wxString oldVersion = Resources::Instance()->getSettings()->getVersion();
+
+    if ( ( currentVersion.empty() == false && oldVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
+        checkForVersionChangesAndNotifyUser( oldVersion );
+    }
 }
 
 void quickRDPFrame::OnQuit(wxCommandEvent& WXUNUSED(event) )
@@ -789,7 +790,7 @@ void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
 void quickRDPFrame::OnPreferences(wxCommandEvent& WXUNUSED(event) )
 {
     settingsDialog *settings = new settingsDialog( this, 0 );
-    showDialog( settings, true );
+    showDialog( settings );
     delete settings;
     updatePopupmenuShortcuts();
 }
@@ -880,7 +881,7 @@ void quickRDPFrame::OnPopupMenuDelete(wxCommandEvent& event)
 void quickRDPFrame::OnMenuCommands(wxCommandEvent& WXUNUSED(event) )
 {
     CommandDialog *commandDlg = new CommandDialog( this, 0 );
-    showDialog( commandDlg, true ); /** Enable hotkey capture in this dialog due to keybinding requirements **/
+    showDialog( commandDlg );
     delete commandDlg;
 }
 
@@ -1032,9 +1033,9 @@ bool quickRDPFrame::wantGlobalHotkeys() const
     return globalhotkeys;
 }
 
-void quickRDPFrame::showDialog( wxDialog* dialog, bool captureHotkeys )
+void quickRDPFrame::showDialog( wxDialog* dialog )
 {
-    globalhotkeys = captureHotkeys;
+    globalhotkeys = false;
     dialog->ShowModal();
     globalhotkeys = true;
 }
@@ -1059,6 +1060,10 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
         settings->setCloseTabShortcut( std::make_pair( 87, wxMOD_CONTROL ) );
         wxMessageBox( wxT("Starting in QuickRDP 1.3 you can now open new connection tabs with Ctrl+T and close the current one with Ctrl+W. Go into options if you like to change these keybindings."), wxT("New features in 1.3"), wxICON_INFORMATION );
     }
+
+    /** save our settings just in case the application fails to do so at a later stage..
+    we don't want the user to get these messages twice. **/
+    settings->saveSettings();
 }
 
 void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
@@ -1090,6 +1095,11 @@ void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
 {
+    /** Handles the events that comes from the connection checker thread.
+    These events contains information about what status different connections has.
+    Here we will just update our wxListCtrl and also the RDPConnection's connection status.
+    **/
+
     RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
     long itemIndex = rdpDatabase->getListCtrlIndexFromFilename( event.GetString() );
 
@@ -1107,7 +1117,7 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     }
 }
 
-void quickRDPFrame::onConnectionCheckerWantData( wxCommandEvent& event )
+void quickRDPFrame::onConnectionCheckerWantData( wxCommandEvent& WXUNUSED(event) )
 {
     updateConnectionCheckerStatus();
 }
@@ -1157,12 +1167,9 @@ void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > con
     }
 }
 
-void quickRDPFrame::OnNotebook1PageChanged(wxNotebookEvent& event)
+void quickRDPFrame::OnNotebook1PageChanged(wxNotebookEvent& WXUNUSED(event) )
 {
     loadRDPFromDatabase();
     TextCtrl1->ChangeValue( Notebook1->GetPageText( Notebook1->GetSelection() ) );
-    TextCtrl1->SetInsertionPointEnd();
-    TextCtrl1->SetFocus();
+    ListCtrl1->SetFocus();
 }
-
-
