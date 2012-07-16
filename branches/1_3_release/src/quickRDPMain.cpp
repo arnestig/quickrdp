@@ -1145,7 +1145,7 @@ void quickRDPFrame::updateConnectionCheckerStatus()
         RDPConnection *rdpConnection = NULL;
         ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
         /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
-        for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem(); ++id  ) {
+        for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem()+1; ++id  ) {
             rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
             if ( rdpConnection != NULL && connectionChecker != NULL ) {
                 /** make sure we update only targets who needs to be updated **/
