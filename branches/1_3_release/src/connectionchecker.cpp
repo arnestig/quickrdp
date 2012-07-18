@@ -126,6 +126,7 @@ void ConnectionChecker::getNewTargets()
 
 void *ConnectionChecker::Entry()
 {
+    hostent *host;
     while ( TestDestroy() == false ) {
         mutex.Lock();
         bool queueEmpty = targets.empty();
@@ -139,7 +140,16 @@ void *ConnectionChecker::Entry()
             /** Connec to all our designated targets **/
             for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
                 sock_addr.sin_port = htons(wxAtoi( (*it)->getPort() ) );
-                sock_addr.sin_addr.s_addr = inet_addr( (*it)->getHostname().mb_str() );
+                if ( inet_addr( (*it)->getHostname().mb_str() ) == INADDR_NONE ) {
+                    host = gethostbyname( (*it)->getHostname().mb_str() );
+                    if ( host != NULL ) {
+                        sock_addr.sin_addr.s_addr = *((unsigned long*) host->h_addr_list[0] );
+                    } else {
+                        sock_addr.sin_addr.s_addr = 0;
+                    }
+                } else {
+                    sock_addr.sin_addr.s_addr = inet_addr( (*it)->getHostname().mb_str() );
+                }
                 (*it)->socket = socket( AF_INET, SOCK_STREAM, 0 );
                 ioctlsocket( (*it)->socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
                 connect( (*it)->socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
