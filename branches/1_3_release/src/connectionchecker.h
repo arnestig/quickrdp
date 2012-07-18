@@ -29,6 +29,7 @@
 #include <map>
 
 #if defined(__unix__)
+	#include <netdb.h>
 	#include <sys/socket.h>
 	#include <sys/ioctl.h>
 	#include <arpa/inet.h>

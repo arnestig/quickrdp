@@ -140,12 +140,11 @@ void *ConnectionChecker::Entry()
             /** Connec to all our designated targets **/
             for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
                 sock_addr.sin_port = htons(wxAtoi( (*it)->getPort() ) );
+				sock_addr.sin_addr.s_addr = 0;
                 if ( inet_addr( (*it)->getHostname().mb_str() ) == INADDR_NONE ) {
                     host = gethostbyname( (*it)->getHostname().mb_str() );
                     if ( host != NULL ) {
                         sock_addr.sin_addr.s_addr = *((unsigned long*) host->h_addr_list[0] );
-                    } else {
-                        sock_addr.sin_addr.s_addr = 0;
                     }
                 } else {
                     sock_addr.sin_addr.s_addr = inet_addr( (*it)->getHostname().mb_str() );
