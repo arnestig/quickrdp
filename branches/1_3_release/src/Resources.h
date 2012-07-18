@@ -31,6 +31,7 @@ class Resources
 {
     public:
         static Resources* Instance();
+        static void DestroyInstance();
 
         Settings* getSettings() const;
         RDPDatabase* getConnectionDatabase() const;
@@ -41,6 +42,7 @@ class Resources
     private:
         static Resources* instance;
         Resources();
+        ~Resources();
         Resources( Resources const& ) {};
 
         Settings *settings;

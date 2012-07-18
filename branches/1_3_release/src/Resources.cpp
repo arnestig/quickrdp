@@ -35,6 +35,24 @@ Resources::Resources()
     commandDatabase = new CommandDatabase();
 }
 
+Resources::~Resources()
+{
+	/** remove our thread gracefully **/
+	connectionChecker->Delete();
+
+	delete settings;
+	delete connectionDatabase;
+	delete commandDatabase;
+}
+
+void Resources::DestroyInstance()
+{
+    if ( instance != NULL ) {
+        delete instance;
+		instance = NULL;
+    }
+}
+
 Resources* Resources::Instance()
 {
     if ( instance == NULL ) {

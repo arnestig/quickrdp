@@ -143,6 +143,10 @@ CommandDatabase::CommandDatabase()
 
 CommandDatabase::~CommandDatabase()
 {
+	for ( std::vector< Command* >::iterator it = commands.begin(); it != commands.end(); ++it ) {
+		delete (*it);
+	}
+	commands.clear();
 }
 
 void CommandDatabase::loadDatabase()

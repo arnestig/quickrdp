@@ -310,6 +310,7 @@ quickRDPFrame::~quickRDPFrame()
     //*)
     saveFrameSettings();
     delete imageList;
+    Resources::DestroyInstance();
 }
 
 void quickRDPFrame::init()

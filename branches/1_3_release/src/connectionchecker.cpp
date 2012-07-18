@@ -83,11 +83,15 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent )
     	if (WSAStartup(MAKEWORD(2,0), &info)) {
          	wxMessageBox( wxT("Error during WSAStartup()") );
     	}
-	#endif
+    #endif
 }
 
 ConnectionChecker::~ConnectionChecker()
 {
+	for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
+		delete (*it);
+	}
+	targets.clear();
 }
 
 void ConnectionChecker::addTargets( wxString hostname, wxString port, wxString filename )
@@ -122,7 +126,7 @@ void ConnectionChecker::getNewTargets()
 
 void *ConnectionChecker::Entry()
 {
-    while ( 1 ) {
+    while ( TestDestroy() == false ) {
         mutex.Lock();
         bool queueEmpty = targets.empty();
         mutex.Unlock();

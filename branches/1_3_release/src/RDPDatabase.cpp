@@ -495,6 +495,10 @@ RDPDatabase::RDPDatabase()
 
 RDPDatabase::~RDPDatabase()
 {
+	for ( std::vector< RDPConnection* >::iterator it = database.begin(); it != database.end(); ++it ) {
+		delete (*it);
+	}
+	database.clear();
 }
 
 void RDPDatabase::loadRDPFiles()
