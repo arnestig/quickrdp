@@ -1145,27 +1145,29 @@ void quickRDPFrame::updateConnectionCheckerStatus()
         seconds = time (NULL);
         RDPConnection *rdpConnection = NULL;
         ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
+        std::vector< ConnectionTarget* > connectionList;
         /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
         for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem()+1; ++id  ) {
             rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
-            if ( rdpConnection != NULL && connectionChecker != NULL ) {
+            if ( rdpConnection != NULL ) {
                 /** make sure we update only targets who needs to be updated **/
                 if ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) {
-                    connectionChecker->addTargets( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() );
+                    connectionList.push_back( new ConnectionTarget( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() ) );
                 }
             }
         }
+        connectionChecker->addTargets( connectionList );
     }
 }
 
 void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > connections )
 {
     ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
-    if ( connectionChecker != NULL ) {
-        for ( std::vector< RDPConnection* >::const_iterator it = connections.begin(); it != connections.end(); ++it ) {
-            connectionChecker->addTargets( (*it)->getHostname(), (*it)->getPort(), (*it)->getFilename() );
-        }
+    std::vector< ConnectionTarget* > connectionList;
+    for ( std::vector< RDPConnection* >::const_iterator it = connections.begin(); it != connections.end(); ++it ) {
+        connectionList.push_back( new ConnectionTarget( (*it)->getHostname(), (*it)->getPort(), (*it)->getFilename() ) );
     }
+    connectionChecker->addTargets( connectionList );
 }
 
 void quickRDPFrame::OnNotebook1PageChanged(wxNotebookEvent& WXUNUSED(event) )

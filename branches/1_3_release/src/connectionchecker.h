@@ -79,20 +79,17 @@ class ConnectionChecker : public wxThread
         ConnectionChecker( wxEvtHandler *parent );
         ~ConnectionChecker();
 
-        void addTargets( wxString hostname, wxString port, wxString filename );
+        void addTargets( std::vector< ConnectionTarget* > newTargets );
 
     private:
         virtual void *Entry();
-        void getNewTargets();
 
         wxMutex mutex;
-        std::map< wxString, std::pair< wxString, wxString > > targetsQueue;
         std::vector< ConnectionTarget* > targets;
         wxEvtHandler *parent;
         struct timeval t;
         struct sockaddr_in sock_addr;
         unsigned long socket_mode;
-        unsigned int highest_fds;
 };
 
 #endif

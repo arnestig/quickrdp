@@ -67,8 +67,7 @@ void ConnectionTarget::setStatus( int status )
 
 ConnectionChecker::ConnectionChecker( wxEvtHandler *parent )
     :   wxThread( wxTHREAD_DETACHED ),
-        parent( parent ),
-        highest_fds( 0 )
+        parent( parent )
 {
     /** setting up our socket select timeout, parameterized in the future? **/
     t.tv_sec = 0;
@@ -94,34 +93,15 @@ ConnectionChecker::~ConnectionChecker()
 	targets.clear();
 }
 
-void ConnectionChecker::addTargets( wxString hostname, wxString port, wxString filename )
+void ConnectionChecker::addTargets( std::vector< ConnectionTarget* > newTargets )
 {
-    mutex.Lock();
-    targetsQueue[ filename ] = std::make_pair( hostname, port );
-    mutex.Unlock();
-}
-
-void ConnectionChecker::getNewTargets()
-{
-    size_t counter = 0;
-    mutex.Lock();
-    /** add new targets to our processing thread from the queue **/
-    for ( std::map< wxString, std::pair< wxString, wxString > >::iterator it = targetsQueue.begin(); it != targetsQueue.end(); ++it ) {
-        targets.push_back( new ConnectionTarget( (*it).second.first, (*it).second.second, (*it).first ) );
-        counter++;
-        if ( counter < 10) {
-            targetsQueue.erase( targetsQueue.begin() );
-        } else {
-            break;
+    if ( newTargets.empty() == false ) {
+        mutex.Lock();
+        for ( std::vector< ConnectionTarget* >::iterator it = newTargets.begin(); it != newTargets.end(); ++it ) {
+            targets.push_back( (*it) );
         }
+        mutex.Unlock();
     }
-    /** if there were no more targets in the queue, send an event to get more targets to the main thread **/
-    if ( targets.empty() == true ) {
-        wxCommandEvent evt_get_more_data( wxEVT_CONNECTION_CHECK_SEND_DATA, wxID_ANY );
-        wxPostEvent( parent, evt_get_more_data );
-    }
-
-    mutex.Unlock();
 }
 
 void *ConnectionChecker::Entry()
@@ -132,13 +112,15 @@ void *ConnectionChecker::Entry()
         bool queueEmpty = targets.empty();
         mutex.Unlock();
         if ( queueEmpty == true ) {
-            /** get us 10 new targets **/
-            getNewTargets();
-            Sleep( 20 );
+            /** no more targets in queue, send an event to the main thread to get more targets  **/
+            Sleep( 40 );
+            wxCommandEvent evt_get_more_data( wxEVT_CONNECTION_CHECK_SEND_DATA, wxID_ANY );
+            wxPostEvent( parent, evt_get_more_data );
         } else {
             mutex.Lock();
             /** Connec to all our designated targets **/
-            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
+            int counter = 0;
+            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); ( it != targets.end() && counter < 10 ); ++it ) {
                 sock_addr.sin_port = htons(wxAtoi( (*it)->getPort() ) );
 				sock_addr.sin_addr.s_addr = 0;
                 if ( inet_addr( (*it)->getHostname().mb_str() ) == INADDR_NONE ) {
@@ -152,19 +134,17 @@ void *ConnectionChecker::Entry()
                 (*it)->socket = socket( AF_INET, SOCK_STREAM, 0 );
                 ioctlsocket( (*it)->socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
                 connect( (*it)->socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
+                counter++;
             }
 
             /** select() from all sockets and check if we're connected or not.. this will tell if the port is open or not. **/
-            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
+            counter = 0;
+            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); ( it != targets.end() && counter < 10 ); ++it ) {
                 fd_set wfds;
                 FD_ZERO(&wfds);
                 FD_SET((*it)->socket, &wfds);
 
-                if ( (*it)->socket > highest_fds ) {
-                    highest_fds = (*it)->socket;
-                }
-
-                int retval = select( highest_fds+1, 0, &wfds, 0, &t );
+                int retval = select((*it)->socket+1, 0, &wfds, 0, &t );
 
                 if ( retval <= 0 ) {
                     (*it)->setStatus( 0 );
@@ -173,15 +153,19 @@ void *ConnectionChecker::Entry()
                     (*it)->setStatus( 1 );
                     closesocket( (*it)->socket );
                 }
+                counter++;
             }
+
             /** send event back to main thread about status of our connections **/
-            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ) {
+            counter = 0;
+            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); ( it != targets.end() && counter < 10 ); ) {
                 wxCommandEvent evt( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );
                 evt.SetInt( (*it)->getStatus() );
                 evt.SetString( (*it)->getFilename() );
                 wxPostEvent( parent, evt );
                 delete (*it);
                 it = targets.erase( it );
+                counter++;
             }
             mutex.Unlock();
         }
