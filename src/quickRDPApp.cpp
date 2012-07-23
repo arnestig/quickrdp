@@ -21,7 +21,6 @@
 
 #include "quickRDPApp.h"
 #include "Resources.h"
-#include "QuickrdpFunctions.h"
 
 //(*AppHeaders
 #include "quickRDPMain.h"
@@ -29,11 +28,6 @@
 //*)
 
 IMPLEMENT_APP(quickRDPApp);
-
-quickRDPApp::quickRDPApp()
-    :   Frame( NULL )
-{
-}
 
 bool quickRDPApp::OnInit()
 {
@@ -50,8 +44,6 @@ bool quickRDPApp::OnInit()
         #endif
     	Frame->Show();
     	SetTopWindow(Frame);
-    	/** Check if new version is available... **/
-    	Frame->checkForNewAvailableVersion();
     }
     //*)
     return wxsOK;
@@ -60,15 +52,12 @@ bool quickRDPApp::OnInit()
 
 int quickRDPApp::FilterEvent(wxEvent& event)
 {
+
     if ( event.GetEventType() == wxEVT_KEY_DOWN ) {
-        wxKeyEvent ownevt = (wxKeyEvent&) event;
-        /** check if we want to process this event.. */
-        if ( quickRDP::Keybinder::IsValidKeycode( ownevt.GetKeyCode() ) == true ) {
-            if ( Frame->handleShortcutKeys( ownevt ) == false ) {
-                return -1;
-            } else {
-                return 0;
-            }
+        if ( Frame->handleShortcutKeys( (wxKeyEvent&) event ) == false ) {
+            return -1;
+        } else {
+            return 0;
         }
     }
 

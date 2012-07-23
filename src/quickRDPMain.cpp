@@ -35,17 +35,41 @@
 
 //(*InternalHeaders(quickRDPFrame)
 #include <wx/settings.h>
-#include <wx/font.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
+
+//helper functions
+enum wxbuildinfoformat {
+    short_f, long_f };
+
+wxString wxbuildinfo(wxbuildinfoformat format)
+{
+    wxString wxbuild(wxVERSION_STRING);
+
+    if (format == long_f )
+    {
+#if defined(__WXMSW__)
+        wxbuild << _T("-Windows");
+#elif defined(__UNIX__)
+        wxbuild << _T("-Linux");
+#endif
+
+#if wxUSE_UNICODE
+        wxbuild << _T("-Unicode build");
+#else
+        wxbuild << _T("-ANSI build");
+#endif // wxUSE_UNICODE
+    }
+
+    return wxbuild;
+}
 
 //(*IdInit(quickRDPFrame)
 const long quickRDPFrame::ID_BITMAPBUTTON1 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON4 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON2 = wxNewId();
 const long quickRDPFrame::ID_BITMAPBUTTON3 = wxNewId();
-const long quickRDPFrame::ID_STATICTEXT1 = wxNewId();
 const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_LISTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
@@ -74,17 +98,14 @@ const long quickRDPFrame::POPUPMENURDP = wxNewId();
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     //(*EventTable(quickRDPFrame)
     //*)
-    EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE, quickRDPFrame::onVersionCheckExecuted)
-    EVT_COMMAND(wxID_ANY, wxEVT_AUTOMATIC_VERSION_CHECK_DONE, quickRDPFrame::onAutomaticVersionCheckExecuted)
+    EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE,quickRDPFrame::onVersionCheckExecuted)
 END_EVENT_TABLE()
 
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
 {
     //(*Initialize(quickRDPFrame)
     wxBoxSizer* BoxSizer4;
-    wxBoxSizer* BoxSizer6;
     wxBoxSizer* BoxSizer5;
-    wxBoxSizer* BoxSizer7;
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
     wxBoxSizer* BoxSizer2;
@@ -102,42 +123,29 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-    BitmapButton1 = new QuickRDPBitmapButton(Panel1, ID_BITMAPBUTTON1, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
+    BitmapButton1 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON1, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
     BitmapButton1->SetToolTip(_("New connection"));
     BoxSizer5->Add(BitmapButton1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BitmapButton4 = new QuickRDPBitmapButton(Panel1, ID_BITMAPBUTTON4, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
+    BitmapButton4 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON4, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON4"));
     BitmapButton4->Disable();
     BitmapButton4->SetToolTip(_("Duplicate connection"));
     BoxSizer5->Add(BitmapButton4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BitmapButton2 = new QuickRDPBitmapButton(Panel1, ID_BITMAPBUTTON2, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
+    BitmapButton2 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON2, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON2"));
     BitmapButton2->Disable();
     BitmapButton2->SetToolTip(_("Delete connection"));
     BoxSizer5->Add(BitmapButton2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BitmapButton3 = new QuickRDPBitmapButton(Panel1, ID_BITMAPBUTTON3, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
+    BitmapButton3 = new wxBitmapButton(Panel1, ID_BITMAPBUTTON3, wxNullBitmap, wxDefaultPosition, wxSize(64,64), wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON3"));
     BitmapButton3->Disable();
     BitmapButton3->SetToolTip(_("View properties"));
     BoxSizer5->Add(BitmapButton3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer3->Add(BoxSizer5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer6 = new wxBoxSizer(wxVERTICAL);
-    BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-    BoxSizer7->Add(-1,-1,1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    VersionNotifyText = new wxStaticText(Panel1, ID_STATICTEXT1, _("New version available!"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-    VersionNotifyText->SetForegroundColour(wxColour(255,0,0));
-    wxFont VersionNotifyTextFont = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
-    if ( !VersionNotifyTextFont.Ok() ) VersionNotifyTextFont = wxSystemSettings::GetFont(wxSYS_DEFAULT_GUI_FONT);
-    VersionNotifyTextFont.SetWeight(wxBOLD);
-    VersionNotifyTextFont.SetUnderlined(true);
-    VersionNotifyText->SetFont(VersionNotifyTextFont);
-    BoxSizer7->Add(VersionNotifyText, 0, wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer6->Add(BoxSizer7, 1, wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Panel1, _("Search"));
     TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(172,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
     TextCtrl1->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
     StaticBoxSizer1->Add(TextCtrl1, 0, wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
-    BoxSizer4->Add(StaticBoxSizer1, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer6->Add(BoxSizer4, 0, wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
-    BoxSizer3->Add(BoxSizer6, 1, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer4->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer3->Add(BoxSizer4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM, 5);
     BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
     ListCtrl1 = new wxListCtrl(Panel1, ID_LISTCTRL1, wxDefaultPosition, wxSize(566,278), wxLC_REPORT|wxRAISED_BORDER, wxDefaultValidator, _T("ID_LISTCTRL1"));
     ListCtrl1->InsertColumn( 0, wxT("Host") );
@@ -175,9 +183,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     SetMenuBar(MenuBar1);
     MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem17);
-    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties\tCtrl+P"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
-    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate\tCtrl+D"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem20);
     MenuItem21 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DELETE, _("Delete\tDEL"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem21);
@@ -212,7 +220,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
-    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlInput);
+    Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnEditButtonClick);
+    Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemSelect);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemDeselect);
@@ -240,8 +249,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
-    VersionNotifyText->Connect(ID_STATICTEXT1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnNewVersionTextClick,0,this);
-
     commandMenu = new wxMenu();
     PopupMenu1.AppendSubMenu( commandMenu, wxT("Commands") );
 
@@ -267,18 +274,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID id)
         Connect( newMenuId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnChangelogClick );
     }
     globalhotkeys = true;
-
-    /** we also run a check of our current version and the saved version in the settings file..
-        if these two differ then we check if we should notify our user of any dramatic changes.. **/
-    wxString currentVersion = Version::getNumericVersion();
-    wxString oldVersion = Resources::Instance()->getSettings()->getVersion();
-
-    if ( ( currentVersion.empty() == false && oldVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
-        checkForVersionChangesAndNotifyUser( oldVersion );
-    }
-    VersionNotifyText->Hide();
-
-    updatePopupmenuShortcuts();
 }
 
 quickRDPFrame::~quickRDPFrame()
@@ -386,7 +381,7 @@ void quickRDPFrame::loadRDPFromDatabase()
             item.SetId( index );
             ListCtrl1->InsertItem( item );
             wxString username;
-            if ( curRDP->getDomain().Len() > 0 && curRDP->getConnectionType() == ConnectionType::RDP ) {
+            if ( curRDP->getDomain().Len() > 0 ) {
                 username.Append( curRDP->getDomain() + wxT("\\") );
             }
             username.Append( curRDP->getUsername() );
@@ -455,21 +450,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 
 void quickRDPFrame::OnSearchTextEnter(wxCommandEvent& WXUNUSED(event) )
 {
-    /** first delselect all items in the list control... **/
-    long item = -1;
-    for (;;) {
-        item = ListCtrl1->GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
-        if ( item == -1 ) {
-            break;
-        }
-        ListCtrl1->SetItemState( item, 0, wxLIST_STATE_SELECTED );
-    }
-
-    /** now select our top one **/
-    if ( ListCtrl1->GetItemCount() > 0 ) {
-        ListCtrl1->SetItemState(ListCtrl1->GetTopItem(),wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED,wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED);
-        ListCtrl1->SetFocus();
-    }
+    loadRDPFromDatabase();
 }
 
 void quickRDPFrame::clearPopupMenuChoices()
@@ -748,9 +729,8 @@ void quickRDPFrame::OnListCtrl1ColumnClick(wxListEvent& event)
 void quickRDPFrame::OnPreferences(wxCommandEvent& WXUNUSED(event) )
 {
     settingsDialog *settings = new settingsDialog( this, 0 );
-    showDialog( settings, true );
+    showDialog( settings );
     delete settings;
-    updatePopupmenuShortcuts();
 }
 
 void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
@@ -850,7 +830,7 @@ void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
-    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/", false );
+    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
     if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
         wxMessageBox( wxT("Error while creating HTTP thread!") );
     } else {
@@ -862,22 +842,12 @@ void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
 {
-    /** event handler for when we're checking for a new version manually **/
     if ( event.GetInt() == 1 ) {
         if ( wxMessageBox( wxT("Version ") + event.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
             wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
         }
     } else {
         wxMessageBox( wxT("You already got the latest version of QuickRDP.") );
-    }
-}
-
-void quickRDPFrame::onAutomaticVersionCheckExecuted( wxCommandEvent &event )
-{
-    /** event handler for when we're checking for a new version automatically (during startup) **/
-    if ( event.GetInt() == 1 ) {
-        VersionNotifyText->Show( true );
-        VersionNotifyText->SetToolTip( wxT("Version ") + event.GetString() + wxT(" is available for download.") );
     }
 }
 
@@ -926,27 +896,18 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
             }
             return true;
         } else {
-            /** no comand found, then we look for global shortcuts... **/
+            /** no comand found, then we look for popup menu shortcuts... **/
             wxCommandEvent ourEvent;
-            Settings *settings = Resources::Instance()->getSettings();
-            int keyCode = event.GetKeyCode();
-            int keyModifier = event.GetModifiers();
-
-            if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
-                OnNewButtonClick( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
-                OnDuplicateButtonClick( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getPropConnectionShortcut().first && keyModifier == settings->getPropConnectionShortcut().second ) {
-                OnEditButtonClick( ourEvent );
-                return true;
-            } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
-                OnMenuCommands( ourEvent );
-                return true;
-            } else if ( keyCode == 127 ) {
-                OnDeleteButtonClick( ourEvent );
-                return true;
+            switch ( event.GetKeyCode() ) {
+                case 80:      /** 'P' key - open properties **/
+                    if ( wxGetKeyState(WXK_CONTROL) == true ) { OnEditButtonClick( ourEvent ); }
+                break;
+                case 68:      /** 'D' key - duplicate connection **/
+                    if ( wxGetKeyState(WXK_CONTROL) == true ) { OnDuplicateButtonClick( ourEvent ); }
+                break;
+                case 127:     /** 'DEL' key - delete connection **/
+                    OnDeleteButtonClick( ourEvent );
+                break;
             }
         }
     }
@@ -963,54 +924,4 @@ void quickRDPFrame::showDialog( wxDialog* dialog, bool captureHotkeys )
     globalhotkeys = captureHotkeys;
     dialog->ShowModal();
     globalhotkeys = true;
-}
-
-void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
-{
-    /** all logic here is strictly static for now.. we'll see how we handle this in the future (perhaps there won't be too many of these drastic changes).. **/
-
-    /** Since 1.2.1 we implemented global hotkeys.. Users may want to remove these.
-    but we should allow new users upgrading to 1.2.1 to have the default old ones.
-    Setting them here if we're starting 1.2.1 for the first time now. **/
-    if ( oldVersion < wxT("1.2.1") ) {
-        Settings *settings = Resources::Instance()->getSettings();
-        settings->setDupConnectionShortcut( std::pair< int, int > ( 68, wxMOD_CONTROL ) ); /** Ctrl+D **/
-        settings->setPropConnectionShortcut( std::pair< int, int > ( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/
-    }
-}
-
-void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
-{
-    loadRDPFromDatabase();
-}
-
-void quickRDPFrame::checkForNewAvailableVersion( )
-{
-    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
-    if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
-        wxMessageBox( wxT("Error while creating HTTP thread!") );
-    } else {
-        if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
-            wxMessageBox( wxT("Error while running HTTP thread!") );
-        }
-    }
-}
-
-void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
-{
-    wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
-}
-
-void quickRDPFrame::updatePopupmenuShortcuts()
-{
-    Settings *settings = Resources::Instance()->getSettings();
-    wxMenuItem *propConMenu = PopupMenu1.FindItem( ID_POPUPMENUPROPERTIES );
-    if ( propConMenu != NULL ) {
-        propConMenu->SetText( wxT("Properties\t") + quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
-    }
-
-    wxMenuItem *dupConMenu = PopupMenu1.FindItem( ID_POPUPMENU_DUPLICATE );
-    if ( dupConMenu != NULL ) {
-        dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
-    }
 }

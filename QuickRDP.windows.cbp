@@ -21,6 +21,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="libwxmsw28u_stc.a" />
 					<Add library="libwxmsw28u_adv.a" />
 					<Add library="libwxmsw28u_core.a" />
 					<Add library="libwxbase28u.a" />
@@ -46,6 +47,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="libwxmsw28u_stc.a" />
 					<Add library="libwxmsw28u_adv.a" />
 					<Add library="libwxmsw28u_core.a" />
 					<Add library="libwxbase28u.a" />
@@ -107,7 +109,6 @@
 		<Unit filename="src\CommandDialog.h" />
 		<Unit filename="src\ExampleDialog.cpp" />
 		<Unit filename="src\ExampleDialog.h" />
-		<Unit filename="src\QuickRDPBitmapButton.h" />
 		<Unit filename="src\QuickrdpFunctions.h" />
 		<Unit filename="src\RDPDatabase.cpp" />
 		<Unit filename="src\RDPDatabase.h" />

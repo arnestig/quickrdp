@@ -62,7 +62,7 @@ BEGIN_EVENT_TABLE(CommandDialog,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
+CommandDialog::CommandDialog(wxWindow* parent,wxWindowID id)
 {
 	//(*Initialize(CommandDialog)
 	wxBoxSizer* BoxSizer4;
@@ -80,7 +80,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
 
-	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
+	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	SetClientSize(wxSize(391,253));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -143,7 +143,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	BoxSizer3->Add(BoxSizer14, 1, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	saveButton = new wxButton(Panel1, ID_BUTTON2, _("Save"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
-	BoxSizer7->Add(saveButton, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer7->Add(saveButton, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticLine1 = new wxStaticLine(Panel1, ID_STATICLINE1, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
 	BoxSizer2->Add(StaticLine1, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -335,7 +335,8 @@ void CommandDialog::HandlePanelKeyDown(wxKeyEvent& event)
     curShortcutMod = 0;
     curShortcutKey = 0;
     TextShortcut->Clear();
-    TextShortcut->AppendText( quickRDP::Keybinder::ModifierString( event.GetModifiers() ) + quickRDP::Keybinder::KeycodeString( event.GetKeyCode() ));
+    TextShortcut->AppendText( quickRDP::Keybinder::ModifierString(event.GetModifiers() ) );
+    TextShortcut->AppendText( quickRDP::Keybinder::KeycodeString(event.GetKeyCode() ) );
     curShortcutMod = event.GetModifiers();
     curShortcutKey = event.GetKeyCode();
 }

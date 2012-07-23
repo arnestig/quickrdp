@@ -24,15 +24,11 @@
 #include "version.h"
 
 DEFINE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE )
-DEFINE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE )
 
-VersionChecker::VersionChecker( wxEvtHandler *parent, std::string url, bool automatic_check )
-    :   wxThread( wxTHREAD_DETACHED ),
-        parent( parent ),
-        url( url ),
-        automatic_check( automatic_check )
-
+VersionChecker::VersionChecker( wxEvtHandler *parent, std::string url ) : wxThread( wxTHREAD_DETACHED )
 {
+    this->parent = parent;
+    this->url = url;
 }
 
 VersionChecker::~VersionChecker()
@@ -105,12 +101,7 @@ std::string VersionChecker::get( const char* url )
 void *VersionChecker::Entry()
 {
     /** execute our thread and check for a new version, then return information to the main frame **/
-
-    wxCommandEvent evt( wxEVT_AUTOMATIC_VERSION_CHECK_DONE, wxID_ANY );
-    if ( automatic_check == false ) {
-        evt.SetEventType( wxEVT_VERSION_CHECK_DONE );
-    }
-
+    wxCommandEvent evt( wxEVT_VERSION_CHECK_DONE, wxID_ANY );
     wxString latestVersion = wxT("");
     if ( execute( latestVersion ) == true ) {
         evt.SetInt( 1 );

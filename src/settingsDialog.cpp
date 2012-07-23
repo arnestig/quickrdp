@@ -51,17 +51,6 @@ const long settingsDialog::ID_STATICTEXT6 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL6 = wxNewId();
 const long settingsDialog::ID_BUTTON10 = wxNewId();
 const long settingsDialog::ID_BUTTON8 = wxNewId();
-const long settingsDialog::ID_PANEL2 = wxNewId();
-const long settingsDialog::ID_STATICTEXT9 = wxNewId();
-const long settingsDialog::ID_NEWCON = wxNewId();
-const long settingsDialog::ID_STATICTEXT7 = wxNewId();
-const long settingsDialog::ID_DUPCON = wxNewId();
-const long settingsDialog::ID_STATICTEXT12 = wxNewId();
-const long settingsDialog::ID_CONPROP = wxNewId();
-const long settingsDialog::ID_STATICTEXT11 = wxNewId();
-const long settingsDialog::ID_COMMANDDIALOG = wxNewId();
-const long settingsDialog::ID_PANEL3 = wxNewId();
-const long settingsDialog::ID_NOTEBOOK1 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
 const long settingsDialog::ID_PANEL1 = wxNewId();
 //*)
@@ -77,20 +66,14 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer4;
 	wxStaticBoxSizer* StaticBoxSizer2;
 	wxBoxSizer* BoxSizer6;
-	wxBoxSizer* BoxSizer19;
-	wxBoxSizer* BoxSizer15;
-	wxBoxSizer* BoxSizer20;
 	wxBoxSizer* BoxSizer5;
 	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
 	wxBoxSizer* BoxSizer8;
-	wxBoxSizer* BoxSizer13;
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer11;
 	wxBoxSizer* BoxSizer12;
-	wxBoxSizer* BoxSizer14;
 	wxStaticBoxSizer* StaticBoxSizer3;
-	wxBoxSizer* BoxSizer17;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
@@ -101,125 +84,86 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	Move(wxDefaultPosition);
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
-	BoxSizer13 = new wxBoxSizer(wxVERTICAL);
-	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK1"));
-	Panel2 = new wxPanel(Notebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("Telnet"));
+	StaticBoxSizer2 = new wxStaticBoxSizer(wxVERTICAL, Panel1, _("Telnet"));
 	BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText1 = new wxStaticText(Panel2, ID_STATICTEXT1, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	BoxSizer7->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TelnetExecutableText = new wxTextCtrl(Panel2, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	TelnetExecutableText = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
 	TelnetExecutableText->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
 	BoxSizer7->Add(TelnetExecutableText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TelnetExecutableBrowseButton = new wxButton(Panel2, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	TelnetExecutableBrowseButton = new wxButton(Panel1, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer7->Add(TelnetExecutableBrowseButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer2->Add(BoxSizer7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText4 = new wxStaticText(Panel2, ID_STATICTEXT4, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	BoxSizer8->Add(StaticText4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TelnetArgumentText = new wxTextCtrl(Panel2, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL4"));
+	TelnetArgumentText = new wxTextCtrl(Panel1, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL4"));
 	BoxSizer8->Add(TelnetArgumentText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TelnetArgumentHelpButton = new wxButton(Panel2, ID_BUTTON9, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON9"));
+	TelnetArgumentHelpButton = new wxButton(Panel1, ID_BUTTON9, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON9"));
 	BoxSizer8->Add(TelnetArgumentHelpButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TelnetArgumentResetButton = new wxButton(Panel2, ID_BUTTON6, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON6"));
+	TelnetArgumentResetButton = new wxButton(Panel1, ID_BUTTON6, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	BoxSizer8->Add(TelnetArgumentResetButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer2->Add(BoxSizer8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer3->Add(StaticBoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer4 = new wxBoxSizer(wxVERTICAL);
-	StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("SSH"));
+	StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, Panel1, _("SSH"));
 	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText3 = new wxStaticText(Panel2, ID_STATICTEXT3, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	BoxSizer9->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	SSHExecutableText = new wxTextCtrl(Panel2, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	SSHExecutableText = new wxTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	SSHExecutableText->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
 	BoxSizer9->Add(SSHExecutableText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	SSHExecutableBrowseButton = new wxButton(Panel2, ID_BUTTON2, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
+	SSHExecutableBrowseButton = new wxButton(Panel1, ID_BUTTON2, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON2"));
 	BoxSizer9->Add(SSHExecutableBrowseButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer3->Add(BoxSizer9, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText5 = new wxStaticText(Panel2, ID_STATICTEXT5, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	StaticText5 = new wxStaticText(Panel1, ID_STATICTEXT5, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	BoxSizer10->Add(StaticText5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	SSHArgumentText = new wxTextCtrl(Panel2, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL5"));
+	SSHArgumentText = new wxTextCtrl(Panel1, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL5"));
 	BoxSizer10->Add(SSHArgumentText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	SSHArgumentHelpButton = new wxButton(Panel2, ID_BUTTON4, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON4"));
+	SSHArgumentHelpButton = new wxButton(Panel1, ID_BUTTON4, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON4"));
 	BoxSizer10->Add(SSHArgumentHelpButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	SSHArgumentResetButton = new wxButton(Panel2, ID_BUTTON7, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON7"));
+	SSHArgumentResetButton = new wxButton(Panel1, ID_BUTTON7, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON7"));
 	BoxSizer10->Add(SSHArgumentResetButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer3->Add(BoxSizer10, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer4->Add(StaticBoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxVERTICAL);
-	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("VNC"));
+	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, Panel1, _("VNC"));
 	BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText2 = new wxStaticText(Panel2, ID_STATICTEXT2, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Executable"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer11->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	VNCExecutableText = new wxTextCtrl(Panel2, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+	VNCExecutableText = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(217,21), wxTE_READONLY|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	VNCExecutableText->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT));
 	BoxSizer11->Add(VNCExecutableText, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	VNCExecutableBrowseButton = new wxButton(Panel2, ID_BUTTON5, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON5"));
+	VNCExecutableBrowseButton = new wxButton(Panel1, ID_BUTTON5, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON5"));
 	BoxSizer11->Add(VNCExecutableBrowseButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer1->Add(BoxSizer11, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText6 = new wxStaticText(Panel2, ID_STATICTEXT6, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+	StaticText6 = new wxStaticText(Panel1, ID_STATICTEXT6, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	BoxSizer12->Add(StaticText6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	VNCArgumentText = new wxTextCtrl(Panel2, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL6"));
+	VNCArgumentText = new wxTextCtrl(Panel1, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxSize(155,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL6"));
 	BoxSizer12->Add(VNCArgumentText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	VNCArgumentHelpButton = new wxButton(Panel2, ID_BUTTON10, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON10"));
+	VNCArgumentHelpButton = new wxButton(Panel1, ID_BUTTON10, _("\?"), wxDefaultPosition, wxSize(23,23), 0, wxDefaultValidator, _T("ID_BUTTON10"));
 	BoxSizer12->Add(VNCArgumentHelpButton, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	VNCArgumentResetButton = new wxButton(Panel2, ID_BUTTON8, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON8"));
+	VNCArgumentResetButton = new wxButton(Panel1, ID_BUTTON8, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON8"));
 	BoxSizer12->Add(VNCArgumentResetButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer1->Add(BoxSizer12, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer6->Add(StaticBoxSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Panel2->SetSizer(BoxSizer2);
-	BoxSizer2->Fit(Panel2);
-	BoxSizer2->SetSizeHints(Panel2);
-	Panel3 = new wxPanel(Notebook1, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
-	BoxSizer14 = new wxBoxSizer(wxVERTICAL);
-	BoxSizer17 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText9 = new wxStaticText(Panel3, ID_STATICTEXT9, _("New connection"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
-	BoxSizer17->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextShortcutNewCon = new wxTextCtrl(Panel3, ID_NEWCON, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_NEWCON"));
-	BoxSizer17->Add(TextShortcutNewCon, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer14->Add(BoxSizer17, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText7 = new wxStaticText(Panel3, ID_STATICTEXT7, _("Duplicate connection"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-	BoxSizer15->Add(StaticText7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextShortcutDupCon = new wxTextCtrl(Panel3, ID_DUPCON, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_DUPCON"));
-	BoxSizer15->Add(TextShortcutDupCon, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer14->Add(BoxSizer15, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText12 = new wxStaticText(Panel3, ID_STATICTEXT12, _("Connection properties"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
-	BoxSizer20->Add(StaticText12, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextShortcutConProp = new wxTextCtrl(Panel3, ID_CONPROP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CONPROP"));
-	BoxSizer20->Add(TextShortcutConProp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer14->Add(BoxSizer20, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
-	StaticText11 = new wxStaticText(Panel3, ID_STATICTEXT11, _("Commands dialog"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT11"));
-	BoxSizer19->Add(StaticText11, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextShortcutCommandDialog = new wxTextCtrl(Panel3, ID_COMMANDDIALOG, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_COMMANDDIALOG"));
-	BoxSizer19->Add(TextShortcutCommandDialog, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer14->Add(BoxSizer19, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer14->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Panel3->SetSizer(BoxSizer14);
-	BoxSizer14->Fit(Panel3);
-	BoxSizer14->SetSizeHints(Panel3);
-	Notebook1->AddPage(Panel2, _("Programs"), false);
-	Notebook1->AddPage(Panel3, _("Hotkeys"), false);
-	BoxSizer13->Add(Notebook1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	OKButton = new wxButton(Panel1, ID_BUTTON3, _("Ok"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON3"));
 	BoxSizer5->Add(OKButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CancelButton = new wxButton(Panel1, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer5->Add(CancelButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer13->Add(BoxSizer5, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	Panel1->SetSizer(BoxSizer13);
-	BoxSizer13->Fit(Panel1);
-	BoxSizer13->SetSizeHints(Panel1);
+	BoxSizer2->Add(BoxSizer5, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Panel1->SetSizer(BoxSizer2);
+	BoxSizer2->Fit(Panel1);
+	BoxSizer2->SetSizeHints(Panel1);
 	BoxSizer1->Add(Panel1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	TelnetExecDialog = new wxFileDialog(this, _("Locate telnet executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
@@ -241,21 +185,13 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&settingsDialog::OnInit);
 	//*)
 
-	TextShortcutNewCon->Connect(ID_NEWCON, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
-    TextShortcutDupCon->Connect(ID_DUPCON, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
-    TextShortcutConProp->Connect(ID_CONPROP, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
-    TextShortcutCommandDialog->Connect(ID_COMMANDDIALOG, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
-
 	Settings* settings = Resources::Instance()->getSettings();
 
 	TelnetExecutableText->SetValue( settings->getTelnetExec() );
 	SSHExecutableText->SetValue( settings->getSSHExec() );
 	VNCExecutableText->SetValue( settings->getVNCExec() );
 
-    TextShortcutNewCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getNewConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getNewConnectionShortcut().first ) );
-    TextShortcutDupCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
-    TextShortcutConProp->AppendText( quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
-    TextShortcutCommandDialog->AppendText( quickRDP::Keybinder::ModifierString( settings->getCommandDialogShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCommandDialogShortcut().first ) );
+
 
 	/** set the telnet and ssh file dialog default values depending on windows or linux **/
     #if defined(__WXMSW__)
@@ -279,10 +215,6 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     settings->getTelnetArgument().empty() == true ? resetTelnetArgument() : TelnetArgumentText->SetValue( settings->getTelnetArgument() );
     settings->getSSHArgument().empty() == true ? resetSSHArgument() : SSHArgumentText->SetValue( settings->getSSHArgument() );
     settings->getVNCArgument().empty() == true ? resetVNCArgument() : VNCArgumentText->SetValue( settings->getVNCArgument() );
-    shortcutMap[ ID_NEWCON ] = settings->getNewConnectionShortcut();
-    shortcutMap[ ID_DUPCON ] = settings->getDupConnectionShortcut();
-    shortcutMap[ ID_CONPROP ] = settings->getPropConnectionShortcut();
-    shortcutMap[ ID_COMMANDDIALOG ] = settings->getCommandDialogShortcut();
 }
 
 settingsDialog::~settingsDialog()
@@ -297,21 +229,13 @@ void settingsDialog::OnInit(wxInitDialogEvent& WXUNUSED(event) )
 
 void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
 {
-    Settings *settings = Resources::Instance()->getSettings();
-    settings->setTelnetExec( TelnetExecutableText->GetValue() );
-    settings->setTelnetArgument( TelnetArgumentText->GetValue() );
-    settings->setSSHExec( SSHExecutableText->GetValue() );
-    settings->setSSHArgument( SSHArgumentText->GetValue() );
-    settings->setVNCExec( VNCExecutableText->GetValue() );
-    settings->setVNCArgument( VNCArgumentText->GetValue() );
-
-    /** Save our shortcut keys **/
-    settings->setNewConnectionShortcut( shortcutMap[ settingsDialog::ID_NEWCON ] );
-    settings->setDupConnectionShortcut( shortcutMap[ settingsDialog::ID_DUPCON ] );
-    settings->setPropConnectionShortcut( shortcutMap[ settingsDialog::ID_CONPROP ] );
-    settings->setCommandDialogShortcut( shortcutMap[ settingsDialog::ID_COMMANDDIALOG ] );
-
-    settings->saveSettings();
+    Resources::Instance()->getSettings()->setTelnetExec( TelnetExecutableText->GetValue() );
+    Resources::Instance()->getSettings()->setTelnetArgument( TelnetArgumentText->GetValue() );
+    Resources::Instance()->getSettings()->setSSHExec( SSHExecutableText->GetValue() );
+    Resources::Instance()->getSettings()->setSSHArgument( SSHArgumentText->GetValue() );
+    Resources::Instance()->getSettings()->setVNCExec( VNCExecutableText->GetValue() );
+    Resources::Instance()->getSettings()->setVNCArgument( VNCArgumentText->GetValue() );
+    Resources::Instance()->getSettings()->saveSettings();
     this->EndModal( 0 );
 }
 
@@ -334,7 +258,7 @@ void settingsDialog::OnSSHBrowseClick(wxCommandEvent& WXUNUSED(event) )
     }
 }
 
-void settingsDialog::OnVNCBrowseClick(wxCommandEvent& WXUNUSED(event) )
+void settingsDialog::OnVNCBrowseClick(wxCommandEvent& event)
 {
     if ( VNCExecDialog->ShowModal() == wxID_OK ) {
         VNCExecutableText->SetValue( VNCExecDialog->GetPath() );
@@ -351,7 +275,7 @@ void settingsDialog::OnSSHArgumentReset(wxCommandEvent& WXUNUSED(event) )
     resetSSHArgument();
 }
 
-void settingsDialog::OnVNCArgumentResetButtonClick(wxCommandEvent& WXUNUSED(event) )
+void settingsDialog::OnVNCArgumentResetButtonClick(wxCommandEvent& event)
 {
     resetVNCArgument();
 }
@@ -386,25 +310,4 @@ void settingsDialog::resetVNCArgument()
 void settingsDialog::OnHelpArgumentClick(wxCommandEvent& WXUNUSED(event) )
 {
     wxMessageBox( wxT("Commandline-arguments sent to the choosen application will be parsed before sent.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%\n%port%"), wxT("Command-line arguments"), wxICON_INFORMATION );
-}
-
-void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
-{
-    shortcutMap[ event.GetId() ] = std::make_pair( event.GetKeyCode(), event.GetModifiers() );
-    wxTextCtrl *modCtrl = NULL;
-
-    if ( event.GetId() == settingsDialog::ID_NEWCON ) {
-        modCtrl = TextShortcutNewCon;
-    } else if ( event.GetId() == settingsDialog::ID_DUPCON ) {
-        modCtrl = TextShortcutDupCon;
-    } else if ( event.GetId() == settingsDialog::ID_CONPROP ) {
-        modCtrl = TextShortcutConProp;
-    } else if ( event.GetId() == settingsDialog::ID_COMMANDDIALOG ) {
-        modCtrl = TextShortcutCommandDialog;
-    }
-
-    if ( modCtrl != NULL ) {
-        modCtrl->Clear();
-        modCtrl->AppendText( quickRDP::Keybinder::ModifierString( event.GetModifiers() ) + quickRDP::Keybinder::KeycodeString( event.GetKeyCode() ) );
-    }
 }

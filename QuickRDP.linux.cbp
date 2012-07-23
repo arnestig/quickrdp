@@ -38,7 +38,6 @@
 		</ResourceCompiler>
 		<Linker>
 			<Add option="`wx-config --libs base,core,adv`" />
-			<Add option="`curl-config --libs`" />
 		</Linker>
 		<Unit filename="src/CommandDatabase.cpp" />
 		<Unit filename="src/CommandDatabase.h" />
@@ -46,7 +45,6 @@
 		<Unit filename="src/CommandDialog.h" />
 		<Unit filename="src/ExampleDialog.cpp" />
 		<Unit filename="src/ExampleDialog.h" />
-		<Unit filename="src/QuickRDPBitmapButton.h" />
 		<Unit filename="src/QuickrdpFunctions.h" />
 		<Unit filename="src/RDPDatabase.cpp" />
 		<Unit filename="src/RDPDatabase.h" />
@@ -56,8 +54,6 @@
 		<Unit filename="src/Resources.h" />
 		<Unit filename="src/Settings.cpp" />
 		<Unit filename="src/Settings.h" />
-		<Unit filename="src/VersionChecker.cpp" />
-		<Unit filename="src/VersionChecker.h" />
 		<Unit filename="src/aboutDialog.cpp" />
 		<Unit filename="src/aboutDialog.h" />
 		<Unit filename="src/generalTabPanel.cpp" />
@@ -70,7 +66,6 @@
 		<Unit filename="src/resourcesTabPanel.h" />
 		<Unit filename="src/settingsDialog.cpp" />
 		<Unit filename="src/settingsDialog.h" />
-		<Unit filename="src/version.h" />
 		<Unit filename="src/windowTabPanel.cpp" />
 		<Unit filename="src/windowTabPanel.h" />
 		<Extensions>

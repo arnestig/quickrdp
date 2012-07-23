@@ -22,10 +22,7 @@
 #ifndef SETTINGSDIALOG_H
 #define SETTINGSDIALOG_H
 
-#include <map>
-
 //(*Headers(settingsDialog)
-#include <wx/notebook.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
@@ -43,11 +40,9 @@ class settingsDialog: public wxDialog
 		virtual ~settingsDialog();
 
 		//(*Declarations(settingsDialog)
-		wxStaticText* StaticText9;
 		wxButton* TelnetArgumentHelpButton;
 		wxFileDialog* TelnetExecDialog;
 		wxButton* OKButton;
-		wxNotebook* Notebook1;
 		wxButton* VNCArgumentResetButton;
 		wxFileDialog* VNCExecDialog;
 		wxStaticText* StaticText2;
@@ -56,31 +51,22 @@ class settingsDialog: public wxDialog
 		wxStaticText* StaticText6;
 		wxTextCtrl* VNCExecutableText;
 		wxTextCtrl* SSHArgumentText;
-		wxStaticText* StaticText11;
 		wxButton* SSHExecutableBrowseButton;
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
 		wxTextCtrl* VNCArgumentText;
 		wxStaticText* StaticText3;
-		wxPanel* Panel3;
 		wxTextCtrl* TelnetExecutableText;
 		wxTextCtrl* TelnetArgumentText;
 		wxButton* SSHArgumentHelpButton;
 		wxButton* TelnetExecutableBrowseButton;
-		wxTextCtrl* TextShortcutDupCon;
 		wxStaticText* StaticText5;
-		wxStaticText* StaticText7;
 		wxFileDialog* SSHExecDialog;
-		wxTextCtrl* TextShortcutCommandDialog;
 		wxButton* TelnetArgumentResetButton;
-		wxTextCtrl* TextShortcutNewCon;
-		wxStaticText* StaticText12;
-		wxPanel* Panel2;
 		wxButton* SSHArgumentResetButton;
 		wxStaticText* StaticText4;
 		wxButton* CancelButton;
 		wxTextCtrl* SSHExecutableText;
-		wxTextCtrl* TextShortcutConProp;
 		//*)
 
 	protected:
@@ -107,17 +93,6 @@ class settingsDialog: public wxDialog
 		static const long ID_TEXTCTRL6;
 		static const long ID_BUTTON10;
 		static const long ID_BUTTON8;
-		static const long ID_PANEL2;
-		static const long ID_STATICTEXT9;
-		static const long ID_NEWCON;
-		static const long ID_STATICTEXT7;
-		static const long ID_DUPCON;
-		static const long ID_STATICTEXT12;
-		static const long ID_CONPROP;
-		static const long ID_STATICTEXT11;
-		static const long ID_COMMANDDIALOG;
-		static const long ID_PANEL3;
-		static const long ID_NOTEBOOK1;
 		static const long ID_BUTTON3;
 		static const long ID_PANEL1;
 		//*)
@@ -137,13 +112,9 @@ class settingsDialog: public wxDialog
 		void OnVNCBrowseClick(wxCommandEvent& event);
 		//*)
 
-		void HandleKeyShortcutPress( wxKeyEvent& event );
-
 		void resetTelnetArgument();
 		void resetSSHArgument();
 		void resetVNCArgument();
-
-		std::map< const long, std::pair< int, int > > shortcutMap;
 
 		DECLARE_EVENT_TABLE()
 };

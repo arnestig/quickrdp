@@ -38,24 +38,12 @@ class Settings
         wxString getSSHArgument() const;
         wxString getVNCExec() const;
         wxString getVNCArgument() const;
-        wxString getVersion() const;
-        std::pair< int, int > getNewConnectionShortcut() const;
-        std::pair< int, int > getDupConnectionShortcut() const;
-        std::pair< int, int > getPropConnectionShortcut() const;
-        std::pair< int, int > getCommandDialogShortcut() const;
-
-        void setNewConnectionShortcut( std::pair< int, int > value );
-        void setDupConnectionShortcut( std::pair< int, int > value );
-        void setPropConnectionShortcut( std::pair< int, int > value );
-        void setCommandDialogShortcut( std::pair< int, int > value );
-
         void setTelnetExec( wxString telnetExec );
         void setTelnetArgument( wxString telnetArgument );
         void setSSHExec( wxString SSHExec );
         void setSSHArgument( wxString SSHArgument );
         void setVNCExec( wxString VNCExec );
         void setVNCArgument( wxString VNCArgument );
-        void setVersion( wxString version );
         wxString getDataPath() const;
         wxString getSettingsPath() const;
         wxString getDatabasePath() const;
@@ -95,12 +83,6 @@ class Settings
         wxString settingsPath;
         wxString databasePath;
         wxString commandDatabasePath;
-        wxString version;
-
-        std::pair< int, int > newConnectionShortcut;
-        std::pair< int, int > dupConnectionShortcut;
-        std::pair< int, int > propConnectionShortcut;
-        std::pair< int, int > commandDialogShortcut;
 
         int mainFrameWidth;
         int mainFrameHeight;

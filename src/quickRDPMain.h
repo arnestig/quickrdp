@@ -22,14 +22,12 @@
 #ifndef QUICKRDPMAIN_H
 #define QUICKRDPMAIN_H
 
-#include "QuickRDPBitmapButton.h"
 #include "RDPDatabase.h"
 #include <memory>
 
 //(*Headers(quickRDPFrame)
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
-#include <wx/stattext.h>
 #include <wx/menu.h>
 #include <wx/textctrl.h>
 #include <wx/panel.h>
@@ -44,8 +42,6 @@ class quickRDPFrame: public wxFrame
         quickRDPFrame(wxWindow* parent,wxWindowID id = -1);
         virtual ~quickRDPFrame();
         bool handleShortcutKeys( wxKeyEvent &event );
-        void checkForNewAvailableVersion();
-        void updatePopupmenuShortcuts();
 
     private:
 
@@ -78,13 +74,10 @@ class quickRDPFrame: public wxFrame
         void OnMenuCommands(wxCommandEvent& event);
         void OnReportBugClick(wxCommandEvent& event);
         void OnMenuSearchForUpdates(wxCommandEvent& event);
-        void OnTextCtrlInput(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
-        void OnNewVersionTextClick(wxCommandEvent& event);
         void OnCommandSelected(wxCommandEvent& event);
         void onVersionCheckExecuted( wxCommandEvent &evt );
-        void onAutomaticVersionCheckExecuted( wxCommandEvent &evt );
         void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
         void OnChangelogClick( wxCommandEvent& event );
 
@@ -93,7 +86,6 @@ class quickRDPFrame: public wxFrame
         static const long ID_BITMAPBUTTON4;
         static const long ID_BITMAPBUTTON2;
         static const long ID_BITMAPBUTTON3;
-        static const long ID_STATICTEXT1;
         static const long ID_TEXTCTRL1;
         static const long ID_LISTCTRL1;
         static const long ID_PANEL1;
@@ -123,18 +115,18 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem19;
         wxMenuItem* MenuItem7;
         wxListCtrl* ListCtrl1;
-        QuickRDPBitmapButton* BitmapButton4;
         wxMenu PopupMenu1;
         wxMenu* Menu3;
-        wxStaticText* VersionNotifyText;
         wxMenuItem* MenuItem4;
         wxMenuItem* MenuItem14;
         wxMenuItem* MenuItem11;
         wxMenuItem* MenuItem15;
         wxMenuItem* MenuItem22;
         wxPanel* Panel1;
+        wxBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem17;
         wxMenuItem* MenuItem13;
+        wxBitmapButton* BitmapButton1;
         wxMenu* MenuItem8;
         wxMenuItem* MenuItem10;
         wxMenuItem* MenuItem12;
@@ -142,12 +134,11 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem20;
         wxMenuItem* MenuItem6;
         wxMenuItem* MenuItem23;
-        QuickRDPBitmapButton* BitmapButton3;
-        QuickRDPBitmapButton* BitmapButton1;
+        wxBitmapButton* BitmapButton4;
         wxTextCtrl* TextCtrl1;
+        wxBitmapButton* BitmapButton3;
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
-        QuickRDPBitmapButton* BitmapButton2;
         wxMenuItem* MenuItem9;
         wxMenuItem* MenuItem18;
         //*)
@@ -167,7 +158,6 @@ class quickRDPFrame: public wxFrame
         void loadFrameSettings();
         void showDialog( wxDialog* dialog, bool captureHotkeys = false ); /** NEED TO USE THIS FUNCTION WHEN SHOWING DIALOGS DUE TO GLOBAL HOTKEY CAPTURE! **/
         bool wantGlobalHotkeys() const;
-        void checkForVersionChangesAndNotifyUser( wxString oldVersion );
 
         DECLARE_EVENT_TABLE()
 };
