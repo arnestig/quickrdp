@@ -14,7 +14,7 @@
 								<object class="sizeritem">
 									<object class="wxBoxSizer" variable="BoxSizer5" member="no">
 										<object class="sizeritem">
-											<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" subclass="QuickRDPBitmapButton" variable="BitmapButton1" member="yes">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON1" variable="BitmapButton1" member="yes">
 												<size>64,64</size>
 												<tooltip>New connection</tooltip>
 												<handler function="OnNewButtonClick" entry="EVT_BUTTON" />
@@ -23,7 +23,7 @@
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
-											<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" subclass="QuickRDPBitmapButton" variable="BitmapButton4" member="yes">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON4" variable="BitmapButton4" member="yes">
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>Duplicate connection</tooltip>
@@ -33,7 +33,7 @@
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
-											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" subclass="QuickRDPBitmapButton" variable="BitmapButton2" member="yes">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON2" variable="BitmapButton2" member="yes">
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>Delete connection</tooltip>
@@ -43,10 +43,11 @@
 											<border>5</border>
 										</object>
 										<object class="sizeritem">
-											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" subclass="QuickRDPBitmapButton" variable="BitmapButton3" member="yes">
+											<object class="wxBitmapButton" name="ID_BITMAPBUTTON3" variable="BitmapButton3" member="yes">
 												<size>64,64</size>
 												<enabled>0</enabled>
 												<tooltip>View properties</tooltip>
+												<handler function="OnEditButtonClick" entry="EVT_BUTTON" />
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
@@ -57,63 +58,30 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer6" member="no">
+									<object class="wxBoxSizer" variable="BoxSizer4" member="no">
 										<orient>wxVERTICAL</orient>
 										<object class="sizeritem">
-											<object class="wxBoxSizer" variable="BoxSizer7" member="no">
-												<object class="spacer">
-													<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-													<border>5</border>
-													<option>1</option>
-												</object>
+											<object class="wxStaticBoxSizer" variable="StaticBoxSizer1" member="no">
+												<label>Search</label>
 												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT1" variable="VersionNotifyText" member="yes">
-														<label>New version available!</label>
-														<fg>#FF0000</fg>
-														<font>
-															<weight>bold</weight>
-															<underlined>1</underlined>
-															<sysfont>wxSYS_DEFAULT_GUI_FONT</sysfont>
-														</font>
+													<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCtrl1" member="yes">
+														<size>172,27</size>
+														<fg>wxSYS_COLOUR_GRAYTEXT</fg>
+														<style>wxTE_PROCESS_ENTER</style>
+														<handler function="OnSearchTextEnter" entry="EVT_TEXT" />
+														<handler function="OnSearchTextEnter" entry="EVT_TEXT_ENTER" />
 													</object>
-													<flag>wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALIGN_RIGHT|wxALIGN_BOTTOM</flag>
 													<border>5</border>
 												</object>
 											</object>
-											<flag>wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
-										<object class="sizeritem">
-											<object class="wxBoxSizer" variable="BoxSizer4" member="no">
-												<orient>wxVERTICAL</orient>
-												<object class="sizeritem">
-													<object class="wxStaticBoxSizer" variable="StaticBoxSizer1" member="no">
-														<label>Search</label>
-														<object class="sizeritem">
-															<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="TextCtrl1" member="yes">
-																<size>172,27</size>
-																<fg>wxSYS_COLOUR_GRAYTEXT</fg>
-																<style>wxTE_PROCESS_ENTER</style>
-																<handler function="OnTextCtrlInput" entry="EVT_TEXT" />
-																<handler function="OnSearchTextEnter" entry="EVT_TEXT_ENTER" />
-															</object>
-															<flag>wxALIGN_RIGHT|wxALIGN_BOTTOM</flag>
-															<border>5</border>
-														</object>
-													</object>
-													<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-													<border>5</border>
-													<option>1</option>
-												</object>
-											</object>
-											<flag>wxALIGN_RIGHT|wxALIGN_BOTTOM</flag>
-											<border>5</border>
-										</object>
 									</object>
-									<flag>wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxALIGN_RIGHT|wxALIGN_BOTTOM</flag>
 									<border>5</border>
-									<option>1</option>
 								</object>
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -127,6 +95,7 @@
 								<handler function="OnListCtrl1ItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
 								<handler function="OnListCtrl1ItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
 								<handler function="OnListCtrl1ItemRClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
+								<handler function="OnListCtrlKeyDown" entry="EVT_LIST_KEY_DOWN" />
 								<handler function="OnListCtrl1ColumnClick" entry="EVT_LIST_COL_CLICK" />
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -151,9 +120,9 @@
 			</object>
 			<object class="wxMenu" variable="Menu3" member="yes">
 				<label>&amp;Settings</label>
-				<object class="wxMenuItem" name="idMenuCommands" variable="MenuItem22" member="yes">
-					<label>Commands</label>
-					<handler function="OnMenuCommands" entry="EVT_MENU" />
+				<object class="wxMenuItem" name="idMainMenuPerlScripts" variable="MenuItem16" member="yes">
+					<label>Perl scripts</label>
+					<handler function="OnMenuPerlScripts" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="idMenuPreferences" variable="MenuItem15" member="yes">
@@ -163,16 +132,6 @@
 			</object>
 			<object class="wxMenu" variable="Menu2" member="no">
 				<label>Help</label>
-				<object class="wxMenuItem" name="ID_MENUITEM2" variable="MenuItem18" member="yes">
-					<label>Report a bug</label>
-					<handler function="OnReportBugClick" entry="EVT_MENU" />
-				</object>
-				<object class="separator" />
-				<object class="wxMenuItem" name="ID_MENUITEM3" variable="MenuItem23" member="yes">
-					<label>Search for updates</label>
-					<handler function="OnMenuSearchForUpdates" entry="EVT_MENU" />
-				</object>
-				<object class="separator" />
 				<object class="wxMenuItem" name="wxID_ABOUT" variable="MenuItem2" member="no">
 					<label>About</label>
 					<accel>F1</accel>
@@ -188,18 +147,23 @@
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUPROPERTIES" variable="MenuItem3" member="yes">
 				<label>Properties</label>
+				<accel>CTRL+P</accel>
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DUPLICATE" variable="MenuItem20" member="yes">
 				<label>Duplicate</label>
-				<handler function="OnPopupMenuDuplicate" entry="EVT_MENU" />
+				<accel>CTRL+D</accel>
 			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENU_DELETE" variable="MenuItem21" member="yes">
 				<label>Delete</label>
 				<accel>DEL</accel>
-				<handler function="OnPopupMenuDelete" entry="EVT_MENU" />
 			</object>
 			<object class="separator" />
+			<object class="wxMenuItem" name="ID_POPUPMENU_PING" variable="MenuItem18" member="no">
+				<label>Ping</label>
+				<help>Starts a continuous ping session towards the target</help>
+				<handler function="OnPopupMenuPing" entry="EVT_MENU" />
+			</object>
 			<object class="wxMenu" name="POPUPMENURDP" variable="MenuItem19" member="yes">
 				<label>RDP</label>
 				<object class="wxMenuItem" name="ID_POPUPMENUCONSOLE" variable="MenuItem4" member="yes">

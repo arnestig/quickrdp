@@ -19,35 +19,29 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef __VERSIONCHECKER_H__
-#define __VERSIONCHECKER_H__
+#ifndef __PERL_DATABASE__H_
+#define __PERL_DATABASE__H_
 
 #include <wx/string.h>
-#include <curl/curl.h>
-#include <iostream>
-#include <wx/thread.h>
-#include <wx/event.h>
+#include <map>
+#include <vector>
 
-BEGIN_DECLARE_EVENT_TYPES()
-    DECLARE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE, -1 )
-    DECLARE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE, -1 )
-END_DECLARE_EVENT_TYPES()
-
-class VersionChecker : public wxThread
+class PerlDatabase
 {
     public:
-        VersionChecker( wxEvtHandler *parent, std::string url, bool automatic_check = true );
-        ~VersionChecker();
+        PerlDatabase();
+        ~PerlDatabase();
+
+        std::vector< wxString > getScripts();
+        const wxString getScriptContent( wxString script );
+        void deleteScript( wxString name );
+        bool addScript( wxString name );
+        void saveScript( wxString name, wxString content );
 
     private:
-        static int writer( char *data, size_t size, size_t nmemb, std::string *buffer_in );
-        std::string get( const char* url );
-        bool execute( wxString &version);
-        virtual void *Entry();
-
-        wxEvtHandler *parent;
-        std::string url;
-        bool automatic_check;
+        void loadDatabase();
+        bool isDatabaseLoaded() const;
+        std::map< wxString, wxString > scripts;
 };
 
 #endif

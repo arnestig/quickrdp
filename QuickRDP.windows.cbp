@@ -21,9 +21,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u_adv.a" />
-					<Add library="libwxmsw28u_core.a" />
-					<Add library="libwxbase28u.a" />
+					<Add library="libwxmsw28u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
@@ -46,9 +44,7 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u_adv.a" />
-					<Add library="libwxmsw28u_core.a" />
-					<Add library="libwxbase28u.a" />
+					<Add library="libwxmsw28u.a" />
 					<Add library="libwxpng.a" />
 					<Add library="libwxjpeg.a" />
 					<Add library="libwxtiff.a" />
@@ -73,16 +69,15 @@
 			<Add option="-D__WXMSW__" />
 			<Add option="-DwxUSE_UNICODE" />
 			<Add option="-DSVN_REVISION=0" />
-			<Add option="-DCURL_STATICLIB" />
 			<Add directory="$(#wx)\include" />
 			<Add directory="$(#wx)\contrib\include" />
-			<Add directory="$(#curl)\include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="$(#wx)\include" />
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-s" />
+			<Add option="-mthreads" />
 			<Add library="libkernel32.a" />
 			<Add library="libuser32.a" />
 			<Add library="libgdi32.a" />
@@ -96,19 +91,10 @@
 			<Add library="libcomctl32.a" />
 			<Add library="libwsock32.a" />
 			<Add library="libodbc32.a" />
-			<Add library="libcurl.a" />
-			<Add library="ws2_32" />
-			<Add library="wldap32" />
-			<Add directory="$(#curl)\lib" />
 		</Linker>
-		<Unit filename="src\CommandDatabase.cpp" />
-		<Unit filename="src\CommandDatabase.h" />
-		<Unit filename="src\CommandDialog.cpp" />
-		<Unit filename="src\CommandDialog.h" />
-		<Unit filename="src\ExampleDialog.cpp" />
-		<Unit filename="src\ExampleDialog.h" />
-		<Unit filename="src\QuickRDPBitmapButton.h" />
-		<Unit filename="src\QuickrdpFunctions.h" />
+		<Unit filename="src\FileParser.h" />
+		<Unit filename="src\PerlDatabase.cpp" />
+		<Unit filename="src\PerlDatabase.h" />
 		<Unit filename="src\RDPDatabase.cpp" />
 		<Unit filename="src\RDPDatabase.h" />
 		<Unit filename="src\RDPFrame.cpp" />
@@ -117,12 +103,12 @@
 		<Unit filename="src\Resources.h" />
 		<Unit filename="src\Settings.cpp" />
 		<Unit filename="src\Settings.h" />
-		<Unit filename="src\VersionChecker.cpp" />
-		<Unit filename="src\VersionChecker.h" />
 		<Unit filename="src\aboutDialog.cpp" />
 		<Unit filename="src\aboutDialog.h" />
 		<Unit filename="src\generalTabPanel.cpp" />
 		<Unit filename="src\generalTabPanel.h" />
+		<Unit filename="src\perlDialog.cpp" />
+		<Unit filename="src\perlDialog.h" />
 		<Unit filename="src\quickRDPApp.cpp" />
 		<Unit filename="src\quickRDPApp.h" />
 		<Unit filename="src\quickRDPMain.cpp" />
@@ -150,8 +136,7 @@
 					<wxDialog wxs="wxsmith/RDPFrame.wxs" src="src/RDPFrame.cpp" hdr="src/RDPFrame.h" name="RDPFrame" language="CPP" />
 					<wxFrame wxs="wxsmith/quickRDPframe.wxs" src="src/quickRDPMain.cpp" hdr="src/quickRDPMain.h" name="quickRDPFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="src/settingsDialog.cpp" hdr="src/settingsDialog.h" name="settingsDialog" language="CPP" />
-					<wxDialog wxs="wxsmith/CommandDialog.wxs" src="src/CommandDialog.cpp" hdr="src/CommandDialog.h" name="CommandDialog" language="CPP" />
-					<wxDialog wxs="wxsmith/ExampleDialog.wxs" src="src/ExampleDialog.cpp" hdr="src/ExampleDialog.h" name="ExampleDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/perlDialog.wxs" src="src/perlDialog.cpp" hdr="src/perlDialog.h" name="perlDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

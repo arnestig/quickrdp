@@ -20,7 +20,7 @@
 **/
 
 #include "RDPDatabase.h"
-#include "QuickrdpFunctions.h"
+#include "FileParser.h"
 #include "Resources.h"
 #include <wx/filefn.h>
 #include <wx/filename.h>
@@ -37,8 +37,7 @@ RDPConnection::RDPConnection( wxString filename )
         console( wxT("0") ),
         screenmode( wxT("1") ),
         soundmode( wxT("0") ),
-        diskmapping( wxT("0") ),
-        port( wxT("-1") )
+        diskmapping( wxT("0") )
 {
     parseFile();
 }
@@ -60,7 +59,6 @@ RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
     setUsername( copy->getUsername() );
     setSoundMode( copy->getSoundMode() );
     setDiskMapping( copy->getDiskMapping() );
-    setPort( copy->getPort() );
     saveFile();
 }
 
@@ -141,35 +139,6 @@ wxString RDPConnection::getSoundMode() const
 wxString RDPConnection::getDiskMapping() const
 {
     return diskmapping;
-}
-
-wxString RDPConnection::getPort() const
-{
-    if ( getPortTrueValue() == wxT("-1") ) {
-        switch ( getConnectionType() ) {
-            case ConnectionType::RDP:
-                return wxT("3389");
-            break;
-            case ConnectionType::TELNET:
-                return wxT("23");
-            break;
-            case ConnectionType::SSH:
-                return wxT("22");
-            break;
-            case ConnectionType::VNC:
-                return wxT("5900");
-            break;
-            default:
-                return wxT("");
-        }
-    } else {
-        return port;
-    }
-}
-
-wxString RDPConnection::getPortTrueValue() const
-{
-    return port;
 }
 
 wxString RDPConnection::getResolutionString() const
@@ -275,19 +244,6 @@ void RDPConnection::setSoundMode( wxString soundmode )
     this->soundmode = soundmode;
 }
 
-void RDPConnection::setPort( wxString port )
-{
-    if (( port == wxT("3389") && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
-        ( port == wxT("23") && getConnectionType() == ConnectionType::TELNET ) ||
-        ( port == wxT("22") && getConnectionType() == ConnectionType::SSH ) ||
-        ( port == wxT("5900") && getConnectionType() == ConnectionType::VNC ) ||
-        ( port.empty() == true ) ) {
-            this->port = wxT("-1");
-        } else {
-            this->port = port;
-        }
-}
-
 void RDPConnection::connect()
 {
     Settings *settings = Resources::Instance()->getSettings();
@@ -353,21 +309,14 @@ void RDPConnection::connect()
             break;
             case ConnectionType::SSH:
                 if ( settings->getSSHExec().empty() == false ) {
-                    wxExecute( settings->getSSHExec() + wxT(" ") + quickRDP::FileParser::getRealArgumentString( settings->getSSHArgument(), this ) );
+                    wxExecute( settings->getSSHExec() + wxT(" ") + FileParser::getRealArgumentString( settings->getSSHArgument(), this ) );
                 } else {
                     wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
                 }
             break;
             case ConnectionType::TELNET:
                 if ( settings->getTelnetExec().empty() == false ) {
-                    wxExecute( settings->getTelnetExec() + wxT(" ") + quickRDP::FileParser::getRealArgumentString( settings->getTelnetArgument(), this ) );
-                } else {
-                    wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
-                }
-            break;
-            case ConnectionType::VNC:
-                if ( settings->getVNCExec().empty() == false ) {
-                    wxExecute( settings->getVNCExec() + wxT(" ") + quickRDP::FileParser::getRealArgumentString( settings->getVNCArgument(), this ) );
+                    wxExecute( settings->getTelnetExec() + wxT(" ") + FileParser::getRealArgumentString( settings->getTelnetArgument(), this ) );
                 } else {
                     wxMessageBox( wxT("You have not defined an executable for your ") + connectionTypeName + wxT(" connection. Please do so under Settings -> Preferences."), wxT("Unable to locate ") + connectionTypeName + wxT(" executable"), wxICON_ERROR );
                 }
@@ -381,21 +330,20 @@ void RDPConnection::saveFile()
     std::ofstream ofile;
     ofile.open( wxString( Resources::Instance()->getSettings()->getDatabasePath() + getFilename() ).mb_str(), std::ios::out|std::ios::binary );
 
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("connectiontype:i:")) << getConnectionType() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("username:s:")) + getUsername() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("domain:s:")) + getDomain() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("password:s:")) + getPassword() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("full address:s:")) + getHostname() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("client hostname:s:")) + getClientHostname() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("description:s:")) + getComment() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("desktopheight:i:")) + getDesktopHeight() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("session bpp:i:")) + getDesktopBpp() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
-	quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("port:i:")) + getPort() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("connectiontype:i:")) << getConnectionType() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("username:s:")) + getUsername() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("domain:s:")) + getDomain() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("password:s:")) + getPassword() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("full address:s:")) + getHostname() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("client hostname:s:")) + getClientHostname() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("description:s:")) + getComment() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("desktopheight:i:")) + getDesktopHeight() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("desktopwidth:i:")) + getDesktopWidth() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("session bpp:i:")) + getDesktopBpp() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("screen mode id:i:")) + getScreenMode() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
+    FileParser::writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
 
 	ofile.close();
 }
@@ -429,21 +377,20 @@ void RDPConnection::parseFile()
             allLines.push_back( input );
 		}
 		delete[] buffer;
-        setConnectionType( static_cast< ConnectionType::ConnectionType >( quickRDP::FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) );
-        setUsername( quickRDP::FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
-        setDomain( quickRDP::FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );
-        setPassword( quickRDP::FileParser::getStringFromFile( wxT("password:s:"), allLines ) );
-        setHostname( quickRDP::FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
-        setClientHostname( quickRDP::FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
-        setComment( quickRDP::FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
-        setDesktopHeight( quickRDP::FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
-        setDesktopWidth( quickRDP::FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
-        setDesktopBpp( quickRDP::FileParser::getStringFromFile( wxT("session bpp:i:"), allLines ) );
-        setScreenMode( quickRDP::FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
-        setConsole( quickRDP::FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
-        setSoundMode( quickRDP::FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
-        setDiskMapping( quickRDP::FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
-		setPort( quickRDP::FileParser::getStringFromFile( wxT("port:i:"), allLines ) );
+        setConnectionType( static_cast< ConnectionType::ConnectionType >( FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) );
+        setUsername( FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
+        setDomain( FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );
+        setPassword( FileParser::getStringFromFile( wxT("password:s:"), allLines ) );
+        setHostname( FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
+        setClientHostname( FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
+        setComment( FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
+        setDesktopHeight( FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
+        setDesktopWidth( FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
+        setDesktopBpp( FileParser::getStringFromFile( wxT("session bpp:i:"), allLines ) );
+        setScreenMode( FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
+        setConsole( FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
+        setSoundMode( FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
+        setDiskMapping( FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
 	}
 	rfile.close();
     }
@@ -452,10 +399,10 @@ void RDPConnection::parseFile()
 bool RDPConnection::doesRDPHasString( wxString searchString ) const
 {
     bool foundAnything = false;
-    if ( quickRDP::FileParser::searchForString( std::string( getUsername().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
-    if ( quickRDP::FileParser::searchForString( std::string( getDomain().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
-    if ( quickRDP::FileParser::searchForString( std::string( getHostname().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
-    if ( quickRDP::FileParser::searchForString( std::string( getComment().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getUsername().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getDomain().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getHostname().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
+    if ( FileParser::searchForString( std::string( getComment().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
     return foundAnything;
 }
 ///END RDPConnection
@@ -466,6 +413,8 @@ bool RDPConnection::doesRDPHasString( wxString searchString ) const
 RDPDatabase::RDPDatabase()
     : database_sort_ascending( true )
 {
+    loadRDPFiles();
+    sortById( 0 );
 }
 
 RDPDatabase::~RDPDatabase()
@@ -482,7 +431,6 @@ void RDPDatabase::loadRDPFiles()
         addRDPConnection( fname.GetName( ) );
         f = wxFindNextFile();
     }
-    sortById( 0 );
 }
 
 RDPConnection *RDPDatabase::addRDPConnection( wxString filename )
@@ -499,6 +447,16 @@ RDPConnection *RDPDatabase::duplicateRDPConnection( wxString filename, RDPConnec
     return newRDP;
 }
 
+RDPConnection *RDPDatabase::getRDPConnectionByPointer( RDPConnection *rdpConnection )
+{
+    for ( size_t index = 0; index < database.size(); index++ ) {
+        if ( database[ index ] == rdpConnection ) {
+            return database[ index ];
+        }
+    }
+    return NULL;
+}
+
 void RDPDatabase::deleteRDPConnectionByPointer( RDPConnection *rdpConnection )
 {
     wxRemoveFile( Resources::Instance()->getSettings()->getDatabasePath() + rdpConnection->getFilename() );
@@ -511,25 +469,7 @@ void RDPDatabase::deleteRDPConnectionByPointer( RDPConnection *rdpConnection )
 
 std::vector<RDPConnection*> RDPDatabase::getDatabase()
 {
-    if ( database.empty() == true ) {
-        loadRDPFiles();
-    }
     return database;
-}
-
-RDPConnection* RDPDatabase::getRDPFromListCtrl( long index )
-{
-    return listCtrlRelation[ index ];
-}
-
-void RDPDatabase::clearRDPListCtrl()
-{
-    listCtrlRelation.clear();
-}
-
-void RDPDatabase::addRDPToListCtrl( RDPConnection *connection )
-{
-    listCtrlRelation.push_back( connection );
 }
 
 void RDPDatabase::sortById( int id )

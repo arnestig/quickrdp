@@ -37,17 +37,11 @@
 			<Add directory="$(#wx)/include" />
 		</ResourceCompiler>
 		<Linker>
-			<Add option="`wx-config --libs base,core,adv`" />
-			<Add option="`curl-config --libs`" />
+			<Add option="`wx-config --libs`" />
 		</Linker>
-		<Unit filename="src/CommandDatabase.cpp" />
-		<Unit filename="src/CommandDatabase.h" />
-		<Unit filename="src/CommandDialog.cpp" />
-		<Unit filename="src/CommandDialog.h" />
-		<Unit filename="src/ExampleDialog.cpp" />
-		<Unit filename="src/ExampleDialog.h" />
-		<Unit filename="src/QuickRDPBitmapButton.h" />
-		<Unit filename="src/QuickrdpFunctions.h" />
+		<Unit filename="src/FileParser.h" />
+		<Unit filename="src/PerlDatabase.cpp" />
+		<Unit filename="src/PerlDatabase.h" />
 		<Unit filename="src/RDPDatabase.cpp" />
 		<Unit filename="src/RDPDatabase.h" />
 		<Unit filename="src/RDPFrame.cpp" />
@@ -56,12 +50,12 @@
 		<Unit filename="src/Resources.h" />
 		<Unit filename="src/Settings.cpp" />
 		<Unit filename="src/Settings.h" />
-		<Unit filename="src/VersionChecker.cpp" />
-		<Unit filename="src/VersionChecker.h" />
 		<Unit filename="src/aboutDialog.cpp" />
 		<Unit filename="src/aboutDialog.h" />
 		<Unit filename="src/generalTabPanel.cpp" />
 		<Unit filename="src/generalTabPanel.h" />
+		<Unit filename="src/perlDialog.cpp" />
+		<Unit filename="src/perlDialog.h" />
 		<Unit filename="src/quickRDPApp.cpp" />
 		<Unit filename="src/quickRDPApp.h" />
 		<Unit filename="src/quickRDPMain.cpp" />
@@ -70,7 +64,6 @@
 		<Unit filename="src/resourcesTabPanel.h" />
 		<Unit filename="src/settingsDialog.cpp" />
 		<Unit filename="src/settingsDialog.h" />
-		<Unit filename="src/version.h" />
 		<Unit filename="src/windowTabPanel.cpp" />
 		<Unit filename="src/windowTabPanel.h" />
 		<Extensions>
@@ -86,8 +79,7 @@
 					<wxDialog wxs="wxsmith/RDPFrame.wxs" src="src/RDPFrame.cpp" hdr="src/RDPFrame.h" name="RDPFrame" language="CPP" />
 					<wxFrame wxs="wxsmith/quickRDPframe.wxs" src="src/quickRDPMain.cpp" hdr="src/quickRDPMain.h" name="quickRDPFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="src/settingsDialog.cpp" hdr="src/settingsDialog.h" name="settingsDialog" language="CPP" />
-					<wxDialog wxs="wxsmith/CommandDialog.wxs" src="src/CommandDialog.cpp" hdr="src/CommandDialog.h" name="CommandDialog" language="CPP" />
-					<wxDialog wxs="wxsmith/ExampleDialog.wxs" src="src/ExampleDialog.cpp" hdr="src/ExampleDialog.h" name="ExampleDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/perlDialog.wxs" src="src/perlDialog.cpp" hdr="src/perlDialog.h" name="perlDialog" language="CPP" />
 				</resources>
 			</wxsmith>
 			<envvars />

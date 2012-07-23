@@ -6,7 +6,7 @@ INSTALL = install -o root -g root -m 755
 INSTALL_DIR = install -p -d -o root -g root -m 755
 INSTALL_DATA = install -p -o root -g root -m 644
 CFLAGS = -g -Wall $(shell wx-config --cxxflags)
-LIBS = $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
+LIBS = $(shell wx-config --libs)
 
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -48,7 +48,6 @@ install:
 	$(INSTALL_DIR) mkdir -p $(DESTDIR)/usr/share/$(PROGNAME)/data
 	$(INSTALL_DIR) $(DESTDIR)/usr/bin
 	$(INSTALL_DATA) data/*.* $(DESTDIR)/usr/share/$(PROGNAME)/data
-	$(INSTALL_DATA) ChangeLog $(DESTDIR)/usr/share/$(PROGNAME)/data
 	$(INSTALL) $(PROGNAME) $(DESTDIR)/usr/bin
 
 uninstall:
