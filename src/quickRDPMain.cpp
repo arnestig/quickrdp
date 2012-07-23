@@ -973,6 +973,7 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
     but we should allow new users upgrading to 1.2.1 to have the default old ones.
     Setting them here if we're starting 1.2.1 for the first time now. **/
     if ( oldVersion < wxT("1.2.1") ) {
+        wxMessageBox( wxT("yep...") );
         Settings *settings = Resources::Instance()->getSettings();
         settings->setDupConnectionShortcut( std::pair< int, int > ( 68, wxMOD_CONTROL ) ); /** Ctrl+D **/
         settings->setPropConnectionShortcut( std::pair< int, int > ( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/

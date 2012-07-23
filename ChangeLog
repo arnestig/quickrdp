@@ -1,7 +1,3 @@
-quickrdp 1.2.2 - 2012-07-02
--------------------------
- * Bugfix - Removing annoying debug output when upgrading to QuickRDP 1.2.1
-
 quickrdp 1.2.1 - 2012-07-01
 -------------------------
  * Global hotkey support added.
