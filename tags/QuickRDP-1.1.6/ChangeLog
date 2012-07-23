@@ -1,0 +1,57 @@
+quickrdp 1.1.6 - 2011-03-19
+-------------------------
+ * Fixed bug on Linux causing passwords for RDP connections being displayed as the title of the connection if the connection has no comment.
+ * Wildcard searches using '*' is now possible. Searching for Farm*-Citrix will return matches on both Farm06-Citrix-32 and Farm8-Citrix-64
+ * Shortcuts or accelerators are now added. Ctrl+P will bring up properties of a connection. Ctrl+D will duplicate, etc.. These can be seen when right-clicking on a connection.
+
+quickrdp 1.1.5 - 2011-02-28
+-------------------------
+ * Fixed bug on Linux causing passwords for RDP connections being displayed as the title of the connection if the connection has no comment.
+ * Wildcard searches using '*' is now possible. Searching for Farm*-Citrix will return matches on both Farm06-Citrix-32 and Farm8-Citrix-64
+ * Shortcuts or accelerators are now added. Ctrl+P will bring up properties of a connection. Ctrl+D will duplicate, etc.. These can be seen when right-clicking on a connection.
+
+quickrdp 1.1.4 - 2011-02-14
+-------------------------
+ * Frame icon is now properly displayed on Windows system. This was previously not displayed correctly in the top left frame corner and in the task manager for example.
+
+quickrdp 1.1.3 - 2011-02-08
+-------------------------
+ * Column widths are not ignored and autosized after searching for a connection any longer.
+ * Linux users now has three terminals to choose from when it comes to launching ssh, telnet or perl scripts; x-terminal-emulator (virtual package on debian), gnome-terminal and konsole (KDE).
+
+quickrdp 1.1.2 - 2011-01-26
+-------------------------
+ * Frame position and columns are now saved as a setting. Launching QuickRDP will use the last positions and sizes for the columns.
+ * Linux users now directly use rdesktop instead of tsclient as an RDP launcher.
+
+quickrdp 1.1.1 - 2011-01-15
+-------------------------
+ * "Attach to console" and "Resolution" now resides in "RDP" submenu when right-clicking on a connection.
+ * Bugfixes:
+   - Delete button now actually deletes the connection from the database.
+   - About dialog crashes fixed.
+   - Now possible to select external binary commands for SSH, perl and telnet connections.j
+   - Connection properties window now looks correct on Linux.
+   - SSH and telnet external commands now has a default argument.
+
+quickrdp 1.1 - 2011-01-15
+-------------------------
+ * Perl support added. Perl scripts can be executed against all connections.
+ * Adding dynamic arguments for external commands. %hostname%, %username%, %connectiontype% and %password% can be sent as arguments to commands.
+ * Integrated ping support (will be removed once custom commands are in place).
+
+quickrdp 1.0 - 2011-12-16
+-------------------------
+ * Added support for SSH and telnet connections.
+ * Settings page added. Ability to add specific executable for telnet and putty connections. Also which perl executable we wish to use.
+ * Multi connections supported (to execute several connections at once).
+ * Icon added for the main frame.
+
+quickrdp 0.2 - 2010-10-05
+-------------------------
+ * Lots of settings added for RDP connections.
+ * Bugfixes
+
+quickrdp 0.1 - 2010-09-24
+-------------------------
+ * Initial release.
