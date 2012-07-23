@@ -1,0 +1,7 @@
+To compile and install quickrdp on Linux systems, follow these few steps. Please be aware that wxWidgets libraries are required and are already packaged on most popular Linux distributions. Visit http://www.wxwidgets.org/ for more information.
+
+  1. 'cd' to the directory containing the package source code.
+  2. as root issue 'make' to compile the package and then 'make install' to install all data files to the correct location.
+  3. type 'quickrdp' to launch the program.
+
+If you are building quickrdp for development and don't want to install data files into /usr/share you can issue 'make devel' when compiling. This will define the DATA_PATH used by the project to "", causing it to use the local data folder instead of /usr/share.
