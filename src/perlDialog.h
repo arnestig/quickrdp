@@ -19,68 +19,65 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef RDPFRAME_H
-#define RDPFRAME_H
+#ifndef PERLDIALOG_H
+#define PERLDIALOG_H
 
-#include "generalTabPanel.h"
-#include "resourcesTabPanel.h"
-#include "windowTabPanel.h"
-#include "RDPDatabase.h"
-
-//(*Headers(RDPFrame)
-#include <wx/notebook.h>
+//(*Headers(perlDialog)
+#include <wx/listctrl.h>
 #include <wx/sizer.h>
+#include <wx/stattext.h>
+#include <wx/textctrl.h>
 #include <wx/panel.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
 
-class generalTabPanel;
-class windowTabPanel;
-class resourcesTabPanel;
-
-class RDPFrame: public wxDialog
+class perlDialog: public wxDialog
 {
-	friend class generalTabPanel;
-	friend class windowTabPanel;
-	friend class resourcesTabPanel;
-
 	public:
 
-		RDPFrame(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
-		virtual ~RDPFrame();
+		perlDialog(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+		virtual ~perlDialog();
 
-		//(*Declarations(RDPFrame)
-		wxNotebook* Notebook1;
+		//(*Declarations(perlDialog)
+		wxListCtrl* ListCtrl1;
 		wxButton* Button1;
 		wxPanel* Panel1;
+		wxStaticText* StaticText1;
 		wxButton* Button2;
+		wxButton* Button3;
+		wxTextCtrl* TextCtrl2;
+		wxTextCtrl* TextCtrl1;
 		//*)
-		generalTabPanel* generalTab;
-		windowTabPanel* windowTab;
-        resourcesTabPanel* resourcesTab;
-        void loadRDPConnection( RDPConnection* rdpConnection );
 
 	protected:
 
-		//(*Identifiers(RDPFrame)
-		static const long ID_NOTEBOOK1;
+		//(*Identifiers(perlDialog)
+		static const long ID_LISTCTRL1;
+		static const long ID_STATICTEXT1;
+		static const long ID_TEXTCTRL2;
 		static const long ID_BUTTON1;
 		static const long ID_BUTTON2;
+		static const long ID_BUTTON3;
+		static const long ID_TEXTCTRL1;
 		static const long ID_PANEL1;
 		//*)
 
 	private:
 
-		//(*Handlers(RDPFrame)
-		void onCloseClick(wxCommandEvent& event);
-		void onSaveClick(wxCommandEvent& event);
-		void OnClose(wxCloseEvent& event);
+		//(*Handlers(perlDialog)
+		void OnTextNameInput(wxCommandEvent& event);
+		void OnScriptNameSelect(wxCommandEvent& event);
+		void OnScriptListSelected(wxListEvent& event);
+		void OnScriptListActivated(wxListEvent& event);
+		void OnListScriptDeselected(wxListEvent& event);
+		void OnButtonSave(wxCommandEvent& event);
+		void OnButtonDelete(wxCommandEvent& event);
+		void OnNewScriptButton(wxCommandEvent& event);
+		void OnScriptTextInput(wxCommandEvent& event);
 		//*)
 
-		RDPConnection *rdpConnection;
-		void checkForChanges();
-		void switchConnectionType( ConnectionType::ConnectionType connectionType );
+		void reloadScriptList();
 
 		DECLARE_EVENT_TABLE()
 };

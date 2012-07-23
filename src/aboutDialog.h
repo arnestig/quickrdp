@@ -29,7 +29,6 @@
 #include <wx/stattext.h>
 #include <wx/panel.h>
 #include <wx/statbmp.h>
-#include <wx/button.h>
 #include <wx/dialog.h>
 //*)
 
@@ -42,7 +41,6 @@ class aboutDialog: public wxDialog
 
 		//(*Declarations(aboutDialog)
 		wxStaticText* StaticText2;
-		wxButton* Button1;
 		wxStaticText* StaticText6;
 		wxStaticBitmap* StaticBitmap1;
 		wxPanel* Panel1;
@@ -76,7 +74,6 @@ class aboutDialog: public wxDialog
 	private:
 
 		//(*Handlers(aboutDialog)
-		void OnCloseButton(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

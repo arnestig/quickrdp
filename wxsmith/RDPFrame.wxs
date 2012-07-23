@@ -31,7 +31,7 @@
 									<option>1</option>
 								</object>
 								<object class="sizeritem">
-									<object class="wxButton" name="wxID_CANCEL" variable="Button2" member="yes">
+									<object class="wxButton" name="ID_BUTTON2" variable="Button2" member="yes">
 										<label>Close</label>
 										<handler function="onCloseClick" entry="EVT_BUTTON" />
 									</object>

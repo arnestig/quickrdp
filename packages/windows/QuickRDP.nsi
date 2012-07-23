@@ -1,7 +1,7 @@
     !define APPNAME "QuickRDP"
     !define COMPANYNAME "Tobias Eliasson"
     !ifndef VERSION
-    !define VERSION "1.2.2"
+    !define VERSION "1.1.5"
     !endif
     !define HELPURL "http://sourceforge.net/projects/quickrdp/" # "Support Information" link
     !define UPDATEURL "http://sourceforge.net/projects/quickrdp/" # "Product Updates" link
@@ -41,9 +41,9 @@ functionEnd
 section "install" # Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
 setOutPath "$INSTDIR\data" # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\data\*.*" # Add any other files for the install directory (license files, app data, etc) here
-file "..\..\ChangeLog"
 setOutPath $INSTDIR # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\QuickRDP.exe"
+file "..\..\mingwm10.dll"
 
     writeUninstaller "$INSTDIR\uninstall.exe"
 
@@ -81,6 +81,7 @@ section "uninstall"
     rmDir "$SMPROGRAMS\${APPNAME}"
 
     delete $INSTDIR\QuickRDP.exe
+    delete $INSTDIR\mingwm10.dll
     delete $INSTDIR\QuickRDP.ico
 	delete "$INSTDIR\data\*.*"
     rmDir "$INSTDIR\data"

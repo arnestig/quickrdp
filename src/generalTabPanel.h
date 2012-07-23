@@ -41,7 +41,6 @@ class generalTabPanel: public wxPanel
 		virtual ~generalTabPanel();
 
 		//(*Declarations(generalTabPanel)
-		wxStaticText* StaticText10;
 		wxStaticText* StaticText9;
 		wxTextCtrl* TextCtrl4;
 		wxStaticText* StaticText2;
@@ -51,7 +50,6 @@ class generalTabPanel: public wxPanel
 		wxStaticText* StaticText1;
 		wxStaticText* StaticText3;
 		wxCheckBox* CheckBox1;
-		wxTextCtrl* PortText;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
 		wxTextCtrl* TextCtrl2;
@@ -71,8 +69,6 @@ class generalTabPanel: public wxPanel
 		static const long ID_CHOICE1;
 		static const long ID_STATICTEXT2;
 		static const long ID_TEXTCTRL2;
-		static const long ID_STATICTEXT10;
-		static const long ID_TEXTCTRL1;
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL7;
 		static const long ID_STATICTEXT3;
