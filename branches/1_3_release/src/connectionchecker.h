@@ -83,8 +83,10 @@ class ConnectionChecker : public wxThread
 
     private:
         virtual void *Entry();
+        void getNewTargets();
 
         wxMutex mutex;
+        std::vector< ConnectionTarget* > targetsQueue;
         std::vector< ConnectionTarget* > targets;
         wxEvtHandler *parent;
         struct timeval t;

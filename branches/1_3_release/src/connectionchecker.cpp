@@ -96,12 +96,31 @@ ConnectionChecker::~ConnectionChecker()
 void ConnectionChecker::addTargets( std::vector< ConnectionTarget* > newTargets )
 {
     if ( newTargets.empty() == false ) {
-        mutex.Lock();
-        for ( std::vector< ConnectionTarget* >::iterator it = newTargets.begin(); it != newTargets.end(); ++it ) {
-            targets.push_back( (*it) );
-        }
-        mutex.Unlock();
+	    mutex.Lock();
+	    while ( newTargets.empty() == false ) {
+	        targetsQueue.push_back( newTargets.back() );
+	        newTargets.pop_back();
+	    }
+	    mutex.Unlock();
+	}
+}
+
+void ConnectionChecker::getNewTargets()
+{
+    mutex.Lock();
+    /** add new targets to our processing thread from the queue **/
+    for ( size_t id = 0; id < targetsQueue.size() && id < 10; ++id ) {
+        targets.push_back( targetsQueue[ id ] );
+        targetsQueue.erase( targetsQueue.begin() + id );
     }
+
+    /** if there were no more targets in the queue, send an event to get more targets to the main thread **/
+    if ( targets.empty() == true ) {
+        wxCommandEvent evt_get_more_data( wxEVT_CONNECTION_CHECK_SEND_DATA, wxID_ANY );
+        wxPostEvent( parent, evt_get_more_data );
+    }
+
+    mutex.Unlock();
 }
 
 void *ConnectionChecker::Entry()
@@ -112,15 +131,13 @@ void *ConnectionChecker::Entry()
         bool queueEmpty = targets.empty();
         mutex.Unlock();
         if ( queueEmpty == true ) {
-            /** no more targets in queue, send an event to the main thread to get more targets  **/
-            Sleep( 40 );
-            wxCommandEvent evt_get_more_data( wxEVT_CONNECTION_CHECK_SEND_DATA, wxID_ANY );
-            wxPostEvent( parent, evt_get_more_data );
+            /** get us 10 new targets **/
+            getNewTargets();
+            Sleep( 20 );
         } else {
             mutex.Lock();
             /** Connec to all our designated targets **/
-            int counter = 0;
-            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); ( it != targets.end() && counter < 10 ); ++it ) {
+            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
                 sock_addr.sin_port = htons(wxAtoi( (*it)->getPort() ) );
 				sock_addr.sin_addr.s_addr = 0;
                 if ( inet_addr( (*it)->getHostname().mb_str() ) == INADDR_NONE ) {
@@ -134,12 +151,10 @@ void *ConnectionChecker::Entry()
                 (*it)->socket = socket( AF_INET, SOCK_STREAM, 0 );
                 ioctlsocket( (*it)->socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
                 connect( (*it)->socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
-                counter++;
             }
 
             /** select() from all sockets and check if we're connected or not.. this will tell if the port is open or not. **/
-            counter = 0;
-            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); ( it != targets.end() && counter < 10 ); ++it ) {
+            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
                 fd_set wfds;
                 FD_ZERO(&wfds);
                 FD_SET((*it)->socket, &wfds);
@@ -153,19 +168,15 @@ void *ConnectionChecker::Entry()
                     (*it)->setStatus( 1 );
                     closesocket( (*it)->socket );
                 }
-                counter++;
             }
-
             /** send event back to main thread about status of our connections **/
-            counter = 0;
-            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); ( it != targets.end() && counter < 10 ); ) {
+            for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ) {
                 wxCommandEvent evt( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );
                 evt.SetInt( (*it)->getStatus() );
                 evt.SetString( (*it)->getFilename() );
                 wxPostEvent( parent, evt );
                 delete (*it);
                 it = targets.erase( it );
-                counter++;
             }
             mutex.Unlock();
         }
