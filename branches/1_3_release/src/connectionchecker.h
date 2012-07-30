@@ -34,8 +34,9 @@
 	#include <sys/ioctl.h>
 	#include <arpa/inet.h>
 #elif defined(WIN32)
-    #include <wx/wx.h>
 	#include <WinSock2.h>
+    #include <windows.h>
+    #include <wx/msw/winundef.h>
 #endif
 
 #if defined(__unix__)
