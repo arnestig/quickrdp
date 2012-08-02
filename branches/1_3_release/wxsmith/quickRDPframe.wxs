@@ -215,6 +215,10 @@
 				<accel>DEL</accel>
 				<handler function="OnPopupMenuDelete" entry="EVT_MENU" />
 			</object>
+			<object class="wxMenuItem" name="ID_POPUPMENUMANUALCC" variable="MenuItem16" member="yes">
+				<label>Connection check</label>
+				<handler function="OnPopupMenuManualCC" entry="EVT_MENU" />
+			</object>
 			<object class="separator" />
 			<object class="wxMenu" name="POPUPMENURDP" variable="MenuItem19" member="yes">
 				<label>RDP</label>

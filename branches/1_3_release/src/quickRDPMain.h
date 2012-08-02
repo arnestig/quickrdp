@@ -83,6 +83,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuSearchForUpdates(wxCommandEvent& event);
         void OnTextCtrlInput(wxCommandEvent& event);
         void OnNotebook1PageChanged(wxNotebookEvent& event);
+        void OnPopupMenuManualCC(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnNewVersionTextClick(wxCommandEvent& event);
@@ -113,6 +114,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_DUPLICATE;
         static const long ID_POPUPMENU_DELETE;
+        static const long ID_POPUPMENUMANUALCC;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;

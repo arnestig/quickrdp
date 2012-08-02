@@ -62,6 +62,7 @@ const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DUPLICATE = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DELETE = wxNewId();
+const long quickRDPFrame::ID_POPUPMENUMANUALCC = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUCONSOLE = wxNewId();
 const long quickRDPFrame::ID_MENUDEFAULT = wxNewId();
 const long quickRDPFrame::ID_MENUFULLSCREEN = wxNewId();
@@ -100,6 +101,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
+    wxMenuItem* MenuItem16;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
 
@@ -197,6 +199,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     PopupMenu1.Append(MenuItem20);
     MenuItem21 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DELETE, _("Delete\tDEL"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem21);
+    MenuItem16 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUMANUALCC, _("Connection check"), wxEmptyString, wxITEM_NORMAL);
+    PopupMenu1.Append(MenuItem16);
     PopupMenu1.AppendSeparator();
     MenuItem19 = new wxMenu();
     MenuItem4 = new wxMenuItem(MenuItem19, ID_POPUPMENUCONSOLE, _("Attach to console"), wxEmptyString, wxITEM_CHECK);
@@ -228,7 +232,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
-    Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlInput);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnListCtrl1ItemSelect);
@@ -247,6 +250,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENU_DUPLICATE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDuplicate);
     Connect(ID_POPUPMENU_DELETE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDelete);
+    Connect(ID_POPUPMENUMANUALCC,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuManualCC);
     Connect(ID_POPUPMENUCONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem4Selected);
     Connect(ID_MENUDEFAULT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemDefaultClick);
     Connect(ID_MENUFULLSCREEN,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemFullscreenClick);
@@ -590,7 +594,7 @@ void quickRDPFrame::OnListCtrl1ItemRClick(wxListEvent& WXUNUSED(event) )
 
     /** insert a seperator if we added any favorite commands **/
     if ( favoriteCommandMenuItems.size() > 0 ) {
-        wxMenuItem *separator = PopupMenu1.InsertSeparator( favoriteCommandMenuItems.size() + 5 );
+        wxMenuItem *separator = PopupMenu1.InsertSeparator( favoriteCommandMenuItems.size() + 4 );
         favoriteCommandMenuItems.push_back( separator );
     }
 
@@ -1136,6 +1140,11 @@ void quickRDPFrame::updatePopupmenuShortcuts()
     if ( dupConMenu != NULL ) {
         dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
     }
+
+    wxMenuItem *manualCCMenu = PopupMenu1.FindItem( ID_POPUPMENUMANUALCC );
+    if ( manualCCMenu != NULL ) {
+        manualCCMenu->SetText( wxT("Connection check\t") + quickRDP::Keybinder::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getManualCCShortcut().first ) );
+    }
 }
 
 void quickRDPFrame::updateConnectionCheckerStatus()
@@ -1176,4 +1185,10 @@ void quickRDPFrame::OnNotebook1PageChanged(wxNotebookEvent& WXUNUSED(event) )
     loadRDPFromDatabase();
     TextCtrl1->ChangeValue( Notebook1->GetPageText( Notebook1->GetSelection() ) );
     ListCtrl1->SetFocus();
+}
+
+void quickRDPFrame::OnPopupMenuManualCC(wxCommandEvent& WXUNUSED(event) )
+{
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( ListCtrl1 );
+    manuallyDoConnectionCheck( connections );
 }
