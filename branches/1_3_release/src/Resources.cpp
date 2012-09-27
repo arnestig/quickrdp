@@ -37,9 +37,7 @@ Resources::Resources()
 
 Resources::~Resources()
 {
-	/** remove our thread gracefully **/
-	connectionChecker->Delete();
-
+	delete connectionChecker;
 	delete settings;
 	delete connectionDatabase;
 	delete commandDatabase;
@@ -84,16 +82,16 @@ ConnectionChecker* Resources::getConnectionChecker() const
 void Resources::addConnectionChecker( wxEvtHandler *parent )
 {
     if ( connectionChecker == NULL ) {
-        connectionChecker = new ConnectionChecker( parent );
+        connectionChecker  = new ConnectionChecker( parent );
         if ( connectionChecker->Create() != wxTHREAD_NO_ERROR ) {
             delete connectionChecker;
             connectionChecker = NULL;
-            wxMessageBox( wxT("Error creating ConnectionChecker thread!"), wxT("Error!") );
+            wxMessageBox( wxT("Error creating ConnectionChecker!"), wxT("Error!") );
         } else {
             if ( connectionChecker->Run() != wxTHREAD_NO_ERROR ) {
                 delete connectionChecker;
                 connectionChecker = NULL;
-                wxMessageBox( wxT("Error while running ConnectionChecker thread!") );
+                wxMessageBox( wxT("Error while running ConnectionChecker!") );
             }
         }
     }

@@ -50,6 +50,8 @@ BEGIN_DECLARE_EVENT_TYPES()
     DECLARE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA, -1 )
 END_DECLARE_EVENT_TYPES()
 
+class ConnectionCheckerWorkerThread;
+
 class ConnectionTarget
 {
     public:
@@ -61,17 +63,12 @@ class ConnectionTarget
         wxString getFilename() const;
         int getStatus() const;
         void setStatus( int status );
-        long getLastChecked() const;
-        void setLastChecked( long lastchecked );
-
-        SOCKET socket;
 
     private:
         wxString hostname;
         wxString port;
         wxString filename;
         int status;
-        long lastchecked;
 };
 
 class ConnectionChecker : public wxThread
@@ -81,18 +78,39 @@ class ConnectionChecker : public wxThread
         ~ConnectionChecker();
 
         void addTargets( std::vector< ConnectionTarget* > newTargets );
+        void publishTarget( ConnectionTarget*& target );
+        void postEvent( wxCommandEvent event );
 
     private:
         virtual void *Entry();
-        void getNewTargets();
 
+        const static unsigned int numWorkers = 4;
+        ConnectionCheckerWorkerThread *workerThreads[ numWorkers ];
+        wxMutex eventMutex;
         wxMutex mutex;
-        std::vector< ConnectionTarget* > targetsQueue;
         std::vector< ConnectionTarget* > targets;
         wxEvtHandler *parent;
+        wxSemaphore *queue;
+};
+
+class ConnectionCheckerWorkerThread : public wxThread
+{
+    public:
+        ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue );
+        ~ConnectionCheckerWorkerThread();
+
+    private:
+        virtual void *Entry();
+        void getNewTarget();
+
+        unsigned int workCompleted;
         struct timeval t;
         struct sockaddr_in sock_addr;
         unsigned long socket_mode;
+        ConnectionChecker *parent;
+        wxSemaphore *queue;
+        ConnectionTarget *target;
+        SOCKET m_socket;
 };
 
 #endif
