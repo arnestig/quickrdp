@@ -118,8 +118,6 @@ void *ConnectionChecker::Entry()
 
 void ConnectionChecker::addTargets( std::vector< ConnectionTarget* > newTargets )
 {
-    setEventSentBack( true );
-
     if ( newTargets.empty() == false ) {
 	    mutex.Lock();
 	    while ( newTargets.empty() == false ) {
@@ -220,7 +218,6 @@ void *ConnectionCheckerWorkerThread::Entry()
             parent->postEvent( event );
 
             closesocket( m_socket );
-            shutdown( m_socket, SD_BOTH );
 
             delete target;
             target = NULL;
