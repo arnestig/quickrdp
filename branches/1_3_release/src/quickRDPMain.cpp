@@ -101,7 +101,6 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
-    wxMenuItem* MenuItem16;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
 
@@ -1112,9 +1111,6 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     if ( itemIndex != -1 ) {
         RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
         if ( rdpConnection != NULL ) {
-            time_t seconds;
-            seconds = time (NULL);
-            rdpConnection->setLastChecked( seconds );
             if ( rdpConnection->getConnectionStatus() != event.GetInt() ) {
                 rdpConnection->setConnectionStatus( event.GetInt() );
                 ListCtrl1->SetItemImage( itemIndex, event.GetInt() );
@@ -1155,14 +1151,15 @@ void quickRDPFrame::updateConnectionCheckerStatus()
         seconds = time (NULL);
         RDPConnection *rdpConnection = NULL;
         ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
-        std::vector< ConnectionTarget* > connectionList;
+        std::vector< RDPConnection* > connectionList;
         /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
         for ( long id = ListCtrl1->GetTopItem(); id < ListCtrl1->GetCountPerPage() + ListCtrl1->GetTopItem()+1; ++id  ) {
             rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
             if ( rdpConnection != NULL ) {
                 /** make sure we update only targets who needs to be updated **/
-                if ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) {
-                    connectionList.push_back( new ConnectionTarget( rdpConnection->getHostname(), rdpConnection->getPort(), rdpConnection->getFilename() ) );
+                if ( ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) && rdpConnection->isConnectionCheckerRunning() == false ) {
+                    rdpConnection->setConnectionCheckerRunning( true );
+                    connectionList.push_back( rdpConnection );
                 }
             }
         }
@@ -1173,9 +1170,9 @@ void quickRDPFrame::updateConnectionCheckerStatus()
 void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > connections )
 {
     ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
-    std::vector< ConnectionTarget* > connectionList;
-    for ( std::vector< RDPConnection* >::const_iterator it = connections.begin(); it != connections.end(); ++it ) {
-        connectionList.push_back( new ConnectionTarget( (*it)->getHostname(), (*it)->getPort(), (*it)->getFilename() ) );
+    std::vector< RDPConnection* > connectionList;
+    for ( std::vector< RDPConnection* >::iterator it = connections.begin(); it != connections.end(); ++it ) {
+        connectionList.push_back( (*it) );
     }
     connectionChecker->addTargets( connectionList );
 }

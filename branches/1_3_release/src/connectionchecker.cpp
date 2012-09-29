@@ -28,43 +28,6 @@
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 
-ConnectionTarget::ConnectionTarget( wxString hostname, wxString port, wxString filename )
-    :   hostname( hostname ),
-        port( port ),
-        filename( filename ),
-        status( 0 )
-{
-}
-
-ConnectionTarget::~ConnectionTarget()
-{
-}
-
-wxString ConnectionTarget::getHostname() const
-{
-    return hostname;
-}
-
-wxString ConnectionTarget::getPort() const
-{
-    return port;
-}
-
-wxString ConnectionTarget::getFilename() const
-{
-    return filename;
-}
-
-int ConnectionTarget::getStatus() const
-{
-    return status;
-}
-
-void ConnectionTarget::setStatus( int status )
-{
-    this->status = status;
-}
-
 ConnectionChecker::ConnectionChecker( wxEvtHandler *parent )
     :   wxThread( wxTHREAD_DETACHED),
         parent( parent ),
@@ -82,7 +45,7 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent )
             if ( workerThreads[ threadid ]->Run() != wxTHREAD_NO_ERROR ) {
                 delete workerThreads[ threadid ];
                 workerThreads[ threadid ] = NULL;
-                wxMessageBox( wxT("Error while running ConnectionCheckerWorkerThread!") );
+                wxMessageBox( wxT("Error while running ConnectionCheckerWorkerThread!"), wxT("Error!") );
             }
         }
     }
@@ -97,9 +60,6 @@ ConnectionChecker::~ConnectionChecker()
 
     /** remove all our targets left behind **/
 	mutex.Lock();
-	for ( std::vector< ConnectionTarget* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
-		delete (*it);
-	}
 	targets.clear();
 	mutex.Unlock();
 	delete queue;
@@ -116,24 +76,27 @@ void *ConnectionChecker::Entry()
 }
 
 
-void ConnectionChecker::addTargets( std::vector< ConnectionTarget* > newTargets )
+void ConnectionChecker::addTargets( std::vector< RDPConnection* > newTargets )
 {
     if ( newTargets.empty() == false ) {
 	    mutex.Lock();
 	    while ( newTargets.empty() == false ) {
-	        targets.push_back( newTargets.back() );
-            newTargets.pop_back();
-            queue->Post();
+	        RDPConnection *target = newTargets.back();
+	        newTargets.pop_back();
+	        if ( targets[ target->getFilename() ] == NULL ) {
+                targets[ target->getFilename() ] = target;
+                queue->Post();
+	        }
         }
 	    mutex.Unlock();
 	}
 }
 
-void ConnectionChecker::publishTarget( ConnectionTarget*& target )
+void ConnectionChecker::publishTarget( RDPConnection*& target )
 {
     mutex.Lock();
     if ( targets.empty() == false ) {
-        target = targets.front();
+        target = targets.begin()->second;
         targets.erase( targets.begin() );
     }
     mutex.Unlock();
@@ -196,10 +159,8 @@ void *ConnectionCheckerWorkerThread::Entry()
             }
 
             m_socket = socket( AF_INET, SOCK_STREAM, 0 );
-            //std::cout << "socket created = " << m_socket << std::endl;
             ioctlsocket( m_socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
             bool optval = true;
-            //setsockopt( m_socket, SOL_SOCKET, SO_REUSEADDR, (char *) optval, sizeof(optval) );
             connect( m_socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
 
             fd_set wfds;
@@ -219,12 +180,15 @@ void *ConnectionCheckerWorkerThread::Entry()
 
             closesocket( m_socket );
 
-            delete target;
+            time_t seconds;
+            seconds = time (NULL);
+            target->setLastChecked( seconds );
+            target->setConnectionCheckerRunning( false );
             target = NULL;
             workCompleted++;
         }
     }
-    std::cout << "Thread " << GetCurrentId() << " done, targets scanned: " << workCompleted << std::endl;
+
     return 0;
 }
 

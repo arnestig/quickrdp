@@ -52,43 +52,24 @@ END_DECLARE_EVENT_TYPES()
 
 class ConnectionCheckerWorkerThread;
 
-class ConnectionTarget
-{
-    public:
-        ConnectionTarget( wxString hostname, wxString port, wxString filename );
-        ~ConnectionTarget();
-
-        wxString getHostname() const;
-        wxString getPort() const;
-        wxString getFilename() const;
-        int getStatus() const;
-        void setStatus( int status );
-
-    private:
-        wxString hostname;
-        wxString port;
-        wxString filename;
-        int status;
-};
-
 class ConnectionChecker : public wxThread
 {
     public:
         ConnectionChecker( wxEvtHandler *parent );
         ~ConnectionChecker();
 
-        void addTargets( std::vector< ConnectionTarget* > newTargets );
-        void publishTarget( ConnectionTarget*& target );
+        void addTargets( std::vector< RDPConnection* > newTargets );
+        void publishTarget( RDPConnection*& target );
         void postEvent( wxCommandEvent event );
 
     private:
         virtual void *Entry();
 
-        const static unsigned int numWorkers = 4;
+        const static unsigned int numWorkers = 3;
         ConnectionCheckerWorkerThread *workerThreads[ numWorkers ];
         wxMutex eventMutex;
         wxMutex mutex;
-        std::vector< ConnectionTarget* > targets;
+        std::map< wxString, RDPConnection* > targets;
         wxEvtHandler *parent;
         wxSemaphore *queue;
 };
@@ -109,7 +90,7 @@ class ConnectionCheckerWorkerThread : public wxThread
         unsigned long socket_mode;
         ConnectionChecker *parent;
         wxSemaphore *queue;
-        ConnectionTarget *target;
+        RDPConnection *target;
         SOCKET m_socket;
 };
 

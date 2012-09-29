@@ -41,6 +41,7 @@ RDPConnection::RDPConnection( wxString filename )
         diskmapping( wxT("0") ),
         port( wxT("-1") ),
         connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
+        connectionCheckerRunning( false ),
         lastchecked( 0 )
 {
     parseFile();
@@ -182,6 +183,11 @@ int RDPConnection::getConnectionStatus() const
     return connectionStatus;
 }
 
+bool RDPConnection::isConnectionCheckerRunning() const
+{
+    return connectionCheckerRunning;
+}
+
 long RDPConnection::getLastChecked() const
 {
     return lastchecked;
@@ -306,6 +312,11 @@ void RDPConnection::setPort( wxString port )
 void RDPConnection::setConnectionStatus( int connectionStatus )
 {
     this->connectionStatus = connectionStatus;
+}
+
+void RDPConnection::setConnectionCheckerRunning( bool connectionCheckerRunning )
+{
+    this->connectionCheckerRunning = connectionCheckerRunning;
 }
 
 void RDPConnection::setLastChecked( long lastchecked )

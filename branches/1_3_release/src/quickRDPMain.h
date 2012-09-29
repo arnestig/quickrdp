@@ -160,6 +160,7 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
         QuickRDPBitmapButton* BitmapButton2;
+        wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         wxMenuItem* MenuItem18;
         //*)
