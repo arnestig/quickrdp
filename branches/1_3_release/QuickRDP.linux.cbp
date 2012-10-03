@@ -60,6 +60,8 @@
 		<Unit filename="src/VersionChecker.h" />
 		<Unit filename="src/aboutDialog.cpp" />
 		<Unit filename="src/aboutDialog.h" />
+		<Unit filename="src/connectionchecker.cpp" />
+		<Unit filename="src/connectionchecker.h" />
 		<Unit filename="src/generalTabPanel.cpp" />
 		<Unit filename="src/generalTabPanel.h" />
 		<Unit filename="src/quickRDPApp.cpp" />
