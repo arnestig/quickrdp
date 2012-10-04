@@ -228,6 +228,8 @@ void CommandDialog::reloadCommandList()
     TextShortcut->Clear();
     RemoveButton->Enable( false );
     editButton->Enable( false );
+    curShortcutKey = 0;
+    curShortcutMod = 0;
 
 }
 
@@ -248,6 +250,8 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& WXUNUSED(event) )
             favoriteCheckbox->SetValue( curCommand->getFavorite() );
             safetyCheckbox->SetValue( curCommand->getSafety() );
             TextShortcut->ChangeValue( quickRDP::Keybinder::ModifierString( curCommand->getShortcutModifier() ) << quickRDP::Keybinder::KeycodeString(curCommand->getShortcutKey() ) );
+            curShortcutMod = curCommand->getShortcutModifier();
+            curShortcutKey = curCommand->getShortcutKey();
         }
     }
 }

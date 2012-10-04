@@ -123,27 +123,6 @@
 							<object class="wxNotebook" name="ID_NOTEBOOK1" variable="Notebook1" member="yes">
 								<style>wxNO_BORDER</style>
 								<handler function="OnNotebook1PageChanged" entry="EVT_NOTEBOOK_PAGE_CHANGED" />
-								<object class="notebookpage">
-									<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
-										<style>wxTAB_TRAVERSAL|wxWANTS_CHARS</style>
-										<object class="wxBoxSizer" variable="BoxSizer8" member="no">
-											<object class="sizeritem">
-												<object class="wxListCtrl" name="ID_LISTCTRL1" variable="ListCtrl1" member="yes">
-													<size>566,278</size>
-													<extra_code>ListCtrl1-&gt;InsertColumn( 0, wxT(&quot;Host&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 1, wxT(&quot;Username&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 2, wxT(&quot;Use console&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 3, wxT(&quot;Resolution&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 4, wxT(&quot;Comment&quot;) );</extra_code>
-													<style>wxLC_REPORT</style>
-													<handler function="OnListCtrl1ItemSelect" entry="EVT_LIST_ITEM_SELECTED" />
-													<handler function="OnListCtrl1ItemDeselect" entry="EVT_LIST_ITEM_DESELECTED" />
-													<handler function="OnListCtrl1ItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
-													<handler function="OnListCtrl1ItemRClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
-													<handler function="OnListCtrl1ColumnClick" entry="EVT_LIST_COL_CLICK" />
-												</object>
-												<flag>wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-												<option>1</option>
-											</object>
-										</object>
-									</object>
-								</object>
 							</object>
 							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<border>5</border>
