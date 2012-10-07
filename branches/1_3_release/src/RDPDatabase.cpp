@@ -233,76 +233,91 @@ wxString RDPConnection::getColorsString() const
 
 void RDPConnection::setConnectionType( ConnectionType::ConnectionType connectionType )
 {
+    wxMutexLocker lock(mutex);
     this->connectionType = connectionType;
 }
 
 void RDPConnection::setHostname( wxString hostname )
 {
+    wxMutexLocker lock(mutex);
     this->hostname = hostname;
 }
 
 void RDPConnection::setUsername( wxString username )
 {
+    wxMutexLocker lock(mutex);
     this->username = username;
 }
 
 void RDPConnection::setPassword( wxString password )
 {
+    wxMutexLocker lock(mutex);
     this->password = password;
 }
 
 void RDPConnection::setDomain( wxString domain )
 {
+    wxMutexLocker lock(mutex);
     this->domain = domain;
 }
 
 void RDPConnection::setComment( wxString comment )
 {
+    wxMutexLocker lock(mutex);
     this->comment = comment;
 }
 
 void RDPConnection::setClientHostname( wxString clienthostname )
 {
+    wxMutexLocker lock(mutex);
     this->clienthostname = clienthostname;
 }
 
 void RDPConnection::setDesktopHeight( wxString desktopheight )
 {
+    wxMutexLocker lock(mutex);
     this->desktopheight = desktopheight;
 }
 
 void RDPConnection::setDesktopWidth( wxString desktopwidth )
 {
+    wxMutexLocker lock(mutex);
     this->desktopwidth = desktopwidth;
 }
 
 void RDPConnection::setDesktopBpp( wxString desktopbpp )
 {
+    wxMutexLocker lock(mutex);
     this->desktopbpp = desktopbpp;
 }
 
 void RDPConnection::setScreenMode( wxString screenmode )
 {
+    wxMutexLocker lock(mutex);
     this->screenmode = screenmode;
 }
 
 void RDPConnection::setConsole( wxString console )
 {
+    wxMutexLocker lock(mutex);
     this->console = console;
 }
 
 void RDPConnection::setDiskMapping( wxString diskmapping )
 {
+    wxMutexLocker lock(mutex);
     this->diskmapping = diskmapping;
 }
 
 void RDPConnection::setSoundMode( wxString soundmode )
 {
+    wxMutexLocker lock(mutex);
     this->soundmode = soundmode;
 }
 
 void RDPConnection::setPort( wxString port )
 {
+    wxMutexLocker lock(mutex);
     if (( port == wxT("3389") && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
         ( port == wxT("23") && getConnectionType() == ConnectionType::TELNET ) ||
         ( port == wxT("22") && getConnectionType() == ConnectionType::SSH ) ||
@@ -316,6 +331,7 @@ void RDPConnection::setPort( wxString port )
 
 void RDPConnection::setConnectionStatus( int connectionStatus )
 {
+    wxMutexLocker lock(mutex);
     this->connectionStatus = connectionStatus;
 }
 
