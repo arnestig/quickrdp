@@ -43,8 +43,7 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&ConnectionList::OnColumnClick);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_END_DRAG,(wxObjectEventFunction)&ConnectionList::OnColumnEndDrag);
 	//*)
-	ListCtrl1->InsertColumn( 5, wxT("wtf") );
-    ListCtrl1->InsertColumn( 6, wxT("wtfxx") );
+
 	UpdateColumnWidth();
 }
 
