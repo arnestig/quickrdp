@@ -88,6 +88,7 @@ class quickRDPFrame: public wxFrame
         void OnTextCtrlInput(wxCommandEvent& event);
         void OnNotebook1PageChanged(wxNotebookEvent& event);
         void OnPopupMenuManualCC(wxCommandEvent& event);
+        void OnEditButtonBitmapClick(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnNewVersionTextClick(wxCommandEvent& event);
@@ -181,7 +182,7 @@ class quickRDPFrame: public wxFrame
 
         void saveFrameSettings();
         void loadFrameSettings();
-        void showDialog( wxDialog* dialog );
+        int showDialog( wxDialog* dialog );
         bool wantGlobalHotkeys() const;
         void checkForVersionChangesAndNotifyUser( wxString oldVersion );
         void updateConnectionCheckerStatus();

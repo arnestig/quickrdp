@@ -83,6 +83,7 @@ RDPFrame::RDPFrame(wxWindow* parent,wxWindowID id,const wxPoint& WXUNUSED(pos),c
     generalTab->setOwner( this );
     windowTab->setOwner( this );
     resourcesTab->setOwner( this );
+    SetReturnCode( wxCANCEL );
 }
 
 RDPFrame::~RDPFrame()
@@ -330,6 +331,7 @@ void RDPFrame::onSaveClick(wxCommandEvent& WXUNUSED(event) )
     rdpConnection->saveFile();
     Button1->Disable();
     Button2->SetFocus();
+    SetReturnCode( wxOK );
     Close();
 }
 

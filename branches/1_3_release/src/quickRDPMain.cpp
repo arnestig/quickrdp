@@ -216,6 +216,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
+    Connect(ID_BITMAPBUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnEditButtonBitmapClick);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlInput);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_NOTEBOOK1,wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED,(wxObjectEventFunction)&quickRDPFrame::OnNotebook1PageChanged);
@@ -272,10 +273,9 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     #endif
 
     wxPanel *newPanel = new ConnectionList(Notebook1, this, wxID_ANY );
-    Notebook1->AddPage(newPanel, wxT(""), true );
+    Notebook1->AddPage(newPanel, wxT(""), true ); /** an event will be generated which will cause loadRDPFromDatabase() to be called. **/
     getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
 
-    loadRDPFromDatabase();
     loadFrameSettings();
     if ( wxFileExists( Resources::Instance()->getSettings()->getDataPath() + wxT("ChangeLog") ) ) {
         const long newMenuId = wxNewId();
@@ -334,8 +334,9 @@ void quickRDPFrame::OnNewButtonClick(wxCommandEvent& WXUNUSED(event) )
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
     newFrame->loadRDPConnection( Resources::Instance()->getConnectionDatabase()->addRDPConnection( filename ) );
-    showDialog( newFrame );
-    loadRDPFromDatabase();
+    if ( showDialog( newFrame ) != wxCANCEL ) {
+        loadRDPFromDatabase(); /** only reload database if we saved anything.. (clicked save in this dialog ) **/
+    }
     delete newFrame;
     if ( getConnectionList()->GetSelectedItemCount() <= 0 ) {
         BitmapButton2->Disable();
@@ -371,8 +372,9 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& WXUNUSED(event) , RDPConne
     if ( curCon != NULL ) {
         RDPFrame *newFrame = new RDPFrame( this, 0 );
         newFrame->loadRDPConnection( curCon );
-        showDialog( newFrame );
-        loadRDPFromDatabase();
+        if ( showDialog( newFrame ) != wxCANCEL ) {
+            loadRDPFromDatabase(); /** only reload database if we changed anything.. (clicked save in this dialog ) **/
+        }
         delete newFrame;
         if ( getConnectionList()->GetSelectedItemCount() <= 0 ) {
             BitmapButton2->Disable();
@@ -461,6 +463,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
         wxString filename = quickRDP::FileParser::generateFilename();
         RDPConnection *myNewCon = Resources::Instance()->getConnectionDatabase()->duplicateRDPConnection( filename, curCon );
         OnEditButtonClick( event, myNewCon );
+        loadRDPFromDatabase();
     }
 }
 
@@ -496,27 +499,15 @@ void quickRDPFrame::clearPopupMenuChoices()
     MenuItem14->Check( false );
 }
 
-void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& WXUNUSED(event) )
+void quickRDPFrame::OnMenuItem3Selected(wxCommandEvent& event )
 {
-    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
-    // popup properties choice
-    if ( curCon != NULL ) {
-        RDPFrame *newFrame = new RDPFrame( this, 0 );
-        newFrame->loadRDPConnection( curCon );
-        showDialog( newFrame );
-
-        loadRDPFromDatabase();
-        delete newFrame;
-        if ( getConnectionList()->GetSelectedItemCount() <= 0 ) {
-            BitmapButton2->Disable();
-            BitmapButton3->Disable();
-            BitmapButton4->Disable();
-        }
-    }
+    /** Popup menu for Properties of a connection **/
+    OnEditButtonClick( event );
 }
 
 void quickRDPFrame::OnMenuItem4Selected(wxCommandEvent& WXUNUSED(event) )
 {
+    /** Function for "Attach to console" popup menu item. **/
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
     if ( curCon != NULL ) {
         long itemIndex = -1;
@@ -906,11 +897,12 @@ bool quickRDPFrame::wantGlobalHotkeys() const
     return globalhotkeys;
 }
 
-void quickRDPFrame::showDialog( wxDialog* dialog )
+int quickRDPFrame::showDialog( wxDialog* dialog )
 {
     globalhotkeys = false;
-    dialog->ShowModal();
+    int retval = dialog->ShowModal();
     globalhotkeys = true;
+    return retval;
 }
 
 void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
@@ -1185,4 +1177,9 @@ void quickRDPFrame::UpdateFrameWidthOnAllListConnections()
             }
         }
     #endif
+}
+
+void quickRDPFrame::OnEditButtonBitmapClick(wxCommandEvent& event)
+{
+    OnEditButtonClick( event );
 }
