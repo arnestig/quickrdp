@@ -21,6 +21,7 @@
 
 #include <vector>
 #include <wx/string.h>
+#include <wx/thread.h>
 
 #ifndef __RDP_DATABASE_H__
 #define __RDP_DATABASE_H__
@@ -63,8 +64,8 @@ class RDPConnection
         ~RDPConnection();
 
         ConnectionType::ConnectionType getConnectionType() const;
-        wxString getFilename() const;
-        wxString getHostname() const;
+        wxString getFilename();
+        wxString getHostname();
         wxString getUsername() const;
         wxString getPassword() const;
         wxString getDomain() const;
@@ -77,11 +78,13 @@ class RDPConnection
         wxString getConsole() const;
         wxString getSoundMode() const;
         wxString getDiskMapping() const;
-        wxString getPort() const;
+        wxString getPort();
         wxString getPortTrueValue() const; // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
         int getConnectionStatus() const;
         bool isConnectionCheckerRunning() const;
         long getLastChecked() const;
+        void Lock(); /** for mutex locking **/
+        void Unlock(); /** for mutex locking **/
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -111,7 +114,7 @@ class RDPConnection
 
         void saveFile();
 
-        bool doesRDPHasString( wxString searchString ) const;
+        bool doesRDPHasString( wxString searchString );
 
     private:
         void parseFile();
@@ -120,6 +123,7 @@ class RDPConnection
         int connectionStatus;
         bool connectionCheckerRunning;
         long lastchecked; /** seconds since a connection check was done. (seconds since 1970-01-01 00:00:00) **/
+        wxMutex mutex;
 };
 
 class RDPDatabase

@@ -79,8 +79,9 @@ ConnectionType::ConnectionType RDPConnection::getConnectionType() const
     return connectionType;
 }
 
-wxString RDPConnection::getHostname() const
+wxString RDPConnection::getHostname()
 {
+    wxMutexLocker lock(mutex);
     return hostname;
 }
 
@@ -109,8 +110,9 @@ wxString RDPConnection::getClientHostname() const
     return clienthostname;
 }
 
-wxString RDPConnection::getFilename() const
+wxString RDPConnection::getFilename()
 {
+    wxMutexLocker lock(mutex);
     return filename;
 }
 
@@ -149,28 +151,31 @@ wxString RDPConnection::getDiskMapping() const
     return diskmapping;
 }
 
-wxString RDPConnection::getPort() const
+wxString RDPConnection::getPort()
 {
-    if ( getPortTrueValue() == wxT("-1") ) {
+    wxString retval;
+    wxMutexLocker lock(mutex);
+    if ( port == wxT("-1") ) {
         switch ( getConnectionType() ) {
             case ConnectionType::RDP:
-                return wxT("3389");
+                retval = wxT("3389");
             break;
             case ConnectionType::TELNET:
-                return wxT("23");
+                retval = wxT("23");
             break;
             case ConnectionType::SSH:
-                return wxT("22");
+                retval = wxT("22");
             break;
             case ConnectionType::VNC:
-                return wxT("5900");
+                retval = wxT("5900");
             break;
             default:
-                return wxT("");
+                retval = wxT("");
         }
     } else {
-        return port;
+        retval = port;
     }
+    return retval;
 }
 
 wxString RDPConnection::getPortTrueValue() const
@@ -316,11 +321,13 @@ void RDPConnection::setConnectionStatus( int connectionStatus )
 
 void RDPConnection::setConnectionCheckerRunning( bool connectionCheckerRunning )
 {
+    wxMutexLocker lock(mutex);
     this->connectionCheckerRunning = connectionCheckerRunning;
 }
 
 void RDPConnection::setLastChecked( long lastchecked )
 {
+    wxMutexLocker lock(mutex);
     this->lastchecked = lastchecked;
 }
 
@@ -485,7 +492,7 @@ void RDPConnection::parseFile()
     }
 }
 
-bool RDPConnection::doesRDPHasString( wxString searchString ) const
+bool RDPConnection::doesRDPHasString( wxString searchString )
 {
     bool foundAnything = false;
     if ( quickRDP::FileParser::searchForString( std::string( getUsername().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }

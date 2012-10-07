@@ -83,8 +83,9 @@ void ConnectionChecker::addTargets( std::vector< RDPConnection* > newTargets )
 	    while ( newTargets.empty() == false ) {
 	        RDPConnection *target = newTargets.back();
 	        newTargets.pop_back();
-	        if ( targets[ target->getFilename() ] == NULL ) {
-                targets[ target->getFilename() ] = target;
+	        wxString filename = target->getFilename();
+	        if ( targets[ filename ] == NULL ) {
+                targets[ filename ] = target;
                 queue->Post();
 	        }
         }
@@ -147,20 +148,22 @@ void *ConnectionCheckerWorkerThread::Entry()
         } else {
             /** Connect to our current target **/
             wxCommandEvent event( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );
-            sock_addr.sin_port = htons(wxAtoi( target->getPort() ) );
+            int port = wxAtoi( target->getPort() );
+            wxString hostname = target->getHostname();
+            wxString filename = target->getFilename();
+            sock_addr.sin_port = htons( port );
             sock_addr.sin_addr.s_addr = 0;
-            if ( inet_addr( target->getHostname().mb_str() ) == INADDR_NONE ) {
-                host = gethostbyname( target->getHostname().mb_str() );
+            if ( inet_addr( hostname.mb_str() ) == INADDR_NONE ) {
+                host = gethostbyname( hostname.mb_str() );
                 if ( host != NULL ) {
                     sock_addr.sin_addr.s_addr = *((unsigned long*) host->h_addr_list[0] );
                 }
             } else {
-                sock_addr.sin_addr.s_addr = inet_addr( target->getHostname().mb_str() );
+                sock_addr.sin_addr.s_addr = inet_addr( hostname.mb_str() );
             }
 
             m_socket = socket( AF_INET, SOCK_STREAM, 0 );
             ioctlsocket( m_socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
-            bool optval = true;
             connect( m_socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
 
             fd_set wfds;
@@ -174,7 +177,7 @@ void *ConnectionCheckerWorkerThread::Entry()
                 event.SetInt( 1 );
             }
 
-            event.SetString( target->getFilename() );
+            event.SetString( filename );
 
             parent->postEvent( event );
 
