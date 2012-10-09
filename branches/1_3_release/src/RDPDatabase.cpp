@@ -193,7 +193,7 @@ int RDPConnection::getPort()
     return retval;
 }
 
-int RDPConnection::getPortTrueValue() const
+int RDPConnection::getPortTrueValue()
 {
     wxMutexLocker lock(mutex);
     return port;

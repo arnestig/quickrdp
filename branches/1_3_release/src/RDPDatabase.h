@@ -81,7 +81,7 @@ class RDPConnection
         wxString getSoundMode() const;
         wxString getDiskMapping() const;
         int getPort();
-        int getPortTrueValue() const; // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
+        int getPortTrueValue(); // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
         int getConnectionStatus() const;
         bool isConnectionCheckerRunning() const;
         long getLastChecked() const;
