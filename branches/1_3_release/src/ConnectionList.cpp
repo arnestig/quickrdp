@@ -83,7 +83,7 @@ void ConnectionList::OnItemDeselected(wxListEvent& event)
     mainFrame->OnItemDeselected( event );
 }
 
-void ConnectionList::OnColumnEndDrag(wxListEvent& event)
+void ConnectionList::OnColumnEndDrag(wxListEvent& WXUNUSED(event) )
 {
     /** We've moved the size on some of the columns.
     Save this setting so we get the correct size on other panels **/

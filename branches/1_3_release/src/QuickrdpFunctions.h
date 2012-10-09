@@ -84,11 +84,11 @@ namespace quickRDP
         {
             /** check if our argument is empty and inside a conditional output '{ }'. If so, we remove that from the argument **/
             std::vector< std::pair< wxString, wxString > > strings_to_parse;
-            strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%hostname%"), connection->getHostname() ) );
+            strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%hostname%"), wxString( connection->getHostname().c_str() ) ) );
             strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%connectiontype%"), ConnectionType::getConnectionTypeName( connection->getConnectionType() ) ) );
             strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%username%"), connection->getUsername() ) );
             strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%password%"), connection->getPassword() ) );
-            strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%port%"), connection->getPort() ) );
+            strings_to_parse.push_back( std::pair< wxString, wxString> ( wxT("%port%"), wxString::Format( wxT("%i"), connection->getPort() ) ) );
 
 
             for ( size_t stringId = 0; stringId < strings_to_parse.size(); ++stringId ) {
@@ -107,11 +107,11 @@ namespace quickRDP
 
             argument.Replace( wxT("{" ), wxT("") );
             argument.Replace( wxT("}" ), wxT("") );
-            argument.Replace( wxT("%hostname%"), connection->getHostname()  );
+            argument.Replace( wxT("%hostname%"), connection->getHostname() );
             argument.Replace( wxT("%connectiontype%"), ConnectionType::getConnectionTypeName( connection->getConnectionType() ) );
             argument.Replace( wxT("%username%"), connection->getUsername() );
             argument.Replace( wxT("%password%"), connection->getPassword() );
-            argument.Replace( wxT("%port%"), connection->getPort() );
+            argument.Replace( wxT("%port%"), wxString::Format( wxT("%i"), connection->getPort() ) );
             return argument;
         }
 

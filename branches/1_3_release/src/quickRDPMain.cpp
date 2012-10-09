@@ -330,7 +330,7 @@ void quickRDPFrame::OnAbout(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnNewButtonClick(wxCommandEvent& WXUNUSED(event) )
 {
-    wxString filename = quickRDP::FileParser::generateFilename();
+    std::string filename = std::string( quickRDP::FileParser::generateFilename().mb_str() );
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
     newFrame->loadRDPConnection( Resources::Instance()->getConnectionDatabase()->addRDPConnection( filename ) );
@@ -460,7 +460,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
     if ( curCon != NULL ) {
-        wxString filename = quickRDP::FileParser::generateFilename();
+        std::string filename = std::string( quickRDP::FileParser::generateFilename().mb_str() );
         RDPConnection *myNewCon = Resources::Instance()->getConnectionDatabase()->duplicateRDPConnection( filename, curCon );
         OnEditButtonClick( event, myNewCon );
         loadRDPFromDatabase();
@@ -966,14 +966,16 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     **/
 
     RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
-    long itemIndex = rdpDatabase->getListCtrlIndexFromFilename( event.GetString() );
+    std::string filename = std::string( event.GetString().mb_str() );
+    int status = event.GetInt();
+    long itemIndex = rdpDatabase->getListCtrlIndexFromFilename( filename );
 
     if ( itemIndex != -1 ) {
         RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
         if ( rdpConnection != NULL ) {
-            if ( rdpConnection->getConnectionStatus() != event.GetInt() ) {
-                rdpConnection->setConnectionStatus( event.GetInt() );
-                getConnectionList()->SetItemImage( itemIndex, event.GetInt() );
+            if ( rdpConnection->getConnectionStatus() != status ) {
+                rdpConnection->setConnectionStatus( status );
+                getConnectionList()->SetItemImage( itemIndex, status );
             }
         }
     }
@@ -1070,7 +1072,7 @@ void quickRDPFrame::OnColumnClick(wxListEvent& event)
     loadRDPFromDatabase();
 }
 
-void quickRDPFrame::OnItemRightClick(wxListEvent& event)
+void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
     /** prepare our RDP menu with checkboxes for console mode and resolutions **/
@@ -1146,19 +1148,19 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& event)
     PopupMenu(&PopupMenu1 );
 }
 
-void quickRDPFrame::OnItemActivated(wxListEvent& event)
+void quickRDPFrame::OnItemActivated(wxListEvent& WXUNUSED(event) )
 {
     execute_connections();
 }
 
-void quickRDPFrame::OnItemSelected(wxListEvent& event)
+void quickRDPFrame::OnItemSelected(wxListEvent& WXUNUSED(event) )
 {
     BitmapButton2->Enable();
     BitmapButton3->Enable();
     BitmapButton4->Enable();
 }
 
-void quickRDPFrame::OnItemDeselected(wxListEvent& event)
+void quickRDPFrame::OnItemDeselected(wxListEvent& WXUNUSED(event) )
 {
     BitmapButton2->Disable();
     BitmapButton3->Disable();

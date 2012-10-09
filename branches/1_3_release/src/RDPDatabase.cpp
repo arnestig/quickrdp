@@ -29,7 +29,7 @@
 #include <algorithm>
 
 ///BEGIN RDPConnection
-RDPConnection::RDPConnection( wxString filename )
+RDPConnection::RDPConnection( std::string filename )
     :   connectionType( ConnectionType::RDP ),
         filename( filename ),
         desktopheight( wxT("0") ),
@@ -39,7 +39,7 @@ RDPConnection::RDPConnection( wxString filename )
         screenmode( wxT("1") ),
         soundmode( wxT("0") ),
         diskmapping( wxT("0") ),
-        port( wxT("-1") ),
+        port( -1 ),
         connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
         connectionCheckerRunning( false ),
         lastchecked( 0 )
@@ -47,8 +47,8 @@ RDPConnection::RDPConnection( wxString filename )
     parseFile();
 }
 
-RDPConnection::RDPConnection( wxString filename_, RDPConnection *copy )
-    :   filename( filename_ ),
+RDPConnection::RDPConnection( std::string filename, RDPConnection *copy )
+    :   filename( filename ),
         connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
         lastchecked( 0 )
 {
@@ -79,10 +79,18 @@ ConnectionType::ConnectionType RDPConnection::getConnectionType() const
     return connectionType;
 }
 
-wxString RDPConnection::getHostname()
+void RDPConnection::getHostname( std::string &hostname )
 {
     wxMutexLocker lock(mutex);
-    return hostname;
+    hostname = this->hostname;
+}
+
+wxString RDPConnection::getHostname()
+{
+    std::string originHostname;
+    getHostname( originHostname );
+    wxString retval( originHostname.c_str(),wxConvUTF8 );
+    return retval;
 }
 
 wxString RDPConnection::getUsername() const
@@ -110,10 +118,18 @@ wxString RDPConnection::getClientHostname() const
     return clienthostname;
 }
 
-wxString RDPConnection::getFilename()
+void RDPConnection::getFilename( std::string &filename )
 {
     wxMutexLocker lock(mutex);
-    return filename;
+    filename = this->filename;
+}
+
+wxString RDPConnection::getFilename()
+{
+    std::string originFilename;
+    getFilename( originFilename );
+    wxString retval( originFilename.c_str(),wxConvUTF8 );
+    return retval;
 }
 
 wxString RDPConnection::getDesktopHeight() const
@@ -151,26 +167,25 @@ wxString RDPConnection::getDiskMapping() const
     return diskmapping;
 }
 
-wxString RDPConnection::getPort()
+int RDPConnection::getPort()
 {
-    wxString retval;
+    int retval;
     wxMutexLocker lock(mutex);
-    if ( port == wxT("-1") ) {
+    if ( port == -1 ) {
         switch ( getConnectionType() ) {
-            case ConnectionType::RDP:
-                retval = wxT("3389");
-            break;
             case ConnectionType::TELNET:
-                retval = wxT("23");
+                retval = 23;
             break;
             case ConnectionType::SSH:
-                retval = wxT("22");
+                retval = 22;
             break;
             case ConnectionType::VNC:
-                retval = wxT("5900");
+                retval = 5900;
             break;
+            case ConnectionType::RDP:
             default:
-                retval = wxT("");
+                retval = 3389;
+            break;
         }
     } else {
         retval = port;
@@ -178,8 +193,9 @@ wxString RDPConnection::getPort()
     return retval;
 }
 
-wxString RDPConnection::getPortTrueValue() const
+int RDPConnection::getPortTrueValue() const
 {
+    wxMutexLocker lock(mutex);
     return port;
 }
 
@@ -240,7 +256,7 @@ void RDPConnection::setConnectionType( ConnectionType::ConnectionType connection
 void RDPConnection::setHostname( wxString hostname )
 {
     wxMutexLocker lock(mutex);
-    this->hostname = hostname;
+    this->hostname = std::string( hostname.mb_str() );
 }
 
 void RDPConnection::setUsername( wxString username )
@@ -315,15 +331,14 @@ void RDPConnection::setSoundMode( wxString soundmode )
     this->soundmode = soundmode;
 }
 
-void RDPConnection::setPort( wxString port )
+void RDPConnection::setPort( int port )
 {
     wxMutexLocker lock(mutex);
-    if (( port == wxT("3389") && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
-        ( port == wxT("23") && getConnectionType() == ConnectionType::TELNET ) ||
-        ( port == wxT("22") && getConnectionType() == ConnectionType::SSH ) ||
-        ( port == wxT("5900") && getConnectionType() == ConnectionType::VNC ) ||
-        ( port.empty() == true ) ) {
-            this->port = wxT("-1");
+    if (( port == 3389 && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
+        ( port == 23 && getConnectionType() == ConnectionType::TELNET ) ||
+        ( port == 22 && getConnectionType() == ConnectionType::SSH ) ||
+        ( port == 5900 && getConnectionType() == ConnectionType::VNC ) ) {
+            this->port = -1;
         } else {
             this->port = port;
         }
@@ -350,7 +365,7 @@ void RDPConnection::setLastChecked( long lastchecked )
 void RDPConnection::connect()
 {
     Settings *settings = Resources::Instance()->getSettings();
-    if ( getFilename().IsEmpty() == false ) {
+    if ( getFilename().empty() == false ) {
         bool useAdminString = ( getConsole() == wxT("1") );
         /** connect to either RDP, telnet or SSH here.. also make sure we have an executable for the choosen connection **/
         wxString connectionTypeName = ConnectionType::getConnectionTypeName( getConnectionType() );
@@ -454,7 +469,7 @@ void RDPConnection::saveFile()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("attach to console:i:")) + getConsole() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("audiomode:i:")) + getSoundMode() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("diskmapping:i:")) + getDiskMapping() );
-	quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("port:i:")) + getPort() );
+	quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("port:i:")) + wxString::Format( wxT("%i"), getPort() ) );
 
 	ofile.close();
 }
@@ -502,7 +517,7 @@ void RDPConnection::parseFile()
         setConsole( quickRDP::FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
         setSoundMode( quickRDP::FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
         setDiskMapping( quickRDP::FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
-		setPort( quickRDP::FileParser::getStringFromFile( wxT("port:i:"), allLines ) );
+		setPort( quickRDP::FileParser::getIntegerFromFile( wxT("port:i:"), allLines ) );
 	}
 	rfile.close();
     }
@@ -542,20 +557,20 @@ void RDPDatabase::loadRDPFiles()
     while ( f.empty() == false ) {
         wxFileName fname;
         fname.Assign( f );
-        addRDPConnection( fname.GetName( ) );
+        addRDPConnection( std::string( fname.GetName().mb_str() ) );
         f = wxFindNextFile();
     }
     sortById( 0 );
 }
 
-RDPConnection *RDPDatabase::addRDPConnection( wxString filename )
+RDPConnection *RDPDatabase::addRDPConnection( std::string filename )
 {
     RDPConnection *newRDP = new RDPConnection( filename );
     database.push_back( newRDP );
     return newRDP;
 }
 
-RDPConnection *RDPDatabase::duplicateRDPConnection( wxString filename, RDPConnection *copy )
+RDPConnection *RDPDatabase::duplicateRDPConnection( std::string filename, RDPConnection *copy )
 {
     RDPConnection *newRDP = new RDPConnection( filename, copy );
     database.push_back( newRDP );
@@ -591,10 +606,12 @@ RDPConnection* RDPDatabase::getRDPFromListCtrl( long index )
     }
 }
 
-long RDPDatabase::getListCtrlIndexFromFilename( wxString filename )
+long RDPDatabase::getListCtrlIndexFromFilename( std::string filename )
 {
     for ( std::vector< RDPConnection* >::const_iterator it = listCtrlRelation.begin(); it != listCtrlRelation.end(); ++it ) {
-        if ( (*it)->getFilename() == filename ) {
+        std::string targetFilename;
+        (*it)->getFilename( targetFilename );
+        if ( targetFilename == filename ) {
             return it - listCtrlRelation.begin();
         }
     }

@@ -107,7 +107,7 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
     generalTab->TextCtrl4->ChangeValue( rdpConnection->getDomain() ); // domain
     generalTab->TextCtrl6->ChangeValue( rdpConnection->getComment() ); // comment
     generalTab->TextCtrl5->ChangeValue( rdpConnection->getClientHostname() ); // client hostname
-    generalTab->PortText->ChangeValue( rdpConnection->getPort() ); // port
+    generalTab->PortText->ChangeValue( wxString::Format( wxT("%i"), rdpConnection->getPort() ) ); // port
     if ( rdpConnection->getConsole() == wxT("1") ) {
         generalTab->CheckBox1->SetValue( true );
     } else {
@@ -150,7 +150,7 @@ void RDPFrame::loadRDPConnection( RDPConnection* rdpConnection )
 
 void RDPFrame::switchConnectionType( ConnectionType::ConnectionType connectionType )
 {
-    if ( rdpConnection->getPortTrueValue() == wxT("-1") ) {
+    if ( rdpConnection->getPortTrueValue() == -1 ) {
         generalTab->PortText->Enable( true );
         switch ( connectionType) {
             case ConnectionType::RDP:
@@ -206,7 +206,7 @@ void RDPFrame::checkForChanges()
     if ( generalTab->TextCtrl4->GetValue().Cmp( rdpConnection->getDomain() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl6->GetValue().Cmp( rdpConnection->getComment() ) != 0 ) { hasChangedSomething = true; }
     if ( generalTab->TextCtrl5->GetValue().Cmp( rdpConnection->getClientHostname() ) != 0 ) { hasChangedSomething = true; }
-    if ( generalTab->PortText->GetValue().Cmp( rdpConnection->getPort() ) != 0 ) { hasChangedSomething = true; }
+    if ( wxAtoi( generalTab->PortText->GetValue() ) != rdpConnection->getPort() ) { hasChangedSomething = true; }
     if ( ( generalTab->CheckBox1->IsChecked() == true && rdpConnection->getConsole() == wxT("0") ) || ( generalTab->CheckBox1->IsChecked() == false && rdpConnection->getConsole() == wxT("1") ) ) { hasChangedSomething = true; }
 
     /// desktop resolution
@@ -283,7 +283,7 @@ void RDPFrame::onSaveClick(wxCommandEvent& WXUNUSED(event) )
     rdpConnection->setDomain( generalTab->TextCtrl4->GetValue() );
     rdpConnection->setComment( generalTab->TextCtrl6->GetValue() );
     rdpConnection->setClientHostname( generalTab->TextCtrl5->GetValue() );
-    rdpConnection->setPort( generalTab->PortText->GetValue() );
+    rdpConnection->setPort( wxAtoi( generalTab->PortText->GetValue() ) );
     if ( generalTab->CheckBox1->IsChecked() == true ) {
         rdpConnection->setConsole( wxT("1") );
     } else {
@@ -337,7 +337,7 @@ void RDPFrame::onSaveClick(wxCommandEvent& WXUNUSED(event) )
 
 void RDPFrame::OnClose(wxCloseEvent& WXUNUSED(event) )
 {
-    if ( rdpConnection->getHostname().IsEmpty() == true ) {
+    if ( rdpConnection->getHostname().empty() == true ) {
         Resources::Instance()->getConnectionDatabase()->deleteRDPConnectionByPointer( rdpConnection );
     }
     Destroy();

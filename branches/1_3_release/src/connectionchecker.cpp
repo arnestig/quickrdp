@@ -83,10 +83,13 @@ void ConnectionChecker::addTargets( std::vector< RDPConnection* > newTargets )
 	    while ( newTargets.empty() == false ) {
 	        RDPConnection *target = newTargets.back();
 	        newTargets.pop_back();
-	        wxString filename = target->getFilename();
-	        if ( targets[ filename ] == NULL ) {
-                targets[ filename ] = target;
-                queue->Post();
+	        std::string filename;
+	        target->getFilename( filename );
+	        if ( filename.empty() == false ) {
+                if ( targets[ filename ] == NULL ) {
+                    targets[ filename ] = target;
+                    queue->Post();
+                }
 	        }
         }
 	    mutex.Unlock();
@@ -148,18 +151,20 @@ void *ConnectionCheckerWorkerThread::Entry()
         } else {
             /** Connect to our current target **/
             wxCommandEvent event( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );
-            int port = wxAtoi( target->getPort() );
-            wxString hostname = target->getHostname();
-            wxString filename = target->getFilename();
+            int port = target->getPort();
+            std::string hostname;
+            std::string filename;
+            target->getHostname( hostname );
+            target->getFilename( filename );
             sock_addr.sin_port = htons( port );
             sock_addr.sin_addr.s_addr = 0;
-            if ( inet_addr( hostname.mb_str() ) == INADDR_NONE ) {
-                host = gethostbyname( hostname.mb_str() );
+            if ( inet_addr( hostname.c_str() ) == INADDR_NONE ) {
+                host = gethostbyname( hostname.c_str() );
                 if ( host != NULL ) {
                     sock_addr.sin_addr.s_addr = *((unsigned long*) host->h_addr_list[0] );
                 }
             } else {
-                sock_addr.sin_addr.s_addr = inet_addr( hostname.mb_str() );
+                sock_addr.sin_addr.s_addr = inet_addr( hostname.c_str() );
             }
 
             m_socket = socket( AF_INET, SOCK_STREAM, 0 );
@@ -177,7 +182,8 @@ void *ConnectionCheckerWorkerThread::Entry()
                 event.SetInt( 1 );
             }
 
-            event.SetString( filename );
+            wxString eventfilename( filename.c_str(), wxConvUTF8 );
+            event.SetString( eventfilename );
 
             parent->postEvent( event );
 
