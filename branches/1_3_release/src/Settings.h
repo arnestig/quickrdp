@@ -78,6 +78,8 @@ class Settings
         void setCCUpdateInterval( int CCUpdateInterval );
         int getCCAutomaticCheck() const;
         void  setCCAutomaticCheck( int CCAutomaticCheck );
+        unsigned int getCCWorkerThreads() const;
+        void setCCWorkerThreads( unsigned int CCWorkerThreads );
 
         /** column functions. will be replaced in 1.2 or 1.3 once dynamic columns are in place **/
         void setColumn0Width( int column0Width );
@@ -125,6 +127,7 @@ class Settings
         int CCTimeout;
         int CCUpdateInterval;
         int CCAutomaticCheck;
+        unsigned int CCWorkerThreads;
 
         /** frame and column settings **/
         int column0Width;

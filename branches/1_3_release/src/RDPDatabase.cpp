@@ -337,7 +337,8 @@ void RDPConnection::setPort( int port )
     if (( port == 3389 && getConnectionType() == ConnectionType::RDP ) ||  /** check if any of the values set are default to their connection type **/
         ( port == 23 && getConnectionType() == ConnectionType::TELNET ) ||
         ( port == 22 && getConnectionType() == ConnectionType::SSH ) ||
-        ( port == 5900 && getConnectionType() == ConnectionType::VNC ) ) {
+        ( port == 5900 && getConnectionType() == ConnectionType::VNC ) ||
+        ( port == 0 ) ) {
             this->port = -1;
         } else {
             this->port = port;

@@ -63,9 +63,9 @@ const long settingsDialog::ID_STATICTEXT11 = wxNewId();
 const long settingsDialog::ID_COMMANDDIALOG = wxNewId();
 const long settingsDialog::ID_STATICTEXT13 = wxNewId();
 const long settingsDialog::ID_MANUALCC = wxNewId();
-const long settingsDialog::ID_STATICTEXT15 = wxNewId();
-const long settingsDialog::ID_NEWTAB = wxNewId();
 const long settingsDialog::ID_STATICTEXT14 = wxNewId();
+const long settingsDialog::ID_NEWTAB = wxNewId();
+const long settingsDialog::ID_STATICTEXT15 = wxNewId();
 const long settingsDialog::ID_CLOSETAB = wxNewId();
 const long settingsDialog::ID_PANEL3 = wxNewId();
 const long settingsDialog::ID_STATICTEXT8 = wxNewId();
@@ -75,6 +75,10 @@ const long settingsDialog::ID_CHECKBOX1 = wxNewId();
 const long settingsDialog::ID_STATICTEXT10 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL8 = wxNewId();
 const long settingsDialog::ID_SLIDER2 = wxNewId();
+const long settingsDialog::ID_STATICTEXT16 = wxNewId();
+const long settingsDialog::ID_STATICTEXT17 = wxNewId();
+const long settingsDialog::ID_TEXTCTRL9 = wxNewId();
+const long settingsDialog::ID_SLIDER3 = wxNewId();
 const long settingsDialog::ID_PANEL4 = wxNewId();
 const long settingsDialog::ID_NOTEBOOK1 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
@@ -111,6 +115,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxStaticBoxSizer* StaticBoxSizer3;
 	wxBoxSizer* BoxSizer17;
 	wxBoxSizer* BoxSizer24;
+	wxBoxSizer* BoxSizer26;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
@@ -232,13 +237,13 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	BoxSizer23->Add(ShortcutManualCCText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(BoxSizer23, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer24 = new wxBoxSizer(wxHORIZONTAL);
-	ShortcutNewTabLabel = new wxStaticText(Panel3, ID_STATICTEXT15, _("Open new tab"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+	ShortcutNewTabLabel = new wxStaticText(Panel3, ID_STATICTEXT14, _("Open new tab"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
 	BoxSizer24->Add(ShortcutNewTabLabel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ShortcutNewTabText = new wxTextCtrl(Panel3, ID_NEWTAB, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_NEWTAB"));
 	BoxSizer24->Add(ShortcutNewTabText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(BoxSizer24, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer25 = new wxBoxSizer(wxHORIZONTAL);
-	ShortcutCloseTabLabel = new wxStaticText(Panel3, ID_STATICTEXT14, _("Close current tab"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+	ShortcutCloseTabLabel = new wxStaticText(Panel3, ID_STATICTEXT15, _("Close current tab"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
 	BoxSizer25->Add(ShortcutCloseTabLabel, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	ShortcutCloseTabText = new wxTextCtrl(Panel3, ID_CLOSETAB, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CLOSETAB"));
 	BoxSizer25->Add(ShortcutCloseTabText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -270,6 +275,18 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	CCUpdateIntervalSlider = new wxSlider(Panel4, ID_SLIDER2, 0, 10, 360, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER2"));
 	BoxSizer21->Add(CCUpdateIntervalSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer16->Add(BoxSizer21, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer26 = new wxBoxSizer(wxHORIZONTAL);
+	CCWorkerThreadLabel = new wxStaticText(Panel4, ID_STATICTEXT16, _("Number of worker threads"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
+	BoxSizer26->Add(CCWorkerThreadLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText8 = new wxStaticText(Panel4, ID_STATICTEXT17, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT17"));
+	StaticText8->SetForegroundColour(wxColour(255,0,0));
+	StaticText8->SetToolTip(_("Experimental setting. \nWill alter the amount of threads performing connection checks. \nYou will need to restart the program for this setting to be effective."));
+	BoxSizer26->Add(StaticText8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CCWorkerThreadTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL9, _("0"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
+	BoxSizer26->Add(CCWorkerThreadTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CCWorkerThreadSlider = new wxSlider(Panel4, ID_SLIDER3, 0, 1, 8, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER3"));
+	BoxSizer26->Add(CCWorkerThreadSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer16->Add(BoxSizer26, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel4->SetSizer(BoxSizer16);
 	BoxSizer16->Fit(Panel4);
 	BoxSizer16->SetSizeHints(Panel4);
@@ -306,6 +323,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	Connect(ID_SLIDER1,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCTimeoutSliderCmdSliderUpdated);
 	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&settingsDialog::OnCCAutoUpdateCheckboxClick);
 	Connect(ID_SLIDER2,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCUpdateIntervalSliderCmdSliderUpdated);
+	Connect(ID_SLIDER3,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCWorkerThreadSliderCmdSliderUpdated);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonSave);
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&settingsDialog::OnInit);
@@ -366,11 +384,13 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     CCTimeoutSlider->SetValue( settings->getCCTimeout() );
     CCUpdateIntervalSlider->SetValue( settings->getCCUpdateInterval() );
     CCAutoUpdateCheckbox->SetValue( settings->getCCAutomaticCheck() );
+    CCWorkerThreadSlider->SetValue( settings->getCCWorkerThreads() );
 
     wxScrollEvent evt;
     OnCCTimeoutSliderCmdSliderUpdated( evt );
     OnCCUpdateIntervalSliderCmdSliderUpdated( evt );
     OnCCAutoUpdateCheckboxClick( evt );
+    OnCCWorkerThreadSliderCmdSliderUpdated( evt );
 }
 
 settingsDialog::~settingsDialog()
@@ -404,6 +424,7 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
     settings->setCCTimeout( CCTimeoutSlider->GetValue() );
     settings->setCCUpdateInterval( CCUpdateIntervalSlider->GetValue() );
     settings->setCCAutomaticCheck( CCAutoUpdateCheckbox->GetValue() );
+    settings->setCCWorkerThreads( CCWorkerThreadSlider->GetValue() );
 
     settings->saveSettings();
     this->EndModal( 0 );
@@ -530,4 +551,9 @@ void settingsDialog::OnCCAutoUpdateCheckboxClick(wxCommandEvent& WXUNUSED(event)
         CCUpdateIntervalSlider->Enable( false );
         CCUpdateIntervalTextDisplay->Enable( false );
     }
+}
+
+void settingsDialog::OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& event)
+{
+    CCWorkerThreadTextDisplay->SetValue( wxString::Format( wxT("%i"), CCWorkerThreadSlider->GetValue() ) );
 }

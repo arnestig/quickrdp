@@ -55,7 +55,7 @@ class ConnectionCheckerWorkerThread;
 class ConnectionChecker : public wxThread
 {
     public:
-        ConnectionChecker( wxEvtHandler *parent );
+        ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers );
         ~ConnectionChecker();
 
         void addTargets( std::vector< RDPConnection* > newTargets );
@@ -65,8 +65,8 @@ class ConnectionChecker : public wxThread
     private:
         virtual void *Entry();
 
-        const static unsigned int numWorkers = 3;
-        ConnectionCheckerWorkerThread *workerThreads[ numWorkers ];
+        unsigned int numWorkers; /** how many worker threads we will spawn **/
+        ConnectionCheckerWorkerThread *workerThreads[ 8 ];
         wxMutex eventMutex;
         wxMutex mutex;
         std::map< std::string, RDPConnection* > targets;

@@ -28,11 +28,20 @@
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 
-ConnectionChecker::ConnectionChecker( wxEvtHandler *parent )
+ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers )
     :   wxThread( wxTHREAD_DETACHED),
         parent( parent ),
         queue( NULL )
 {
+    /** define our numWorkers. For safety, we don't allow below 1 and not more than 8 workers.. For now this is for testing. **/
+    if ( numWorkers > 8 ) {
+        this->numWorkers = 8;
+    } else if ( numWorkers < 1 ) {
+        this->numWorkers = 1;
+    } else {
+        this->numWorkers = numWorkers;
+    }
+
     queue = new wxSemaphore();
     /** create all our worker threads **/
     for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {

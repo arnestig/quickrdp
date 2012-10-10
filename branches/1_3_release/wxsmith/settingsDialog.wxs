@@ -384,6 +384,44 @@
 												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
 											</object>
+											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizer24" member="no">
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT14" variable="ShortcutNewTabLabel" member="yes">
+															<label>Open new tab</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_NEWTAB" variable="ShortcutNewTabText" member="yes" />
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizer25" member="no">
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT15" variable="ShortcutCloseTabLabel" member="yes">
+															<label>Close current tab</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_CLOSETAB" variable="ShortcutCloseTabText" member="yes" />
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
 											<object class="spacer">
 												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
@@ -475,6 +513,47 @@
 													</object>
 												</object>
 												<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizer26" member="no">
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT16" variable="CCWorkerThreadLabel" member="yes">
+															<label>Number of worker threads</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT17" variable="StaticText8" member="yes">
+															<label> ? </label>
+															<fg>#FF0000</fg>
+															<tooltip>Experimental setting. &#x0A;Will alter the amount of threads performing connection checks. &#x0A;You will need to restart the program for this setting to be effective.</tooltip>
+															<style>wxSIMPLE_BORDER</style>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_TEXTCTRL9" variable="CCWorkerThreadTextDisplay" member="yes">
+															<value>0</value>
+															<size>25,21</size>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxSlider" name="ID_SLIDER3" variable="CCWorkerThreadSlider" member="yes">
+															<min>1</min>
+															<max>8</max>
+															<handler function="OnCCWorkerThreadSliderCmdSliderUpdated" entry="EVT_COMMAND_SLIDER_UPDATED" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
 											</object>
 										</object>

@@ -49,6 +49,7 @@ class settingsDialog: public wxDialog
 		wxButton* TelnetArgumentHelpButton;
 		wxFileDialog* TelnetExecDialog;
 		wxCheckBox* CCAutoUpdateCheckbox;
+		wxTextCtrl* CCWorkerThreadTextDisplay;
 		wxButton* OKButton;
 		wxNotebook* Notebook1;
 		wxButton* VNCArgumentResetButton;
@@ -65,6 +66,7 @@ class settingsDialog: public wxDialog
 		wxStaticText* CCTimeoutLabel;
 		wxTextCtrl* SSHArgumentText;
 		wxSlider* CCUpdateIntervalSlider;
+		wxStaticText* StaticText8;
 		wxStaticText* StaticText11;
 		wxButton* SSHExecutableBrowseButton;
 		wxStaticText* CCUpdateIntervalLabel;
@@ -75,6 +77,7 @@ class settingsDialog: public wxDialog
 		wxStaticText* StaticText3;
 		wxTextCtrl* ShortcutManualCCText;
 		wxPanel* Panel3;
+		wxSlider* CCWorkerThreadSlider;
 		wxTextCtrl* TelnetExecutableText;
 		wxTextCtrl* TelnetArgumentText;
 		wxButton* SSHArgumentHelpButton;
@@ -90,6 +93,7 @@ class settingsDialog: public wxDialog
 		wxTextCtrl* TextShortcutNewCon;
 		wxStaticText* StaticText12;
 		wxPanel* Panel2;
+		wxStaticText* CCWorkerThreadLabel;
 		wxButton* SSHArgumentResetButton;
 		wxStaticText* StaticText4;
 		wxStaticText* ShortcutCloseTabLabel;
@@ -134,9 +138,9 @@ class settingsDialog: public wxDialog
 		static const long ID_COMMANDDIALOG;
 		static const long ID_STATICTEXT13;
 		static const long ID_MANUALCC;
-		static const long ID_STATICTEXT15;
-		static const long ID_NEWTAB;
 		static const long ID_STATICTEXT14;
+		static const long ID_NEWTAB;
+		static const long ID_STATICTEXT15;
 		static const long ID_CLOSETAB;
 		static const long ID_PANEL3;
 		static const long ID_STATICTEXT8;
@@ -146,6 +150,10 @@ class settingsDialog: public wxDialog
 		static const long ID_STATICTEXT10;
 		static const long ID_TEXTCTRL8;
 		static const long ID_SLIDER2;
+		static const long ID_STATICTEXT16;
+		static const long ID_STATICTEXT17;
+		static const long ID_TEXTCTRL9;
+		static const long ID_SLIDER3;
 		static const long ID_PANEL4;
 		static const long ID_NOTEBOOK1;
 		static const long ID_BUTTON3;
@@ -168,6 +176,7 @@ class settingsDialog: public wxDialog
 		void OnCCTimeoutSliderCmdSliderUpdated(wxScrollEvent& event);
 		void OnCCUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& event);
 		void OnCCAutoUpdateCheckboxClick(wxCommandEvent& event);
+		void OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& event);
 		//*)
 
 		void HandleKeyShortcutPress( wxKeyEvent& event );

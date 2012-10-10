@@ -148,6 +148,7 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCTimeout:i:")) << getCCTimeout() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCUpdateInterval:i:")) << getCCUpdateInterval() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCAutomaticCheck:i:")) << getCCAutomaticCheck() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCWorkerThreads:i:")) << getCCWorkerThreads() );
 
     ofile.close();
 }
@@ -239,6 +240,11 @@ void Settings::loadSettings()
         }
 
         setCCAutomaticCheck( quickRDP::FileParser::getIntegerFromFile( wxT("CCAutomaticCheck:i:"), allLines ) );
+        unsigned int workerThreads = quickRDP::FileParser::getIntegerFromFile( wxT("CCWorkerThreads:i:"), allLines );
+        if ( workerThreads == 0 ) {
+            workerThreads = 4; // set default 4 worker threads
+        }
+        setCCWorkerThreads( workerThreads );
     }
     rfile.close();
 }
@@ -350,6 +356,16 @@ int Settings::getCCAutomaticCheck() const
 void Settings::setCCAutomaticCheck( int CCAutomaticCheck )
 {
     this->CCAutomaticCheck = CCAutomaticCheck;
+}
+
+unsigned int Settings::getCCWorkerThreads() const
+{
+    return CCWorkerThreads;
+}
+
+void Settings::setCCWorkerThreads( unsigned int CCWorkerThreads )
+{
+    this->CCWorkerThreads = CCWorkerThreads;
 }
 
 void Settings::setTelnetExec( wxString telnetExec )
