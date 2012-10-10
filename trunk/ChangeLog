@@ -1,3 +1,28 @@
+quickrdp 2.0 - 2012-10-10
+ New features
+ ------------
+ * Tab support added. You can now keep different groups of connections in
+ tabs. By default ctrl+t opens a new tab and ctrl+w closes it. Cycle between
+ tabs using tab+ctrl or clicking on them. This can be adjusted in the settings
+ menu.
+ * Connection status added. QuickRDP will launch a TCP connect scan against
+ the target and report the status of the connection. By default the automatic
+ scan is disabled. Check the settings page for how to setup the connection
+ checker. If you don't want QuickRDP to automatically scan your targets the
+ manual connection check will work well for you. Bind some hotkey to it in the
+ settings page.
+
+ Bug fixes
+ ---------
+ * Fixed some bugs causing the connection list to be reloaded even when not changing anything in the list. So when closing a properties or new connection page the view will not be reloaded.
+ * Fixed bug causing Commands to loose their shortcut modifier when saving them.
+ * Fixed bug causing properties window not opening when clicking on the big properties button.
+ * Style bug fixed in about dialog.
+ * Fixed a bug where commands would be executed outside of the connection list. (Issue #63)
+ * Fixed potential problem in the versionchecker where CURL was not removed if the request failed.
+
+Enjoy this new release and post any feedback or bugs you find. ;)
+
 quickrdp 1.2.2 - 2012-07-02
 -------------------------
  * Bugfix - Removing annoying debug output when upgrading to QuickRDP 1.2.1
