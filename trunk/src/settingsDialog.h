@@ -29,6 +29,8 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/checkbox.h>
+#include <wx/slider.h>
 #include <wx/panel.h>
 #include <wx/filedlg.h>
 #include <wx/button.h>
@@ -46,26 +48,40 @@ class settingsDialog: public wxDialog
 		wxStaticText* StaticText9;
 		wxButton* TelnetArgumentHelpButton;
 		wxFileDialog* TelnetExecDialog;
+		wxCheckBox* CCAutoUpdateCheckbox;
+		wxTextCtrl* CCWorkerThreadTextDisplay;
 		wxButton* OKButton;
 		wxNotebook* Notebook1;
 		wxButton* VNCArgumentResetButton;
+		wxStaticText* ShortcutNewTabLabel;
 		wxFileDialog* VNCExecDialog;
 		wxStaticText* StaticText2;
+		wxPanel* Panel4;
+		wxTextCtrl* CCTimeoutTextDisplay;
 		wxButton* VNCArgumentHelpButton;
 		wxButton* VNCExecutableBrowseButton;
 		wxStaticText* StaticText6;
 		wxTextCtrl* VNCExecutableText;
+		wxTextCtrl* CCUpdateIntervalTextDisplay;
+		wxStaticText* CCTimeoutLabel;
 		wxTextCtrl* SSHArgumentText;
+		wxSlider* CCUpdateIntervalSlider;
+		wxStaticText* StaticText8;
 		wxStaticText* StaticText11;
 		wxButton* SSHExecutableBrowseButton;
+		wxStaticText* CCUpdateIntervalLabel;
 		wxPanel* Panel1;
+		wxTextCtrl* ShortcutNewTabText;
 		wxStaticText* StaticText1;
 		wxTextCtrl* VNCArgumentText;
 		wxStaticText* StaticText3;
+		wxTextCtrl* ShortcutManualCCText;
 		wxPanel* Panel3;
+		wxSlider* CCWorkerThreadSlider;
 		wxTextCtrl* TelnetExecutableText;
 		wxTextCtrl* TelnetArgumentText;
 		wxButton* SSHArgumentHelpButton;
+		wxSlider* CCTimeoutSlider;
 		wxButton* TelnetExecutableBrowseButton;
 		wxTextCtrl* TextShortcutDupCon;
 		wxStaticText* StaticText5;
@@ -73,14 +89,18 @@ class settingsDialog: public wxDialog
 		wxFileDialog* SSHExecDialog;
 		wxTextCtrl* TextShortcutCommandDialog;
 		wxButton* TelnetArgumentResetButton;
+		wxStaticText* ShortcutManualCCLabel;
 		wxTextCtrl* TextShortcutNewCon;
 		wxStaticText* StaticText12;
 		wxPanel* Panel2;
+		wxStaticText* CCWorkerThreadLabel;
 		wxButton* SSHArgumentResetButton;
 		wxStaticText* StaticText4;
+		wxStaticText* ShortcutCloseTabLabel;
 		wxButton* CancelButton;
 		wxTextCtrl* SSHExecutableText;
 		wxTextCtrl* TextShortcutConProp;
+		wxTextCtrl* ShortcutCloseTabText;
 		//*)
 
 	protected:
@@ -116,7 +136,25 @@ class settingsDialog: public wxDialog
 		static const long ID_CONPROP;
 		static const long ID_STATICTEXT11;
 		static const long ID_COMMANDDIALOG;
+		static const long ID_STATICTEXT13;
+		static const long ID_MANUALCC;
+		static const long ID_STATICTEXT14;
+		static const long ID_NEWTAB;
+		static const long ID_STATICTEXT15;
+		static const long ID_CLOSETAB;
 		static const long ID_PANEL3;
+		static const long ID_STATICTEXT8;
+		static const long ID_TEXTCTRL7;
+		static const long ID_SLIDER1;
+		static const long ID_CHECKBOX1;
+		static const long ID_STATICTEXT10;
+		static const long ID_TEXTCTRL8;
+		static const long ID_SLIDER2;
+		static const long ID_STATICTEXT16;
+		static const long ID_STATICTEXT17;
+		static const long ID_TEXTCTRL9;
+		static const long ID_SLIDER3;
+		static const long ID_PANEL4;
 		static const long ID_NOTEBOOK1;
 		static const long ID_BUTTON3;
 		static const long ID_PANEL1;
@@ -135,6 +173,10 @@ class settingsDialog: public wxDialog
 		void OnHelpArgumentClick(wxCommandEvent& event);
 		void OnVNCArgumentResetButtonClick(wxCommandEvent& event);
 		void OnVNCBrowseClick(wxCommandEvent& event);
+		void OnCCTimeoutSliderCmdSliderUpdated(wxScrollEvent& event);
+		void OnCCUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& event);
+		void OnCCAutoUpdateCheckboxClick(wxCommandEvent& event);
+		void OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& event);
 		//*)
 
 		void HandleKeyShortcutPress( wxKeyEvent& event );

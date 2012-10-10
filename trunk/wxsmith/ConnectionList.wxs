@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxPanel" name="ConnectionList">
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<object class="sizeritem">
+				<object class="wxListCtrl" name="ID_LISTCTRL1" variable="ListCtrl1" member="yes">
+					<extra_code>ListCtrl1-&gt;InsertColumn( 0, wxT(&quot;Host&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 1, wxT(&quot;Username&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 2, wxT(&quot;Connection&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 3, wxT(&quot;Use console&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 4, wxT(&quot;Resolution&quot;) );&#x0A;ListCtrl1-&gt;InsertColumn( 5, wxT(&quot;Comment&quot;) );&#x0A;</extra_code>
+					<style>wxLC_REPORT</style>
+					<handler function="OnItemSelected" entry="EVT_LIST_ITEM_SELECTED" />
+					<handler function="OnItemDeselected" entry="EVT_LIST_ITEM_DESELECTED" />
+					<handler function="OnItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
+					<handler function="OnItemRightClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
+					<handler function="OnColumnClick" entry="EVT_LIST_COL_CLICK" />
+					<handler function="OnColumnEndDrag" entry="EVT_LIST_COL_END_DRAG" />
+				</object>
+				<flag>wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</wxsmith>

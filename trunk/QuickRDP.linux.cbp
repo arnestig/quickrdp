@@ -44,6 +44,8 @@
 		<Unit filename="src/CommandDatabase.h" />
 		<Unit filename="src/CommandDialog.cpp" />
 		<Unit filename="src/CommandDialog.h" />
+		<Unit filename="src/ConnectionList.cpp" />
+		<Unit filename="src/ConnectionList.h" />
 		<Unit filename="src/ExampleDialog.cpp" />
 		<Unit filename="src/ExampleDialog.h" />
 		<Unit filename="src/QuickRDPBitmapButton.h" />
@@ -60,6 +62,8 @@
 		<Unit filename="src/VersionChecker.h" />
 		<Unit filename="src/aboutDialog.cpp" />
 		<Unit filename="src/aboutDialog.h" />
+		<Unit filename="src/connectionchecker.cpp" />
+		<Unit filename="src/connectionchecker.h" />
 		<Unit filename="src/generalTabPanel.cpp" />
 		<Unit filename="src/generalTabPanel.h" />
 		<Unit filename="src/quickRDPApp.cpp" />
@@ -88,6 +92,7 @@
 					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="src/settingsDialog.cpp" hdr="src/settingsDialog.h" name="settingsDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/CommandDialog.wxs" src="src/CommandDialog.cpp" hdr="src/CommandDialog.h" name="CommandDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/ExampleDialog.wxs" src="src/ExampleDialog.cpp" hdr="src/ExampleDialog.h" name="ExampleDialog" language="CPP" />
+					<wxPanel wxs="wxsmith/ConnectionList.wxs" src="src/ConnectionList.cpp" hdr="src/ConnectionList.h" name="ConnectionList" language="CPP" />
 				</resources>
 			</wxsmith>
 			<envvars />

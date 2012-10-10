@@ -20,7 +20,8 @@
 **/
 
 #include <vector>
-#include <wx/wx.h>
+#include <wx/string.h>
+#include <wx/thread.h>
 
 #ifndef __RDP_DATABASE_H__
 #define __RDP_DATABASE_H__
@@ -58,13 +59,15 @@ namespace ConnectionType
 class RDPConnection
 {
     public:
-        RDPConnection( wxString filename );
-        RDPConnection( wxString filename, RDPConnection *copy );
+        RDPConnection( std::string filename );
+        RDPConnection( std::string filename, RDPConnection *copy );
         ~RDPConnection();
 
         ConnectionType::ConnectionType getConnectionType() const;
-        wxString getFilename() const;
-        wxString getHostname() const;
+        void getFilename( std::string &filename );
+        wxString getFilename();
+        void getHostname( std::string &hostname );
+        wxString getHostname();
         wxString getUsername() const;
         wxString getPassword() const;
         wxString getDomain() const;
@@ -77,8 +80,13 @@ class RDPConnection
         wxString getConsole() const;
         wxString getSoundMode() const;
         wxString getDiskMapping() const;
-        wxString getPort() const;
-        wxString getPortTrueValue() const; // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
+        int getPort();
+        int getPortTrueValue(); // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
+        int getConnectionStatus() const;
+        bool isConnectionCheckerRunning() const;
+        long getLastChecked() const;
+        void Lock(); /** for mutex locking **/
+        void Unlock(); /** for mutex locking **/
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -101,16 +109,26 @@ class RDPConnection
         void setConsole( wxString console );
         void setSoundMode( wxString soundmode );
         void setDiskMapping( wxString diskmapping );
-        void setPort( wxString port );
+        void setPort( int port );
+        void setConnectionStatus( int connectionStatus );
+        void setConnectionCheckerRunning( bool connectionCheckerRunning );
+        void setLastChecked( long lastchecked );
 
         void saveFile();
 
-        bool doesRDPHasString( wxString searchString ) const;
+        bool doesRDPHasString( wxString searchString );
 
     private:
         void parseFile();
         ConnectionType::ConnectionType connectionType;
-        wxString filename, hostname, comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping, port;
+        std::string filename;
+        wxString comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping;
+        std::string hostname;
+        int port;
+        int connectionStatus;
+        bool connectionCheckerRunning;
+        long lastchecked; /** seconds since a connection check was done. (seconds since 1970-01-01 00:00:00) **/
+        wxMutex mutex;
 };
 
 class RDPDatabase
@@ -118,14 +136,16 @@ class RDPDatabase
     public:
         RDPDatabase();
         ~RDPDatabase();
-        RDPConnection *addRDPConnection( wxString filename );
-        RDPConnection *duplicateRDPConnection( wxString filename, RDPConnection *copy );
+        RDPConnection *addRDPConnection( std::string filename );
+        RDPConnection *duplicateRDPConnection( std::string filename, RDPConnection *copy );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
         std::vector<RDPConnection*> getDatabase();
 
         RDPConnection* getRDPFromListCtrl( long index );
         void clearRDPListCtrl();
         void addRDPToListCtrl( RDPConnection *connection );
+
+        long getListCtrlIndexFromFilename( std::string filename );
 
         void sortById( int id );
         bool isSortOrderAscending() const;

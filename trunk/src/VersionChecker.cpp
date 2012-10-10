@@ -93,8 +93,9 @@ std::string VersionChecker::get( const char* url )
         curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, &VersionChecker::writer );
         curl_easy_setopt( curl, CURLOPT_WRITEDATA, &buffer );
         result = curl_easy_perform( curl );
-        curl_easy_cleanup( curl );
     }
+
+    curl_easy_cleanup( curl );
 
     if ( result == CURLE_OK ) {
         return buffer;

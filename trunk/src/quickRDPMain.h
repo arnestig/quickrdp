@@ -25,9 +25,11 @@
 #include "QuickRDPBitmapButton.h"
 #include "RDPDatabase.h"
 #include <memory>
+#include <wx/dialog.h>
+#include <wx/listctrl.h>
 
 //(*Headers(quickRDPFrame)
-#include <wx/listctrl.h>
+#include <wx/notebook.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/menu.h>
@@ -46,20 +48,26 @@ class quickRDPFrame: public wxFrame
         bool handleShortcutKeys( wxKeyEvent &event );
         void checkForNewAvailableVersion();
         void updatePopupmenuShortcuts();
+        void UpdateFrameWidthOnAllListConnections();
+        void init();
+
+        /** events and functions related to the list control **/
+        void OnColumnClick(wxListEvent& event);
+		void OnItemRightClick(wxListEvent& event);
+		void OnItemActivated(wxListEvent& event);
+		void OnItemSelected(wxListEvent& event);
+		void OnItemDeselected(wxListEvent& event);
+
 
     private:
 
         //(*Handlers(quickRDPFrame)
         void OnQuit(wxCommandEvent& event);
         void OnAbout(wxCommandEvent& event);
-        void OnListCtrl1ItemSelect(wxListEvent& event);
-        void OnListCtrl1ItemDeselect(wxListEvent& event);
         void OnNewButtonClick(wxCommandEvent& event);
         void OnDeleteButtonClick(wxCommandEvent& event);
-        void OnListCtrl1ItemActivated(wxListEvent& event);
         void OnDuplicateButtonClick(wxCommandEvent& event);
         void OnSearchTextEnter(wxCommandEvent& event);
-        void OnListCtrl1ItemRClick(wxListEvent& event);
         void OnMenuItem3Selected(wxCommandEvent& event);
         void OnMenuItem4Selected(wxCommandEvent& event);
         void OnMenuItemDefaultClick(wxCommandEvent& event);
@@ -70,7 +78,6 @@ class quickRDPFrame: public wxFrame
         void OnMenuItem1152(wxCommandEvent& event);
         void OnMenuItem1280(wxCommandEvent& event);
         void OnMenuItem1400(wxCommandEvent& event);
-        void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnPreferences(wxCommandEvent& event);
         void OnMenuItemConnect(wxCommandEvent& event);
         void OnPopupMenuDuplicate(wxCommandEvent& event);
@@ -79,6 +86,9 @@ class quickRDPFrame: public wxFrame
         void OnReportBugClick(wxCommandEvent& event);
         void OnMenuSearchForUpdates(wxCommandEvent& event);
         void OnTextCtrlInput(wxCommandEvent& event);
+        void OnNotebook1PageChanged(wxNotebookEvent& event);
+        void OnPopupMenuManualCC(wxCommandEvent& event);
+        void OnEditButtonBitmapClick(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnNewVersionTextClick(wxCommandEvent& event);
@@ -87,6 +97,9 @@ class quickRDPFrame: public wxFrame
         void onAutomaticVersionCheckExecuted( wxCommandEvent &evt );
         void OnEditButtonClick(wxCommandEvent& event, RDPConnection *editConnection = NULL);
         void OnChangelogClick( wxCommandEvent& event );
+        void onConnectionCheckerUpdate( wxCommandEvent& event );
+        void onConnectionCheckerWantData( wxCommandEvent& event );
+        wxListCtrl* getConnectionList();
 
         //(*Identifiers(quickRDPFrame)
         static const long ID_BITMAPBUTTON1;
@@ -95,7 +108,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_BITMAPBUTTON3;
         static const long ID_STATICTEXT1;
         static const long ID_TEXTCTRL1;
-        static const long ID_LISTCTRL1;
+        static const long ID_NOTEBOOK1;
         static const long ID_PANEL1;
         static const long idMenuCommands;
         static const long idMenuPreferences;
@@ -105,6 +118,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_DUPLICATE;
         static const long ID_POPUPMENU_DELETE;
+        static const long ID_POPUPMENUMANUALCC;
         static const long ID_POPUPMENUCONSOLE;
         static const long ID_MENUDEFAULT;
         static const long ID_MENUFULLSCREEN;
@@ -122,7 +136,7 @@ class quickRDPFrame: public wxFrame
         //(*Declarations(quickRDPFrame)
         wxMenu* MenuItem19;
         wxMenuItem* MenuItem7;
-        wxListCtrl* ListCtrl1;
+        wxNotebook* Notebook1;
         QuickRDPBitmapButton* BitmapButton4;
         wxMenu PopupMenu1;
         wxMenu* Menu3;
@@ -148,12 +162,15 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem5;
         wxMenuItem* MenuItem21;
         QuickRDPBitmapButton* BitmapButton2;
+        wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         wxMenuItem* MenuItem18;
         //*)
 
+        wxPanel *connectionListPanel;
         wxMenu *commandMenu;
         std::vector< wxMenuItem* > favoriteCommandMenuItems;
+        wxImageList *imageList;
 
         int last_column_click;
         bool globalhotkeys;
@@ -165,9 +182,11 @@ class quickRDPFrame: public wxFrame
 
         void saveFrameSettings();
         void loadFrameSettings();
-        void showDialog( wxDialog* dialog, bool captureHotkeys = false ); /** NEED TO USE THIS FUNCTION WHEN SHOWING DIALOGS DUE TO GLOBAL HOTKEY CAPTURE! **/
+        int showDialog( wxDialog* dialog );
         bool wantGlobalHotkeys() const;
         void checkForVersionChangesAndNotifyUser( wxString oldVersion );
+        void updateConnectionCheckerStatus();
+        void manuallyDoConnectionCheck( std::vector< RDPConnection* > connections );
 
         DECLARE_EVENT_TABLE()
 };
