@@ -43,7 +43,7 @@ resourcesTabPanel::resourcesTabPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, id, wxDefaultPosition, wxSize(183,185), wxTAB_TRAVERSAL, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
@@ -54,7 +54,7 @@ resourcesTabPanel::resourcesTabPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	StaticLine1 = new wxStaticLine(this, ID_STATICLINE1, wxDefaultPosition, wxSize(400,2), wxLI_HORIZONTAL, _T("ID_STATICLINE1"));
 	BoxSizer1->Add(StaticLine1, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-	wxString __wxRadioBoxChoices_1[3] =
+	wxString __wxRadioBoxChoices_1[3] = 
 	{
 		_("On the local computer"),
 		_("On the remote computer"),
@@ -65,7 +65,7 @@ resourcesTabPanel::resourcesTabPanel(wxWindow* parent,wxWindowID id,const wxPoin
 	BoxSizer1->Add(BoxSizer3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&resourcesTabPanel::OnDiskMappingClick);
 	Connect(ID_RADIOBOX1,wxEVT_COMMAND_RADIOBOX_SELECTED,(wxObjectEventFunction)&resourcesTabPanel::OnSoundClick);
 	//*)

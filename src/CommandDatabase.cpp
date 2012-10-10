@@ -22,6 +22,8 @@
 #include "CommandDatabase.h"
 #include "Resources.h"
 #include <fstream>
+#include <wx/msgdlg.h>
+#include <wx/log.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
 #include "QuickrdpFunctions.h"
@@ -141,6 +143,10 @@ CommandDatabase::CommandDatabase()
 
 CommandDatabase::~CommandDatabase()
 {
+	for ( std::vector< Command* >::iterator it = commands.begin(); it != commands.end(); ++it ) {
+		delete (*it);
+	}
+	commands.clear();
 }
 
 void CommandDatabase::loadDatabase()
@@ -148,6 +154,7 @@ void CommandDatabase::loadDatabase()
     // delete our previous command database
     for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
         delete commands[ commandId ];
+        commands[ commandId ] = NULL;
         commands.erase( commands.begin() + commandId );
     }
 
@@ -208,6 +215,7 @@ void CommandDatabase::deleteCommand( wxString name )
         for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
             if ( commands[ commandId ]->getName() == name ) {
                 delete commands[ commandId ];
+                commands[ commandId ] = NULL;
                 commands.erase( commands.begin() + commandId );
             }
         }

@@ -43,11 +43,17 @@ class Settings
         std::pair< int, int > getDupConnectionShortcut() const;
         std::pair< int, int > getPropConnectionShortcut() const;
         std::pair< int, int > getCommandDialogShortcut() const;
+        std::pair< int, int > getManualCCShortcut() const;
+        std::pair< int, int > getNewTabShortcut() const;
+        std::pair< int, int > getCloseTabShortcut() const;
 
         void setNewConnectionShortcut( std::pair< int, int > value );
         void setDupConnectionShortcut( std::pair< int, int > value );
         void setPropConnectionShortcut( std::pair< int, int > value );
         void setCommandDialogShortcut( std::pair< int, int > value );
+        void setManualCCShortcut( std::pair< int, int > value );
+        void setNewTabShortcut( std::pair< int, int > value );
+        void setCloseTabShortcut( std::pair< int, int > value );
 
         void setTelnetExec( wxString telnetExec );
         void setTelnetArgument( wxString telnetArgument );
@@ -65,6 +71,15 @@ class Settings
         int getMainFrameHeight() const;
         void setMainFrameWidth( int mainFrameWidth );
         void setMainFrameHeight( int mainFrameHeight );
+
+        int getCCTimeout() const;
+        void setCCTimeout( int CCTimeout );
+        int getCCUpdateInterval() const;
+        void setCCUpdateInterval( int CCUpdateInterval );
+        int getCCAutomaticCheck() const;
+        void  setCCAutomaticCheck( int CCAutomaticCheck );
+        unsigned int getCCWorkerThreads() const;
+        void setCCWorkerThreads( unsigned int CCWorkerThreads );
 
         /** column functions. will be replaced in 1.2 or 1.3 once dynamic columns are in place **/
         void setColumn0Width( int column0Width );
@@ -101,10 +116,20 @@ class Settings
         std::pair< int, int > dupConnectionShortcut;
         std::pair< int, int > propConnectionShortcut;
         std::pair< int, int > commandDialogShortcut;
+        std::pair< int, int > manualccShortcut;
+        std::pair< int, int > newTabShortcut;
+        std::pair< int, int > closeTabShortcut;
 
         int mainFrameWidth;
         int mainFrameHeight;
 
+        /** Connection checker settings **/
+        int CCTimeout;
+        int CCUpdateInterval;
+        int CCAutomaticCheck;
+        unsigned int CCWorkerThreads;
+
+        /** frame and column settings **/
         int column0Width;
         int column1Width;
         int column2Width;

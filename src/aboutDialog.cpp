@@ -21,7 +21,7 @@
 
 #include "aboutDialog.h"
 #include "Resources.h"
-
+#include <wx/image.h>
 #include <wx/hyperlink.h>
 //(*InternalHeaders(aboutDialog)
 #include <wx/font.h>
@@ -81,7 +81,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	BoxSizer7->Add(VersionText, 1, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer7, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer3->Add(-1,-1,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Manages RDP, telnet and SSH connections"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Manages RDP, telnet, SSH and VNC connections"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer3->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2012 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
@@ -89,20 +89,24 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	BoxSizer3->Add(StaticText3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxVERTICAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Licence: GNU GPLv3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+	wxFont StaticText4Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
+	StaticText4->SetFont(StaticText4Font);
 	BoxSizer6->Add(StaticText4, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	StaticText5 = new wxStaticText(Panel1, ID_STATICTEXT5, _("Text"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	StaticText5->Hide();
-	Hyperlink1 = new wxHyperlinkCtrl(Panel1, ID_HYPERLINK1, _("http://www.gnu.org/licenses/gpl.html"), _("http://www.gnu.org/licenses/gpl.html"),wxDefaultPosition, wxDefaultSize, wxHL_ALIGN_CENTRE, _T("ID_HYPERLINK1"));
+	Hyperlink1 = new wxHyperlinkCtrl(Panel1, ID_HYPERLINK1, _("http://www.gnu.org/licenses/gpl.html"), _("http://www.gnu.org/licenses/gpl.html"),wxDefaultPosition, wxDefaultSize, wxHL_ALIGN_CENTRE|wxNO_BORDER, _T("ID_HYPERLINK1"));
 		BoxSizer6->Add(Hyperlink1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6->Add(StaticText5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer6, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 10);
 	BoxSizer3->Add(-1,-1,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer5 = new wxBoxSizer(wxVERTICAL);
 	StaticText7 = new wxStaticText(Panel1, ID_STATICTEXT7, _("quickRDP project page"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-	BoxSizer5->Add(StaticText7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	wxFont StaticText7Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
+	StaticText7->SetFont(StaticText7Font);
+	BoxSizer5->Add(StaticText7, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText6 = new wxStaticText(Panel1, ID_STATICTEXT6, _("http://sourceforge.net/projects/quickrdp"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	StaticText6->Hide();
-	Hyperlink2 = new wxHyperlinkCtrl(Panel1, ID_HYPERLINK2, _("http://sourceforge.net/projects/quickrdp"), _("http://sourceforge.net/projects/quickrdp"),wxDefaultPosition, wxDefaultSize, wxHL_ALIGN_CENTRE, _T("ID_HYPERLINK2"));
+	Hyperlink2 = new wxHyperlinkCtrl(Panel1, ID_HYPERLINK2, _("http://sourceforge.net/projects/quickrdp"), _("http://sourceforge.net/projects/quickrdp"),wxDefaultPosition, wxDefaultSize, wxHL_ALIGN_CENTRE|wxNO_BORDER, _T("ID_HYPERLINK2"));
 		BoxSizer5->Add(Hyperlink2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5->Add(StaticText6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
