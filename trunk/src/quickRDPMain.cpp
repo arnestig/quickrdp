@@ -830,7 +830,7 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
                 newPanel = new ConnectionList(Notebook1, this, wxID_ANY );
                 newPanel->getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
             #else
-                newPanel = static_cast<wxPanel*> ( Notebook1->GetCurrentPage() );
+                newPanel = static_cast<ConnectionList*> ( Notebook1->GetCurrentPage() );
             #endif
 
             if ( newPanel != NULL ) {
