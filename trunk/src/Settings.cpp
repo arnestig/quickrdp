@@ -31,8 +31,8 @@
 #endif
 
 Settings::Settings()
-    :   mainFrameWidth(0),
-        mainFrameHeight(0),
+    :   mainFrameWidth(600),
+        mainFrameHeight(400),
         column0Width(0),
         column1Width(0),
         column2Width(0),
@@ -195,8 +195,14 @@ void Settings::loadSettings()
         setSSHArgument( quickRDP::FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
         setVersion( quickRDP::FileParser::getStringFromFile( wxT("version:s:"), allLines ) );
 
-        setMainFrameHeight( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("frameheight:i:"), allLines ) ) );
-        setMainFrameWidth( wxAtoi( quickRDP::FileParser::getStringFromFile( wxT("framewidth:i:"), allLines ) ) );
+	int frameHeight = quickRDP::FileParser::getIntegerFromFile( wxT("frameheight:i:"), allLines );
+	int frameWidth = quickRDP::FileParser::getIntegerFromFile( wxT("framewidth:i:"), allLines );
+	if ( frameHeight > 0 ) { 
+		setMainFrameHeight( frameHeight );
+	}
+	if ( frameWidth > 0 ) { 
+		setMainFrameWidth( frameWidth );
+	}
 
         int col0width = quickRDP::FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
         col0width == 0 ? setColumn0Width( 80 ) : setColumn0Width( col0width );
