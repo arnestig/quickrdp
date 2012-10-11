@@ -310,7 +310,7 @@ void quickRDPFrame::init()
     wxString currentVersion = Version::getNumericVersion();
     wxString oldVersion = Resources::Instance()->getSettings()->getVersion();
 
-    if ( ( currentVersion.empty() == false && oldVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
+    if ( ( currentVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
         checkForVersionChangesAndNotifyUser( oldVersion );
     }
 }
@@ -825,9 +825,10 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
     if ( wantGlobalHotkeys() == true ) {
         /** check if we matches any of our "non-connection" shortcuts **/
         if ( event.GetKeyCode() == 84 &&  event.GetModifiers() == wxMOD_CONTROL ) {
-            wxPanel *newPanel = NULL;
+            ConnectionList *newPanel = NULL;
             #if defined(__unix__)
                 newPanel = new ConnectionList(Notebook1, this, wxID_ANY );
+                newPanel->getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
             #else
                 newPanel = static_cast<wxPanel*> ( Notebook1->GetCurrentPage() );
             #endif
@@ -919,7 +920,7 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
     }
 
     /** with the new connection checker in 1.3 we want to enable automatic checks it by default.. by setting it here **/
-    if ( oldVersion < wxT("1.3") ) {
+    if ( oldVersion < wxT("2.0") ) {
         settings->setCCAutomaticCheck( 1 );
         settings->setNewTabShortcut( std::make_pair( 84, wxMOD_CONTROL ) );
         settings->setCloseTabShortcut( std::make_pair( 87, wxMOD_CONTROL ) );

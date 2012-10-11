@@ -37,7 +37,7 @@ Resources::Resources()
 
 Resources::~Resources()
 {
-	delete connectionChecker;
+	connectionChecker->Delete();
 	delete settings;
 	delete connectionDatabase;
 	delete commandDatabase;
