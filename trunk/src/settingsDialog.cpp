@@ -553,7 +553,7 @@ void settingsDialog::OnCCAutoUpdateCheckboxClick(wxCommandEvent& WXUNUSED(event)
     }
 }
 
-void settingsDialog::OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& event)
+void settingsDialog::OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& WXUNUSED(event))
 {
     CCWorkerThreadTextDisplay->SetValue( wxString::Format( wxT("%i"), CCWorkerThreadSlider->GetValue() ) );
 }
