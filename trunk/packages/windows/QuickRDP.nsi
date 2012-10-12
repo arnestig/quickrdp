@@ -39,6 +39,7 @@ setShellVarContext all
 functionEnd
 
 section "install" # Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
+Call checkIfApplicationIsClosed
 setOutPath "$INSTDIR\data" # Files added here should be removed by the uninstaller (see section "uninstall")
 file "..\..\data\*.*" # Add any other files for the install directory (license files, app data, etc) here
 file "..\..\ChangeLog"
@@ -91,3 +92,12 @@ section "uninstall"
 
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME} ${APPNAME}"
 sectionEnd
+
+function checkIfApplicationIsClosed
+checkApplicationClosed:
+nsProcess::_FindProcess "QuickRDP.exe" $R0
+Pop $0
+StrCmp $0 "0" +1 +3
+    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "QuickRDP is currently running. Please close the application and press OK to try again." IDOK checkApplicationClosed
+        Abort
+functionEnd
