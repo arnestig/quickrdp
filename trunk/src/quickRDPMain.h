@@ -179,7 +179,10 @@ class quickRDPFrame: public wxFrame
         void clearListCtrl();
         void clearPopupMenuChoices();
         void execute_connections();
+        void addConnectionTab( wxString tabTitle );
 
+        void saveConnectionTabs();
+        void loadConnectionTabs();
         void saveFrameSettings();
         void loadFrameSettings();
         int showDialog( wxDialog* dialog );

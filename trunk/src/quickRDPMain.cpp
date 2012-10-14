@@ -272,9 +272,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
         imageList->Add( wxICON( connectionunk ) );
     #endif
 
-    wxPanel *newPanel = new ConnectionList(Notebook1, this, wxID_ANY );
-    Notebook1->AddPage(newPanel, wxT(""), true ); /** an event will be generated which will cause loadRDPFromDatabase() to be called. **/
-    getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
+    loadConnectionTabs(); // Load our saved connection tabs. Will at least add one connection tab if we would have no connection tabs saved in our settings file.
 
     loadFrameSettings();
     if ( wxFileExists( Resources::Instance()->getSettings()->getDataPath() + wxT("ChangeLog") ) ) {
@@ -295,6 +293,7 @@ quickRDPFrame::~quickRDPFrame()
 {
     //(*Destroy(quickRDPFrame)
     //*)
+    saveConnectionTabs();
     saveFrameSettings();
     delete imageList;
     Resources::DestroyInstance();
@@ -723,6 +722,36 @@ void quickRDPFrame::loadFrameSettings()
     }
 }
 
+void quickRDPFrame::saveConnectionTabs()
+{
+    Settings* settings = Resources::Instance()->getSettings();
+    if ( settings != NULL ) {
+        std::vector< wxString > curConnectionTabs;
+        for ( size_t tab = 0; tab < Notebook1->GetPageCount(); ++tab ) {
+            curConnectionTabs.push_back( Notebook1->GetPageText( tab ) );
+        }
+        settings->setConnectionTabs( curConnectionTabs );
+        settings->setConnectionTabSelected( Notebook1->GetSelection() );
+        settings->saveSettings();
+    }
+}
+
+void quickRDPFrame::loadConnectionTabs()
+{
+    Settings* settings = Resources::Instance()->getSettings();
+    if ( settings != NULL ) {
+        std::vector< wxString > curConnectionTabs = settings->getConnectionTabs();
+        if ( curConnectionTabs.empty() == false ) {
+            for ( std::vector< wxString >::const_iterator it = curConnectionTabs.begin(); it != curConnectionTabs.end(); ++it ) {
+                addConnectionTab( (*it) );
+            }
+        } else {
+            addConnectionTab( wxT("") );
+        }
+        Notebook1->SetSelection( settings->getConnectionTabSelected() );
+    }
+}
+
 void quickRDPFrame::OnPopupMenuDuplicate(wxCommandEvent& event)
 {
     OnDuplicateButtonClick( event );
@@ -825,17 +854,7 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
     if ( wantGlobalHotkeys() == true ) {
         /** check if we matches any of our "non-connection" shortcuts **/
         if ( event.GetKeyCode() == 84 &&  event.GetModifiers() == wxMOD_CONTROL ) {
-            ConnectionList *newPanel = NULL;
-            #if defined(__unix__)
-                newPanel = new ConnectionList(Notebook1, this, wxID_ANY );
-                newPanel->getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
-            #else
-                newPanel = static_cast<ConnectionList*> ( Notebook1->GetCurrentPage() );
-            #endif
-
-            if ( newPanel != NULL ) {
-                Notebook1->AddPage(newPanel, wxT(""), true );
-            }
+            addConnectionTab( wxT("") );
             return true;
         } else if ( event.GetKeyCode() == 87 && event.GetModifiers() == wxMOD_CONTROL ) {
             if ( Notebook1->GetPageCount() > 1 ) {
@@ -1152,6 +1171,27 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
 void quickRDPFrame::OnItemActivated(wxListEvent& WXUNUSED(event) )
 {
     execute_connections();
+}
+
+void quickRDPFrame::addConnectionTab( wxString tabTitle )
+{
+    ConnectionList *newPanel = NULL;
+    #if defined(__unix__)
+        newPanel = new ConnectionList(Notebook1, this, wxID_ANY );
+        newPanel->getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
+    #else
+        if ( Notebook1->GetPageCount() == 0 ) {
+            wxPanel *originalFirstPanel = new ConnectionList(Notebook1, this, wxID_ANY );
+            Notebook1->AddPage(originalFirstPanel, wxT(""), true ); /** an event will be generated which will cause loadRDPFromDatabase() to be called. **/
+            getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
+        } else {
+            newPanel = static_cast<ConnectionList*> ( Notebook1->GetCurrentPage() );
+        }
+    #endif
+
+    if ( newPanel != NULL ) {
+        Notebook1->AddPage(newPanel, tabTitle, true );
+    }
 }
 
 void quickRDPFrame::OnItemSelected(wxListEvent& WXUNUSED(event) )
