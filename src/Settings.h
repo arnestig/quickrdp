@@ -23,6 +23,7 @@
 #define __SETTINGS_H__
 
 #include <wx/string.h>
+#include <vector>
 
 class Settings
 {
@@ -96,6 +97,13 @@ class Settings
         int getColumn4Width() const;
         int getColumn5Width() const;
 
+        /** return tabs saved from closing the application **/
+        void setConnectionTabs( std::vector< wxString > connectionTabs );
+        std::vector< wxString > getConnectionTabs() const;
+
+        void setConnectionTabSelected( int selectedTab );
+        int getConnectionTabSelected() const;
+
 
     private:
         void loadSettings();
@@ -136,6 +144,10 @@ class Settings
         int column3Width;
         int column4Width;
         int column5Width;
+
+        /** connection tabs saved from closing the application  **/
+        std::vector< wxString > connectionTabs;
+        int selectedTab;
 };
 
 #endif

@@ -60,6 +60,18 @@ namespace quickRDP
             return wxT("");
         };
 
+        inline std::vector< wxString > getStringVectorFromFile( wxString searchPattern, std::vector< wxString > file )
+        {
+            std::vector< wxString > retVec;
+            for ( size_t index = 0; index < file.size(); index++ ) {
+                int searchRet = file[ index ].Find( searchPattern );
+                if ( searchRet != wxNOT_FOUND ) {
+                    retVec.push_back( file[ index ].SubString( searchPattern.Len(), file[ index ].Len() ) );
+                }
+            }
+            return retVec;
+        };
+
         inline int getIntegerFromFile( wxString searchPattern, std::vector<wxString> file )
         {
             wxString retVal = getStringFromFile( searchPattern, file );

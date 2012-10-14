@@ -130,6 +130,13 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column4width:i:")) << getColumn4Width() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column5width:i:")) << getColumn5Width() );
 
+    std::vector< wxString > conTabs = getConnectionTabs();
+    for ( std::vector< wxString >::const_iterator it = conTabs.begin(); it != conTabs.end(); ++it ) {
+        quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("connectiontab:s:")) << (*it) );
+    }
+
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("connectiontabselected:i:")) << getConnectionTabSelected() );
+
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("newconkeycode:i:")) << getNewConnectionShortcut().first );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("newconmodifier:i:")) << getNewConnectionShortcut().second );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("dupconkeycode:i:")) << getDupConnectionShortcut().first );
@@ -195,14 +202,14 @@ void Settings::loadSettings()
         setSSHArgument( quickRDP::FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
         setVersion( quickRDP::FileParser::getStringFromFile( wxT("version:s:"), allLines ) );
 
-	int frameHeight = quickRDP::FileParser::getIntegerFromFile( wxT("frameheight:i:"), allLines );
-	int frameWidth = quickRDP::FileParser::getIntegerFromFile( wxT("framewidth:i:"), allLines );
-	if ( frameHeight > 0 ) { 
-		setMainFrameHeight( frameHeight );
-	}
-	if ( frameWidth > 0 ) { 
-		setMainFrameWidth( frameWidth );
-	}
+        int frameHeight = quickRDP::FileParser::getIntegerFromFile( wxT("frameheight:i:"), allLines );
+        int frameWidth = quickRDP::FileParser::getIntegerFromFile( wxT("framewidth:i:"), allLines );
+        if ( frameHeight > 0 ) {
+            setMainFrameHeight( frameHeight );
+        }
+        if ( frameWidth > 0 ) {
+            setMainFrameWidth( frameWidth );
+        }
 
         int col0width = quickRDP::FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
         col0width == 0 ? setColumn0Width( 80 ) : setColumn0Width( col0width );
@@ -221,6 +228,9 @@ void Settings::loadSettings()
 
         int col5width = quickRDP::FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
         col5width == 0 ? setColumn5Width( 107 ) : setColumn5Width( col5width );
+
+        setConnectionTabs( quickRDP::FileParser::getStringVectorFromFile( wxT("connectiontab:s:"), allLines ) );
+        setConnectionTabSelected( quickRDP::FileParser::getIntegerFromFile( wxT("connectiontabselected:i:"), allLines ) );
 
         setNewConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("newconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("newconmodifier:i:"), allLines ) ) );
         setDupConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("dupconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("dupconmodifier:i:"), allLines ) ) );
@@ -538,4 +548,26 @@ void Settings::setColumn5Width( int column5Width )
 int Settings::getColumn5Width() const
 {
     return column5Width;
+}
+
+
+/** functions for setting and getting the saved connection tabs **/
+void Settings::setConnectionTabs( std::vector< wxString > connectionTabs )
+{
+    this->connectionTabs = connectionTabs;
+}
+
+std::vector< wxString > Settings::getConnectionTabs() const
+{
+    return connectionTabs;
+}
+
+void Settings::setConnectionTabSelected( int selectedTab )
+{
+    this->selectedTab = selectedTab;
+}
+
+int Settings::getConnectionTabSelected() const
+{
+    return selectedTab;
 }
