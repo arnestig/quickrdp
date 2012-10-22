@@ -25,10 +25,27 @@
 //(*Headers(ConnectionList)
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
+#include <wx/menu.h>
 #include <wx/panel.h>
 //*)
-
+#include <vector>
 #include "quickRDPMain.h"
+
+namespace ConnectionListColumn
+{
+    enum ConnectionListColumn
+    {
+        HOSTNAME        = 0x01,
+        PORT            = 0x02,
+        USERNAME        = 0x04,
+        CONNECTIONTYPE  = 0x08,
+        USE_CONSOLE     = 0x10,
+        RESOLUTION      = 0x20,
+        COMMENT         = 0x40,
+        CLIENT_NAME     = 0x80,
+
+    };
+}
 
 class ConnectionList: public wxPanel
 {
@@ -38,17 +55,35 @@ class ConnectionList: public wxPanel
 		virtual ~ConnectionList();
 
 		//(*Declarations(ConnectionList)
+		wxMenuItem* MenuItem8;
+		wxMenuItem* MenuItem7;
 		wxListCtrl* ListCtrl1;
+		wxMenuItem* MenuItem5;
+		wxMenuItem* MenuItem2;
+		wxMenuItem* MenuItem1;
+		wxMenuItem* MenuItem4;
+		wxMenuItem* MenuItem3;
+		wxMenuItem* MenuItem6;
+		wxMenu ColumnListChooserMenu;
 		//*)
 		wxListCtrl* getConnectionList();
 		void UpdateColumnWidth();
+		void addColumns();
 
 	protected:
 
 		//(*Identifiers(ConnectionList)
 		static const long ID_LISTCTRL1;
+		static const long ID_COLUMN_HOSTNAME;
+		static const long ID_COLUMN_PORT;
+		static const long ID_COLUMN_USERNAME;
+		static const long ID_COLUMN_CONNECTIONTYPE;
+		static const long ID_COLUMN_USECONSOLE;
+		static const long ID_COLUMN_RESOLUTION;
+		static const long ID_COLUMN_COMMENT;
+		static const long ID_COLUMN_CLIENTNAME;
 		//*)
-		quickRDPFrame *mainFrame;
+
 
 	private:
 
@@ -59,7 +94,11 @@ class ConnectionList: public wxPanel
 		void OnItemSelected(wxListEvent& event);
 		void OnItemDeselected(wxListEvent& event);
 		void OnColumnEndDrag(wxListEvent& event);
+		void OnColumnRightClick(wxListEvent& event);
+		void OnColumnListChooserMenuClick(wxCommandEvent& event);
 		//*)
+		quickRDPFrame *mainFrame;
+		std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap;
 
 		DECLARE_EVENT_TABLE()
 };

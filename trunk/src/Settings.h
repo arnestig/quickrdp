@@ -24,6 +24,7 @@
 
 #include <wx/string.h>
 #include <vector>
+#include "ConnectionList.h"
 
 class Settings
 {
@@ -82,20 +83,13 @@ class Settings
         unsigned int getCCWorkerThreads() const;
         void setCCWorkerThreads( unsigned int CCWorkerThreads );
 
-        /** column functions. will be replaced in 1.2 or 1.3 once dynamic columns are in place **/
-        void setColumn0Width( int column0Width );
-        void setColumn1Width( int column1Width );
-        void setColumn2Width( int column2Width );
-        void setColumn3Width( int column3Width );
-        void setColumn4Width( int column4Width );
-        void setColumn5Width( int column5Width );
+        void setConnectionListColumns( int connectionListColumns );
+        int getConnectionListColumns() const;
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > getConnectionListColumMap();
+        bool isConnectionListColumnActive( wxString columnName );
 
-        int getColumn0Width() const;
-        int getColumn1Width() const;
-        int getColumn2Width() const;
-        int getColumn3Width() const;
-        int getColumn4Width() const;
-        int getColumn5Width() const;
+        int getConnectionListColumnWidth( int columnId );
+        void setConnectionListColuimnWidths( std::vector< int > connectionListColumnWidths );
 
         /** return tabs saved from closing the application **/
         void setConnectionTabs( std::vector< wxString > connectionTabs );
@@ -137,13 +131,10 @@ class Settings
         int CCAutomaticCheck;
         unsigned int CCWorkerThreads;
 
-        /** frame and column settings **/
-        int column0Width;
-        int column1Width;
-        int column2Width;
-        int column3Width;
-        int column4Width;
-        int column5Width;
+        int connectionListColumns;
+        std::vector< int > connectionListColumnWidths;
+
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap;
 
         /** connection tabs saved from closing the application  **/
         std::vector< wxString > connectionTabs;

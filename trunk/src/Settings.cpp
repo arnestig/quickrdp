@@ -22,6 +22,7 @@
 #include "Settings.h"
 #include "Resources.h"
 #include "QuickrdpFunctions.h"
+#include "ConnectionList.h"
 #include <wx/stdpaths.h>
 #include <fstream>
 #include "version.h"
@@ -32,13 +33,7 @@
 
 Settings::Settings()
     :   mainFrameWidth(600),
-        mainFrameHeight(400),
-        column0Width(0),
-        column1Width(0),
-        column2Width(0),
-        column3Width(0),
-        column4Width(0),
-        column5Width(0)
+        mainFrameHeight(400)
 {
     /** load all settings for quickRDP **/
 
@@ -95,6 +90,16 @@ Settings::Settings()
         #endif
     }
 
+    /** fill our connectionListColumMapo with all our available columns **/
+    connectionListColumnMap.push_back( std::make_pair( wxT("Hostname"), ConnectionListColumn::HOSTNAME ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Port"), ConnectionListColumn::PORT ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Username"), ConnectionListColumn::USERNAME ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Connection"), ConnectionListColumn::CONNECTIONTYPE ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Use console"), ConnectionListColumn::USE_CONSOLE ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Resolution"), ConnectionListColumn::RESOLUTION ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Comment"), ConnectionListColumn::COMMENT ) );
+    connectionListColumnMap.push_back( std::make_pair( wxT("Client name"), ConnectionListColumn::CLIENT_NAME ) );
+
     /** parse our settings file **/
     loadSettings();
 }
@@ -117,18 +122,19 @@ void Settings::saveSettings()
 
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("telnetexec:s:")) + getTelnetExec() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHexec:s:")) + getSSHExec() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("vncexec:s:")) + getVNCExec() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("telnetargument:s:")) + getTelnetArgument() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("SSHargument:s:")) + getSSHArgument() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("vncargument:s:")) + getVNCArgument() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("frameheight:i:")) << getMainFrameHeight() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("framewidth:i:")) << getMainFrameWidth() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("version:s:")) + Version::getNumericVersion() );
 
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column0width:i:")) << getColumn0Width() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column1width:i:")) << getColumn1Width() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column2width:i:")) << getColumn2Width() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column3width:i:")) << getColumn3Width() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column4width:i:")) << getColumn4Width() );
-    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("column5width:i:")) << getColumn5Width() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("connectionlistcolumns:i:")) << getConnectionListColumns() );
+
+    for ( std::vector< int >::const_iterator it = connectionListColumnWidths.begin(); it != connectionListColumnWidths.end(); ++it ) {
+        quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("connectionlistcolumnwidth:i:")) << (*it) );
+    }
 
     std::vector< wxString > conTabs = getConnectionTabs();
     for ( std::vector< wxString >::const_iterator it = conTabs.begin(); it != conTabs.end(); ++it ) {
@@ -198,8 +204,10 @@ void Settings::loadSettings()
         delete[] buffer;
         setTelnetExec( quickRDP::FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
         setSSHExec( quickRDP::FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
+        setVNCExec( quickRDP::FileParser::getStringFromFile( wxT("vncexec:s:"), allLines ) );
         setTelnetArgument( quickRDP::FileParser::getStringFromFile( wxT("telnetargument:s:"), allLines ) );
         setSSHArgument( quickRDP::FileParser::getStringFromFile( wxT("SSHargument:s:"), allLines ) );
+        setVNCArgument( quickRDP::FileParser::getStringFromFile( wxT("vncargument:s:"), allLines ) );
         setVersion( quickRDP::FileParser::getStringFromFile( wxT("version:s:"), allLines ) );
 
         int frameHeight = quickRDP::FileParser::getIntegerFromFile( wxT("frameheight:i:"), allLines );
@@ -211,23 +219,15 @@ void Settings::loadSettings()
             setMainFrameWidth( frameWidth );
         }
 
-        int col0width = quickRDP::FileParser::getIntegerFromFile( wxT("column0width:i:"), allLines );
-        col0width == 0 ? setColumn0Width( 80 ) : setColumn0Width( col0width );
+        int connectionListColumns = quickRDP::FileParser::getIntegerFromFile( wxT("connectionlistcolumns:i:"), allLines );
+        connectionListColumns == 0 ? setConnectionListColumns(ConnectionListColumn::COMMENT|
+                                                              ConnectionListColumn::CONNECTIONTYPE|
+                                                              ConnectionListColumn::HOSTNAME|
+                                                              ConnectionListColumn::USERNAME|
+                                                              ConnectionListColumn::USE_CONSOLE ) : setConnectionListColumns( connectionListColumns );
 
-        int col1width = quickRDP::FileParser::getIntegerFromFile( wxT("column1width:i:"), allLines );
-        col1width == 0 ? setColumn1Width( 90 ) : setColumn1Width( col1width );
-
-        int col2width = quickRDP::FileParser::getIntegerFromFile( wxT("column2width:i:"), allLines );
-        col2width == 0 ? setColumn2Width( 100 ) : setColumn2Width( col2width );
-
-        int col3width = quickRDP::FileParser::getIntegerFromFile( wxT("column3width:i:"), allLines );
-        col3width == 0 ? setColumn3Width( 87 ) : setColumn3Width( col3width );
-
-        int col4width = quickRDP::FileParser::getIntegerFromFile( wxT("column4width:i:"), allLines );
-        col4width == 0 ? setColumn4Width( 82 ) : setColumn4Width( col4width );
-
-        int col5width = quickRDP::FileParser::getIntegerFromFile( wxT("column5width:i:"), allLines );
-        col5width == 0 ? setColumn5Width( 107 ) : setColumn5Width( col5width );
+        connectionListColumnWidths = quickRDP::FileParser::getIntegerVectorFromFile( wxT("connectionlistcolumnwidth:i:"), allLines );
+        connectionListColumnWidths.resize( 8, 80 ); /** Make sure we have 8 items in our column width vector **/
 
         setConnectionTabs( quickRDP::FileParser::getStringVectorFromFile( wxT("connectiontab:s:"), allLines ) );
         setConnectionTabSelected( quickRDP::FileParser::getIntegerFromFile( wxT("connectiontabselected:i:"), allLines ) );
@@ -489,67 +489,41 @@ void Settings::setMainFrameHeight( int mainFrameHeight )
     this->mainFrameHeight = mainFrameHeight;
 }
 
-/** column settings. These will be replaced at 1.2 or 1.3 once dynamic columns are in place **/
-void Settings::setColumn0Width( int column0Width )
+void Settings::setConnectionListColumns( int connectionListColumns )
 {
-    this->column0Width = column0Width;
+    this->connectionListColumns = connectionListColumns;
 }
 
-int Settings::getColumn0Width() const
+int Settings::getConnectionListColumns() const
 {
-    return column0Width;
+    return connectionListColumns;
 }
 
-void Settings::setColumn1Width( int column1Width )
+bool Settings::isConnectionListColumnActive( wxString columnName )
 {
-    this->column1Width = column1Width;
+    bool isColumnActive = false;
+    for ( std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > >::const_iterator it = connectionListColumnMap.begin(); it != connectionListColumnMap.end(); ++it ) {
+        if ( (*it).first == columnName ) {
+            isColumnActive = ( getConnectionListColumns() & (*it).second );
+        }
+    }
+    return isColumnActive;
 }
 
-int Settings::getColumn1Width() const
+int Settings::getConnectionListColumnWidth( int columnId )
 {
-    return column1Width;
+    return connectionListColumnWidths[ columnId ];
 }
 
-void Settings::setColumn2Width( int column2Width )
+void Settings::setConnectionListColuimnWidths( std::vector< int > connectionListColumnWidths )
 {
-    this->column2Width = column2Width;
+    this->connectionListColumnWidths = connectionListColumnWidths;
 }
 
-int Settings::getColumn2Width() const
+std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > Settings::getConnectionListColumMap()
 {
-    return column2Width;
+    return connectionListColumnMap;
 }
-
-void Settings::setColumn3Width( int column3Width )
-{
-    this->column3Width = column3Width;
-}
-
-int Settings::getColumn3Width() const
-{
-    return column3Width;
-}
-
-void Settings::setColumn4Width( int column4Width )
-{
-    this->column4Width = column4Width;
-}
-
-int Settings::getColumn4Width() const
-{
-    return column4Width;
-}
-
-void Settings::setColumn5Width( int column5Width )
-{
-    this->column5Width = column5Width;
-}
-
-int Settings::getColumn5Width() const
-{
-    return column5Width;
-}
-
 
 /** functions for setting and getting the saved connection tabs **/
 void Settings::setConnectionTabs( std::vector< wxString > connectionTabs )

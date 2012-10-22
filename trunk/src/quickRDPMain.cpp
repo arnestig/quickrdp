@@ -387,6 +387,7 @@ void quickRDPFrame::loadRDPFromDatabase()
 {
     clearListCtrl();
     Resources::Instance()->getConnectionDatabase()->clearRDPListCtrl();
+    Settings *settings = Resources::Instance()->getSettings();
 
     std::vector<RDPConnection*> database = Resources::Instance()->getConnectionDatabase()->getDatabase();
     long itemIndexCounter = 0;
@@ -396,63 +397,55 @@ void quickRDPFrame::loadRDPFromDatabase()
         // if we have a filter in place, we search the RDPConnection and checks if any value matches our pattern. if it doesn't, we hop to the next item in the database.
         if ( curRDP->doesRDPHasString( Notebook1->GetPageText( Notebook1->GetSelection() ) ) == true ) {
             Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
+            int columnCounter = 0;
             wxListItem item;
             item.SetId( index );
-            getConnectionList()->InsertItem( item, curRDP->getConnectionStatus() );
-            wxString username;
-            if ( curRDP->getDomain().Len() > 0 && curRDP->getConnectionType() == ConnectionType::RDP ) {
-                username.Append( curRDP->getDomain() + wxT("\\") );
-            }
-            username.Append( curRDP->getUsername() );
-            getConnectionList()->SetItem( itemIndexCounter, 0, curRDP->getHostname() );
-            getConnectionList()->SetItem( itemIndexCounter, 1, username );
+            wxListCtrl *listCtrl = getConnectionList();
+            listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
 
-            getConnectionList()->SetItem( itemIndexCounter, 2, ConnectionType::getConnectionTypeName( curRDP->getConnectionType() ) );
+            listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
 
-            if ( curRDP->getConsole() == wxT("1") ) {
-                getConnectionList()->SetItem( itemIndexCounter, 3, wxT("Yes") );
-            } else {
-                getConnectionList()->SetItem( itemIndexCounter, 3, wxT("No" ) );
+            if ( settings->isConnectionListColumnActive( wxT("Port") ) == true ) {
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, wxString::Format( wxT("%i"), curRDP->getPort() ) );
             }
 
-            if ( curRDP->getScreenMode() == wxT("2") ) {
-                getConnectionList()->SetItem( itemIndexCounter, 4, wxT("Fullscreen") );
-            } else if ( curRDP->getDesktopHeight() == wxT("0") && curRDP->getDesktopWidth() == wxT("0") ) {
-                getConnectionList()->SetItem( itemIndexCounter, 4, wxT("Default") );
-            } else {
-                getConnectionList()->SetItem( itemIndexCounter, 4, curRDP->getDesktopWidth() + wxT(" x ") + curRDP->getDesktopHeight() );
+            if ( settings->isConnectionListColumnActive( wxT("Username") ) == true ) {
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getDomainUsernameString() );
             }
 
-            getConnectionList()->SetItem( itemIndexCounter, 5, curRDP->getComment() );
+            if ( settings->isConnectionListColumnActive( wxT("Connection") ) == true ) {
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, ConnectionType::getConnectionTypeName( curRDP->getConnectionType() ) );
+            }
+
+            if ( settings->isConnectionListColumnActive( wxT("Use console") ) == true ) {
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getConsoleString() );
+            }
+
+            if ( settings->isConnectionListColumnActive( wxT("Resolution") ) == true ) {
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getResolutionString() );
+            }
+            if ( settings->isConnectionListColumnActive( wxT("Comment") ) == true ) {
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getComment() );
+            }
+
+            if ( settings->isConnectionListColumnActive( wxT("Client name") ) == true ) {
+                wxString value = wxT("");
+                if ( curRDP->getConnectionType() == ConnectionType::RDP ) {
+                    value = curRDP->getClientHostname();
+                }
+                listCtrl->SetItem( itemIndexCounter, ++columnCounter, value );
+            }
             itemIndexCounter++;
         }
     }
-
-    /** also update the connection status of the visible items in listctrl **/
-    /** also skipping it here.. updateConnectionCheckerStatus(); **/
 }
 
 void quickRDPFrame::clearListCtrl()
 {
-    /** save the column with that we use before clearing the list **/
-    int columnWidth[6];
-    for ( int colId = 0; colId < 6; ++colId ) {
-        columnWidth[ colId ] = getConnectionList()->GetColumnWidth( colId );
+    ConnectionList* connectionListPanel = static_cast<ConnectionList*>( Notebook1->GetCurrentPage() );
+    if ( connectionListPanel != NULL ) {
+        connectionListPanel->addColumns();
     }
-
-    getConnectionList()->ClearAll();
-    getConnectionList()->InsertColumn( 0, wxT("Host") );
-    getConnectionList()->InsertColumn( 1, wxT("Username") );
-    getConnectionList()->InsertColumn( 2, wxT("Connection") );
-    getConnectionList()->InsertColumn( 3, wxT("Use console") );
-    getConnectionList()->InsertColumn( 4, wxT("Resolution") );
-    getConnectionList()->InsertColumn( 5, wxT("Comment") );
-
-    /** restore the column width **/
-    for ( int colId = 0; colId < 6; ++colId ) {
-        getConnectionList()->SetColumnWidth( colId, columnWidth[ colId ] );
-    }
-
 }
 
 void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
@@ -1165,7 +1158,7 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
         commandMenu->Append( newCommandMenuItem );
     }
 
-    PopupMenu(&PopupMenu1 );
+    PopupMenu( &PopupMenu1 );
 }
 
 void quickRDPFrame::OnItemActivated(wxListEvent& WXUNUSED(event) )

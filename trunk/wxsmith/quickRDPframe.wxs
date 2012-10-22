@@ -256,5 +256,6 @@
 				</object>
 			</object>
 		</object>
+		<object class="wxMenu" variable="ColumnMenu" member="yes" />
 	</object>
 </wxsmith>

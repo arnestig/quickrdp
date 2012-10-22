@@ -26,10 +26,20 @@
 #include <wx/string.h>
 //*)
 
+#include <wx/msgdlg.h>
+
 #include "Resources.h"
 
 //(*IdInit(ConnectionList)
 const long ConnectionList::ID_LISTCTRL1 = wxNewId();
+const long ConnectionList::ID_COLUMN_HOSTNAME = wxNewId();
+const long ConnectionList::ID_COLUMN_PORT = wxNewId();
+const long ConnectionList::ID_COLUMN_USERNAME = wxNewId();
+const long ConnectionList::ID_COLUMN_CONNECTIONTYPE = wxNewId();
+const long ConnectionList::ID_COLUMN_USECONSOLE = wxNewId();
+const long ConnectionList::ID_COLUMN_RESOLUTION = wxNewId();
+const long ConnectionList::ID_COLUMN_COMMENT = wxNewId();
+const long ConnectionList::ID_COLUMN_CLIENTNAME = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(ConnectionList,wxPanel)
@@ -46,14 +56,25 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 	Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	ListCtrl1 = new wxListCtrl(this, ID_LISTCTRL1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT, wxDefaultValidator, _T("ID_LISTCTRL1"));
-	ListCtrl1->InsertColumn( 0, wxT("Host") );
-	ListCtrl1->InsertColumn( 1, wxT("Username") );
-	ListCtrl1->InsertColumn( 2, wxT("Connection") );
-	ListCtrl1->InsertColumn( 3, wxT("Use console") );
-	ListCtrl1->InsertColumn( 4, wxT("Resolution") );
-	ListCtrl1->InsertColumn( 5, wxT("Comment") );
 	BoxSizer1->Add(ListCtrl1, 1, wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 	SetSizer(BoxSizer1);
+	MenuItem1 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_HOSTNAME, _("Hostname"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem1);
+	MenuItem1->Enable(false);
+	MenuItem2 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_PORT, _("Port"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem2);
+	MenuItem3 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_USERNAME, _("Username"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem3);
+	MenuItem4 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_CONNECTIONTYPE, _("Connection"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem4);
+	MenuItem5 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_USECONSOLE, _("Use console"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem5);
+	MenuItem6 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_RESOLUTION, _("Resolution"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem6);
+	MenuItem7 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_COMMENT, _("Comment"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem7);
+	MenuItem8 = new wxMenuItem((&ColumnListChooserMenu), ID_COLUMN_CLIENTNAME, _("Client name"), wxEmptyString, wxITEM_CHECK);
+	ColumnListChooserMenu.Append(MenuItem8);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
 
@@ -62,10 +83,19 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&ConnectionList::OnItemActivated);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK,(wxObjectEventFunction)&ConnectionList::OnItemRightClick);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&ConnectionList::OnColumnClick);
+	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_RIGHT_CLICK,(wxObjectEventFunction)&ConnectionList::OnColumnRightClick);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_END_DRAG,(wxObjectEventFunction)&ConnectionList::OnColumnEndDrag);
+	Connect(ID_COLUMN_HOSTNAME,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_PORT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_USERNAME,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_CONNECTIONTYPE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_USECONSOLE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_RESOLUTION,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_COMMENT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
+	Connect(ID_COLUMN_CLIENTNAME,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&ConnectionList::OnColumnListChooserMenuClick);
 	//*)
 
-	UpdateColumnWidth();
+    //addColumns();
 }
 
 ConnectionList::~ConnectionList()
@@ -110,13 +140,18 @@ void ConnectionList::OnColumnEndDrag(wxListEvent& WXUNUSED(event) )
     Save this setting so we get the correct size on other panels **/
     Settings* settings = Resources::Instance()->getSettings();
     if ( settings != NULL ) {
-        settings->setColumn0Width( ListCtrl1->GetColumnWidth( 0 ) );
-        settings->setColumn1Width( ListCtrl1->GetColumnWidth( 1 ) );
-        settings->setColumn2Width( ListCtrl1->GetColumnWidth( 2 ) );
-        settings->setColumn3Width( ListCtrl1->GetColumnWidth( 3 ) );
-        settings->setColumn4Width( ListCtrl1->GetColumnWidth( 4 ) );
-        settings->setColumn5Width( ListCtrl1->GetColumnWidth( 5 ) );
-        settings->saveSettings();
+        int columns = settings->getConnectionListColumns();
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
+        std::vector< int > newWidths;
+        for ( size_t colId = 0; colId < connectionListColumnMap.size(); ++colId ) {
+            bool hasColumn = ( columns & connectionListColumnMap[ colId ].second );
+            if ( hasColumn == true ) {
+                newWidths.push_back( ListCtrl1->GetColumnWidth( colId ) );
+            } else {
+                newWidths.push_back( settings->getConnectionListColumnWidth( colId ) );
+            }
+        }
+        settings->setConnectionListColuimnWidths( newWidths );
     }
     mainFrame->UpdateFrameWidthOnAllListConnections();
 }
@@ -126,11 +161,64 @@ void ConnectionList::UpdateColumnWidth()
     /** update our colums width depending on what our settings say. **/
     Settings* settings = Resources::Instance()->getSettings();
     if ( settings != NULL ) {
-        ListCtrl1->SetColumnWidth( 0, settings->getColumn0Width() );
-        ListCtrl1->SetColumnWidth( 1, settings->getColumn1Width() );
-        ListCtrl1->SetColumnWidth( 2, settings->getColumn2Width() );
-        ListCtrl1->SetColumnWidth( 3, settings->getColumn3Width() );
-        ListCtrl1->SetColumnWidth( 4, settings->getColumn4Width() );
-        ListCtrl1->SetColumnWidth( 5, settings->getColumn5Width() );
+        int columns = settings->getConnectionListColumns();
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
+        for ( size_t colId = 0; colId < connectionListColumnMap.size(); ++colId ) {
+            bool hasColumn = ( columns & connectionListColumnMap[ colId ].second );
+            if ( hasColumn == true ) {
+                ListCtrl1->SetColumnWidth( colId, settings->getConnectionListColumnWidth( colId ) );
+            }
+        }
     }
+}
+
+void ConnectionList::OnColumnRightClick(wxListEvent& event)
+{
+    Settings* settings = Resources::Instance()->getSettings();
+    if ( settings != NULL ) {
+        int columns = settings->getConnectionListColumns();
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
+        for ( size_t colId = 0; colId < connectionListColumnMap.size(); ++colId ) {
+            bool check = ( columns & connectionListColumnMap[ colId ].second );
+            wxMenuItem* curMenuItem = ColumnListChooserMenu.FindItemByPosition( colId );
+            if ( curMenuItem != NULL ) {
+                curMenuItem->Check( check );
+            }
+        }
+        PopupMenu( &ColumnListChooserMenu );
+    }
+}
+
+void ConnectionList::OnColumnListChooserMenuClick(wxCommandEvent& event)
+{
+    Settings *settings = Resources::Instance()->getSettings();
+    if ( settings != NULL ) {
+        wxString columnName = ColumnListChooserMenu.GetLabel( event.GetId() );
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
+        for ( std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > >::const_iterator it = connectionListColumnMap.begin(); it != connectionListColumnMap.end(); ++it ) {
+            if ( (*it).first == columnName ) {
+                int columns = settings->getConnectionListColumns();
+                columns ^= (*it).second;
+                settings->setConnectionListColumns( columns );
+            }
+        }
+        mainFrame->loadRDPFromDatabase();
+    }
+}
+
+void ConnectionList::addColumns()
+{
+    Settings* settings = Resources::Instance()->getSettings();
+    if ( settings != NULL ) {
+        ListCtrl1->ClearAll();
+        int columns = settings->getConnectionListColumns();
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
+        for ( size_t colId = 0; colId < connectionListColumnMap.size(); ++colId ) {
+            bool addColumn = ( columns & connectionListColumnMap[ colId ].second );
+            if ( addColumn == true ) {
+                ListCtrl1->InsertColumn( ListCtrl1->GetColumnCount(), connectionListColumnMap[ colId ].first );
+            }
+        }
+    }
+    UpdateColumnWidth();
 }
