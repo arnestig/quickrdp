@@ -57,7 +57,7 @@ class quickRDPFrame: public wxFrame
 		void OnItemActivated(wxListEvent& event);
 		void OnItemSelected(wxListEvent& event);
 		void OnItemDeselected(wxListEvent& event);
-
+        void loadRDPFromDatabase();
 
     private:
 
@@ -144,6 +144,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem4;
         wxMenuItem* MenuItem14;
         wxMenuItem* MenuItem11;
+        wxMenu ColumnMenu;
         wxMenuItem* MenuItem15;
         wxMenuItem* MenuItem22;
         wxPanel* Panel1;
@@ -175,7 +176,6 @@ class quickRDPFrame: public wxFrame
         int last_column_click;
         bool globalhotkeys;
 
-        void loadRDPFromDatabase();
         void clearListCtrl();
         void clearPopupMenuChoices();
         void execute_connections();
