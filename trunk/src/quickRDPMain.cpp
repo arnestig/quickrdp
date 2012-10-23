@@ -1175,7 +1175,7 @@ void quickRDPFrame::addConnectionTab( wxString tabTitle )
     #else
         if ( Notebook1->GetPageCount() == 0 ) {
             wxPanel *originalFirstPanel = new ConnectionList(Notebook1, this, wxID_ANY );
-            Notebook1->AddPage(originalFirstPanel, wxT(""), true ); /** an event will be generated which will cause loadRDPFromDatabase() to be called. **/
+            Notebook1->AddPage(originalFirstPanel, tabTitle, true ); /** an event will be generated which will cause loadRDPFromDatabase() to be called. **/
             getConnectionList()->SetImageList( imageList, wxIMAGE_LIST_SMALL );
         } else {
             newPanel = static_cast<ConnectionList*> ( Notebook1->GetCurrentPage() );
