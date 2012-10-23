@@ -92,6 +92,7 @@ class RDPConnection
         wxString getResolutionString() const;
         wxString getDomainUsernameString() const;
         wxString getColorsString() const;
+        wxString getConsoleString() const;
 
         void connect();
 
@@ -150,6 +151,7 @@ class RDPDatabase
         void sortById( int id );
         bool isSortOrderAscending() const;
         void setSortOrder( bool database_sort_ascending );
+        bool compareConnection( wxString left, wxString right );
 
     private:
         bool database_sort_ascending;
@@ -165,6 +167,16 @@ class RDPDatabase
         static bool hostnameCompareDesc( RDPConnection* left, RDPConnection* right )
         {
             return left->getHostname().Lower() > right->getHostname().Lower();
+        }
+
+        static bool portCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getPort() < right->getPort();
+        }
+
+        static bool portCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getPort() > right->getPort();
         }
 
         static bool usernameCompareAsc( RDPConnection* left, RDPConnection* right )
@@ -189,12 +201,12 @@ class RDPDatabase
 
         static bool useConsoleCompareAsc( RDPConnection* left, RDPConnection* right )
         {
-            return left->getConsole().Lower() < right->getConsole().Lower();
+            return left->getConsoleString().Lower() < right->getConsoleString().Lower();
         }
 
         static bool useConsoleCompareDesc( RDPConnection* left, RDPConnection* right )
         {
-            return left->getConsole().Lower() > right->getConsole().Lower();
+            return left->getConsoleString().Lower() > right->getConsoleString().Lower();
         }
 
         static bool resolutionCompareAsc( RDPConnection* left, RDPConnection* right )
@@ -215,6 +227,16 @@ class RDPDatabase
         static bool commentCompareDesc( RDPConnection* left, RDPConnection* right )
         {
             return left->getComment().Lower() > right->getComment().Lower();
+        }
+
+        static bool clientNameCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getClientHostname().Lower() < right->getClientHostname().Lower();
+        }
+
+        static bool clientNameCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getClientHostname().Lower() > right->getClientHostname().Lower();
         }
 };
 #endif
