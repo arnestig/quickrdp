@@ -216,19 +216,36 @@ long RDPConnection::getLastChecked() const
 
 wxString RDPConnection::getResolutionString() const
 {
-    if ( getScreenMode() == wxT("2") ) {
-        return wxT("Fullscreen");
-    } else if ( getScreenMode() == wxT("1") && getDesktopHeight() == wxT("0") && getDesktopWidth() == wxT("0") ) {
-        return wxT("Default resolution" );
-    } else {
-        return ( getDesktopWidth() + wxT(" x ") + getDesktopHeight() );
+    wxString retval = wxT("");
+    if ( getConnectionType() == ConnectionType::RDP ) {
+        if ( getScreenMode() == wxT("2") ) {
+            retval = wxT("Fullscreen");
+        } else if ( getScreenMode() == wxT("1") && getDesktopHeight() == wxT("0") && getDesktopWidth() == wxT("0") ) {
+            retval = wxT("Default resolution" );
+        } else {
+            retval = getDesktopWidth() << wxT(" x ") << getDesktopHeight();
+        }
     }
+    return retval;
+}
+
+wxString RDPConnection::getConsoleString() const
+{
+    wxString retval = wxT("");
+    if ( getConnectionType() == ConnectionType::RDP ) {
+        if ( getConsole() == wxT("1") ) {
+            retval = wxT("Yes");
+        } else {
+            retval= wxT("No" );
+        }
+    }
+    return retval;
 }
 
 wxString RDPConnection::getDomainUsernameString() const
 {
     wxString username;
-    if ( getDomain().Len() > 0 ) {
+    if ( getDomain().Len() > 0 && getConnectionType() == ConnectionType::RDP ) {
         username.Append( getDomain() + wxT("\\") );
     }
     username.Append( getUsername() );
@@ -633,46 +650,62 @@ void RDPDatabase::sortById( int id )
 {
     switch ( id )
     {
-        case 0:
+        case 0: // hostname sorting
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), hostnameCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), hostnameCompareDesc );
             }
         break;
-        case 1:
+        case 1: // port sorting
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), portCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), portCompareDesc );
+            }
+        break;
+        case 2: // username  sorting
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), usernameCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), usernameCompareDesc );
             }
         break;
-        case 2:
+        case 3: // connection type sorting
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), useConnectionCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), useConnectionCompareDesc );
             }
         break;
-        case 3:
+        case 4: // use console sorting
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), useConsoleCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), useConsoleCompareDesc );
             }
         break;
-        case 4:
+        case 5: // resolution sorting
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), resolutionCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), resolutionCompareDesc );
             }
         break;
-        case 5:
+
+        case 6: // comment sorting
             if ( isSortOrderAscending() == true ) {
                 std::sort( database.begin(), database.end(), commentCompareAsc );
             } else {
                 std::sort( database.begin(), database.end(), commentCompareDesc );
+            }
+        break;
+
+        case 7: // client name sorting
+            if ( isSortOrderAscending() == true ) {
+                std::sort( database.begin(), database.end(), clientNameCompareAsc );
+            } else {
+                std::sort( database.begin(), database.end(), clientNameCompareDesc );
             }
         break;
         default:
