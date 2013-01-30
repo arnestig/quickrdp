@@ -408,11 +408,11 @@ void RDPConnection::connect()
                         }
                         ///audi settings
                         if ( getSoundMode() == wxT("0") ) {
-                            RDPargument.append( wxT(" -r:local" ) );
+                            RDPargument.append( wxT(" -r sound:local" ) );
                         } else if ( getSoundMode() == wxT("1" ) ) {
-                            RDPargument.append( wxT(" -r:remote" ) );
+                            RDPargument.append( wxT(" -r sound:remote" ) );
                         } else {
-                            RDPargument.append( wxT(" -r:off" ) );
+                            RDPargument.append( wxT(" -r sound:off" ) );
                         }
                         ///window caption
 						if ( getComment().empty() == true ) {
@@ -437,6 +437,7 @@ void RDPConnection::connect()
                             RDPargument.append( wxT(" -u") + getUsername() );
                         }
                         RDPargument.append( wxT(" ") + getHostname() );
+						std::cout << RDPargument.mb_str() << std::endl;
                         wxExecute( RDPargument );
                     #elif(__WXMSW__)
                         wxExecute( settings->getRDPExec( useAdminString ) + wxT("\"") + settings->getDatabasePath() + getFilename() + wxT("\"") );
