@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -149,6 +149,8 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("dupconmodifier:i:")) << getDupConnectionShortcut().second );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("propconkeycode:i:")) << getPropConnectionShortcut().first );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("propconmodifier:i:")) << getPropConnectionShortcut().second );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("selallconkeycode:i:")) << getSelectAllConnectionsShortcut().first );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("selallconmodifier:i:")) << getSelectAllConnectionsShortcut().second );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogkeycode:i:")) << getCommandDialogShortcut().first );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("commanddialogmodifier:i:")) << getCommandDialogShortcut().second );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("manualcckeycode:i:")) << getManualCCShortcut().first );
@@ -235,6 +237,7 @@ void Settings::loadSettings()
         setNewConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("newconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("newconmodifier:i:"), allLines ) ) );
         setDupConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("dupconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("dupconmodifier:i:"), allLines ) ) );
         setPropConnectionShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("propconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("propconmodifier:i:"), allLines ) ) );
+        setSelectAllConnectionsShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("selallconkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("selallconmodifier:i:"), allLines ) ) );
         setCommandDialogShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("commanddialogmodifier:i:"), allLines ) ) );
         setManualCCShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("manualcckeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("manualccmodifier:i:"), allLines ) ) );
         setNewTabShortcut( std::make_pair< int, int > ( quickRDP::FileParser::getIntegerFromFile( wxT("newtabkeycode:i:"), allLines ), quickRDP::FileParser::getIntegerFromFile( wxT("newtabmodifier:i:"), allLines ) ) );
@@ -322,6 +325,11 @@ std::pair< int, int > Settings::getDupConnectionShortcut() const
 std::pair< int, int > Settings::getPropConnectionShortcut() const
 {
     return propConnectionShortcut;
+}
+
+std::pair< int, int > Settings::getSelectAllConnectionsShortcut() const
+{
+    return selectAllConnectionsShortcut;
 }
 
 std::pair< int, int > Settings::getCommandDialogShortcut() const
@@ -432,6 +440,11 @@ void Settings::setDupConnectionShortcut( std::pair< int, int > value )
 void Settings::setPropConnectionShortcut( std::pair< int, int > value )
 {
     propConnectionShortcut = value;
+}
+
+void Settings::setSelectAllConnectionsShortcut( std::pair< int, int > value )
+{
+    selectAllConnectionsShortcut = value;
 }
 
 void Settings::setCommandDialogShortcut( std::pair< int, int > value )

@@ -2,8 +2,7 @@
 <wxsmith>
 	<object class="wxDialog" name="settingsDialog">
 		<size>373,153</size>
-		<pos_arg>1</pos_arg>
-		<size_arg>1</size_arg>
+		<id_arg>0</id_arg>
 		<handler function="OnInit" entry="EVT_INIT_DIALOG" />
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
@@ -339,6 +338,25 @@
 													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_CONPROP" variable="TextShortcutConProp" member="yes" />
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizer27" member="no">
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT18" variable="StaticText10" member="yes">
+															<label>Select all connections</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_SELCON" variable="TextShortcutSelectAllCon" member="yes" />
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>

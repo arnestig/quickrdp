@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -59,10 +59,12 @@ ExampleDialog::ExampleDialog(wxString example, wxWindow* parent,wxWindowID id)
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
+	Center();
 
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&ExampleDialog::OnCloseButton);
 	//*)
 	exampleTextCtrl->ChangeValue( example );
+
 	Button1->SetFocus();
 }
 

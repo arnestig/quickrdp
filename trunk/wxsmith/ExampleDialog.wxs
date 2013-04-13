@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxDialog" name="ExampleDialog">
+		<centered>1</centered>
 		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 			<object class="sizeritem">
 				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">

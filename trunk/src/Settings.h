@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -44,6 +44,7 @@ class Settings
         std::pair< int, int > getNewConnectionShortcut() const;
         std::pair< int, int > getDupConnectionShortcut() const;
         std::pair< int, int > getPropConnectionShortcut() const;
+        std::pair< int, int > getSelectAllConnectionsShortcut() const;
         std::pair< int, int > getCommandDialogShortcut() const;
         std::pair< int, int > getManualCCShortcut() const;
         std::pair< int, int > getNewTabShortcut() const;
@@ -52,6 +53,7 @@ class Settings
         void setNewConnectionShortcut( std::pair< int, int > value );
         void setDupConnectionShortcut( std::pair< int, int > value );
         void setPropConnectionShortcut( std::pair< int, int > value );
+        void setSelectAllConnectionsShortcut( std::pair< int, int > value );
         void setCommandDialogShortcut( std::pair< int, int > value );
         void setManualCCShortcut( std::pair< int, int > value );
         void setNewTabShortcut( std::pair< int, int > value );
@@ -117,6 +119,7 @@ class Settings
         std::pair< int, int > newConnectionShortcut;
         std::pair< int, int > dupConnectionShortcut;
         std::pair< int, int > propConnectionShortcut;
+        std::pair< int, int > selectAllConnectionsShortcut;
         std::pair< int, int > commandDialogShortcut;
         std::pair< int, int > manualccShortcut;
         std::pair< int, int > newTabShortcut;

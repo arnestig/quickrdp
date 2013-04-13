@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -45,6 +45,7 @@ class settingsDialog: public wxDialog
 		virtual ~settingsDialog();
 
 		//(*Declarations(settingsDialog)
+		wxStaticText* StaticText10;
 		wxStaticText* StaticText9;
 		wxButton* TelnetArgumentHelpButton;
 		wxFileDialog* TelnetExecDialog;
@@ -66,6 +67,7 @@ class settingsDialog: public wxDialog
 		wxStaticText* CCTimeoutLabel;
 		wxTextCtrl* SSHArgumentText;
 		wxSlider* CCUpdateIntervalSlider;
+		wxTextCtrl* TextShortcutSelectAllCon;
 		wxStaticText* StaticText8;
 		wxStaticText* StaticText11;
 		wxButton* SSHExecutableBrowseButton;
@@ -134,6 +136,8 @@ class settingsDialog: public wxDialog
 		static const long ID_DUPCON;
 		static const long ID_STATICTEXT12;
 		static const long ID_CONPROP;
+		static const long ID_STATICTEXT18;
+		static const long ID_SELCON;
 		static const long ID_STATICTEXT11;
 		static const long ID_COMMANDDIALOG;
 		static const long ID_STATICTEXT13;

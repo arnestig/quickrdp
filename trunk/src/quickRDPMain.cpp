@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -874,7 +874,7 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
                 }
                 return true;
             } else {
-                /** no comand found, then we look for global shortcuts... **/
+                /** no command found, then we look for global shortcuts... **/
                 wxCommandEvent ourEvent;
                 Settings *settings = Resources::Instance()->getSettings();
                 int keyCode = event.GetKeyCode();
@@ -888,6 +888,9 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
                     return true;
                 } else if ( keyCode == settings->getPropConnectionShortcut().first && keyModifier == settings->getPropConnectionShortcut().second ) {
                     OnEditButtonClick( ourEvent );
+                    return true;
+                } else if ( keyCode == settings->getSelectAllConnectionsShortcut().first && keyModifier == settings->getSelectAllConnectionsShortcut().second ) {
+                    SelectAllConnections();
                     return true;
                 } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
                     OnMenuCommands( ourEvent );
@@ -920,6 +923,8 @@ int quickRDPFrame::showDialog( wxDialog* dialog )
 
 void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
 {
+    std::vector< std::pair< wxString, wxString > > newsQueue;
+    wxString newsOutput;
     /** all logic here is strictly static for now.. we'll see how we handle this in the future (perhaps there won't be too many of these drastic changes).. **/
 
     Settings *settings = Resources::Instance()->getSettings();
@@ -931,13 +936,35 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
         settings->setPropConnectionShortcut( std::make_pair( 80, wxMOD_CONTROL ) ); /** Ctrl+P **/
     }
 
-    /** with the new connection checker in 1.3 we want to enable automatic checks it by default.. by setting it here **/
+    /** with the new connection checker in 2.0 we want to enable automatic checks it by default.. by setting it here **/
     if ( oldVersion < wxT("2.0") ) {
         settings->setCCAutomaticCheck( 1 );
         settings->setNewTabShortcut( std::make_pair( 84, wxMOD_CONTROL ) );
         settings->setCloseTabShortcut( std::make_pair( 87, wxMOD_CONTROL ) );
-        wxMessageBox( wxT("Starting in QuickRDP 1.3 you can now open new connection tabs with Ctrl+T and close the current one with Ctrl+W. Go into options if you like to change these keybindings."), wxT("New features in 1.3"), wxICON_INFORMATION );
+        newsQueue.push_back( std::make_pair( wxT("2.0"), wxT("Open new connection tabs with Ctrl+T and close the current one with Ctrl+W. Go into Settings -> Preferences if you like to change these keybindings.") ) );
     }
+
+    if ( oldVersion < wxT("2.1") ) {
+        settings->setSelectAllConnectionsShortcut( std::make_pair( 65, wxMOD_CONTROL ) );
+        newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Enables selecting all connections with Ctrl+A. This can be changed as all other keybindings in the Settings menu." ) ) );
+        newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Choose what columns should be visible in the connection list by right-clicking on the column panel.") ) );
+    }
+
+    ExampleDialog *newsDialog;
+    wxString lastVersion = wxT("");
+    for ( std::vector< std::pair< wxString, wxString > >::reverse_iterator it = newsQueue.rbegin(); it != newsQueue.rend(); ++it ) {
+        if ( (*it).first != lastVersion ) {
+            if ( lastVersion != wxT("") ) {
+                newsOutput << wxT("\n");
+            }
+            newsOutput << wxT("QuickRDP ") << (*it).first << wxT("\n");
+            lastVersion = (*it).first;
+        }
+        newsOutput << wxT(" - ") << (*it).second << wxT("\n");
+    }
+    newsDialog = new ExampleDialog( newsOutput, this );
+    newsDialog->ShowModal();
+    delete newsDialog;
 
     /** save our settings just in case the application fails to do so at a later stage..
     we don't want the user to get these messages twice. **/
@@ -1184,6 +1211,22 @@ void quickRDPFrame::addConnectionTab( wxString tabTitle )
 
     if ( newPanel != NULL ) {
         Notebook1->AddPage(newPanel, tabTitle, true );
+    }
+}
+
+void quickRDPFrame::SelectAllConnections()
+{
+    wxListCtrl *curConnectionList = getConnectionList();
+    if ( curConnectionList != NULL ) {
+        /** Select all items in the connection list **/
+        long item = -1;
+        for (;;) {
+            item = curConnectionList->GetNextItem( item, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE );
+            if ( item == -1 ) {
+                break;
+            }
+            curConnectionList->SetItemState( item, wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED,wxLIST_STATE_FOCUSED|wxLIST_STATE_SELECTED);
+        }
     }
 }
 
