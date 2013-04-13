@@ -431,6 +431,8 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
     settings->setSelectAllConnectionsShortcut( shortcutMap[ settingsDialog::ID_SELCON ] );
     settings->setCommandDialogShortcut( shortcutMap[ settingsDialog::ID_COMMANDDIALOG ] );
     settings->setManualCCShortcut( shortcutMap[ settingsDialog::ID_MANUALCC ] );
+    settings->setCloseTabShortcut( shortcutMap[ settingsDialog::ID_CLOSETAB ] );
+    settings->setNewTabShortcut( shortcutMap[ settingsDialog::ID_NEWTAB ] );
 
     /** our connection checker settings **/
     settings->setCCTimeout( CCTimeoutSlider->GetValue() );
