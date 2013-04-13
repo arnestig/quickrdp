@@ -853,16 +853,8 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
     **/
 
     if ( wantGlobalHotkeys() == true ) {
-        /** check if we matches any of our "non-connection" shortcuts **/
-        if ( event.GetKeyCode() == 84 &&  event.GetModifiers() == wxMOD_CONTROL ) {
-            addConnectionTab( wxT("") );
-            return true;
-        } else if ( event.GetKeyCode() == 87 && event.GetModifiers() == wxMOD_CONTROL ) {
-            if ( Notebook1->GetPageCount() > 1 ) {
-                Notebook1->RemovePage( Notebook1->GetSelection() );
-            }
-            return true;
-        } else if ( event.GetKeyCode() == WXK_TAB && event.GetModifiers() == wxMOD_NONE ) {
+        /** check if we are tabbing between controls **/
+        if ( event.GetKeyCode() == WXK_TAB && event.GetModifiers() == wxMOD_NONE ) {
             if ( wxWindow::FindFocus()->GetId() == ID_TEXTCTRL1 ) {
                 getConnectionList()->SetFocus();
             } else {
@@ -888,7 +880,16 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
                 int keyCode = event.GetKeyCode();
                 int keyModifier = event.GetModifiers();
 
-                if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
+
+                if ( keyCode == settings->getNewTabShortcut().first && keyModifier == settings->getNewTabShortcut().second ) {
+                    addConnectionTab( wxT("") );
+                    return true;
+                } else if ( keyCode == settings->getCloseTabShortcut().first && keyModifier == settings->getCloseTabShortcut().second ) {
+                    if ( Notebook1->GetPageCount() > 1 ) {
+                        Notebook1->RemovePage( Notebook1->GetSelection() );
+                    }
+                    return true;
+                } else if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
                     OnNewButtonClick( ourEvent );
                     return true;
                 } else if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
