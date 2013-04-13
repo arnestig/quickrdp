@@ -74,6 +74,7 @@ const long quickRDPFrame::ID_MENUITEM10 = wxNewId();
 const long quickRDPFrame::ID_MENUITEM4 = wxNewId();
 const long quickRDPFrame::ID_MENUITEM1 = wxNewId();
 const long quickRDPFrame::POPUPMENURDP = wxNewId();
+const long quickRDPFrame::ID_STATUSBAR1 = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
@@ -211,6 +212,12 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     MenuItem5->Append(ID_MENUITEM4, _("Custom"), MenuItem8, wxEmptyString);
     MenuItem19->Append(ID_MENUITEM1, _("Resolution"), MenuItem5, wxEmptyString);
     PopupMenu1.Append(POPUPMENURDP, _("RDP"), MenuItem19, wxEmptyString);
+    StatusBar1 = new wxStatusBar(this, ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
+    int __wxStatusBarWidths_1[2] = { 1, -50 };
+    int __wxStatusBarStyles_1[2] = { wxSB_NORMAL, wxSB_NORMAL };
+    StatusBar1->SetFieldsCount(2,__wxStatusBarWidths_1);
+    StatusBar1->SetStatusStyles(2,__wxStatusBarStyles_1);
+    SetStatusBar(StatusBar1);
     BoxSizer1->SetSizeHints(this);
 
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
@@ -438,6 +445,7 @@ void quickRDPFrame::loadRDPFromDatabase()
             itemIndexCounter++;
         }
     }
+    updateStatusBar();
 }
 
 void quickRDPFrame::clearListCtrl()
@@ -1235,6 +1243,9 @@ void quickRDPFrame::OnItemSelected(wxListEvent& WXUNUSED(event) )
     BitmapButton2->Enable();
     BitmapButton3->Enable();
     BitmapButton4->Enable();
+
+    /** Update our status page with information about current selected connections **/
+    updateStatusBar();
 }
 
 void quickRDPFrame::OnItemDeselected(wxListEvent& WXUNUSED(event) )
@@ -1242,6 +1253,8 @@ void quickRDPFrame::OnItemDeselected(wxListEvent& WXUNUSED(event) )
     BitmapButton2->Disable();
     BitmapButton3->Disable();
     BitmapButton4->Disable();
+    /** Update our status page with information about current selected connections **/
+    updateStatusBar();
 }
 
 void quickRDPFrame::UpdateFrameWidthOnAllListConnections()
@@ -1261,4 +1274,11 @@ void quickRDPFrame::UpdateFrameWidthOnAllListConnections()
 void quickRDPFrame::OnEditButtonBitmapClick(wxCommandEvent& event)
 {
     OnEditButtonClick( event );
+}
+
+void quickRDPFrame::updateStatusBar()
+{
+    int totalConnections = getConnectionList()->GetItemCount();
+    int selectedConnections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() ).size();
+    StatusBar1->SetStatusText( wxString::Format( wxT(" %d/%d"), selectedConnections, totalConnections ), 1 );
 }

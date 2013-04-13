@@ -257,5 +257,10 @@
 			</object>
 		</object>
 		<object class="wxMenu" variable="ColumnMenu" member="yes" />
+		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
+			<fields>2</fields>
+			<widths>1,-50</widths>
+			<styles>wxSB_NORMAL,wxSB_NORMAL</styles>
+		</object>
 	</object>
 </wxsmith>

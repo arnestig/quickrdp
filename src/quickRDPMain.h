@@ -37,6 +37,7 @@
 #include <wx/panel.h>
 #include <wx/bmpbuttn.h>
 #include <wx/frame.h>
+#include <wx/statusbr.h>
 //*)
 
 class quickRDPFrame: public wxFrame
@@ -49,6 +50,7 @@ class quickRDPFrame: public wxFrame
         void checkForNewAvailableVersion();
         void updatePopupmenuShortcuts();
         void UpdateFrameWidthOnAllListConnections();
+        void updateStatusBar();
         void init();
 
         /** events and functions related to the list control **/
@@ -132,6 +134,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_MENUITEM4;
         static const long ID_MENUITEM1;
         static const long POPUPMENURDP;
+        static const long ID_STATUSBAR1;
         //*)
 
         //(*Declarations(quickRDPFrame)
@@ -156,6 +159,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem12;
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItem20;
+        wxStatusBar* StatusBar1;
         wxMenuItem* MenuItem6;
         wxMenuItem* MenuItem23;
         QuickRDPBitmapButton* BitmapButton3;
