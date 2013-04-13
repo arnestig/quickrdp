@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -59,6 +59,8 @@ const long settingsDialog::ID_STATICTEXT7 = wxNewId();
 const long settingsDialog::ID_DUPCON = wxNewId();
 const long settingsDialog::ID_STATICTEXT12 = wxNewId();
 const long settingsDialog::ID_CONPROP = wxNewId();
+const long settingsDialog::ID_STATICTEXT18 = wxNewId();
+const long settingsDialog::ID_SELCON = wxNewId();
 const long settingsDialog::ID_STATICTEXT11 = wxNewId();
 const long settingsDialog::ID_COMMANDDIALOG = wxNewId();
 const long settingsDialog::ID_STATICTEXT13 = wxNewId();
@@ -113,6 +115,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer12;
 	wxBoxSizer* BoxSizer14;
 	wxStaticBoxSizer* StaticBoxSizer3;
+	wxBoxSizer* BoxSizer27;
 	wxBoxSizer* BoxSizer17;
 	wxBoxSizer* BoxSizer24;
 	wxBoxSizer* BoxSizer26;
@@ -123,9 +126,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer3;
 	wxBoxSizer* BoxSizer25;
 
-	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
+	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(373,153));
-	Move(wxDefaultPosition);
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer13 = new wxBoxSizer(wxVERTICAL);
@@ -224,6 +226,12 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	TextShortcutConProp = new wxTextCtrl(Panel3, ID_CONPROP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CONPROP"));
 	BoxSizer20->Add(TextShortcutConProp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(BoxSizer20, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer27 = new wxBoxSizer(wxHORIZONTAL);
+	StaticText10 = new wxStaticText(Panel3, ID_STATICTEXT18, _("Select all connections"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT18"));
+	BoxSizer27->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	TextShortcutSelectAllCon = new wxTextCtrl(Panel3, ID_SELCON, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SELCON"));
+	BoxSizer27->Add(TextShortcutSelectAllCon, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer14->Add(BoxSizer27, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText11 = new wxStaticText(Panel3, ID_STATICTEXT11, _("Commands dialog"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT11"));
 	BoxSizer19->Add(StaticText11, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -332,6 +340,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	TextShortcutNewCon->Connect(ID_NEWCON, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     TextShortcutDupCon->Connect(ID_DUPCON, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     TextShortcutConProp->Connect(ID_CONPROP, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
+    TextShortcutSelectAllCon->Connect(ID_SELCON, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     TextShortcutCommandDialog->Connect(ID_COMMANDDIALOG, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     ShortcutManualCCText->Connect(ID_MANUALCC, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
     ShortcutNewTabText->Connect(ID_NEWTAB, wxEVT_KEY_DOWN,(wxObjectEventFunction)&settingsDialog::HandleKeyShortcutPress, 0, this );
@@ -346,6 +355,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     TextShortcutNewCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getNewConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getNewConnectionShortcut().first ) );
     TextShortcutDupCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
     TextShortcutConProp->AppendText( quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
+    TextShortcutSelectAllCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getSelectAllConnectionsShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getSelectAllConnectionsShortcut().first ) );
     TextShortcutCommandDialog->AppendText( quickRDP::Keybinder::ModifierString( settings->getCommandDialogShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCommandDialogShortcut().first ) );
     ShortcutManualCCText->AppendText( quickRDP::Keybinder::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getManualCCShortcut().first ) );
     ShortcutNewTabText->AppendText( quickRDP::Keybinder::ModifierString( settings->getNewTabShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getNewTabShortcut().first ) );
@@ -376,6 +386,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     shortcutMap[ ID_NEWCON ] = settings->getNewConnectionShortcut();
     shortcutMap[ ID_DUPCON ] = settings->getDupConnectionShortcut();
     shortcutMap[ ID_CONPROP ] = settings->getPropConnectionShortcut();
+    shortcutMap[ ID_SELCON ] = settings->getSelectAllConnectionsShortcut();
     shortcutMap[ ID_COMMANDDIALOG ] = settings->getCommandDialogShortcut();
     shortcutMap[ ID_MANUALCC ] = settings->getManualCCShortcut();
     shortcutMap[ ID_NEWTAB ] = settings->getNewTabShortcut();
@@ -417,6 +428,7 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
     settings->setNewConnectionShortcut( shortcutMap[ settingsDialog::ID_NEWCON ] );
     settings->setDupConnectionShortcut( shortcutMap[ settingsDialog::ID_DUPCON ] );
     settings->setPropConnectionShortcut( shortcutMap[ settingsDialog::ID_CONPROP ] );
+    settings->setSelectAllConnectionsShortcut( shortcutMap[ settingsDialog::ID_SELCON ] );
     settings->setCommandDialogShortcut( shortcutMap[ settingsDialog::ID_COMMANDDIALOG ] );
     settings->setManualCCShortcut( shortcutMap[ settingsDialog::ID_MANUALCC ] );
 
@@ -514,6 +526,8 @@ void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
         modCtrl = TextShortcutDupCon;
     } else if ( event.GetId() == settingsDialog::ID_CONPROP ) {
         modCtrl = TextShortcutConProp;
+    } else if ( event.GetId() == settingsDialog::ID_SELCON ) {
+        modCtrl = TextShortcutSelectAllCon;
     } else if ( event.GetId() == settingsDialog::ID_COMMANDDIALOG ) {
         modCtrl = TextShortcutCommandDialog;
     } else if ( event.GetId() == settingsDialog::ID_MANUALCC ) {

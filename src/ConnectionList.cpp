@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2012 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -172,7 +172,7 @@ void ConnectionList::UpdateColumnWidth()
     }
 }
 
-void ConnectionList::OnColumnRightClick(wxListEvent& event)
+void ConnectionList::OnColumnRightClick(wxListEvent& WXUNUSED(event))
 {
     Settings* settings = Resources::Instance()->getSettings();
     if ( settings != NULL ) {
