@@ -145,32 +145,39 @@
 					<handler function="OnQuit" entry="EVT_MENU" />
 				</object>
 			</object>
+			<object class="wxMenu" variable="Menu4" member="yes">
+				<label>&amp;Tools</label>
+				<object class="wxMenuItem" name="idMenuNetworkScanner" variable="MenuItem24" member="yes">
+					<label>&amp;Network scanner</label>
+					<handler function="OnMenuNetworkScanner" entry="EVT_MENU" />
+				</object>
+			</object>
 			<object class="wxMenu" variable="Menu3" member="yes">
 				<label>&amp;Settings</label>
 				<object class="wxMenuItem" name="idMenuCommands" variable="MenuItem22" member="yes">
-					<label>Commands</label>
+					<label>&amp;Commands</label>
 					<handler function="OnMenuCommands" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="idMenuPreferences" variable="MenuItem15" member="yes">
-					<label>Preferences</label>
+					<label>&amp;Preferences</label>
 					<handler function="OnPreferences" entry="EVT_MENU" />
 				</object>
 			</object>
 			<object class="wxMenu" variable="Menu2" member="no">
-				<label>Help</label>
+				<label>&amp;Help</label>
 				<object class="wxMenuItem" name="ID_MENUITEM2" variable="MenuItem18" member="yes">
-					<label>Report a bug</label>
+					<label>&amp;Report a bug</label>
 					<handler function="OnReportBugClick" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="ID_MENUITEM3" variable="MenuItem23" member="yes">
-					<label>Search for updates</label>
+					<label>&amp;Search for updates</label>
 					<handler function="OnMenuSearchForUpdates" entry="EVT_MENU" />
 				</object>
 				<object class="separator" />
 				<object class="wxMenuItem" name="wxID_ABOUT" variable="MenuItem2" member="no">
-					<label>About</label>
+					<label>&amp;About</label>
 					<accel>F1</accel>
 					<help>Show info about this application</help>
 					<handler function="OnAbout" entry="EVT_MENU" />

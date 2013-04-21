@@ -82,7 +82,7 @@ ConnectionChecker* Resources::getConnectionChecker() const
 void Resources::addConnectionChecker( wxEvtHandler *parent )
 {
     if ( connectionChecker == NULL ) {
-        connectionChecker  = new ConnectionChecker( parent, settings->getCCWorkerThreads() );
+        connectionChecker = new ConnectionChecker( parent, settings->getCCWorkerThreads(), settings->getCCTimeout() * 1000 );
         if ( connectionChecker->Create() != wxTHREAD_NO_ERROR ) {
             delete connectionChecker;
             connectionChecker = NULL;

@@ -222,7 +222,6 @@ namespace quickRDP
                     }
 
                     retVec.push_back( Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( itemIndex ) );
-
                 }
             }
             return retVec;

@@ -82,6 +82,8 @@ const long settingsDialog::ID_STATICTEXT17 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL9 = wxNewId();
 const long settingsDialog::ID_SLIDER3 = wxNewId();
 const long settingsDialog::ID_PANEL4 = wxNewId();
+const long settingsDialog::ID_USE_GREY_LIST_BACKGROUND = wxNewId();
+const long settingsDialog::ID_PANEL5 = wxNewId();
 const long settingsDialog::ID_NOTEBOOK1 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
 const long settingsDialog::ID_PANEL1 = wxNewId();
@@ -98,6 +100,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer4;
 	wxStaticBoxSizer* StaticBoxSizer2;
 	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer29;
 	wxBoxSizer* BoxSizer19;
 	wxBoxSizer* BoxSizer15;
 	wxBoxSizer* BoxSizer20;
@@ -113,6 +116,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	wxBoxSizer* BoxSizer16;
 	wxBoxSizer* BoxSizer18;
 	wxBoxSizer* BoxSizer12;
+	wxBoxSizer* BoxSizer28;
 	wxBoxSizer* BoxSizer14;
 	wxStaticBoxSizer* StaticBoxSizer3;
 	wxBoxSizer* BoxSizer27;
@@ -267,7 +271,10 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	BoxSizer18->Add(CCTimeoutLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CCTimeoutTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL7, _("0000 ms"), wxDefaultPosition, wxSize(60,21), wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL7"));
 	BoxSizer18->Add(CCTimeoutTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	CCTimeoutSlider = new wxSlider(Panel4, ID_SLIDER1, 0, 20, 2000, wxDefaultPosition, wxSize(69,24), 0, wxDefaultValidator, _T("ID_SLIDER1"));
+	CCTimeoutSlider = new wxSlider(Panel4, ID_SLIDER1, 0, 2, 200, wxDefaultPosition, wxSize(69,24), 0, wxDefaultValidator, _T("ID_SLIDER1"));
+	CCTimeoutSlider->SetPageSize(10);
+	CCTimeoutSlider->SetLineSize(10);
+	CCTimeoutSlider->SetThumbLength(10);
 	BoxSizer18->Add(CCTimeoutSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer16->Add(BoxSizer18, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer22 = new wxBoxSizer(wxHORIZONTAL);
@@ -280,7 +287,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	BoxSizer21->Add(CCUpdateIntervalLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CCUpdateIntervalTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL8, _("180 s"), wxDefaultPosition, wxSize(50,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	BoxSizer21->Add(CCUpdateIntervalTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	CCUpdateIntervalSlider = new wxSlider(Panel4, ID_SLIDER2, 0, 10, 360, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER2"));
+	CCUpdateIntervalSlider = new wxSlider(Panel4, ID_SLIDER2, 0, 1, 36, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER2"));
+	CCUpdateIntervalSlider->SetPageSize(10);
 	BoxSizer21->Add(CCUpdateIntervalSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer16->Add(BoxSizer21, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer26 = new wxBoxSizer(wxHORIZONTAL);
@@ -298,9 +306,20 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	Panel4->SetSizer(BoxSizer16);
 	BoxSizer16->Fit(Panel4);
 	BoxSizer16->SetSizeHints(Panel4);
+	Panel5 = new wxPanel(Notebook1, ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL5"));
+	BoxSizer28 = new wxBoxSizer(wxVERTICAL);
+	BoxSizer29 = new wxBoxSizer(wxHORIZONTAL);
+	CheckboxGreyListBackground = new wxCheckBox(Panel5, ID_USE_GREY_LIST_BACKGROUND, _("Use grey background for every second item in the connection list"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_USE_GREY_LIST_BACKGROUND"));
+	CheckboxGreyListBackground->SetValue(false);
+	BoxSizer29->Add(CheckboxGreyListBackground, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer28->Add(BoxSizer29, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Panel5->SetSizer(BoxSizer28);
+	BoxSizer28->Fit(Panel5);
+	BoxSizer28->SetSizeHints(Panel5);
 	Notebook1->AddPage(Panel2, _("Programs"), false);
 	Notebook1->AddPage(Panel3, _("Hotkeys"), false);
 	Notebook1->AddPage(Panel4, _("Connection checker"), false);
+	Notebook1->AddPage(Panel5, _("Layout"), false);
 	BoxSizer13->Add(Notebook1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -392,8 +411,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     shortcutMap[ ID_NEWTAB ] = settings->getNewTabShortcut();
     shortcutMap[ ID_CLOSETAB ] = settings->getCloseTabShortcut();
 
-    CCTimeoutSlider->SetValue( settings->getCCTimeout() );
-    CCUpdateIntervalSlider->SetValue( settings->getCCUpdateInterval() );
+    CCTimeoutSlider->SetValue( settings->getCCTimeout()/10 );
+    CCUpdateIntervalSlider->SetValue( settings->getCCUpdateInterval()/10 );
     CCAutoUpdateCheckbox->SetValue( settings->getCCAutomaticCheck() );
     CCWorkerThreadSlider->SetValue( settings->getCCWorkerThreads() );
 
@@ -402,6 +421,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
     OnCCUpdateIntervalSliderCmdSliderUpdated( evt );
     OnCCAutoUpdateCheckboxClick( evt );
     OnCCWorkerThreadSliderCmdSliderUpdated( evt );
+
+    CheckboxGreyListBackground->SetValue( settings->getGreyListBackground() );
 }
 
 settingsDialog::~settingsDialog()
@@ -435,10 +456,13 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
     settings->setNewTabShortcut( shortcutMap[ settingsDialog::ID_NEWTAB ] );
 
     /** our connection checker settings **/
-    settings->setCCTimeout( CCTimeoutSlider->GetValue() );
-    settings->setCCUpdateInterval( CCUpdateIntervalSlider->GetValue() );
+    settings->setCCTimeout( CCTimeoutSlider->GetValue()*10 );
+    settings->setCCUpdateInterval( CCUpdateIntervalSlider->GetValue()*10 );
     settings->setCCAutomaticCheck( CCAutoUpdateCheckbox->GetValue() );
     settings->setCCWorkerThreads( CCWorkerThreadSlider->GetValue() );
+
+    /** layout settings **/
+    settings->setGreyListBackground( CheckboxGreyListBackground->GetValue() );
 
     settings->saveSettings();
     this->EndModal( 0 );
@@ -548,12 +572,12 @@ void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
 
 void settingsDialog::OnCCTimeoutSliderCmdSliderUpdated( wxScrollEvent& WXUNUSED(event) )
 {
-    CCTimeoutTextDisplay->SetValue( wxString() << CCTimeoutSlider->GetValue() << wxT(" ms") );
+    CCTimeoutTextDisplay->SetValue( wxString() << CCTimeoutSlider->GetValue()*10 << wxT(" ms") );
 }
 
 void settingsDialog::OnCCUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& WXUNUSED(event) )
 {
-    CCUpdateIntervalTextDisplay->SetValue( wxString() << CCUpdateIntervalSlider->GetValue() << wxT(" s") );
+    CCUpdateIntervalTextDisplay->SetValue( wxString() << CCUpdateIntervalSlider->GetValue()*10 << wxT(" s") );
 }
 
 void settingsDialog::OnCCAutoUpdateCheckboxClick(wxCommandEvent& WXUNUSED(event) )

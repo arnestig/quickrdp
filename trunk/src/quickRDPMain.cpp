@@ -24,6 +24,7 @@
 #include "RDPDatabase.h"
 #include "aboutDialog.h"
 #include "settingsDialog.h"
+#include "NetworkScanner.h"
 #include "QuickrdpFunctions.h"
 #include "Resources.h"
 #include "CommandDialog.h"
@@ -53,6 +54,7 @@ const long quickRDPFrame::ID_STATICTEXT1 = wxNewId();
 const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_NOTEBOOK1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
+const long quickRDPFrame::idMenuNetworkScanner = wxNewId();
 const long quickRDPFrame::idMenuCommands = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::ID_MENUITEM2 = wxNewId();
@@ -158,23 +160,27 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     MenuItem1 = new wxMenuItem(Menu1, wxID_EXIT, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
+    Menu4 = new wxMenu();
+    MenuItem24 = new wxMenuItem(Menu4, idMenuNetworkScanner, _("&Network scanner"), wxEmptyString, wxITEM_NORMAL);
+    Menu4->Append(MenuItem24);
+    MenuBar1->Append(Menu4, _("&Tools"));
     Menu3 = new wxMenu();
-    MenuItem22 = new wxMenuItem(Menu3, idMenuCommands, _("Commands"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem22 = new wxMenuItem(Menu3, idMenuCommands, _("&Commands"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem22);
     Menu3->AppendSeparator();
-    MenuItem15 = new wxMenuItem(Menu3, idMenuPreferences, _("Preferences"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem15 = new wxMenuItem(Menu3, idMenuPreferences, _("&Preferences"), wxEmptyString, wxITEM_NORMAL);
     Menu3->Append(MenuItem15);
     MenuBar1->Append(Menu3, _("&Settings"));
     Menu2 = new wxMenu();
-    MenuItem18 = new wxMenuItem(Menu2, ID_MENUITEM2, _("Report a bug"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem18 = new wxMenuItem(Menu2, ID_MENUITEM2, _("&Report a bug"), wxEmptyString, wxITEM_NORMAL);
     Menu2->Append(MenuItem18);
     Menu2->AppendSeparator();
-    MenuItem23 = new wxMenuItem(Menu2, ID_MENUITEM3, _("Search for updates"), wxEmptyString, wxITEM_NORMAL);
+    MenuItem23 = new wxMenuItem(Menu2, ID_MENUITEM3, _("&Search for updates"), wxEmptyString, wxITEM_NORMAL);
     Menu2->Append(MenuItem23);
     Menu2->AppendSeparator();
-    MenuItem2 = new wxMenuItem(Menu2, wxID_ABOUT, _("About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
+    MenuItem2 = new wxMenuItem(Menu2, wxID_ABOUT, _("&About\tF1"), _("Show info about this application"), wxITEM_NORMAL);
     Menu2->Append(MenuItem2);
-    MenuBar1->Append(Menu2, _("Help"));
+    MenuBar1->Append(Menu2, _("&Help"));
     SetMenuBar(MenuBar1);
     MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem17);
@@ -228,6 +234,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&quickRDPFrame::OnSearchTextEnter);
     Connect(ID_NOTEBOOK1,wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED,(wxObjectEventFunction)&quickRDPFrame::OnNotebook1PageChanged);
     Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
+    Connect(idMenuNetworkScanner,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuNetworkScanner);
     Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnReportBugClick);
@@ -318,6 +325,7 @@ void quickRDPFrame::init()
 
     if ( ( currentVersion.empty() == false ) && ( currentVersion > oldVersion ) ) {
         checkForVersionChangesAndNotifyUser( oldVersion );
+        loadRDPFromDatabase();
     }
 }
 
@@ -353,17 +361,17 @@ void quickRDPFrame::OnNewButtonClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnDeleteButtonClick(wxCommandEvent& WXUNUSED(event) )
 {
-    RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() );
 
-    if ( curCon != NULL ) {
-        if ( wxMessageBox( wxT("Are you sure you want to delete this connection?"), wxT("Delete this connection?"), wxOK | wxCANCEL ) == wxOK ) {
-            Resources::Instance()->getConnectionDatabase()->deleteRDPConnectionByPointer( curCon );
-            loadRDPFromDatabase();
-            if ( getConnectionList()->GetSelectedItemCount() <= 0 ) {
-                BitmapButton2->Disable();
-                BitmapButton3->Disable();
-                BitmapButton4->Disable();
-            }
+    if ( wxMessageBox( wxT("Are you sure you want to delete the selected connection(s)?"), wxT("Delete connection(s)?"), wxOK | wxCANCEL ) == wxOK ) {
+        for ( std::vector< RDPConnection* >::iterator it = connections.begin(); it != connections.end(); ++it ) {
+            Resources::Instance()->getConnectionDatabase()->deleteRDPConnectionByPointer( (*it) );
+        }
+        loadRDPFromDatabase();
+        if ( getConnectionList()->GetSelectedItemCount() <= 0 ) {
+            BitmapButton2->Disable();
+            BitmapButton3->Disable();
+            BitmapButton4->Disable();
         }
     }
 }
@@ -398,6 +406,7 @@ void quickRDPFrame::loadRDPFromDatabase()
 
     std::vector<RDPConnection*> database = Resources::Instance()->getConnectionDatabase()->getDatabase();
     long itemIndexCounter = 0;
+    bool use_grey_color = false;
 
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
@@ -411,6 +420,15 @@ void quickRDPFrame::loadRDPFromDatabase()
             listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
 
             listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
+            wxColour itembgcolour;
+            if ( use_grey_color == true && settings->getGreyListBackground() == true ) {
+                itembgcolour = wxColour( 240, 240, 240 );
+                use_grey_color = false;
+            } else {
+                itembgcolour = wxColour( 255, 255, 255 );
+                use_grey_color = true;
+            }
+            listCtrl->SetItemBackgroundColour( item, itembgcolour );
 
             if ( settings->isConnectionListColumnActive( wxT("Port") ) == true ) {
                 listCtrl->SetItem( itemIndexCounter, ++columnCounter, wxString::Format( wxT("%i"), curRDP->getPort() ) );
@@ -662,6 +680,7 @@ void quickRDPFrame::OnPreferences(wxCommandEvent& WXUNUSED(event) )
     showDialog( settings );
     delete settings;
     updatePopupmenuShortcuts();
+    loadRDPFromDatabase();
 }
 
 void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
@@ -955,8 +974,10 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
 
     if ( oldVersion < wxT("2.1") ) {
         settings->setSelectAllConnectionsShortcut( std::make_pair( 65, wxMOD_CONTROL ) );
+        settings->setGreyListBackground( true );
         newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Enables selecting all connections with Ctrl+A. This can be changed as all other keybindings in the Settings menu." ) ) );
         newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Choose what columns should be visible in the connection list by right-clicking on the column panel.") ) );
+        newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Light-grey background color in the connection list to help tracing the different connections. Can be turned off in Settings -> Preferences -> Layout.") ) );
     }
 
     ExampleDialog *newsDialog;
@@ -1282,4 +1303,14 @@ void quickRDPFrame::updateStatusBar()
     int totalConnections = getConnectionList()->GetItemCount();
     int selectedConnections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() ).size();
     StatusBar1->SetStatusText( wxString::Format( wxT(" %d/%d"), selectedConnections, totalConnections ), 1 );
+}
+
+void quickRDPFrame::OnMenuNetworkScanner(wxCommandEvent& event)
+{
+    NetworkScanner *scanner = new NetworkScanner( this, 0 );
+    unsigned int targetsAdded = showDialog( scanner );
+    if ( targetsAdded > 0 ) {
+        loadRDPFromDatabase();
+    }
+    delete scanner;
 }

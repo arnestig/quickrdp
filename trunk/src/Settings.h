@@ -100,6 +100,9 @@ class Settings
         void setConnectionTabSelected( int selectedTab );
         int getConnectionTabSelected() const;
 
+        bool getGreyListBackground() const;
+        void setGreyListBackground( bool greyListBackground );
+
 
     private:
         void loadSettings();
@@ -142,6 +145,9 @@ class Settings
         /** connection tabs saved from closing the application  **/
         std::vector< wxString > connectionTabs;
         int selectedTab;
+
+        /** styling features **/
+        bool greyListBackground;
 };
 
 #endif

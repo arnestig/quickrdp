@@ -44,7 +44,10 @@ RDPConnection::RDPConnection( std::string filename )
         connectionCheckerRunning( false ),
         lastchecked( 0 )
 {
-    parseFile();
+    // if we have an empty string here, we don't intend to read it
+    if ( filename.empty() == false ) {
+        parseFile();
+    }
 }
 
 RDPConnection::RDPConnection( std::string filename, RDPConnection *copy )
@@ -268,6 +271,12 @@ void RDPConnection::setConnectionType( ConnectionType::ConnectionType connection
 {
     wxMutexLocker lock(mutex);
     this->connectionType = connectionType;
+}
+
+void RDPConnection::setFilename( wxString filename )
+{
+    wxMutexLocker lock(mutex);
+    this->filename = std::string( filename.mb_str() );
 }
 
 void RDPConnection::setHostname( wxString hostname )
@@ -498,47 +507,45 @@ void RDPConnection::parseFile()
     wxString filename( Resources::Instance()->getSettings()->getDatabasePath() + getFilename() );
 
     if ( wxFileExists( filename ) == true ) {
-            std::ifstream rfile;
+        std::ifstream rfile;
+        rfile.open( filename.mb_str(), std::ios::in|std::ios::binary );
+        rfile.seekg (0, std::ios::end);
+        int length = rfile.tellg();
+        rfile.seekg (0, std::ios::beg);
 
-	rfile.open( filename.mb_str(), std::ios::in|std::ios::binary );
+        if (length == -1) {
+            return;
+        }
+        std::string inputData;
 
-	rfile.seekg (0, std::ios::end);
-	int length = rfile.tellg();
-	rfile.seekg (0, std::ios::beg);
-
-	if (length == -1) {
-		return;
-	}
-	std::string inputData;
-
-	if (length > 0) {
-	    char *buffer;
-		buffer = new char [length];
-		std::vector<wxString> allLines;
-		while ( getline(rfile,inputData) ) {
-            wxString input( inputData.c_str(), wxConvUTF8 );
-            input.Replace(wxT("\r"),wxT(""));
-            input.Replace(wxT("\n"),wxT(""));
-            allLines.push_back( input );
-		}
-		delete[] buffer;
-        setConnectionType( static_cast< ConnectionType::ConnectionType >( quickRDP::FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) );
-        setUsername( quickRDP::FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
-        setDomain( quickRDP::FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );
-        setPassword( quickRDP::FileParser::getStringFromFile( wxT("password:s:"), allLines ) );
-        setHostname( quickRDP::FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
-        setClientHostname( quickRDP::FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
-        setComment( quickRDP::FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
-        setDesktopHeight( quickRDP::FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
-        setDesktopWidth( quickRDP::FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
-        setDesktopBpp( quickRDP::FileParser::getStringFromFile( wxT("session bpp:i:"), allLines ) );
-        setScreenMode( quickRDP::FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
-        setConsole( quickRDP::FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
-        setSoundMode( quickRDP::FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
-        setDiskMapping( quickRDP::FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
-		setPort( quickRDP::FileParser::getIntegerFromFile( wxT("port:i:"), allLines ) );
-	}
-	rfile.close();
+        if (length > 0) {
+            char *buffer;
+            buffer = new char [length];
+            std::vector<wxString> allLines;
+            while ( getline(rfile,inputData) ) {
+                wxString input( inputData.c_str(), wxConvUTF8 );
+                input.Replace(wxT("\r"),wxT(""));
+                input.Replace(wxT("\n"),wxT(""));
+                allLines.push_back( input );
+            }
+            delete[] buffer;
+            setConnectionType( static_cast< ConnectionType::ConnectionType >( quickRDP::FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) );
+            setUsername( quickRDP::FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
+            setDomain( quickRDP::FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );
+            setPassword( quickRDP::FileParser::getStringFromFile( wxT("password:s:"), allLines ) );
+            setHostname( quickRDP::FileParser::getStringFromFile( wxT("full address:s:"), allLines ) );
+            setClientHostname( quickRDP::FileParser::getStringFromFile( wxT("client hostname:s:"), allLines ) );
+            setComment( quickRDP::FileParser::getStringFromFile( wxT("description:s:"), allLines ) );
+            setDesktopHeight( quickRDP::FileParser::getStringFromFile( wxT("desktopheight:i:"), allLines ) );
+            setDesktopWidth( quickRDP::FileParser::getStringFromFile( wxT("desktopwidth:i:"), allLines ) );
+            setDesktopBpp( quickRDP::FileParser::getStringFromFile( wxT("session bpp:i:"), allLines ) );
+            setScreenMode( quickRDP::FileParser::getStringFromFile( wxT("screen mode id:i:"), allLines ) );
+            setConsole( quickRDP::FileParser::getStringFromFile( wxT("attach to console:i:"), allLines ) );
+            setSoundMode( quickRDP::FileParser::getStringFromFile( wxT("audiomode:i:"), allLines ) );
+            setDiskMapping( quickRDP::FileParser::getStringFromFile( wxT("diskmapping:i:"), allLines ) );
+            setPort( quickRDP::FileParser::getIntegerFromFile( wxT("port:i:"), allLines ) );
+        }
+        rfile.close();
     }
 }
 
