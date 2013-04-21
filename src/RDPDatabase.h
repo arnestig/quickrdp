@@ -54,6 +54,26 @@ namespace ConnectionType
                 return wxT("VNC");
         }
     }
+
+    inline ConnectionType::ConnectionType getConnectionTypeForPort( int port )
+    {
+        switch ( port )
+        {
+            case 23:
+                return ConnectionType::TELNET;
+            break;
+            case 5900:
+                return ConnectionType::VNC;
+            break;
+            case 3389:
+                return ConnectionType::RDP;
+            break;
+            default:
+            case 22:
+                return ConnectionType::SSH;
+            break;
+        }
+    }
 }
 
 class RDPConnection
@@ -97,6 +117,7 @@ class RDPConnection
         void connect();
 
         void setConnectionType( ConnectionType::ConnectionType connectionType );
+        void setFilename( wxString filename );
         void setHostname( wxString hostname );
         void setUsername( wxString username );
         void setPassword( wxString password );

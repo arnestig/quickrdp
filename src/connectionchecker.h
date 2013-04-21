@@ -55,29 +55,32 @@ class ConnectionCheckerWorkerThread;
 class ConnectionChecker : public wxThread
 {
     public:
-        ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers );
+        ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers, unsigned int timeout );
         ~ConnectionChecker();
 
         void addTargets( std::vector< RDPConnection* > newTargets );
         void publishTarget( RDPConnection*& target );
         void postEvent( wxCommandEvent event );
+        bool aboutToQuit();
 
     private:
         virtual void *Entry();
 
         unsigned int numWorkers; /** how many worker threads we will spawn **/
+        unsigned int timeout; /** socket select timeout **/
         ConnectionCheckerWorkerThread *workerThreads[ 8 ];
         wxMutex eventMutex;
         wxMutex mutex;
         std::map< std::string, RDPConnection* > targets;
         wxEvtHandler *parent;
         wxSemaphore *queue;
+        bool willquit;
 };
 
 class ConnectionCheckerWorkerThread : public wxThread
 {
     public:
-        ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue );
+        ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue, unsigned int timeout );
         ~ConnectionCheckerWorkerThread();
 
     private:

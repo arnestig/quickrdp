@@ -92,6 +92,7 @@ class quickRDPFrame: public wxFrame
         void OnNotebook1PageChanged(wxNotebookEvent& event);
         void OnPopupMenuManualCC(wxCommandEvent& event);
         void OnEditButtonBitmapClick(wxCommandEvent& event);
+        void OnMenuNetworkScanner(wxCommandEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnNewVersionTextClick(wxCommandEvent& event);
@@ -113,6 +114,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_TEXTCTRL1;
         static const long ID_NOTEBOOK1;
         static const long ID_PANEL1;
+        static const long idMenuNetworkScanner;
         static const long idMenuCommands;
         static const long idMenuPreferences;
         static const long ID_MENUITEM2;
@@ -157,6 +159,7 @@ class quickRDPFrame: public wxFrame
         wxMenu* MenuItem8;
         wxMenuItem* MenuItem10;
         wxMenuItem* MenuItem12;
+        wxMenuItem* MenuItem24;
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItem20;
         wxStatusBar* StatusBar1;
@@ -171,6 +174,7 @@ class quickRDPFrame: public wxFrame
         wxMenuItem* MenuItem16;
         wxMenuItem* MenuItem9;
         wxMenuItem* MenuItem18;
+        wxMenu* Menu4;
         //*)
 
         wxPanel *connectionListPanel;

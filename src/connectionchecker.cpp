@@ -28,10 +28,11 @@
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 
-ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers )
+ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers, unsigned int timeout )
     :   wxThread( wxTHREAD_DETACHED),
         parent( parent ),
-        queue( NULL )
+        queue( NULL ),
+        willquit( false )
 {
     /** define our numWorkers. For safety, we don't allow below 1 and not more than 8 workers.. For now this is for testing. **/
     if ( numWorkers > 8 ) {
@@ -42,10 +43,17 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWork
         this->numWorkers = numWorkers;
     }
 
+    /** define our socket select timeout.. Not too high and not too low. **/
+    if ( timeout < 200000 ) {
+        this->timeout = 20000;
+    } else if ( timeout > 2000000 ) {
+        this->timeout = 2000000;
+    }
+
     queue = new wxSemaphore();
     /** create all our worker threads **/
     for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {
-        workerThreads[ threadid ] = new ConnectionCheckerWorkerThread( this, queue );
+        workerThreads[ threadid ] = new ConnectionCheckerWorkerThread( this, queue, timeout );
         if ( workerThreads[ threadid ]->Create() != wxTHREAD_NO_ERROR ) {
             delete workerThreads[ threadid ];
             workerThreads[ threadid ] = NULL;
@@ -62,6 +70,7 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWork
 
 ConnectionChecker::~ConnectionChecker()
 {
+	willquit = true;
 	/** delete all our worker threads gracefully **/
 	for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {
         workerThreads[ threadid ]->Delete();
@@ -83,7 +92,6 @@ void *ConnectionChecker::Entry()
     }
     return 0;
 }
-
 
 void ConnectionChecker::addTargets( std::vector< RDPConnection* > newTargets )
 {
@@ -120,9 +128,14 @@ void ConnectionChecker::postEvent( wxCommandEvent event )
     wxPostEvent( parent, event );
 }
 
+bool ConnectionChecker::aboutToQuit()
+{
+    return this->willquit;
+}
+
 /// BEGIN ConnectionCheckerWorkerThread
 
-ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue )
+ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue, unsigned int timeout )
     :   wxThread( wxTHREAD_DETACHED ),
         parent( parent ),
         queue( queue ),
@@ -130,7 +143,7 @@ ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker 
 {
     /** setting up our socket select timeout **/
     t.tv_sec = 0;
-    t.tv_usec = 200000;
+    t.tv_usec = timeout;
 
     /** socket settings **/
     sock_addr.sin_family = PF_INET;
@@ -151,7 +164,6 @@ ConnectionCheckerWorkerThread::~ConnectionCheckerWorkerThread()
 void *ConnectionCheckerWorkerThread::Entry()
 {
     hostent *host;
-    workCompleted = 0;
     while ( TestDestroy() == false ) {
         if ( target == NULL ) {
             /** get us a new target **/
@@ -203,7 +215,6 @@ void *ConnectionCheckerWorkerThread::Entry()
             target->setLastChecked( seconds );
             target->setConnectionCheckerRunning( false );
             target = NULL;
-            workCompleted++;
         }
     }
 
@@ -213,5 +224,7 @@ void *ConnectionCheckerWorkerThread::Entry()
 void ConnectionCheckerWorkerThread::getNewTarget()
 {
     target = NULL;
-    parent->publishTarget( target );
+    if ( parent->aboutToQuit() == false ) {
+        parent->publishTarget( target );
+    }
 }

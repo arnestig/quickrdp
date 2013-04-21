@@ -165,6 +165,8 @@ void Settings::saveSettings()
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCAutomaticCheck:i:")) << getCCAutomaticCheck() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCWorkerThreads:i:")) << getCCWorkerThreads() );
 
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("GreyListBackground:b:")) << getGreyListBackground() );
+
     ofile.close();
 }
 
@@ -264,6 +266,9 @@ void Settings::loadSettings()
             workerThreads = 4; // set default 4 worker threads
         }
         setCCWorkerThreads( workerThreads );
+
+        /** stylistic features **/
+        setGreyListBackground( quickRDP::FileParser::getBoolFromFile( wxT("GreyListBackground:b:"), allLines ) );
     }
     rfile.close();
 }
@@ -557,4 +562,14 @@ void Settings::setConnectionTabSelected( int selectedTab )
 int Settings::getConnectionTabSelected() const
 {
     return selectedTab;
+}
+
+bool Settings::getGreyListBackground() const
+{
+    return greyListBackground;
+}
+
+void Settings::setGreyListBackground( bool greyListBackground )
+{
+    this->greyListBackground = greyListBackground;
 }

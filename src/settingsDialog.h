@@ -49,6 +49,7 @@ class settingsDialog: public wxDialog
 		wxStaticText* StaticText9;
 		wxButton* TelnetArgumentHelpButton;
 		wxFileDialog* TelnetExecDialog;
+		wxPanel* Panel5;
 		wxCheckBox* CCAutoUpdateCheckbox;
 		wxTextCtrl* CCWorkerThreadTextDisplay;
 		wxButton* OKButton;
@@ -93,6 +94,7 @@ class settingsDialog: public wxDialog
 		wxButton* TelnetArgumentResetButton;
 		wxStaticText* ShortcutManualCCLabel;
 		wxTextCtrl* TextShortcutNewCon;
+		wxCheckBox* CheckboxGreyListBackground;
 		wxStaticText* StaticText12;
 		wxPanel* Panel2;
 		wxStaticText* CCWorkerThreadLabel;
@@ -159,6 +161,8 @@ class settingsDialog: public wxDialog
 		static const long ID_TEXTCTRL9;
 		static const long ID_SLIDER3;
 		static const long ID_PANEL4;
+		static const long ID_USE_GREY_LIST_BACKGROUND;
+		static const long ID_PANEL5;
 		static const long ID_NOTEBOOK1;
 		static const long ID_BUTTON3;
 		static const long ID_PANEL1;
