@@ -138,6 +138,8 @@
 		<Unit filename="src\NetworkScanner.cpp" />
 		<Unit filename="src\NetworkScanner.h" />
 		<Unit filename="src\QuickRDPBitmapButton.h" />
+		<Unit filename="src\QuickRDPTextCtrl.cpp" />
+		<Unit filename="src\QuickRDPTextCtrl.h" />
 		<Unit filename="src\QuickrdpFunctions.h" />
 		<Unit filename="src\RDPDatabase.cpp" />
 		<Unit filename="src\RDPDatabase.h" />
