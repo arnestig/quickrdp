@@ -38,6 +38,7 @@ const long NetworkScanner::ID_CHECKBOX2 = wxNewId();
 const long NetworkScanner::ID_CHECKBOX3 = wxNewId();
 const long NetworkScanner::ID_CHECKBOX4 = wxNewId();
 const long NetworkScanner::ID_STATICTEXT9 = wxNewId();
+const long NetworkScanner::ID_STATICTEXT17 = wxNewId();
 const long NetworkScanner::ID_TEXTCTRL9 = wxNewId();
 const long NetworkScanner::ID_GAUGE1 = wxNewId();
 const long NetworkScanner::ID_STATICLINE1 = wxNewId();
@@ -54,7 +55,7 @@ BEGIN_EVENT_TABLE(NetworkScanner,wxDialog)
 	EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_STATUS_UPDATE, NetworkScanner::onScanResult)
 END_EVENT_TABLE()
 
-NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID id)
+NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
 {
 	//(*Initialize(NetworkScanner)
 	wxBoxSizer* BoxSizer4;
@@ -135,7 +136,11 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID id)
 	StaticBoxSizer1->Add(BoxSizer9, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText9 = new wxStaticText(Panel1, ID_STATICTEXT9, _("Other ports:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
-	BoxSizer10->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer10->Add(StaticText9, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticText10 = new wxStaticText(Panel1, ID_STATICTEXT17, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT17"));
+	StaticText10->SetForegroundColour(wxColour(255,0,0));
+	StaticText10->SetToolTip(_("Definer other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"));
+	BoxSizer10->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	OtherPortsText = new QuickRDPTextCtrl(Panel1, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(138,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	BoxSizer10->Add(OtherPortsText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer1->Add(BoxSizer10, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
@@ -499,7 +504,7 @@ std::vector< RDPConnection* > NetworkScanner::getSelectedConnections()
     return retval;
 }
 
-void NetworkScanner::OnButtonAdd(wxCommandEvent& event)
+void NetworkScanner::OnButtonAdd(wxCommandEvent& WXUNUSED( event ) )
 {
     std::vector< RDPConnection* > targets = getSelectedConnections();
     for ( std::vector< RDPConnection* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
@@ -507,7 +512,7 @@ void NetworkScanner::OnButtonAdd(wxCommandEvent& event)
     }
 }
 
-void NetworkScanner::OnListCtrlSelect(wxListEvent& event)
+void NetworkScanner::OnListCtrlSelect(wxListEvent& WXUNUSED( event ) )
 {
     if ( getSelectedConnections().empty() == false ) {
         if ( getSelectedConnections().size() > 1 ) {
@@ -526,17 +531,17 @@ void NetworkScanner::OnListCtrlItemActivated(wxListEvent& event)
     OnButtonAdd( event );
 }
 
-void NetworkScanner::OnClose(wxCommandEvent& event)
+void NetworkScanner::OnClose(wxCommandEvent& WXUNUSED( event ) )
 {
     EndModal( targetsAdded );
 }
 
-void NetworkScanner::OnQuit(wxCloseEvent& event)
+void NetworkScanner::OnQuit(wxCloseEvent& WXUNUSED( event ) )
 {
     EndModal( targetsAdded );
 }
 
-void NetworkScanner::OnShowAllConnections(wxCommandEvent& event)
+void NetworkScanner::OnShowAllConnections(wxCommandEvent& WXUNUSED( event ) )
 {
     redrawListCtrl();
 }

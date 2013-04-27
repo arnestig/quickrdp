@@ -25,6 +25,7 @@ class NetworkScanner: public wxDialog
 		virtual ~NetworkScanner();
 
 		//(*Declarations(NetworkScanner)
+		wxStaticText* StaticText10;
 		wxStaticText* StaticText9;
 		wxButton* ButtonAddSelected;
 		QuickRDPTextCtrl* OtherPortsText;
@@ -82,6 +83,7 @@ class NetworkScanner: public wxDialog
 		static const long ID_CHECKBOX3;
 		static const long ID_CHECKBOX4;
 		static const long ID_STATICTEXT9;
+		static const long ID_STATICTEXT17;
 		static const long ID_TEXTCTRL9;
 		static const long ID_GAUGE1;
 		static const long ID_STATICLINE1;

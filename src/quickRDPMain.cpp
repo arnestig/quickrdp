@@ -1305,7 +1305,7 @@ void quickRDPFrame::updateStatusBar()
     StatusBar1->SetStatusText( wxString::Format( wxT(" %d/%d"), selectedConnections, totalConnections ), 1 );
 }
 
-void quickRDPFrame::OnMenuNetworkScanner(wxCommandEvent& event)
+void quickRDPFrame::OnMenuNetworkScanner(wxCommandEvent& WXUNUSED( event ) )
 {
     NetworkScanner *scanner = new NetworkScanner( this, 0 );
     unsigned int targetsAdded = showDialog( scanner );
