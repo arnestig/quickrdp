@@ -1,7 +1,4 @@
 #include "NetworkScanner.h"
-#include <ws2tcpip.h>
-#include <winsock2.h>
-#include <wspiapi.h>
 #include "Resources.h"
 #include "QuickrdpFunctions.h"
 #include <wx/msgdlg.h>
