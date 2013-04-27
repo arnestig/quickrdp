@@ -625,7 +625,7 @@ std::vector<RDPConnection*> RDPDatabase::getDatabase()
 
 RDPConnection* RDPDatabase::getRDPFromListCtrl( long index )
 {
-    if ( index < listCtrlRelation.size() && index >= 0 ) {
+    if ( index < static_cast<long>( listCtrlRelation.size() ) && index >= 0 ) {
         return listCtrlRelation[ index ];
     } else {
         return NULL;

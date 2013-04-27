@@ -550,7 +550,7 @@
 														<object class="wxStaticText" name="ID_STATICTEXT17" variable="StaticText8" member="yes">
 															<label> ? </label>
 															<fg>#FF0000</fg>
-															<tooltip>Experimental setting. &#x0A;Will alter the amount of threads performing connection checks. &#x0A;You will need to restart the program for this setting to be effective.</tooltip>
+															<tooltip>Experimental setting. &#x0A;Will alter the number of threads used for connection checks. &#x0A;You will need to restart the program for this setting to be effective.</tooltip>
 															<style>wxSIMPLE_BORDER</style>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

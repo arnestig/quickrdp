@@ -94,7 +94,7 @@ BEGIN_EVENT_TABLE(settingsDialog,wxDialog)
 	//*)
 END_EVENT_TABLE()
 
-settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
+settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(settingsDialog)
 	wxBoxSizer* BoxSizer4;
@@ -296,7 +296,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID id,const wxPoint& WXU
 	BoxSizer26->Add(CCWorkerThreadLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText8 = new wxStaticText(Panel4, ID_STATICTEXT17, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT17"));
 	StaticText8->SetForegroundColour(wxColour(255,0,0));
-	StaticText8->SetToolTip(_("Experimental setting. \nWill alter the amount of threads performing connection checks. \nYou will need to restart the program for this setting to be effective."));
+	StaticText8->SetToolTip(_("Experimental setting. \nWill alter the number of threads used for connection checks. \nYou will need to restart the program for this setting to be effective."));
 	BoxSizer26->Add(StaticText8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CCWorkerThreadTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL9, _("0"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	BoxSizer26->Add(CCWorkerThreadTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
