@@ -530,9 +530,9 @@ void settingsDialog::resetSSHArgument()
 void settingsDialog::resetVNCArgument()
 {
     #if defined(__WXMSW__)
-        VNCArgumentText->SetValue( wxT("%hostname%::%port%") );
+        VNCArgumentText->SetValue( wxT("%hostname%::%port% -password %password%") );
     #elif defined(__UNIX__)
-        VNCArgumentText->SetValue( wxT("TODO") );
+        VNCArgumentText->SetValue( wxT("%hostname%::%port% -password %password%") );
     #endif
 }
 
