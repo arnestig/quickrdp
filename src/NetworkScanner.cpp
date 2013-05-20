@@ -6,6 +6,7 @@
 #include <wx/imaglist.h>
 #include <wx/image.h>
 #include <wx/icon.h>
+#include "ExampleDialog.h"
 
 //(*InternalHeaders(NetworkScanner)
 #include <wx/intl.h>
@@ -35,7 +36,7 @@ const long NetworkScanner::ID_CHECKBOX2 = wxNewId();
 const long NetworkScanner::ID_CHECKBOX3 = wxNewId();
 const long NetworkScanner::ID_CHECKBOX4 = wxNewId();
 const long NetworkScanner::ID_STATICTEXT9 = wxNewId();
-const long NetworkScanner::ID_STATICTEXT17 = wxNewId();
+const long NetworkScanner::ID_BUTTON3 = wxNewId();
 const long NetworkScanner::ID_TEXTCTRL9 = wxNewId();
 const long NetworkScanner::ID_GAUGE1 = wxNewId();
 const long NetworkScanner::ID_STATICLINE1 = wxNewId();
@@ -134,10 +135,8 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
 	BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText9 = new wxStaticText(Panel1, ID_STATICTEXT9, _("Other ports:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
 	BoxSizer10->Add(StaticText9, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticText10 = new wxStaticText(Panel1, ID_STATICTEXT17, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT17"));
-	StaticText10->SetForegroundColour(wxColour(255,0,0));
-	StaticText10->SetToolTip(_("Definer other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"));
-	BoxSizer10->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Button1 = new wxButton(Panel1, ID_BUTTON3, _("\?"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON3"));
+	BoxSizer10->Add(Button1, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	OtherPortsText = new QuickRDPTextCtrl(Panel1, ID_TEXTCTRL9, wxEmptyString, wxDefaultPosition, wxSize(138,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	BoxSizer10->Add(OtherPortsText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer1->Add(BoxSizer10, 0, wxLEFT|wxRIGHT|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
@@ -187,6 +186,7 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
 	Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnCheckBoxesClick);
 	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnCheckBoxesClick);
 	Connect(ID_CHECKBOX4,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnCheckBoxesClick);
+	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnOtherPortsHelpClick);
 	Connect(ID_TEXTCTRL9,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&NetworkScanner::OnCheckBoxesClick);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&NetworkScanner::OnListCtrlSelect);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&NetworkScanner::OnListCtrlSelect);
@@ -542,3 +542,10 @@ void NetworkScanner::OnShowAllConnections(wxCommandEvent& WXUNUSED( event ) )
 {
     redrawListCtrl();
 }
+
+void NetworkScanner::OnOtherPortsHelpClick(wxCommandEvent& WXUNUSED( event ) )
+{
+    ExampleDialog *example = new ExampleDialog( wxT("Define other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"), this );
+    example->ShowModal();
+    delete example;
+    }
