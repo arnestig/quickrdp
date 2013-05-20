@@ -25,7 +25,6 @@ class NetworkScanner: public wxDialog
 		virtual ~NetworkScanner();
 
 		//(*Declarations(NetworkScanner)
-		wxStaticText* StaticText10;
 		wxStaticText* StaticText9;
 		wxButton* ButtonAddSelected;
 		QuickRDPTextCtrl* OtherPortsText;
@@ -34,6 +33,7 @@ class NetworkScanner: public wxDialog
 		wxButton* ButtonClose;
 		wxStaticText* StaticText2;
 		wxCheckBox* CheckboxShowAll;
+		wxButton* Button1;
 		wxStaticText* StaticText6;
 		QuickRDPTextCtrl* IPFrom3;
 		wxGauge* Gauge1;
@@ -83,7 +83,7 @@ class NetworkScanner: public wxDialog
 		static const long ID_CHECKBOX3;
 		static const long ID_CHECKBOX4;
 		static const long ID_STATICTEXT9;
-		static const long ID_STATICTEXT17;
+		static const long ID_BUTTON3;
 		static const long ID_TEXTCTRL9;
 		static const long ID_GAUGE1;
 		static const long ID_STATICLINE1;
@@ -110,6 +110,7 @@ class NetworkScanner: public wxDialog
         void OnClose(wxCommandEvent& event);
         void OnQuit(wxCloseEvent& event);
         void OnShowAllConnections(wxCommandEvent& event);
+        void OnOtherPortsHelpClick(wxCommandEvent& event);
         //*)
         void onScanResult( wxCommandEvent& event );
 

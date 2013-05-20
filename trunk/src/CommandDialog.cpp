@@ -79,7 +79,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
-
+	
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(391,253));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -175,7 +175,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	SetSizer(BoxSizer1);
 	FileDialog1 = new wxFileDialog(this, _("Select file"), wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnNameTextChange);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnFileDialogClick);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);

@@ -48,7 +48,11 @@
 		<Unit filename="src/ConnectionList.h" />
 		<Unit filename="src/ExampleDialog.cpp" />
 		<Unit filename="src/ExampleDialog.h" />
+		<Unit filename="src/NetworkScanner.cpp" />
+		<Unit filename="src/NetworkScanner.h" />
 		<Unit filename="src/QuickRDPBitmapButton.h" />
+		<Unit filename="src/QuickRDPTextCtrl.cpp" />
+		<Unit filename="src/QuickRDPTextCtrl.h" />
 		<Unit filename="src/QuickrdpFunctions.h" />
 		<Unit filename="src/RDPDatabase.cpp" />
 		<Unit filename="src/RDPDatabase.h" />
@@ -91,6 +95,7 @@
 					<wxFrame wxs="wxsmith/quickRDPframe.wxs" src="src/quickRDPMain.cpp" hdr="src/quickRDPMain.h" name="quickRDPFrame" language="CPP" />
 					<wxDialog wxs="wxsmith/settingsDialog.wxs" src="src/settingsDialog.cpp" hdr="src/settingsDialog.h" name="settingsDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/CommandDialog.wxs" src="src/CommandDialog.cpp" hdr="src/CommandDialog.h" name="CommandDialog" language="CPP" />
+					<wxDialog wxs="wxsmith/NetworkScanner.wxs" src="src/NetworkScanner.cpp" hdr="src/NetworkScanner.h" name="NetworkScanner" language="CPP" />
 					<wxDialog wxs="wxsmith/ExampleDialog.wxs" src="src/ExampleDialog.cpp" hdr="src/ExampleDialog.h" name="ExampleDialog" language="CPP" />
 					<wxPanel wxs="wxsmith/ConnectionList.wxs" src="src/ConnectionList.cpp" hdr="src/ConnectionList.h" name="ConnectionList" language="CPP" />
 				</resources>
