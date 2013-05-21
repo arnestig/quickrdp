@@ -1,21 +1,21 @@
 quickrdp 2.1 - 2013-05-21
-New features
-------------
-* Network Scanner added. Allows network ranges to be scanned with certain ports and ability to add the findings as connections.
-* Added support for choosing what columns to display.
-* Added support for saving current tabs upon exit. These will be loaded once QuickRDP starts.
-* Adding shortcut to select all connections in the list (default Ctrl+A).
-* Addíng status bar to the main frame showing selected / total connections.
-* Added background color for the connection list to make tracing connections a bit easier.
-* Added feature for deleting several connections, not just one.
+ New features
+ ------------
+ * Network Scanner added. Allows network ranges to be scanned with certain ports and ability to add the findings as connections.
+ * Added support for choosing what columns to display.
+ * Added support for saving current tabs upon exit. These will be loaded once QuickRDP starts.
+ * Adding shortcut to select all connections in the list (default Ctrl+A).
+ * Addíng status bar to the main frame showing selected / total connections.
+ * Added background color for the connection list to make tracing connections a bit easier.
+ * Added feature for deleting several connections, not just one.
 
-Bug fixes
----------
-* Updating default VNC argument settings to include -password flag.
-* Fixed bug causing VNC settings not to be saved.
-* Fixed bug with close tab / open tab shortcuts not working properly.
-* Fixing bug with rdesktop argument (Linux).
-* Fixed bug in connectionchecker - the timeout value in settings were never used.
+ Bug fixes
+ ---------
+ * Updating default VNC argument settings to include -password flag.
+ * Fixed bug causing VNC settings not to be saved.
+ * Fixed bug with close tab / open tab shortcuts not working properly.
+ * Fixing bug with rdesktop argument (Linux).
+ * Fixed bug in connectionchecker - the timeout value in settings were never used.
 
 quickrdp 2.0 - 2012-10-10
  New features
