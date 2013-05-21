@@ -978,7 +978,7 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
         newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Enables selecting all connections with Ctrl+A. This can be changed as all other keybindings in the Settings menu." ) ) );
         newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Choose what columns should be visible in the connection list by right-clicking on the column panel.") ) );
         newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Light-grey background color in the connection list to help tracing the different connections. Can be turned off in Settings -> Preferences -> Layout.") ) );
-        newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Network scanner added. Go to Tools -> Network Scanner to scan networks and add discovered connections.")))
+        newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Network scanner added. Go to Tools -> Network Scanner to scan networks and add discovered connections.") ) );
     }
 
     ExampleDialog *newsDialog;
