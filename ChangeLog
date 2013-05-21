@@ -5,7 +5,7 @@ quickrdp 2.1 - 2013-05-21
  * Added support for choosing what columns to display.
  * Added support for saving current tabs upon exit. These will be loaded once QuickRDP starts.
  * Adding shortcut to select all connections in the list (default Ctrl+A).
- * Addíng status bar to the main frame showing selected / total connections.
+ * Adding status bar to the main frame showing selected / total connections.
  * Added background color for the connection list to make tracing connections a bit easier.
  * Added feature for deleting several connections, not just one.
 
