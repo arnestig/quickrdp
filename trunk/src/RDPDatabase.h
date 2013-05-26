@@ -105,8 +105,6 @@ class RDPConnection
         int getConnectionStatus() const;
         bool isConnectionCheckerRunning() const;
         long getLastChecked() const;
-        void Lock(); /** for mutex locking **/
-        void Unlock(); /** for mutex locking **/
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -135,10 +133,8 @@ class RDPConnection
         void setConnectionStatus( int connectionStatus );
         void setConnectionCheckerRunning( bool connectionCheckerRunning );
         void setLastChecked( long lastchecked );
-
         void saveFile();
-
-        bool doesRDPHasString( wxString searchString );
+        bool doesRDPHaveString( wxString searchString );
 
     private:
         void parseFile();
@@ -161,7 +157,8 @@ class RDPDatabase
         RDPConnection *addRDPConnection( std::string filename );
         RDPConnection *duplicateRDPConnection( std::string filename, RDPConnection *copy );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
-        std::vector<RDPConnection*> getDatabase();
+        std::vector< RDPConnection* > getDatabase();
+        std::vector< RDPConnection* > getDatabaseWithFilter( wxString filter );
 
         RDPConnection* getRDPFromListCtrl( long index );
         void clearRDPListCtrl();

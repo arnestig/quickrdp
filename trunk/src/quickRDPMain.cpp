@@ -404,64 +404,67 @@ void quickRDPFrame::loadRDPFromDatabase()
     Resources::Instance()->getConnectionDatabase()->clearRDPListCtrl();
     Settings *settings = Resources::Instance()->getSettings();
 
-    std::vector<RDPConnection*> database = Resources::Instance()->getConnectionDatabase()->getDatabase();
+    std::vector< RDPConnection* > database;
+    wxString searchString = Notebook1->GetPageText( Notebook1->GetSelection() );
+    if ( searchString.IsEmpty() == true ) {
+        database = Resources::Instance()->getConnectionDatabase()->getDatabase();
+    } else {
+        database = Resources::Instance()->getConnectionDatabase()->getDatabaseWithFilter( searchString );
+    }
     long itemIndexCounter = 0;
     bool use_grey_color = false;
 
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
-        // if we have a filter in place, we search the RDPConnection and checks if any value matches our pattern. if it doesn't, we hop to the next item in the database.
-        if ( curRDP->doesRDPHasString( Notebook1->GetPageText( Notebook1->GetSelection() ) ) == true ) {
-            Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
-            int columnCounter = 0;
-            wxListItem item;
-            item.SetId( index );
-            wxListCtrl *listCtrl = getConnectionList();
-            listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
+        Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
+        int columnCounter = 0;
+        wxListItem item;
+        item.SetId( index );
+        wxListCtrl *listCtrl = getConnectionList();
+        listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
 
-            listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
-            wxColour itembgcolour;
-            if ( use_grey_color == true && settings->getGreyListBackground() == true ) {
-                itembgcolour = wxColour( 240, 240, 240 );
-                use_grey_color = false;
-            } else {
-                itembgcolour = wxColour( 255, 255, 255 );
-                use_grey_color = true;
-            }
-            listCtrl->SetItemBackgroundColour( item, itembgcolour );
-
-            if ( settings->isConnectionListColumnActive( wxT("Port") ) == true ) {
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, wxString::Format( wxT("%i"), curRDP->getPort() ) );
-            }
-
-            if ( settings->isConnectionListColumnActive( wxT("Username") ) == true ) {
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getDomainUsernameString() );
-            }
-
-            if ( settings->isConnectionListColumnActive( wxT("Connection") ) == true ) {
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, ConnectionType::getConnectionTypeName( curRDP->getConnectionType() ) );
-            }
-
-            if ( settings->isConnectionListColumnActive( wxT("Use console") ) == true ) {
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getConsoleString() );
-            }
-
-            if ( settings->isConnectionListColumnActive( wxT("Resolution") ) == true ) {
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getResolutionString() );
-            }
-            if ( settings->isConnectionListColumnActive( wxT("Comment") ) == true ) {
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getComment() );
-            }
-
-            if ( settings->isConnectionListColumnActive( wxT("Client name") ) == true ) {
-                wxString value = wxT("");
-                if ( curRDP->getConnectionType() == ConnectionType::RDP ) {
-                    value = curRDP->getClientHostname();
-                }
-                listCtrl->SetItem( itemIndexCounter, ++columnCounter, value );
-            }
-            itemIndexCounter++;
+        listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
+        wxColour itembgcolour;
+        if ( use_grey_color == true && settings->getGreyListBackground() == true ) {
+            itembgcolour = wxColour( 240, 240, 240 );
+            use_grey_color = false;
+        } else {
+            itembgcolour = wxColour( 255, 255, 255 );
+            use_grey_color = true;
         }
+        listCtrl->SetItemBackgroundColour( item, itembgcolour );
+
+        if ( settings->isConnectionListColumnActive( wxT("Port") ) == true ) {
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, wxString::Format( wxT("%i"), curRDP->getPort() ) );
+        }
+
+        if ( settings->isConnectionListColumnActive( wxT("Username") ) == true ) {
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getDomainUsernameString() );
+        }
+
+        if ( settings->isConnectionListColumnActive( wxT("Connection") ) == true ) {
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, ConnectionType::getConnectionTypeName( curRDP->getConnectionType() ) );
+        }
+
+        if ( settings->isConnectionListColumnActive( wxT("Use console") ) == true ) {
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getConsoleString() );
+        }
+
+        if ( settings->isConnectionListColumnActive( wxT("Resolution") ) == true ) {
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getResolutionString() );
+        }
+        if ( settings->isConnectionListColumnActive( wxT("Comment") ) == true ) {
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, curRDP->getComment() );
+        }
+
+        if ( settings->isConnectionListColumnActive( wxT("Client name") ) == true ) {
+            wxString value = wxT("");
+            if ( curRDP->getConnectionType() == ConnectionType::RDP ) {
+                value = curRDP->getClientHostname();
+            }
+            listCtrl->SetItem( itemIndexCounter, ++columnCounter, value );
+        }
+        itemIndexCounter++;
     }
     updateStatusBar();
 }

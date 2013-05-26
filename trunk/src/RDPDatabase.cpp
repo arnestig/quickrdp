@@ -549,7 +549,7 @@ void RDPConnection::parseFile()
     }
 }
 
-bool RDPConnection::doesRDPHasString( wxString searchString )
+bool RDPConnection::doesRDPHaveString( wxString searchString )
 {
     bool foundAnything = false;
     if ( quickRDP::FileParser::searchForString( std::string( getUsername().Lower().mb_str() ), std::string( searchString.Lower().mb_str() ) ) == true ) { foundAnything = true; }
@@ -622,6 +622,22 @@ std::vector<RDPConnection*> RDPDatabase::getDatabase()
     }
     return database;
 }
+
+std::vector< RDPConnection* > RDPDatabase::getDatabaseWithFilter( wxString filter )
+{
+    std::vector< RDPConnection* > retval;
+    if ( database.empty() == true ) {
+        loadRDPFiles();
+    }
+
+    for ( std::vector< RDPConnection* >::iterator it = database.begin(); it != database.end(); ++it ) {
+        if ( (*it)->doesRDPHaveString( filter ) == true ) {
+            retval.push_back( (*it) );
+        }
+    }
+    return retval;
+}
+
 
 RDPConnection* RDPDatabase::getRDPFromListCtrl( long index )
 {
