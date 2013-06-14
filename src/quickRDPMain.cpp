@@ -403,6 +403,7 @@ void quickRDPFrame::loadRDPFromDatabase()
     clearListCtrl();
     Resources::Instance()->getConnectionDatabase()->clearRDPListCtrl();
     Settings *settings = Resources::Instance()->getSettings();
+    wxListCtrl *listCtrl = getConnectionList();
 
     std::vector< RDPConnection* > database;
     wxString searchString = Notebook1->GetPageText( Notebook1->GetSelection() );
@@ -414,13 +415,15 @@ void quickRDPFrame::loadRDPFromDatabase()
     long itemIndexCounter = 0;
     bool use_grey_color = false;
 
+    // Freeze our listCtrl until we've added all connections.
+    listCtrl->Freeze();
+
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
         Resources::Instance()->getConnectionDatabase()->addRDPToListCtrl( curRDP );
         int columnCounter = 0;
         wxListItem item;
         item.SetId( index );
-        wxListCtrl *listCtrl = getConnectionList();
         listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
 
         listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
@@ -467,6 +470,7 @@ void quickRDPFrame::loadRDPFromDatabase()
         itemIndexCounter++;
     }
     updateStatusBar();
+    listCtrl->Thaw();
 }
 
 void quickRDPFrame::clearListCtrl()
@@ -873,21 +877,43 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
         After it is done and we're still in this function then we can go ahead and loop through
         all the command's shortcuts as well.
     **/
+    wxCommandEvent ourEvent;
+    Settings *settings = Resources::Instance()->getSettings();
+    int keyCode = event.GetKeyCode();
+    int keyModifier = event.GetModifiers();
 
     if ( wantGlobalHotkeys() == true ) {
         /** check if we are tabbing between controls **/
-        if ( event.GetKeyCode() == WXK_TAB && event.GetModifiers() == wxMOD_NONE ) {
+        if ( keyCode == WXK_TAB && keyModifier == wxMOD_NONE ) {
             if ( wxWindow::FindFocus()->GetId() == ID_TEXTCTRL1 ) {
                 getConnectionList()->SetFocus();
             } else {
                 TextCtrl1->SetFocus();
             }
             return true;
+        } else if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
+            OnNewButtonClick( ourEvent );
+            return true;
+        } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
+            OnMenuCommands( ourEvent );
+            return true;
+        } else if ( keyCode == settings->getNewTabShortcut().first && keyModifier == settings->getNewTabShortcut().second ) {
+            addConnectionTab( wxT("") );
+            return true;
+        } else if ( keyCode == settings->getCloseTabShortcut().first && keyModifier == settings->getCloseTabShortcut().second ) {
+            if ( Notebook1->GetPageCount() > 1 ) {
+                Notebook1->RemovePage( Notebook1->GetSelection() );
+            } else {
+                Notebook1->SetPageText( Notebook1->GetSelection(), wxT("") );
+                TextCtrl1->SetValue( wxT("") );
+            }
+            return true;
+
         /** Okay, now we only check our connection only shortcuts.. (ListCtrl is in focus) **/
         } else if ( wxWindow::FindFocus()->GetName() == wxT("ID_LISTCTRL1") ) {
             /** first we look for commands that have this specific keycombination and try to execute it **/
             std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() );
-            Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( event.GetModifiers(), event.GetKeyCode() );
+            Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( keyModifier, keyCode );
             if ( curCommand != NULL ) {
                 for ( size_t con = 0; con < connections.size(); ++con ) {
                     if ( connections[ con ] != NULL ) {
@@ -896,25 +922,8 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
                 }
                 return true;
             } else {
-                /** no command found, then we look for global shortcuts... **/
-                wxCommandEvent ourEvent;
-                Settings *settings = Resources::Instance()->getSettings();
-                int keyCode = event.GetKeyCode();
-                int keyModifier = event.GetModifiers();
-
-
-                if ( keyCode == settings->getNewTabShortcut().first && keyModifier == settings->getNewTabShortcut().second ) {
-                    addConnectionTab( wxT("") );
-                    return true;
-                } else if ( keyCode == settings->getCloseTabShortcut().first && keyModifier == settings->getCloseTabShortcut().second ) {
-                    if ( Notebook1->GetPageCount() > 1 ) {
-                        Notebook1->RemovePage( Notebook1->GetSelection() );
-                    }
-                    return true;
-                } else if ( keyCode == settings->getNewConnectionShortcut().first && keyModifier == settings->getNewConnectionShortcut().second ) {
-                    OnNewButtonClick( ourEvent );
-                    return true;
-                } else if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
+                /** no command found, then we look for connection specific shortcuts... **/
+                if ( keyCode == settings->getDupConnectionShortcut().first && keyModifier == settings->getDupConnectionShortcut().second ) {
                     OnDuplicateButtonClick( ourEvent );
                     return true;
                 } else if ( keyCode == settings->getPropConnectionShortcut().first && keyModifier == settings->getPropConnectionShortcut().second ) {
@@ -922,9 +931,6 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
                     return true;
                 } else if ( keyCode == settings->getSelectAllConnectionsShortcut().first && keyModifier == settings->getSelectAllConnectionsShortcut().second ) {
                     SelectAllConnections();
-                    return true;
-                } else if ( keyCode == settings->getCommandDialogShortcut().first && keyModifier == settings->getCommandDialogShortcut().second ) {
-                    OnMenuCommands( ourEvent );
                     return true;
                 } else if ( keyCode == settings->getManualCCShortcut().first && keyModifier == settings->getManualCCShortcut().second ) {
                     manuallyDoConnectionCheck( connections );
