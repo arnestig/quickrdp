@@ -400,10 +400,11 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& WXUNUSED(event) , RDPConne
 
 void quickRDPFrame::loadRDPFromDatabase()
 {
-    clearListCtrl();
     Resources::Instance()->getConnectionDatabase()->clearRDPListCtrl();
     Settings *settings = Resources::Instance()->getSettings();
     wxListCtrl *listCtrl = getConnectionList();
+    listCtrl->Freeze();
+    clearListCtrl();
 
     std::vector< RDPConnection* > database;
     wxString searchString = Notebook1->GetPageText( Notebook1->GetSelection() );
@@ -416,7 +417,6 @@ void quickRDPFrame::loadRDPFromDatabase()
     bool use_grey_color = false;
 
     // Freeze our listCtrl until we've added all connections.
-    listCtrl->Freeze();
 
     for ( size_t index = 0; index < database.size(); index++ ) {
         RDPConnection* curRDP = database[ index ];
