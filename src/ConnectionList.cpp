@@ -52,7 +52,7 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 {
 	//(*Initialize(ConnectionList)
 	wxBoxSizer* BoxSizer1;
-	
+
 	Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	ListCtrl1 = new wxListCtrl(this, ID_LISTCTRL1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT, wxDefaultValidator, _T("ID_LISTCTRL1"));
@@ -77,7 +77,7 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 	ColumnListChooserMenu.Append(MenuItem8);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&ConnectionList::OnItemSelected);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&ConnectionList::OnItemDeselected);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&ConnectionList::OnItemActivated);
@@ -143,10 +143,11 @@ void ConnectionList::OnColumnEndDrag(wxListEvent& WXUNUSED(event) )
         int columns = settings->getConnectionListColumns();
         std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
         std::vector< int > newWidths;
+        int columnCounter = 0;
         for ( size_t colId = 0; colId < connectionListColumnMap.size(); ++colId ) {
             bool hasColumn = ( columns & connectionListColumnMap[ colId ].second );
             if ( hasColumn == true ) {
-                newWidths.push_back( ListCtrl1->GetColumnWidth( colId ) );
+                newWidths.push_back( ListCtrl1->GetColumnWidth( columnCounter++ ) );
             } else {
                 newWidths.push_back( settings->getConnectionListColumnWidth( colId ) );
             }
@@ -163,10 +164,11 @@ void ConnectionList::UpdateColumnWidth()
     if ( settings != NULL ) {
         int columns = settings->getConnectionListColumns();
         std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap = settings->getConnectionListColumMap();
+        int columnCounter = 0;
         for ( size_t colId = 0; colId < connectionListColumnMap.size(); ++colId ) {
             bool hasColumn = ( columns & connectionListColumnMap[ colId ].second );
             if ( hasColumn == true ) {
-                ListCtrl1->SetColumnWidth( colId, settings->getConnectionListColumnWidth( colId ) );
+                ListCtrl1->SetColumnWidth( columnCounter++, settings->getConnectionListColumnWidth( colId ) );
             }
         }
     }
