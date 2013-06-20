@@ -57,6 +57,7 @@ class settingsDialog: public wxDialog
 		wxButton* VNCArgumentResetButton;
 		wxStaticText* ShortcutNewTabLabel;
 		wxFileDialog* VNCExecDialog;
+		wxStaticText* StaticText13;
 		wxStaticText* StaticText2;
 		wxPanel* Panel4;
 		wxTextCtrl* CCTimeoutTextDisplay;
@@ -104,6 +105,7 @@ class settingsDialog: public wxDialog
 		wxButton* CancelButton;
 		wxTextCtrl* SSHExecutableText;
 		wxTextCtrl* TextShortcutConProp;
+		wxTextCtrl* ShortcutConnectWhenReadyText;
 		wxTextCtrl* ShortcutCloseTabText;
 		//*)
 
@@ -144,6 +146,8 @@ class settingsDialog: public wxDialog
 		static const long ID_COMMANDDIALOG;
 		static const long ID_STATICTEXT13;
 		static const long ID_MANUALCC;
+		static const long ID_STATICTEXT19;
+		static const long ID_CONNECTWHENREADY;
 		static const long ID_STATICTEXT14;
 		static const long ID_NEWTAB;
 		static const long ID_STATICTEXT15;

@@ -47,6 +47,7 @@ class Settings
         std::pair< int, int > getSelectAllConnectionsShortcut() const;
         std::pair< int, int > getCommandDialogShortcut() const;
         std::pair< int, int > getManualCCShortcut() const;
+        std::pair< int, int > getConnectWhenReadyShortcut() const;
         std::pair< int, int > getNewTabShortcut() const;
         std::pair< int, int > getCloseTabShortcut() const;
 
@@ -56,6 +57,7 @@ class Settings
         void setSelectAllConnectionsShortcut( std::pair< int, int > value );
         void setCommandDialogShortcut( std::pair< int, int > value );
         void setManualCCShortcut( std::pair< int, int > value );
+        void setConnectWhenReadyShortcut( std::pair< int, int > value );
         void setNewTabShortcut( std::pair< int, int > value );
         void setCloseTabShortcut( std::pair< int, int > value );
 
@@ -125,6 +127,7 @@ class Settings
         std::pair< int, int > selectAllConnectionsShortcut;
         std::pair< int, int > commandDialogShortcut;
         std::pair< int, int > manualccShortcut;
+        std::pair< int, int > connectWhenReadyShortcut;
         std::pair< int, int > newTabShortcut;
         std::pair< int, int > closeTabShortcut;
 

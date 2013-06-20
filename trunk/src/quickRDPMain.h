@@ -121,7 +121,7 @@ class quickRDPFrame: public wxFrame
         static const long ID_MENUITEM2;
         static const long ID_MENUITEM3;
         static const long POPUPMENUCONNECT;
-        static const long POPUPMENUCONNECTWHENREADY;
+        static const long ID_POPUPMENUCONNECTWHENREADY;
         static const long ID_POPUPMENUPROPERTIES;
         static const long ID_POPUPMENU_DUPLICATE;
         static const long ID_POPUPMENU_DELETE;
