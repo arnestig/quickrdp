@@ -85,7 +85,6 @@ class ConnectionCheckerWorkerThread : public wxThread
 
     private:
         virtual void *Entry();
-        void getNewTarget();
 
         unsigned int workCompleted;
         struct timeval t;

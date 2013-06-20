@@ -189,6 +189,11 @@
 				<label>Connect</label>
 				<handler function="OnMenuItemConnect" entry="EVT_MENU" />
 			</object>
+			<object class="wxMenuItem" name="POPUPMENUCONNECTWHENREADY" variable="MenuItem25" member="yes">
+				<label>Connect when ready</label>
+				<handler function="OnMenuItemConnectWhenReady" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
 			<object class="wxMenuItem" name="ID_POPUPMENUPROPERTIES" variable="MenuItem3" member="yes">
 				<label>Properties</label>
 				<handler function="OnMenuItem3Selected" entry="EVT_MENU" />

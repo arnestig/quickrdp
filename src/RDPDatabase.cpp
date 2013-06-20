@@ -42,7 +42,8 @@ RDPConnection::RDPConnection( std::string filename )
         port( -1 ),
         connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
         connectionCheckerRunning( false ),
-        lastchecked( 0 )
+        lastchecked( 0 ),
+        connectWhenReady( false )
 {
     // if we have an empty string here, we don't intend to read it
     if ( filename.empty() == false ) {
@@ -53,7 +54,8 @@ RDPConnection::RDPConnection( std::string filename )
 RDPConnection::RDPConnection( std::string filename, RDPConnection *copy )
     :   filename( filename ),
         connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
-        lastchecked( 0 )
+        lastchecked( 0 ),
+        connectWhenReady( false )
 {
     setConnectionType( copy->getConnectionType() );
     setClientHostname( copy->getClientHostname() );
@@ -215,6 +217,11 @@ bool RDPConnection::isConnectionCheckerRunning() const
 long RDPConnection::getLastChecked() const
 {
     return lastchecked;
+}
+
+bool RDPConnection::getConnectWhenReady() const
+{
+    return connectWhenReady;
 }
 
 wxString RDPConnection::getResolutionString() const
@@ -387,6 +394,12 @@ void RDPConnection::setLastChecked( long lastchecked )
 {
     wxMutexLocker lock(mutex);
     this->lastchecked = lastchecked;
+}
+
+void RDPConnection::setConnectWhenReady( bool connectWhenReady )
+{
+    wxMutexLocker lock(mutex);
+    this->connectWhenReady = connectWhenReady;
 }
 
 void RDPConnection::connect()

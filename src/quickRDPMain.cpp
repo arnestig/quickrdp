@@ -60,6 +60,7 @@ const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::ID_MENUITEM2 = wxNewId();
 const long quickRDPFrame::ID_MENUITEM3 = wxNewId();
 const long quickRDPFrame::POPUPMENUCONNECT = wxNewId();
+const long quickRDPFrame::POPUPMENUCONNECTWHENREADY = wxNewId();
 const long quickRDPFrame::ID_POPUPMENUPROPERTIES = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DUPLICATE = wxNewId();
 const long quickRDPFrame::ID_POPUPMENU_DELETE = wxNewId();
@@ -184,6 +185,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     SetMenuBar(MenuBar1);
     MenuItem17 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECT, _("Connect"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem17);
+    MenuItem25 = new wxMenuItem((&PopupMenu1), POPUPMENUCONNECTWHENREADY, _("Connect when ready"), wxEmptyString, wxITEM_CHECK);
+    PopupMenu1.Append(MenuItem25);
     MenuItem3 = new wxMenuItem((&PopupMenu1), ID_POPUPMENUPROPERTIES, _("Properties"), wxEmptyString, wxITEM_NORMAL);
     PopupMenu1.Append(MenuItem3);
     MenuItem20 = new wxMenuItem((&PopupMenu1), ID_POPUPMENU_DUPLICATE, _("Duplicate"), wxEmptyString, wxITEM_NORMAL);
@@ -241,6 +244,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_MENUITEM3,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuSearchForUpdates);
     Connect(wxID_ABOUT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnAbout);
     Connect(POPUPMENUCONNECT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnect);
+    Connect(POPUPMENUCONNECTWHENREADY,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItemConnectWhenReady);
     Connect(ID_POPUPMENUPROPERTIES,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem3Selected);
     Connect(ID_POPUPMENU_DUPLICATE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDuplicate);
     Connect(ID_POPUPMENU_DELETE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPopupMenuDelete);
@@ -1057,6 +1061,12 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
                 rdpConnection->setConnectionStatus( status );
                 getConnectionList()->SetItemImage( itemIndex, status );
             }
+
+            /** check if the connection has "connect when ready". if it does and is online, we connect to it **/
+            if ( rdpConnection->getConnectWhenReady() == true && status == 1 ) {
+                rdpConnection->setConnectWhenReady( false );
+                rdpConnection->connect();
+            }
         }
     }
 }
@@ -1176,6 +1186,8 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
             if ( resolutionString == wxT("1280 x 960") ) { MenuItem13->Check( true ); }
             if ( resolutionString == wxT("1400 x 1050") ) { MenuItem14->Check( true ); }
         }
+        /** set connect when ready status **/
+        MenuItem25->Check( curCon->getConnectWhenReady() );
     }
 
     /** prepare our command part of the popup menu before we display it. **/
@@ -1323,4 +1335,13 @@ void quickRDPFrame::OnMenuNetworkScanner(wxCommandEvent& WXUNUSED( event ) )
         loadRDPFromDatabase();
     }
     delete scanner;
+}
+
+void quickRDPFrame::OnMenuItemConnectWhenReady(wxCommandEvent& WXUNUSED( event ) )
+{
+    std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() );
+    for ( std::vector< RDPConnection* >::iterator it = connections.begin(); it != connections.end(); ++it ) {
+        (*it)->setConnectWhenReady( !(*it)->getConnectWhenReady() );
+    }
+    manuallyDoConnectionCheck( connections );
 }
