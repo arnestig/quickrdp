@@ -105,6 +105,7 @@ class RDPConnection
         int getConnectionStatus() const;
         bool isConnectionCheckerRunning() const;
         long getLastChecked() const;
+        bool getConnectWhenReady() const;
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -133,6 +134,7 @@ class RDPConnection
         void setConnectionStatus( int connectionStatus );
         void setConnectionCheckerRunning( bool connectionCheckerRunning );
         void setLastChecked( long lastchecked );
+        void setConnectWhenReady( bool connectWhenReady );
         void saveFile();
         bool doesRDPHaveString( wxString searchString );
 
@@ -146,6 +148,7 @@ class RDPConnection
         int connectionStatus;
         bool connectionCheckerRunning;
         long lastchecked; /** seconds since a connection check was done. (seconds since 1970-01-01 00:00:00) **/
+        bool connectWhenReady;
         wxMutex mutex;
 };
 

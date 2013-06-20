@@ -168,7 +168,9 @@ void *ConnectionCheckerWorkerThread::Entry()
         if ( target == NULL ) {
             /** get us a new target **/
             queue->WaitTimeout( 200 );
-            getNewTarget();
+            if ( parent->aboutToQuit() == false ) {
+                parent->publishTarget( target );
+            }
         } else {
             /** Connect to our current target **/
             wxCommandEvent event( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );
@@ -219,12 +221,4 @@ void *ConnectionCheckerWorkerThread::Entry()
     }
 
     return 0;
-}
-
-void ConnectionCheckerWorkerThread::getNewTarget()
-{
-    target = NULL;
-    if ( parent->aboutToQuit() == false ) {
-        parent->publishTarget( target );
-    }
 }
