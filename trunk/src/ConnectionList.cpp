@@ -152,7 +152,7 @@ void ConnectionList::OnColumnEndDrag(wxListEvent& WXUNUSED(event) )
                 newWidths.push_back( settings->getConnectionListColumnWidth( colId ) );
             }
         }
-        settings->setConnectionListColuimnWidths( newWidths );
+        settings->setConnectionListColumnWidths( newWidths );
     }
     mainFrame->UpdateFrameWidthOnAllListConnections();
 }

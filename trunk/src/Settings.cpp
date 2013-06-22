@@ -546,7 +546,7 @@ int Settings::getConnectionListColumnWidth( int columnId )
     return connectionListColumnWidths[ columnId ];
 }
 
-void Settings::setConnectionListColuimnWidths( std::vector< int > connectionListColumnWidths )
+void Settings::setConnectionListColumnWidths( std::vector< int > connectionListColumnWidths )
 {
     this->connectionListColumnWidths = connectionListColumnWidths;
 }
