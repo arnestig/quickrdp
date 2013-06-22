@@ -93,7 +93,7 @@ class Settings
         bool isConnectionListColumnActive( wxString columnName );
 
         int getConnectionListColumnWidth( int columnId );
-        void setConnectionListColuimnWidths( std::vector< int > connectionListColumnWidths );
+        void setConnectionListColumnWidths( std::vector< int > connectionListColumnWidths );
 
         /** return tabs saved from closing the application **/
         void setConnectionTabs( std::vector< wxString > connectionTabs );

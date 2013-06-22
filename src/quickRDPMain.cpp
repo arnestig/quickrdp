@@ -997,6 +997,15 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
         newsQueue.push_back( std::make_pair( wxT("2.1"), wxT("Network scanner added. Go to Tools -> Network Scanner to scan networks and add discovered connections.") ) );
     }
 
+    if ( oldVersion < wxT("2.1.1") ) {
+        newsQueue.push_back( std::make_pair( wxT("2.1.2"), wxT("Connect when ready" ) ) );
+        /** because of some bug with the column sizes we will reset the column setting sizes here now. Also set which are displayed as default. **/
+        settings->setConnectionListColumns( ConnectionListColumn::COMMENT|ConnectionListColumn::CONNECTIONTYPE|ConnectionListColumn::HOSTNAME|ConnectionListColumn::USERNAME );
+        std::vector< int > columnWidths;
+        columnWidths.resize( 8, 80 );
+        settings->setConnectionListColumnWidths( columnWidths );
+    }
+
     ExampleDialog *newsDialog;
     wxString lastVersion = wxT("");
     for ( std::vector< std::pair< wxString, wxString > >::reverse_iterator it = newsQueue.rbegin(); it != newsQueue.rend(); ++it ) {
@@ -1009,9 +1018,12 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
         }
         newsOutput << wxT(" - ") << (*it).second << wxT("\n");
     }
-    newsDialog = new ExampleDialog( newsOutput, this );
-    newsDialog->ShowModal();
-    delete newsDialog;
+
+    if ( newsQueue.empty() == false ) {
+        newsDialog = new ExampleDialog( newsOutput, this );
+        newsDialog->ShowModal();
+        delete newsDialog;
+    }
 
     /** save our settings just in case the application fails to do so at a later stage..
     we don't want the user to get these messages twice. **/
