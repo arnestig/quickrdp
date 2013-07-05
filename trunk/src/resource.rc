@@ -2,9 +2,10 @@ aaaa ICON "data/QuickRDP.ico"
 connectionerror ICON "data/connectionerror.ico"
 connectionok ICON "data/connectionok.ico"
 connectionunk ICON "data/connectionunk.ico"
+connectionchecker ICON "data/connectionchecker.ico"
 
 #ifndef PRODUCTVERSION_STR
-#define PRODUCTVERSION_STR "2.0"
+#define PRODUCTVERSION_STR "2.2"
 #endif
 
 1 VERSIONINFO
@@ -14,7 +15,7 @@ BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "CompanyName", "Tobias Eliasson"
-      VALUE "FileDescription", "Manages RDP, telnet and SSH connections"
+      VALUE "FileDescription", "Manages RDP, Telnet, SSH and VNC connections"
       VALUE "LegalCopyright", "Copyright © 2010-2013 Tobias Eliasson"
       VALUE "OriginalFilename", "QuickRDP.exe"
       VALUE "ProductName", "QuickRDP"
