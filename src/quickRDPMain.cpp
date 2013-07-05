@@ -284,10 +284,12 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
         imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionerror.xpm") ) );
         imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionok.xpm") ) );
         imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionunk.xpm") ) );
+        imageList->Add( wxIcon( Resources::Instance()->getSettings()->getDataPath() + wxT("connectionchecker.xpm") ) );
     #else
         imageList->Add( wxICON( connectionerror ) );
         imageList->Add( wxICON( connectionok ) );
         imageList->Add( wxICON( connectionunk ) );
+        imageList->Add( wxICON( connectionchecker ) );
     #endif
 
     loadConnectionTabs(); // Load our saved connection tabs. Will at least add one connection tab if we would have no connection tabs saved in our settings file.
@@ -428,7 +430,11 @@ void quickRDPFrame::loadRDPFromDatabase()
         int columnCounter = 0;
         wxListItem item;
         item.SetId( index );
-        listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
+        if ( curRDP->getConnectWhenReady() == true ) {
+            listCtrl->InsertItem( item, 3 );
+        } else {
+            listCtrl->InsertItem( item, curRDP->getConnectionStatus() );
+        }
 
         listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
         wxColour itembgcolour;
@@ -1072,7 +1078,11 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     if ( itemIndex != -1 ) {
         RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
         if ( rdpConnection != NULL ) {
-            if ( rdpConnection->getConnectionStatus() != status ) {
+            /** if we're using this connection in connect when ready, we want our special icon drawn for connect when ready **/
+            if ( rdpConnection->getConnectWhenReady() == true && status == 0 ) {
+                getConnectionList()->SetItemImage( itemIndex, 3 );
+            /** else just draw the current connection status **/
+            } else if ( rdpConnection->getConnectionStatus() != status ) {
                 rdpConnection->setConnectionStatus( status );
                 getConnectionList()->SetItemImage( itemIndex, status );
             }
