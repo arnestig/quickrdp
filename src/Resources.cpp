@@ -45,10 +45,8 @@ Resources::~Resources()
 
 void Resources::DestroyInstance()
 {
-    if ( instance != NULL ) {
-        delete instance;
-		instance = NULL;
-    }
+    delete instance;
+    instance = NULL;
 }
 
 Resources* Resources::Instance()

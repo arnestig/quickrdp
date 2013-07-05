@@ -43,6 +43,12 @@ class QuickRDPTextCtrl : public wxTextCtrl
                        long style = 0,
                        const wxValidator& validator = wxDefaultValidator,
                        const wxString& name = wxTextCtrlNameStr)
+            :   nextTextCtrl( NULL ),
+                nextTextCtrlKey( 0 ),
+                lengthLimit( 0 )
+
+
+
         {
             Init();
 
