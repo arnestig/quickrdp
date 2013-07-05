@@ -89,10 +89,10 @@ class Settings
 
         void setConnectionListColumns( int connectionListColumns );
         int getConnectionListColumns() const;
-        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > getConnectionListColumMap();
+        std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > getConnectionListColumMap() const;
         bool isConnectionListColumnActive( wxString columnName );
 
-        int getConnectionListColumnWidth( int columnId );
+        int getConnectionListColumnWidth( int columnId ) const;
         void setConnectionListColumnWidths( std::vector< int > connectionListColumnWidths );
 
         /** return tabs saved from closing the application **/

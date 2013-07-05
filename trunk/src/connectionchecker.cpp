@@ -137,9 +137,11 @@ bool ConnectionChecker::aboutToQuit()
 
 ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue, unsigned int timeout )
     :   wxThread( wxTHREAD_DETACHED ),
+        workCompleted( 0 ),
         parent( parent ),
         queue( queue ),
-        target( NULL )
+        target( NULL ),
+        m_socket( 0 )
 {
     /** setting up our socket select timeout **/
     t.tv_sec = 0;

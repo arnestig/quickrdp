@@ -541,7 +541,7 @@ bool Settings::isConnectionListColumnActive( wxString columnName )
     return isColumnActive;
 }
 
-int Settings::getConnectionListColumnWidth( int columnId )
+int Settings::getConnectionListColumnWidth( int columnId ) const
 {
     return connectionListColumnWidths[ columnId ];
 }
@@ -551,7 +551,7 @@ void Settings::setConnectionListColumnWidths( std::vector< int > connectionListC
     this->connectionListColumnWidths = connectionListColumnWidths;
 }
 
-std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > Settings::getConnectionListColumMap()
+std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > Settings::getConnectionListColumMap() const
 {
     return connectionListColumnMap;
 }
