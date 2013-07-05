@@ -81,7 +81,7 @@
 					<Add directory="$(#wx)\lib\gcc_lib" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="cmd /c upx.exe $(PROJECT_DIR)\bin\Release\QuickRDP.exe" />
+					<Add after="cmd /c upx.exe $(PROJECT_DIR)\QuickRDP.exe" />
 					<Add after="cmd /c makensis.exe $(PROJECT_DIR)\packages\windows\QuickRDP.nsi" />
 					<Mode after="always" />
 				</ExtraCommands>
