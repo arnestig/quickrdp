@@ -24,6 +24,7 @@
 
 #include <wx/listctrl.h>
 #include "RDPDatabase.h"
+#include "CommandDatabase.h"
 #include "Resources.h"
 #include <fstream>
 
@@ -228,8 +229,59 @@ namespace quickRDP
         }
     }
 
-    namespace Keybinder
+    namespace Shortcuts
     {
+        inline bool IsCombinationInUse( std::pair< int, int > shortcut, wxString &shortcutName )
+        {
+            Settings* settings = Resources::Instance()->getSettings();
+            std::vector< Command* > commands = Resources::Instance()->getCommandDatabase()->getCommands();
+            for ( std::vector< Command* >::iterator it = commands.begin(); it != commands.end(); ++it ) {
+                std::pair< int, int > curCommandShortcut = std::make_pair( (*it)->getShortcutKey(), (*it)->getShortcutModifier() );
+                if ( curCommandShortcut == shortcut ) {
+                    shortcutName = wxT("command ") + (*it)->getName();
+                    return true;
+                }
+            }
+
+            if ( shortcut == settings->getNewConnectionShortcut() ) {
+                shortcutName = wxT("shortcut 'New connection'");
+                return true;
+            }
+            if ( shortcut == settings->getDupConnectionShortcut() ) {
+                shortcutName = wxT("shortcut 'Duplicate connection'");
+                return true;
+            }
+            if ( shortcut == settings->getPropConnectionShortcut() ) {
+                shortcutName = wxT("shortcut 'Connection properties'");
+                return true;
+            }
+            if ( shortcut == settings->getSelectAllConnectionsShortcut() ) {
+                shortcutName = wxT("shortcut 'Select all connection'");
+                return true;
+            }
+            if ( shortcut == settings->getCommandDialogShortcut() ) {
+                shortcutName = wxT("shortcut 'Commands dialog'");
+                return true;
+            }
+            if ( shortcut == settings->getManualCCShortcut() ) {
+                shortcutName = wxT("shortcut 'Manual connection check'");
+                return true;
+            }
+            if ( shortcut == settings->getConnectWhenReadyShortcut() ) {
+                shortcutName = wxT("shortcut 'Connect when ready'");
+                return true;
+            }
+            if ( shortcut == settings->getNewTabShortcut() ) {
+                shortcutName = wxT("shortcut 'Open new tab'");
+                return true;
+            }
+            if ( shortcut == settings->getCloseTabShortcut() ) {
+                shortcutName = wxT("shortcut 'Close current tab'");
+                return true;
+            }
+            return false;
+        }
+
         inline wxString ModifierString( int modmask )
         {
             wxString retval;
@@ -273,7 +325,7 @@ namespace quickRDP
         }
 
         inline bool IsValidKeycode( int keycode ) {
-            if ( ( keycode < 256 && wxIsalnum( keycode ) ) || ( keycode >= WXK_F1 && keycode <= WXK_F12 ) || ( keycode == WXK_DELETE ) || ( keycode == WXK_TAB ) ) {
+            if ( ( keycode < 256 && wxIsalnum( keycode ) ) || ( keycode >= WXK_F1 && keycode <= WXK_F12 ) || ( keycode == WXK_TAB ) ) {
                 return true;
             } else {
                 return false;

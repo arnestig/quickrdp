@@ -192,6 +192,7 @@ class settingsDialog: public wxDialog
 		//*)
 
 		void HandleKeyShortcutPress( wxKeyEvent& event );
+		void setShortcut( long controlId, std::pair< int, int > shortcut );
 
 		void resetTelnetArgument();
 		void resetSSHArgument();

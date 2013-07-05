@@ -25,6 +25,8 @@
 #include "ExampleDialog.h"
 #include "QuickrdpFunctions.h"
 
+#include <wx/msgdlg.h>
+
 //(*InternalHeaders(CommandDialog)
 #include <wx/intl.h>
 #include <wx/string.h>
@@ -79,7 +81,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxBoxSizer* BoxSizer3;
-	
+
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(391,253));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -175,7 +177,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	SetSizer(BoxSizer1);
 	FileDialog1 = new wxFileDialog(this, _("Select file"), wxEmptyString, wxEmptyString, wxFileSelectorDefaultWildcardStr, wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnNameTextChange);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnFileDialogClick);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);
@@ -249,7 +251,7 @@ void CommandDialog::OnListDoubleClick(wxCommandEvent& WXUNUSED(event) )
             argumentTextCtrl->SetValue( curCommand->getArgument() );
             favoriteCheckbox->SetValue( curCommand->getFavorite() );
             safetyCheckbox->SetValue( curCommand->getSafety() );
-            TextShortcut->ChangeValue( quickRDP::Keybinder::ModifierString( curCommand->getShortcutModifier() ) << quickRDP::Keybinder::KeycodeString(curCommand->getShortcutKey() ) );
+            TextShortcut->ChangeValue( quickRDP::Shortcuts::ModifierString( curCommand->getShortcutModifier() ) << quickRDP::Shortcuts::KeycodeString(curCommand->getShortcutKey() ) );
             curShortcutMod = curCommand->getShortcutModifier();
             curShortcutKey = curCommand->getShortcutKey();
         }
@@ -334,12 +336,34 @@ void CommandDialog::OnFileDialogClick(wxCommandEvent& WXUNUSED(event) )
     }
 }
 
+void CommandDialog::SaveCurrentShortcut( std::pair< int, int > shortcut )
+{
+    TextShortcut->Clear();
+    TextShortcut->AppendText( quickRDP::Shortcuts::ModifierString( shortcut.second ) + quickRDP::Shortcuts::KeycodeString( shortcut.first ) );
+    curShortcutKey = shortcut.first;
+    curShortcutMod = shortcut.second;
+}
+
 void CommandDialog::HandlePanelKeyDown(wxKeyEvent& event)
 {
-    curShortcutMod = 0;
-    curShortcutKey = 0;
-    TextShortcut->Clear();
-    TextShortcut->AppendText( quickRDP::Keybinder::ModifierString( event.GetModifiers() ) + quickRDP::Keybinder::KeycodeString( event.GetKeyCode() ));
-    curShortcutMod = event.GetModifiers();
-    curShortcutKey = event.GetKeyCode();
+    std::pair< int, int > shortcut = std::make_pair( event.GetKeyCode(), event.GetModifiers() );
+
+    if ( shortcut.first != curShortcutKey || shortcut.second != curShortcutMod ) {
+        /** if we wanted to clear the shortcut handle that here **/
+        if ( event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_BACK ) {
+            shortcut.first = 0;
+            SaveCurrentShortcut( shortcut );
+        }
+
+        if ( quickRDP::Shortcuts::IsValidKeycode( event.GetKeyCode() ) == true ) {
+            wxString shortcutNameInUse;
+            if ( quickRDP::Shortcuts::IsCombinationInUse( shortcut, shortcutNameInUse ) == true ) {
+                if ( wxMessageBox( wxT("Already in use by: ") + shortcutNameInUse + wxT(".\nDo you want to use this keycombination anyway?"), wxT("Duplicate keycombination found"), wxYES_NO ) == wxYES ) {
+                    SaveCurrentShortcut( shortcut );
+                }
+            } else {
+                SaveCurrentShortcut( shortcut );
+            }
+        }
+    }
 }

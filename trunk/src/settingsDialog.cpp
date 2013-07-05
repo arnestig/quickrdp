@@ -381,15 +381,15 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	SSHExecutableText->SetValue( settings->getSSHExec() );
 	VNCExecutableText->SetValue( settings->getVNCExec() );
 
-    TextShortcutNewCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getNewConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getNewConnectionShortcut().first ) );
-    TextShortcutDupCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
-    TextShortcutConProp->AppendText( quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
-    TextShortcutSelectAllCon->AppendText( quickRDP::Keybinder::ModifierString( settings->getSelectAllConnectionsShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getSelectAllConnectionsShortcut().first ) );
-    TextShortcutCommandDialog->AppendText( quickRDP::Keybinder::ModifierString( settings->getCommandDialogShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCommandDialogShortcut().first ) );
-    ShortcutManualCCText->AppendText( quickRDP::Keybinder::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getManualCCShortcut().first ) );
-    ShortcutConnectWhenReadyText->AppendText( quickRDP::Keybinder::ModifierString( settings->getConnectWhenReadyShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getConnectWhenReadyShortcut().first ) );
-    ShortcutNewTabText->AppendText( quickRDP::Keybinder::ModifierString( settings->getNewTabShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getNewTabShortcut().first ) );
-    ShortcutCloseTabText->AppendText( quickRDP::Keybinder::ModifierString( settings->getCloseTabShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getCloseTabShortcut().first ) );
+    TextShortcutNewCon->AppendText( quickRDP::Shortcuts::ModifierString( settings->getNewConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getNewConnectionShortcut().first ) );
+    TextShortcutDupCon->AppendText( quickRDP::Shortcuts::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getDupConnectionShortcut().first ) );
+    TextShortcutConProp->AppendText( quickRDP::Shortcuts::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getPropConnectionShortcut().first ) );
+    TextShortcutSelectAllCon->AppendText( quickRDP::Shortcuts::ModifierString( settings->getSelectAllConnectionsShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getSelectAllConnectionsShortcut().first ) );
+    TextShortcutCommandDialog->AppendText( quickRDP::Shortcuts::ModifierString( settings->getCommandDialogShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getCommandDialogShortcut().first ) );
+    ShortcutManualCCText->AppendText( quickRDP::Shortcuts::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getManualCCShortcut().first ) );
+    ShortcutConnectWhenReadyText->AppendText( quickRDP::Shortcuts::ModifierString( settings->getConnectWhenReadyShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getConnectWhenReadyShortcut().first ) );
+    ShortcutNewTabText->AppendText( quickRDP::Shortcuts::ModifierString( settings->getNewTabShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getNewTabShortcut().first ) );
+    ShortcutCloseTabText->AppendText( quickRDP::Shortcuts::ModifierString( settings->getCloseTabShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getCloseTabShortcut().first ) );
 
 	/** set the telnet and ssh file dialog default values depending on windows or linux **/
     #if defined(__WXMSW__)
@@ -554,34 +554,56 @@ void settingsDialog::OnHelpArgumentClick(wxCommandEvent& WXUNUSED(event) )
     wxMessageBox( wxT("Commandline-arguments sent to the choosen application will be parsed before sent.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%\n%port%"), wxT("Command-line arguments"), wxICON_INFORMATION );
 }
 
-void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
+void settingsDialog::setShortcut( long controlId, std::pair< int, int > shortcut )
 {
-    shortcutMap[ event.GetId() ] = std::make_pair( event.GetKeyCode(), event.GetModifiers() );
+    shortcutMap[ controlId ] = shortcut;
     wxTextCtrl *modCtrl = NULL;
 
-    if ( event.GetId() == settingsDialog::ID_NEWCON ) {
+    if ( controlId == settingsDialog::ID_NEWCON ) {
         modCtrl = TextShortcutNewCon;
-    } else if ( event.GetId() == settingsDialog::ID_DUPCON ) {
+    } else if ( controlId == settingsDialog::ID_DUPCON ) {
         modCtrl = TextShortcutDupCon;
-    } else if ( event.GetId() == settingsDialog::ID_CONPROP ) {
+    } else if ( controlId == settingsDialog::ID_CONPROP ) {
         modCtrl = TextShortcutConProp;
-    } else if ( event.GetId() == settingsDialog::ID_SELCON ) {
+    } else if ( controlId == settingsDialog::ID_SELCON ) {
         modCtrl = TextShortcutSelectAllCon;
-    } else if ( event.GetId() == settingsDialog::ID_COMMANDDIALOG ) {
+    } else if ( controlId == settingsDialog::ID_COMMANDDIALOG ) {
         modCtrl = TextShortcutCommandDialog;
-    } else if ( event.GetId() == settingsDialog::ID_MANUALCC ) {
+    } else if ( controlId == settingsDialog::ID_MANUALCC ) {
         modCtrl = ShortcutManualCCText;
-    } else if ( event.GetId() == settingsDialog::ID_CONNECTWHENREADY ) {
+    } else if ( controlId == settingsDialog::ID_CONNECTWHENREADY ) {
         modCtrl = ShortcutConnectWhenReadyText;
-    } else if ( event.GetId() == settingsDialog::ID_NEWTAB ) {
+    } else if ( controlId == settingsDialog::ID_NEWTAB ) {
         modCtrl = ShortcutNewTabText;
-    } else if ( event.GetId() == settingsDialog::ID_CLOSETAB ) {
+    } else if ( controlId == settingsDialog::ID_CLOSETAB ) {
         modCtrl = ShortcutCloseTabText;
     }
 
     if ( modCtrl != NULL ) {
         modCtrl->Clear();
-        modCtrl->AppendText( quickRDP::Keybinder::ModifierString( event.GetModifiers() ) + quickRDP::Keybinder::KeycodeString( event.GetKeyCode() ) );
+        modCtrl->AppendText( quickRDP::Shortcuts::ModifierString( shortcut.second ) + quickRDP::Shortcuts::KeycodeString( shortcut.first ) );
+    }
+}
+
+void settingsDialog::HandleKeyShortcutPress( wxKeyEvent& event )
+{
+    std::pair< int, int > shortcut = std::make_pair( event.GetKeyCode(), event.GetModifiers() );
+
+    /** if we wanted to clear the shortcut handle that here **/
+    if ( event.GetKeyCode() == WXK_DELETE || event.GetKeyCode() == WXK_BACK ) {
+        shortcut.first = 0;
+        setShortcut( event.GetId(), shortcut );
+    }
+
+    if ( quickRDP::Shortcuts::IsValidKeycode( event.GetKeyCode() ) == true ) {
+        wxString shortcutNameInUse;
+        if ( quickRDP::Shortcuts::IsCombinationInUse( shortcut, shortcutNameInUse ) == true ) {
+            if ( wxMessageBox( wxT("Already in use by: ") + shortcutNameInUse + wxT(".\nDo you want to use this keycombination anyway?"), wxT("Duplicate keycombination found"), wxYES_NO ) == wxYES ) {
+                setShortcut( event.GetId(), shortcut );
+            }
+        } else {
+            setShortcut( event.GetId(), shortcut );
+        }
     }
 }
 
