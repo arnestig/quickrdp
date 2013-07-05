@@ -119,6 +119,7 @@ class CommandDialog: public wxDialog
 		void HandlePanelKeyDown(wxKeyEvent& event);
 		void OnBindKeyClick(wxCommandEvent& event);
 		//*)
+		void SaveCurrentShortcut( std::pair< int, int > shortcut );
 
         int curShortcutMod;
         int curShortcutKey;

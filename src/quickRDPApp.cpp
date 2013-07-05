@@ -71,7 +71,7 @@ int quickRDPApp::FilterEvent(wxEvent& event)
     if ( event.GetEventType() == wxEVT_KEY_DOWN ) {
         wxKeyEvent ownevt = (wxKeyEvent&) event;
         /** check if we want to process this event.. */
-        if ( quickRDP::Keybinder::IsValidKeycode( ownevt.GetKeyCode() ) == true ) {
+        if ( quickRDP::Shortcuts::IsValidKeycode( ownevt.GetKeyCode() ) == true ) {
             if ( Frame->handleShortcutKeys( ownevt ) == false ) {
                 return -1;
             } else {

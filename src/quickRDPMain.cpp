@@ -998,7 +998,7 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
     }
 
     if ( oldVersion < wxT("2.1.1") ) {
-        newsQueue.push_back( std::make_pair( wxT("2.1.2"), wxT("Connect when ready" ) ) );
+        newsQueue.push_back( std::make_pair( wxT("2.2"), wxT("Selecting 'Connect when ready' on a connection will connect to it once the Connection checker reports the connection as up. Right-click a connection to enable this." ) ) );
         /** because of some bug with the column sizes we will reset the column setting sizes here now. Also set which are displayed as default. **/
         settings->setConnectionListColumns( ConnectionListColumn::COMMENT|ConnectionListColumn::CONNECTIONTYPE|ConnectionListColumn::HOSTNAME|ConnectionListColumn::USERNAME );
         std::vector< int > columnWidths;
@@ -1096,22 +1096,22 @@ void quickRDPFrame::updatePopupmenuShortcuts()
     Settings *settings = Resources::Instance()->getSettings();
     wxMenuItem *propConMenu = PopupMenu1.FindItem( ID_POPUPMENUPROPERTIES );
     if ( propConMenu != NULL ) {
-        propConMenu->SetText( wxT("Properties\t") + quickRDP::Keybinder::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getPropConnectionShortcut().first ) );
+        propConMenu->SetText( wxT("Properties\t") + quickRDP::Shortcuts::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getPropConnectionShortcut().first ) );
     }
 
     wxMenuItem *dupConMenu = PopupMenu1.FindItem( ID_POPUPMENU_DUPLICATE );
     if ( dupConMenu != NULL ) {
-        dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Keybinder::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getDupConnectionShortcut().first ) );
+        dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Shortcuts::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getDupConnectionShortcut().first ) );
     }
 
     wxMenuItem *manualCCMenu = PopupMenu1.FindItem( ID_POPUPMENUMANUALCC );
     if ( manualCCMenu != NULL ) {
-        manualCCMenu->SetText( wxT("Connection check\t") + quickRDP::Keybinder::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getManualCCShortcut().first ) );
+        manualCCMenu->SetText( wxT("Connection check\t") + quickRDP::Shortcuts::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getManualCCShortcut().first ) );
     }
 
     wxMenuItem *connectWhenReadyMenu = PopupMenu1.FindItem( ID_POPUPMENUCONNECTWHENREADY );
     if ( connectWhenReadyMenu != NULL ) {
-        connectWhenReadyMenu->SetText( wxT("Connect when ready\t") + quickRDP::Keybinder::ModifierString( settings->getConnectWhenReadyShortcut().second ) + quickRDP::Keybinder::KeycodeString( settings->getConnectWhenReadyShortcut().first )  );
+        connectWhenReadyMenu->SetText( wxT("Connect when ready\t") + quickRDP::Shortcuts::ModifierString( settings->getConnectWhenReadyShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getConnectWhenReadyShortcut().first )  );
     }
 }
 
@@ -1229,7 +1229,7 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
         Connect( newCommandId, wxEVT_COMMAND_MENU_SELECTED, (wxObjectEventFunction)&quickRDPFrame::OnCommandSelected );
         wxString commandName = commandDb[ cId ]->getName();
         if ( commandDb[ cId ]->getShortcutKey() > 0 ) {
-            commandName << wxT("\t") << quickRDP::Keybinder::ModifierString( commandDb[ cId ]->getShortcutModifier() ) << quickRDP::Keybinder::KeycodeString( commandDb[ cId ]->getShortcutKey() );
+            commandName << wxT("\t") << quickRDP::Shortcuts::ModifierString( commandDb[ cId ]->getShortcutModifier() ) << quickRDP::Shortcuts::KeycodeString( commandDb[ cId ]->getShortcutKey() );
         }
         wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, newCommandId, commandName, wxEmptyString, wxITEM_NORMAL );
 
