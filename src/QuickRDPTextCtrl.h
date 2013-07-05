@@ -33,7 +33,11 @@ class QuickRDPTextCtrl : public wxTextCtrl
     DECLARE_EVENT_TABLE()
 
     public:
-        QuickRDPTextCtrl() {}
+        QuickRDPTextCtrl()
+            :   nextTextCtrl( NULL ),
+                nextTextCtrlKey( 0 ),
+                lengthLimit( 0 )
+        {}
 
         QuickRDPTextCtrl(wxWindow *parent,
                        wxWindowID id,
@@ -46,9 +50,6 @@ class QuickRDPTextCtrl : public wxTextCtrl
             :   nextTextCtrl( NULL ),
                 nextTextCtrlKey( 0 ),
                 lengthLimit( 0 )
-
-
-
         {
             Init();
 
