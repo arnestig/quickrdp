@@ -1082,7 +1082,7 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
             if ( rdpConnection->getConnectWhenReady() == true && status == 0 ) {
                 getConnectionList()->SetItemImage( itemIndex, 3 );
             /** else just draw the current connection status **/
-            } else if ( rdpConnection->getConnectionStatus() != status ) {
+            } else {
                 rdpConnection->setConnectionStatus( status );
                 getConnectionList()->SetItemImage( itemIndex, status );
             }
