@@ -1,3 +1,19 @@
+quickrdp 2.2 - 2013-05-21
+ New features
+ ------------
+ * Detecting duplicate shortcuts and will now inform you of it.
+ * Adding 'Connect When Ready' feature. You can now opt to connect to the
+ connection when the connection checker indicates that the host is up.
+
+ Bug fixes
+ ---------
+ * Fixed bug causing grey backlight not to be displayed always when searching for connections.
+ * Reduced the time it takes to load connections vastly
+ * Removed flickering when drawing the ConnectionList
+ * Fixing issue with shortcuts not working when having the search box
+ selected.
+ * Fixing bug causing columns to be resized when searching for connections.
+
 quickrdp 2.1 - 2013-05-21
  New features
  ------------
