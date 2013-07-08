@@ -1,4 +1,9 @@
-quickrdp 2.2 - 2013-07-06
+quickrdp 2.2.1 - 2013-07-08
+ Bug fixes
+ ---------
+ * Fixing missing file in windows installer
+
+quickrdp 2.2 - 2013-07-05
  New features
  ------------
  * Detecting duplicate shortcuts and will now inform you of it.
