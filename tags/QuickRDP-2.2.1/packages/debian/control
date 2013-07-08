@@ -1,0 +1,24 @@
+Source: quickrdp
+Section: x11
+Priority: optional
+Maintainer: Tobias Eliasson <arnestig@gmail.com>
+Build-Depends: debhelper (>= 8), libwxgtk2.8-dev, libwxbase2.8-dev
+Standards-Version: 3.9.3
+Homepage: http://sourceforge.net/projects/quickrdp/
+Vcs-svn: https://quickrdp.svn.sourceforge.net/svnroot/quickrdp/trunk
+
+Package: quickrdp
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: rdesktop
+Suggests: openssh-client, telnet-client
+Description: Manages RDP, telnet and SSH connections
+ QuickRDP is a connection manager program for your remote desktop, telnet
+ or SSH connections. Makes it easy to keep track of all your connections.
+ Write your own Perl scripts and execute them on your connections,
+ connect to all hosts selected with one command, easily locate your
+ connections with a simple search bar.
+ .
+ Used with your own favorite RDP, SSH or telnet application, tailor the
+ arguments passed to the program of your choice to gain the most of
+ QuickRDP.
