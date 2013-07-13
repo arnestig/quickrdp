@@ -48,6 +48,7 @@ class aboutDialog: public wxDialog
 		wxPanel* Panel1;
 		wxStaticText* StaticText1;
 		wxStaticText* StaticText3;
+		wxButton* Button2;
 		wxStaticText* VersionText;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
@@ -55,6 +56,9 @@ class aboutDialog: public wxDialog
 		//*)
 		wxHyperlinkCtrl* Hyperlink1;
 		wxHyperlinkCtrl* Hyperlink2;
+		wxString gccVersion;
+		wxString wxWidgetsVersion;
+		wxString libcurlVersion;
 
 	protected:
 
@@ -68,6 +72,7 @@ class aboutDialog: public wxDialog
 		static const long ID_STATICTEXT5;
 		static const long ID_STATICTEXT7;
 		static const long ID_STATICTEXT6;
+		static const long ID_BUTTON1;
 		static const long ID_PANEL1;
 		//*)
 		static const long ID_HYPERLINK1;
@@ -77,6 +82,7 @@ class aboutDialog: public wxDialog
 
 		//(*Handlers(aboutDialog)
 		void OnCloseButton(wxCommandEvent& event);
+		void OnShowBuildInformation(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()
