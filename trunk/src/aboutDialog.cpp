@@ -23,6 +23,7 @@
 #include "Resources.h"
 #include <wx/image.h>
 #include <wx/hyperlink.h>
+#include <wx/msgdlg.h>
 //(*InternalHeaders(aboutDialog)
 #include <wx/font.h>
 #include <wx/intl.h>
@@ -39,6 +40,7 @@ const long aboutDialog::ID_STATICTEXT4 = wxNewId();
 const long aboutDialog::ID_STATICTEXT5 = wxNewId();
 const long aboutDialog::ID_STATICTEXT7 = wxNewId();
 const long aboutDialog::ID_STATICTEXT6 = wxNewId();
+const long aboutDialog::ID_BUTTON1 = wxNewId();
 const long aboutDialog::ID_PANEL1 = wxNewId();
 //*)
 
@@ -57,6 +59,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	wxBoxSizer* BoxSizer6;
 	wxBoxSizer* BoxSizer5;
 	wxBoxSizer* BoxSizer7;
+	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer3;
@@ -110,8 +113,13 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 		BoxSizer5->Add(Hyperlink2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5->Add(StaticText6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
+	Button2 = new wxButton(Panel1, ID_BUTTON1, _("Build information"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	BoxSizer8->Add(Button2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer8->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button1 = new wxButton(Panel1, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
-	BoxSizer3->Add(Button1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer8->Add(Button1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer3->Add(BoxSizer8, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel1->SetSizer(BoxSizer2);
 	BoxSizer2->Fit(Panel1);
@@ -120,6 +128,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	SetSizer(BoxSizer1);
 	BoxSizer1->SetSizeHints(this);
 
+	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&aboutDialog::OnShowBuildInformation);
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&aboutDialog::OnCloseButton);
 	//*)
 	StaticBitmap1->SetBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("preferences-desktop-remote-desktop-256x256.png") ) );
@@ -135,4 +144,9 @@ aboutDialog::~aboutDialog()
 void aboutDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
 {
     EndModal( 0 );
+}
+
+void aboutDialog::OnShowBuildInformation(wxCommandEvent& event)
+{
+    wxMessageBox( gccVersion + wxT("\n") + wxWidgetsVersion + wxT("\n") + libcurlVersion );
 }

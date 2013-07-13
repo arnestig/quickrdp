@@ -344,6 +344,9 @@ void quickRDPFrame::OnAbout(wxCommandEvent& WXUNUSED(event) )
 {
     aboutDialog *about = new aboutDialog( this, 0 );
     about->VersionText->SetLabel( Version::getLongVersion() );
+    about->gccVersion= Version::getgccVersion();
+    about->libcurlVersion = Version::getlibcurlVersion();
+    about->wxWidgetsVersion = Version::getwxWidgetsVersion();
     showDialog( about );
     delete about;
 }

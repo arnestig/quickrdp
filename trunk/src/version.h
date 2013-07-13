@@ -26,6 +26,8 @@
 #define SVN_REVISION 0
 #endif
 
+#include <curl/curlver.h>
+
 namespace Version {
 	static wxString name = wxT("QuickRDP");
 	static wxString version = wxT("2.2.1");
@@ -47,6 +49,21 @@ namespace Version {
             retval << wxT("-") + wxString::Format( wxT("%d"), SVN_REVISION );
 	    }
 	    return retval;
+	}
+
+	inline wxString getwxWidgetsVersion()
+	{
+	    return wxVERSION_STRING;
+	}
+
+	inline wxString getgccVersion()
+	{
+	    return wxString::Format( wxT("gcc %d.%d.%d"), __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__ );
+	}
+
+	inline wxString getlibcurlVersion()
+	{
+	    return wxString::Format( wxT("libcurl %d.%d.%d"), LIBCURL_VERSION_MAJOR, LIBCURL_VERSION_MINOR, LIBCURL_VERSION_PATCH );
 	}
 };
 
