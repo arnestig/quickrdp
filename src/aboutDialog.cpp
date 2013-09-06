@@ -116,7 +116,7 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
 	Button2 = new wxButton(Panel1, ID_BUTTON1, _("Build information"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer8->Add(Button2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer8->Add(0,0,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer8->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Button1 = new wxButton(Panel1, wxID_CANCEL, _("Close"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("wxID_CANCEL"));
 	BoxSizer8->Add(Button1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer8, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -146,7 +146,7 @@ void aboutDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
     EndModal( 0 );
 }
 
-void aboutDialog::OnShowBuildInformation(wxCommandEvent& event)
+void aboutDialog::OnShowBuildInformation(wxCommandEvent& WXUNUSED(event) )
 {
     wxMessageBox( gccVersion + wxT("\n") + wxWidgetsVersion + wxT("\n") + libcurlVersion );
 }

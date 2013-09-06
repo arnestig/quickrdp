@@ -282,7 +282,7 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
         command->setShortcutKey( shortcutKey );
         filename = command->getFilename();
     } else { /** command doesn't exist, create a new one **/
-        filename = quickRDP::FileParser::generateFilename();
+        filename = quickRDP::Generators::generateHex( 8 );
         commands.push_back( new Command( name, program, argument, filename, favorite, safety, shortcutModifier, shortcutKey ) );
     }
 

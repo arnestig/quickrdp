@@ -120,7 +120,7 @@ class NetworkScanner: public wxDialog
         void addNewConnection( RDPConnection *target );
         void redrawListCtrl();
         std::vector< RDPConnection* > getSelectedConnections();
-        RDPConnection* getConnectionFromFilename( wxString filename );
+        RDPConnection* getConnectionFromId( long connectionCheckerId );
         std::vector< int > getCustomPortsFromTextCtrl();
         std::vector< wxString > getIPRange( wxString first, wxString last );
         wxString getNextIP( int ipaddress );

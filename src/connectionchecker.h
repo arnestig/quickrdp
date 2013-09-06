@@ -71,7 +71,7 @@ class ConnectionChecker : public wxThread
         ConnectionCheckerWorkerThread *workerThreads[ 8 ];
         wxMutex eventMutex;
         wxMutex mutex;
-        std::map< std::string, RDPConnection* > targets;
+        std::map< long, RDPConnection* > targets;
         wxEvtHandler *parent;
         wxSemaphore *queue;
         bool willquit;

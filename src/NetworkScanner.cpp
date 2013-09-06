@@ -113,6 +113,7 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
 	BoxSizer7->Add(BoxSizer5, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
 	ScanButton = new wxButton(Panel1, ID_BUTTON1, _("Scan"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+	ScanButton->Disable();
 	BoxSizer6->Add(ScanButton, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7->Add(BoxSizer6, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer7, 0, wxTOP|wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -305,7 +306,7 @@ void NetworkScanner::addTargetToListCtrl( RDPConnection *connection )
 void NetworkScanner::onScanResult( wxCommandEvent& event )
 {
     Gauge1->SetValue( Gauge1->GetValue() + 1 );
-    RDPConnection *connection = getConnectionFromFilename( event.GetString() );
+    RDPConnection *connection = getConnectionFromId( event.GetExtraLong() );
     if ( connection != NULL ) {
         connection->setConnectionStatus( event.GetInt() );
         addTargetToListCtrl( connection );
@@ -360,11 +361,11 @@ void NetworkScanner::OnScan(wxCommandEvent& WXUNUSED( event ) )
 
         for ( std::vector< wxString >::iterator ip = iprange.begin(); ip != iprange.end(); ++ip ) {
             for ( std::vector< int >::iterator port = ports.begin(); port != ports.end(); ++port ) {
-                RDPConnection *newCon = new RDPConnection( "" );
+                RDPConnection *newCon = new RDPConnection( wxT("") );
                 newCon->setHostname( (*ip) );
                 newCon->setPort( (*port) );
                 newCon->setConnectionType( ConnectionType::getConnectionTypeForPort( (*port) ) );
-                newCon->setFilename( wxString( wxT("") ) << (*ip) << wxString::Format( wxT("#%d"), (*port) ) );
+                newCon->setConnectionCheckerId( quickRDP::Generators::generateInt( 9 ) );
                 targets.push_back( newCon );
             }
         }
@@ -384,9 +385,9 @@ void NetworkScanner::cleanTargets()
 	ListCtrlRDPConnectionTable.clear();
 }
 
-RDPConnection* NetworkScanner::getConnectionFromFilename( wxString filename ) {
+RDPConnection* NetworkScanner::getConnectionFromId( long connectionCheckerId ) {
     for ( std::vector< RDPConnection* >::iterator it = targets.begin(); it != targets.end(); ++it ) {
-        if ( (*it)->getFilename() == filename ) {
+        if ( (*it)->getConnectionCheckerId() == connectionCheckerId ) {
             return (*it);
         }
     }
@@ -475,7 +476,7 @@ void NetworkScanner::OnCheckBoxesClick(wxCommandEvent& WXUNUSED( event ) )
 }
 
 void NetworkScanner::addNewConnection( RDPConnection *target ) {
-    std::string filename = std::string( quickRDP::FileParser::generateFilename().mb_str() );
+    wxString filename = quickRDP::Generators::generateHex( 8 );
     RDPConnection *newCon = Resources::Instance()->getConnectionDatabase()->duplicateRDPConnection( filename, target );
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
@@ -548,4 +549,4 @@ void NetworkScanner::OnOtherPortsHelpClick(wxCommandEvent& WXUNUSED( event ) )
     ExampleDialog *example = new ExampleDialog( wxT("Define other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"), this );
     example->ShowModal();
     delete example;
-    }
+}

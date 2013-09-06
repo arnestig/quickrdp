@@ -353,7 +353,7 @@ void quickRDPFrame::OnAbout(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnNewButtonClick(wxCommandEvent& WXUNUSED(event) )
 {
-    std::string filename = std::string( quickRDP::FileParser::generateFilename().mb_str() );
+    wxString filename = quickRDP::Generators::generateHex( 8 );
 
     RDPFrame *newFrame = new RDPFrame( this, 0 );
     newFrame->loadRDPConnection( Resources::Instance()->getConnectionDatabase()->addRDPConnection( filename ) );
@@ -498,7 +498,7 @@ void quickRDPFrame::OnDuplicateButtonClick(wxCommandEvent& event)
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
     if ( curCon != NULL ) {
-        std::string filename = std::string( quickRDP::FileParser::generateFilename().mb_str() );
+        wxString filename = quickRDP::Generators::generateHex( 8 );
         RDPConnection *myNewCon = Resources::Instance()->getConnectionDatabase()->duplicateRDPConnection( filename, curCon );
         OnEditButtonClick( event, myNewCon );
         loadRDPFromDatabase();
@@ -1076,7 +1076,8 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
     std::string filename = std::string( event.GetString().mb_str() );
     int status = event.GetInt();
-    long itemIndex = rdpDatabase->getListCtrlIndexFromFilename( filename );
+    long connectionId = event.GetExtraLong();
+    long itemIndex = rdpDatabase->getListCtrlIndexFromId( connectionId );
 
     if ( itemIndex != -1 ) {
         RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
@@ -1144,6 +1145,7 @@ void quickRDPFrame::updateConnectionCheckerStatus()
                 /** make sure we update only targets who needs to be updated **/
                 if ( ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) && rdpConnection->isConnectionCheckerRunning() == false ) {
                     rdpConnection->setConnectionCheckerRunning( true );
+                    rdpConnection->setConnectionCheckerId( quickRDP::Generators::generateInt( 9 ) );
                     connectionList.push_back( rdpConnection );
                 }
             }
@@ -1158,6 +1160,7 @@ void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > con
     std::vector< RDPConnection* > connectionList;
     for ( std::vector< RDPConnection* >::iterator it = connections.begin(); it != connections.end(); ++it ) {
         connectionList.push_back( (*it) );
+        (*it)->setConnectionCheckerId( quickRDP::Generators::generateInt( 9 ) );
     }
     connectionChecker->addTargets( connectionList );
 }

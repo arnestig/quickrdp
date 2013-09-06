@@ -79,12 +79,11 @@ namespace ConnectionType
 class RDPConnection
 {
     public:
-        RDPConnection( std::string filename );
-        RDPConnection( std::string filename, RDPConnection *copy );
+        RDPConnection( wxString filename );
+        RDPConnection( wxString, RDPConnection *copy );
         ~RDPConnection();
 
         ConnectionType::ConnectionType getConnectionType() const;
-        void getFilename( std::string &filename );
         wxString getFilename();
         void getHostname( std::string &hostname );
         wxString getHostname();
@@ -103,9 +102,11 @@ class RDPConnection
         int getPort();
         int getPortTrueValue(); // difference between getPort() and getPortTrueValue() is that TrueValue will return -1 if the connection is using the default values */
         int getConnectionStatus() const;
-        bool isConnectionCheckerRunning() const;
-        long getLastChecked() const;
+        bool isConnectionCheckerRunning();
+        long getLastChecked();
         bool getConnectWhenReady() const;
+
+        long getConnectionCheckerId();
 
         // special string returns for the connection
         wxString getResolutionString() const;
@@ -116,7 +117,6 @@ class RDPConnection
         void connect();
 
         void setConnectionType( ConnectionType::ConnectionType connectionType );
-        void setFilename( wxString filename );
         void setHostname( wxString hostname );
         void setUsername( wxString username );
         void setPassword( wxString password );
@@ -135,20 +135,21 @@ class RDPConnection
         void setConnectionCheckerRunning( bool connectionCheckerRunning );
         void setLastChecked( long lastchecked );
         void setConnectWhenReady( bool connectWhenReady );
+        void setConnectionCheckerId( long connectionCheckerId );
         void saveFile();
         bool doesRDPHaveString( wxString searchString );
 
     private:
         void parseFile();
         ConnectionType::ConnectionType connectionType;
-        std::string filename;
-        wxString comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping;
+        wxString filename,comment, username, password, domain, clienthostname, desktopheight, desktopwidth, desktopbpp, console, screenmode, soundmode, diskmapping;
         std::string hostname;
         int port;
         int connectionStatus;
         bool connectionCheckerRunning;
         long lastchecked; /** seconds since a connection check was done. (seconds since 1970-01-01 00:00:00) **/
         bool connectWhenReady;
+        long connectionCheckerId;
         wxMutex mutex;
 };
 
@@ -157,8 +158,8 @@ class RDPDatabase
     public:
         RDPDatabase();
         ~RDPDatabase();
-        RDPConnection *addRDPConnection( std::string filename );
-        RDPConnection *duplicateRDPConnection( std::string filename, RDPConnection *copy );
+        RDPConnection *addRDPConnection( wxString filename );
+        RDPConnection *duplicateRDPConnection( wxString filename, RDPConnection *copy );
         void deleteRDPConnectionByPointer( RDPConnection *rdpConnection );
         std::vector< RDPConnection* > getDatabase();
         std::vector< RDPConnection* > getDatabaseWithFilter( wxString filter );
@@ -166,8 +167,7 @@ class RDPDatabase
         RDPConnection* getRDPFromListCtrl( long index );
         void clearRDPListCtrl();
         void addRDPToListCtrl( RDPConnection *connection );
-
-        long getListCtrlIndexFromFilename( std::string filename );
+        long getListCtrlIndexFromId( long connectionId );
 
         void sortById( int id );
         bool isSortOrderAscending() const;
