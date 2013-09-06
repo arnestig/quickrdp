@@ -87,7 +87,9 @@ void *ConnectionChecker::Entry()
 {
     while ( TestDestroy() == false ) {
         wxCommandEvent evt_get_more_data( wxEVT_CONNECTION_CHECK_SEND_DATA, wxID_ANY );
+        mutex.Lock();
         wxPostEvent( parent, evt_get_more_data );
+        mutex.Unlock();
         Sleep(100);
     }
     return 0;
@@ -100,11 +102,10 @@ void ConnectionChecker::addTargets( std::vector< RDPConnection* > newTargets )
 	    while ( newTargets.empty() == false ) {
 	        RDPConnection *target = newTargets.back();
 	        newTargets.pop_back();
-	        std::string filename;
-	        target->getFilename( filename );
-	        if ( filename.empty() == false ) {
-                if ( targets[ filename ] == NULL ) {
-                    targets[ filename ] = target;
+	        long connectionCheckerId = target->getConnectionCheckerId();
+	        if ( connectionCheckerId != 0 ) {
+                if ( targets[ connectionCheckerId ] == NULL ) {
+                    targets[ connectionCheckerId ] = target;
                     queue->Post();
                 }
 	        }
@@ -125,12 +126,17 @@ void ConnectionChecker::publishTarget( RDPConnection*& target )
 
 void ConnectionChecker::postEvent( wxCommandEvent event )
 {
+    mutex.Lock();
     wxPostEvent( parent, event );
+    mutex.Unlock();
 }
 
 bool ConnectionChecker::aboutToQuit()
 {
-    return this->willquit;
+    mutex.Lock();
+    bool retval = this->willquit;
+    mutex.Unlock();
+    return retval;
 }
 
 /// BEGIN ConnectionCheckerWorkerThread
@@ -178,9 +184,8 @@ void *ConnectionCheckerWorkerThread::Entry()
             wxCommandEvent event( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );
             int port = target->getPort();
             std::string hostname;
-            std::string filename;
             target->getHostname( hostname );
-            target->getFilename( filename );
+            long connectionId = target->getConnectionCheckerId();
             sock_addr.sin_port = htons( port );
             sock_addr.sin_addr.s_addr = 0;
             if ( inet_addr( hostname.c_str() ) == INADDR_NONE ) {
@@ -207,9 +212,7 @@ void *ConnectionCheckerWorkerThread::Entry()
                 event.SetInt( 1 );
             }
 
-            wxString eventfilename( filename.c_str(), wxConvUTF8 );
-            event.SetString( eventfilename );
-
+            event.SetExtraLong( connectionId );
             parent->postEvent( event );
 
             closesocket( m_socket );

@@ -27,23 +27,38 @@
 #include "CommandDatabase.h"
 #include "Resources.h"
 #include <fstream>
+#include <sstream>
+
+
+#include <iostream>
 
 namespace quickRDP
 {
-    namespace FileParser
+    namespace Generators
     {
-        inline wxString generateFilename()
+        inline wxString generateHex( unsigned int length )
         {
             wxString filename;
             const char hex[] = "ABCDEF0123456789";
-            srand( time( NULL ) );
-            for ( size_t index = 0; index < 8; index++ ) {
+            for ( size_t index = 0; index < length; index++ ) {
                 filename.Append( wxString( &hex[ rand() % 16 ] , wxConvUTF8, 1 ) );
             }
 
             return filename;
         }
 
+        inline long generateInt( unsigned int length )
+        {
+            std::stringstream ss;
+            for ( size_t index = 0; index < length; index++ ) {
+                ss << rand() % 10;
+            }
+            return atoi( ss.str().c_str() );
+        }
+    }
+
+    namespace FileParser
+    {
         inline void writeLineToFile( std::ofstream &file, wxString line )
         {
             file.write( line.mb_str(), line.Len() );

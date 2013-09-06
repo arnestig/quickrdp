@@ -145,6 +145,7 @@
 												<object class="sizeritem">
 													<object class="wxButton" name="ID_BUTTON1" variable="ScanButton" member="yes">
 														<label>Scan</label>
+														<enabled>0</enabled>
 														<handler function="OnScan" entry="EVT_BUTTON" />
 													</object>
 													<flag>wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
