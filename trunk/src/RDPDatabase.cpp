@@ -55,6 +55,7 @@ RDPConnection::RDPConnection( wxString filename )
 RDPConnection::RDPConnection( wxString filename, RDPConnection *copy )
     :   filename( filename ),
         connectionStatus( 2 ), // default to 2 which will paint us the connectionunk.xpm or .ico image in the ListCtrl
+        connectionCheckerRunning( false ),
         lastchecked( 0 ),
         connectWhenReady( false ),
         connectionCheckerId( 0 )
@@ -518,8 +519,6 @@ void RDPConnection::parseFile()
         std::string inputData;
 
         if (length > 0) {
-            char *buffer;
-            buffer = new char [length];
             std::vector<wxString> allLines;
             while ( getline(rfile,inputData) ) {
                 wxString input( inputData.c_str(), wxConvUTF8 );
@@ -527,7 +526,6 @@ void RDPConnection::parseFile()
                 input.Replace(wxT("\n"),wxT(""));
                 allLines.push_back( input );
             }
-            delete[] buffer;
             setConnectionType( static_cast< ConnectionType::ConnectionType >( quickRDP::FileParser::getIntegerFromFile( wxT("connectiontype:i:"), allLines ) ) );
             setUsername( quickRDP::FileParser::getStringFromFile( wxT("username:s:"), allLines ) );
             setDomain( quickRDP::FileParser::getStringFromFile( wxT("domain:s:"), allLines ) );

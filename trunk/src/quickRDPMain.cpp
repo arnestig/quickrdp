@@ -866,14 +866,11 @@ void quickRDPFrame::OnChangelogClick( wxCommandEvent& WXUNUSED(event)  )
         std::string inputData;
 
         if (length > 0) {
-            char *buffer;
-            buffer = new char [length];
             wxString strline;
             while ( getline(rfile,inputData) ) {
                 wxString input( inputData.c_str(), wxConvUTF8 );
                 strline.append( input + wxT("\n") );
             }
-            delete[] buffer;
 
             ExampleDialog *changelogDlg = new ExampleDialog( strline, this );
             showDialog( changelogDlg );
@@ -1015,7 +1012,6 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
         settings->setConnectionListColumnWidths( columnWidths );
     }
 
-    ExampleDialog *newsDialog;
     wxString lastVersion = wxT("");
     for ( std::vector< std::pair< wxString, wxString > >::reverse_iterator it = newsQueue.rbegin(); it != newsQueue.rend(); ++it ) {
         if ( (*it).first != lastVersion ) {
@@ -1029,7 +1025,7 @@ void quickRDPFrame::checkForVersionChangesAndNotifyUser( wxString oldVersion )
     }
 
     if ( newsQueue.empty() == false ) {
-        newsDialog = new ExampleDialog( newsOutput, this );
+        ExampleDialog *newsDialog = new ExampleDialog( newsOutput, this );
         newsDialog->ShowModal();
         delete newsDialog;
     }
@@ -1074,7 +1070,6 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     **/
 
     RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
-    std::string filename = std::string( event.GetString().mb_str() );
     int status = event.GetInt();
     long connectionId = event.GetExtraLong();
     long itemIndex = rdpDatabase->getListCtrlIndexFromId( connectionId );
@@ -1135,12 +1130,11 @@ void quickRDPFrame::updateConnectionCheckerStatus()
     if ( settings->getCCAutomaticCheck() == 1 ) {
         time_t seconds;
         seconds = time (NULL);
-        RDPConnection *rdpConnection = NULL;
         ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
         std::vector< RDPConnection* > connectionList;
         /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
         for ( long id = getConnectionList()->GetTopItem(); id < getConnectionList()->GetCountPerPage() + getConnectionList()->GetTopItem()+1; ++id  ) {
-            rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
+            RDPConnection *rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
             if ( rdpConnection != NULL ) {
                 /** make sure we update only targets who needs to be updated **/
                 if ( ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) && rdpConnection->isConnectionCheckerRunning() == false ) {

@@ -240,8 +240,6 @@ bool CommandDatabase::addCommand( wxString name )
         std::string inputData;
 
         if (length > 0) {
-            char *buffer;
-            buffer = new char [length];
             std::vector<wxString> allLines;
             while ( getline(rfile,inputData) ) {
                 wxString input( inputData.c_str(), wxConvUTF8 );
@@ -249,7 +247,6 @@ bool CommandDatabase::addCommand( wxString name )
                 input.Replace(wxT("\n"),wxT(""));
                 allLines.push_back( input );
             }
-            delete[] buffer;
 
             wxString properName = quickRDP::FileParser::getStringFromFile( wxT("name:s:"), allLines );
             wxString program = quickRDP::FileParser::getStringFromFile( wxT("program:s:"), allLines );
