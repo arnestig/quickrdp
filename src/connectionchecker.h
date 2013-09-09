@@ -61,7 +61,6 @@ class ConnectionChecker : public wxThread
         void addTargets( std::vector< RDPConnection* > newTargets );
         void publishTarget( RDPConnection*& target );
         void postEvent( wxCommandEvent event );
-        bool aboutToQuit();
 
     private:
         virtual void *Entry();
@@ -74,7 +73,6 @@ class ConnectionChecker : public wxThread
         std::map< long, RDPConnection* > targets;
         wxEvtHandler *parent;
         wxSemaphore *queue;
-        bool willquit;
 };
 
 class ConnectionCheckerWorkerThread : public wxThread

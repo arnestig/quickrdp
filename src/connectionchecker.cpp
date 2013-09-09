@@ -31,8 +31,7 @@ DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers, unsigned int timeout )
     :   wxThread( wxTHREAD_DETACHED),
         parent( parent ),
-        queue( NULL ),
-        willquit( false )
+        queue( NULL )
 {
     /** define our numWorkers. For safety, we don't allow below 1 and not more than 8 workers.. For now this is for testing. **/
     if ( numWorkers > 8 ) {
@@ -70,7 +69,6 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWork
 
 ConnectionChecker::~ConnectionChecker()
 {
-	willquit = true;
 	/** delete all our worker threads gracefully **/
 	for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {
         workerThreads[ threadid ]->Delete();
@@ -131,14 +129,6 @@ void ConnectionChecker::postEvent( wxCommandEvent event )
     mutex.Unlock();
 }
 
-bool ConnectionChecker::aboutToQuit()
-{
-    mutex.Lock();
-    bool retval = this->willquit;
-    mutex.Unlock();
-    return retval;
-}
-
 /// BEGIN ConnectionCheckerWorkerThread
 
 ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker *parent, wxSemaphore *queue, unsigned int timeout )
@@ -176,9 +166,7 @@ void *ConnectionCheckerWorkerThread::Entry()
         if ( target == NULL ) {
             /** get us a new target **/
             queue->WaitTimeout( 200 );
-            if ( parent->aboutToQuit() == false ) {
-                parent->publishTarget( target );
-            }
+            parent->publishTarget( target );
         } else {
             /** Connect to our current target **/
             wxCommandEvent event( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, wxID_ANY );

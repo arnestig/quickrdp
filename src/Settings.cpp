@@ -198,8 +198,6 @@ void Settings::loadSettings()
     std::string inputData;
 
     if (length > 0) {
-        char *buffer;
-        buffer = new char [length];
         std::vector<wxString> allLines;
         while ( getline(rfile,inputData) ) {
             wxString input( inputData.c_str(), wxConvUTF8 );
@@ -207,7 +205,6 @@ void Settings::loadSettings()
             input.Replace(wxT("\n"),wxT(""));
             allLines.push_back( input );
         }
-        delete[] buffer;
         setTelnetExec( quickRDP::FileParser::getStringFromFile( wxT("telnetexec:s:"), allLines ) );
         setSSHExec( quickRDP::FileParser::getStringFromFile( wxT("SSHexec:s:"), allLines ) );
         setVNCExec( quickRDP::FileParser::getStringFromFile( wxT("vncexec:s:"), allLines ) );
