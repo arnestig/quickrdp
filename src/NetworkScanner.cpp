@@ -365,7 +365,6 @@ void NetworkScanner::OnScan(wxCommandEvent& WXUNUSED( event ) )
                 newCon->setHostname( (*ip) );
                 newCon->setPort( (*port) );
                 newCon->setConnectionType( ConnectionType::getConnectionTypeForPort( (*port) ) );
-                newCon->setConnectionCheckerId( quickRDP::Generators::generateInt( 9 ) );
                 targets.push_back( newCon );
             }
         }

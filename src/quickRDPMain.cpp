@@ -1073,10 +1073,10 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
     int status = event.GetInt();
     long connectionId = event.GetExtraLong();
     long itemIndex = rdpDatabase->getListCtrlIndexFromId( connectionId );
-
-    if ( itemIndex != -1 ) {
-        RDPConnection *rdpConnection = rdpDatabase->getRDPFromListCtrl( itemIndex );
-        if ( rdpConnection != NULL ) {
+    RDPConnection *rdpConnection = rdpDatabase->getRDPFromConnectionID( connectionId );
+    if ( rdpConnection != NULL ) {
+        // update connection list status and images.
+        if ( itemIndex != -1 ) {
             /** if we're using this connection in connect when ready, we want our special icon drawn for connect when ready **/
             if ( rdpConnection->getConnectWhenReady() == true && status == 0 ) {
                 getConnectionList()->SetItemImage( itemIndex, 3 );
@@ -1085,12 +1085,12 @@ void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
                 rdpConnection->setConnectionStatus( status );
                 getConnectionList()->SetItemImage( itemIndex, status );
             }
+        }
 
-            /** check if the connection has "connect when ready". if it does and is online, we connect to it **/
-            if ( rdpConnection->getConnectWhenReady() == true && status == 1 ) {
-                rdpConnection->setConnectWhenReady( false );
-                rdpConnection->connect();
-            }
+        /** check if the connection has "connect when ready". if it does and is online, we connect to it **/
+        if ( rdpConnection->getConnectWhenReady() == true && status == 1 ) {
+            rdpConnection->setConnectWhenReady( false );
+            rdpConnection->connect();
         }
     }
 }
@@ -1130,7 +1130,6 @@ void quickRDPFrame::updateConnectionCheckerStatus()
     if ( settings->getCCAutomaticCheck() == 1 ) {
         time_t seconds;
         seconds = time (NULL);
-        ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
         std::vector< RDPConnection* > connectionList;
         /** when we grab our RDP database (by searches and so on) we want to load new connections to our connection checker **/
         for ( long id = getConnectionList()->GetTopItem(); id < getConnectionList()->GetCountPerPage() + getConnectionList()->GetTopItem()+1; ++id  ) {
@@ -1138,12 +1137,21 @@ void quickRDPFrame::updateConnectionCheckerStatus()
             if ( rdpConnection != NULL ) {
                 /** make sure we update only targets who needs to be updated **/
                 if ( ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) && rdpConnection->isConnectionCheckerRunning() == false ) {
-                    rdpConnection->setConnectionCheckerRunning( true );
-                    rdpConnection->setConnectionCheckerId( quickRDP::Generators::generateInt( 9 ) );
                     connectionList.push_back( rdpConnection );
                 }
             }
         }
+
+        /** also check for connections outside of the connection list which may have the need for "connect when ready" **/
+        std::vector< RDPConnection* > rdpDatabase = Resources::Instance()->getConnectionDatabase()->getDatabase();
+        seconds = time (NULL);
+        for ( std::vector< RDPConnection* >::const_iterator it = rdpDatabase.begin(); it != rdpDatabase.end(); ++it ) {
+            if ( ( seconds - (*it)->getLastChecked() > settings->getCCUpdateInterval() ) && (*it)->isConnectionCheckerRunning() == false && (*it)->getConnectWhenReady() == true  ) {
+                connectionList.push_back( (*it) );
+            }
+        }
+
+        ConnectionChecker *connectionChecker = Resources::Instance()->getConnectionChecker();
         connectionChecker->addTargets( connectionList );
     }
 }
@@ -1154,7 +1162,6 @@ void quickRDPFrame::manuallyDoConnectionCheck( std::vector< RDPConnection* > con
     std::vector< RDPConnection* > connectionList;
     for ( std::vector< RDPConnection* >::iterator it = connections.begin(); it != connections.end(); ++it ) {
         connectionList.push_back( (*it) );
-        (*it)->setConnectionCheckerId( quickRDP::Generators::generateInt( 9 ) );
     }
     connectionChecker->addTargets( connectionList );
 }

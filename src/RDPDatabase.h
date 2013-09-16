@@ -104,7 +104,7 @@ class RDPConnection
         int getConnectionStatus() const;
         bool isConnectionCheckerRunning();
         long getLastChecked();
-        bool getConnectWhenReady() const;
+        bool getConnectWhenReady();
 
         long getConnectionCheckerId();
 
@@ -168,6 +168,7 @@ class RDPDatabase
         void clearRDPListCtrl();
         void addRDPToListCtrl( RDPConnection *connection );
         long getListCtrlIndexFromId( long connectionId );
+        RDPConnection* getRDPFromConnectionID( long connectionId );
 
         void sortById( int id );
         bool isSortOrderAscending() const;
