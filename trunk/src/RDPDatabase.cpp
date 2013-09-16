@@ -76,7 +76,6 @@ RDPConnection::RDPConnection( wxString filename, RDPConnection *copy )
     setDiskMapping( copy->getDiskMapping() );
     setPort( copy->getPort() );
     saveFile();
-    connectionCheckerId = quickRDP::Generators::generateInt( 5 );
 }
 
 RDPConnection::~RDPConnection()
@@ -216,8 +215,9 @@ long RDPConnection::getLastChecked()
     return lastchecked;
 }
 
-bool RDPConnection::getConnectWhenReady() const
+bool RDPConnection::getConnectWhenReady()
 {
+    wxMutexLocker lock( mutex );
     return connectWhenReady;
 }
 
@@ -380,6 +380,7 @@ void RDPConnection::setLastChecked( long lastchecked )
 
 void RDPConnection::setConnectWhenReady( bool connectWhenReady )
 {
+    wxMutexLocker lock( mutex );
     this->connectWhenReady = connectWhenReady;
 }
 
@@ -653,6 +654,16 @@ long RDPDatabase::getListCtrlIndexFromId( long connectionId )
         }
     }
     return -1;
+}
+
+RDPConnection* RDPDatabase::getRDPFromConnectionID( long connectionId )
+{
+    for ( std::vector< RDPConnection* >::const_iterator it = database.begin(); it != database.end(); ++it ) {
+        if ( (*it)->getConnectionCheckerId() == connectionId ) {
+            return (*it);
+        }
+    }
+    return NULL;
 }
 
 void RDPDatabase::clearRDPListCtrl()

@@ -20,6 +20,7 @@
 **/
 
 #include "connectionchecker.h"
+#include "QuickrdpFunctions.h"
 
 #include <wx/msgdlg.h>
 #include <iostream>
@@ -95,20 +96,22 @@ void *ConnectionChecker::Entry()
 
 void ConnectionChecker::addTargets( std::vector< RDPConnection* > newTargets )
 {
-    if ( newTargets.empty() == false ) {
-	    mutex.Lock();
+	if ( newTargets.empty() == false ) {
+        mutex.Lock();
 	    while ( newTargets.empty() == false ) {
 	        RDPConnection *target = newTargets.back();
 	        newTargets.pop_back();
-	        long connectionCheckerId = target->getConnectionCheckerId();
-	        if ( connectionCheckerId != 0 ) {
+	        long connectionCheckerId = quickRDP::Generators::generateInt( 9 );
+            if ( connectionCheckerId != 0 ) {
                 if ( targets[ connectionCheckerId ] == NULL ) {
+                    target->setConnectionCheckerId( connectionCheckerId );
+                    target->setConnectionCheckerRunning( true );
                     targets[ connectionCheckerId ] = target;
                     queue->Post();
                 }
 	        }
         }
-	    mutex.Unlock();
+        mutex.Unlock();
 	}
 }
 
