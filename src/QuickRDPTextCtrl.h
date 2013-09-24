@@ -35,8 +35,7 @@ class QuickRDPTextCtrl : public wxTextCtrl
     public:
         QuickRDPTextCtrl()
             :   nextTextCtrl( NULL ),
-                nextTextCtrlKey( 0 ),
-                lengthLimit( 0 )
+                nextTextCtrlKey( 0 )
         {}
 
         QuickRDPTextCtrl(wxWindow *parent,
@@ -48,8 +47,7 @@ class QuickRDPTextCtrl : public wxTextCtrl
                        const wxValidator& validator = wxDefaultValidator,
                        const wxString& name = wxTextCtrlNameStr)
             :   nextTextCtrl( NULL ),
-                nextTextCtrlKey( 0 ),
-                lengthLimit( 0 )
+                nextTextCtrlKey( 0 )
         {
             Init();
 
@@ -61,13 +59,11 @@ class QuickRDPTextCtrl : public wxTextCtrl
         void OnChar( wxKeyEvent &event );
         void setNextTextCtrl( wxTextCtrl *nextTextCtrl, int nextTextCtrlKey );
         void addValidKeyCodes( std::pair< int, int > validKeyCodes );
-        void setLengthLimit( unsigned int lengthLimit );
 
     private:
         wxTextCtrl *nextTextCtrl;
         int nextTextCtrlKey;
         std::vector< std::pair< int, int > > validKeyCodes;
-        unsigned int lengthLimit;
 };
 
 #endif

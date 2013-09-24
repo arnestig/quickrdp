@@ -151,6 +151,10 @@
 					<label>&amp;Network scanner</label>
 					<handler function="OnMenuNetworkScanner" entry="EVT_MENU" />
 				</object>
+				<object class="wxMenuItem" name="idIPCalculator" variable="MenuItem26" member="yes">
+					<label>&amp;IP Calculator</label>
+					<handler function="OnIPCalculator" entry="EVT_MENU" />
+				</object>
 			</object>
 			<object class="wxMenu" variable="Menu3" member="yes">
 				<label>&amp;Settings</label>

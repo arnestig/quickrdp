@@ -25,6 +25,7 @@
 #include "aboutDialog.h"
 #include "settingsDialog.h"
 #include "NetworkScanner.h"
+#include "IPCalculator.h"
 #include "QuickrdpFunctions.h"
 #include "Resources.h"
 #include "CommandDialog.h"
@@ -55,6 +56,7 @@ const long quickRDPFrame::ID_TEXTCTRL1 = wxNewId();
 const long quickRDPFrame::ID_NOTEBOOK1 = wxNewId();
 const long quickRDPFrame::ID_PANEL1 = wxNewId();
 const long quickRDPFrame::idMenuNetworkScanner = wxNewId();
+const long quickRDPFrame::idIPCalculator = wxNewId();
 const long quickRDPFrame::idMenuCommands = wxNewId();
 const long quickRDPFrame::idMenuPreferences = wxNewId();
 const long quickRDPFrame::ID_MENUITEM2 = wxNewId();
@@ -105,7 +107,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-
+    
     Create(parent, wxID_ANY, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -164,6 +166,8 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Menu4 = new wxMenu();
     MenuItem24 = new wxMenuItem(Menu4, idMenuNetworkScanner, _("&Network scanner"), wxEmptyString, wxITEM_NORMAL);
     Menu4->Append(MenuItem24);
+    MenuItem26 = new wxMenuItem(Menu4, idIPCalculator, _("&IP Calculator"), wxEmptyString, wxITEM_NORMAL);
+    Menu4->Append(MenuItem26);
     MenuBar1->Append(Menu4, _("&Tools"));
     Menu3 = new wxMenu();
     MenuItem22 = new wxMenuItem(Menu3, idMenuCommands, _("&Commands"), wxEmptyString, wxITEM_NORMAL);
@@ -228,7 +232,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     StatusBar1->SetStatusStyles(2,__wxStatusBarStyles_1);
     SetStatusBar(StatusBar1);
     BoxSizer1->SetSizeHints(this);
-
+    
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
@@ -238,6 +242,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_NOTEBOOK1,wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED,(wxObjectEventFunction)&quickRDPFrame::OnNotebook1PageChanged);
     Connect(wxID_EXIT,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnQuit);
     Connect(idMenuNetworkScanner,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuNetworkScanner);
+    Connect(idIPCalculator,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnIPCalculator);
     Connect(idMenuCommands,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuCommands);
     Connect(idMenuPreferences,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnPreferences);
     Connect(ID_MENUITEM2,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnReportBugClick);
@@ -1381,4 +1386,11 @@ void quickRDPFrame::OnMenuItemConnectWhenReady(wxCommandEvent& WXUNUSED( event )
         (*it)->setConnectWhenReady( !(*it)->getConnectWhenReady() );
     }
     manuallyDoConnectionCheck( connections );
+}
+
+void quickRDPFrame::OnIPCalculator(wxCommandEvent& WXUNUSED( event ) )
+{
+    IPCalculator *IPCalc= new IPCalculator( this, 0 );
+    showDialog( IPCalc );
+    delete IPCalc;
 }
