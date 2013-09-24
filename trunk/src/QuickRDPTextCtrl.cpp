@@ -48,8 +48,8 @@ void QuickRDPTextCtrl::OnChar(wxKeyEvent &event)
         }
     }
 
-    /** we will also allow backspace and DEL, no matter what **/
-    if ( keycode == 8 || keycode == 127 ) {
+    /** we will also allow backspace and DEL, left arrow and right arrow, TAB no matter what **/
+    if ( keycode == 8 || keycode == 127 || keycode == 314 || keycode == 316 || keycode == 13 || keycode == 9 ) {
         event.Skip();
     }
 }
@@ -63,9 +63,4 @@ void QuickRDPTextCtrl::setNextTextCtrl( wxTextCtrl *nextTextCtrl, int nextTextCt
 void QuickRDPTextCtrl::addValidKeyCodes( std::pair< int, int > validKeyCodes )
 {
     this->validKeyCodes.push_back( validKeyCodes );
-}
-
-void QuickRDPTextCtrl::setLengthLimit( unsigned int lengthLimit )
-{
-    this->lengthLimit = lengthLimit;
 }

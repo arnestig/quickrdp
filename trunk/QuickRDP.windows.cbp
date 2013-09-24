@@ -135,6 +135,8 @@
 		<Unit filename="src\ConnectionList.h" />
 		<Unit filename="src\ExampleDialog.cpp" />
 		<Unit filename="src\ExampleDialog.h" />
+		<Unit filename="src\IPCalculator.cpp" />
+		<Unit filename="src\IPCalculator.h" />
 		<Unit filename="src\NetworkScanner.cpp" />
 		<Unit filename="src\NetworkScanner.h" />
 		<Unit filename="src\QuickRDPBitmapButton.h" />
@@ -188,6 +190,7 @@
 					<wxDialog wxs="wxsmith/CommandDialog.wxs" src="src/CommandDialog.cpp" hdr="src/CommandDialog.h" name="CommandDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/ExampleDialog.wxs" src="src/ExampleDialog.cpp" hdr="src/ExampleDialog.h" name="ExampleDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/NetworkScanner.wxs" src="src/NetworkScanner.cpp" hdr="src/NetworkScanner.h" name="NetworkScanner" language="CPP" />
+					<wxDialog wxs="wxsmith/IPCalculator.wxs" src="src/IPCalculator.cpp" hdr="src/IPCalculator.h" name="IPCalculator" language="CPP" />
 				</resources>
 			</wxsmith>
 			<envvars />
