@@ -1,3 +1,16 @@
+quickrdp 2.3 - 2013-10-05
+ New features
+ ------------
+ * Adding a network calculator.
+
+ Bug fixes
+ ---------
+ * Updated 'Connect When Ready' mechanism to allow for checking and connecting
+ to hosts not visible on the active connection list.
+ * Solved the random crash (normally seen after a few days of runtime of the
+ application).
+ * Fixed DEL key not working for deleting connections.
+
 quickrdp 2.2.1 - 2013-07-08
  Bug fixes
  ---------
