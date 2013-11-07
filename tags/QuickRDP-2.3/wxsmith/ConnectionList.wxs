@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxPanel" name="ConnectionList">
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<object class="sizeritem">
+				<object class="wxListCtrl" name="ID_LISTCTRL1" variable="ListCtrl1" member="yes">
+					<style>wxLC_REPORT</style>
+					<handler function="OnItemSelected" entry="EVT_LIST_ITEM_SELECTED" />
+					<handler function="OnItemDeselected" entry="EVT_LIST_ITEM_DESELECTED" />
+					<handler function="OnItemActivated" entry="EVT_LIST_ITEM_ACTIVATED" />
+					<handler function="OnItemRightClick" entry="EVT_LIST_ITEM_RIGHT_CLICK" />
+					<handler function="OnColumnClick" entry="EVT_LIST_COL_CLICK" />
+					<handler function="OnColumnRightClick" entry="EVT_LIST_COL_RIGHT_CLICK" />
+					<handler function="OnColumnEndDrag" entry="EVT_LIST_COL_END_DRAG" />
+				</object>
+				<flag>wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<option>1</option>
+			</object>
+		</object>
+		<object class="wxMenu" variable="ColumnListChooserMenu" member="yes">
+			<object class="wxMenuItem" name="ID_COLUMN_HOSTNAME" variable="MenuItem1" member="yes">
+				<label>Hostname</label>
+				<enabled>0</enabled>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_PORT" variable="MenuItem2" member="yes">
+				<label>Port</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_USERNAME" variable="MenuItem3" member="yes">
+				<label>Username</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_CONNECTIONTYPE" variable="MenuItem4" member="yes">
+				<label>Connection</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_USECONSOLE" variable="MenuItem5" member="yes">
+				<label>Use console</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_RESOLUTION" variable="MenuItem6" member="yes">
+				<label>Resolution</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_COMMENT" variable="MenuItem7" member="yes">
+				<label>Comment</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+			<object class="wxMenuItem" name="ID_COLUMN_CLIENTNAME" variable="MenuItem8" member="yes">
+				<label>Client name</label>
+				<handler function="OnColumnListChooserMenuClick" entry="EVT_MENU" />
+				<checkable>1</checkable>
+			</object>
+		</object>
+	</object>
+</wxsmith>
