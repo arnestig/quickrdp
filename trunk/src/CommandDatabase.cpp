@@ -30,7 +30,7 @@
 
 /** BEGIN COMMAND **/
 
-Command::Command( wxString name, wxString program, wxString argument, wxString filename, bool favorite, bool safety, int shortcutModifier, int shortcutKey )
+Command::Command( wxString name, std::map< int, wxString > program, std::map< int, wxString > argument, wxString filename, bool favorite, bool safety, int shortcutModifier, int shortcutKey, bool useSpecificCommands )
     :   name( name ),
         program( program ),
         argument( argument ),
@@ -38,7 +38,8 @@ Command::Command( wxString name, wxString program, wxString argument, wxString f
         favorite( favorite ),
         safety( safety ),
         shortcutModifier( shortcutModifier ),
-        shortcutKey( shortcutKey )
+        shortcutKey( shortcutKey ),
+        useSpecificCommands( useSpecificCommands )
 {
 }
 
@@ -51,14 +52,36 @@ wxString Command::getName() const
     return name;
 }
 
-wxString Command::getProgram() const
+std::map< int, wxString > Command::getProgram()
 {
     return program;
 }
 
-wxString Command::getArgument() const
+std::map< int, wxString > Command::getArgument()
 {
     return argument;
+}
+
+wxString Command::getProgramByConnection( ConnectionType::ConnectionType connectionType )
+{
+    /** if we have set connection target to 0 we return the generic program and argument string.
+        if not we will have to return the specific value based on the connection **/
+    if ( getUseSpecificCommands() == 0 ) {
+        return program[ -1 ];
+    } else {
+        return program[ connectionType ];
+    }
+}
+
+wxString Command::getArgumentByConnection( ConnectionType::ConnectionType connectionType )
+{
+    /** if we have set connection target to 0 we return the generic program and argument string.
+        if not we will have to return the specific value based on the connection **/
+    if ( getUseSpecificCommands() == 0 ) {
+        return argument[ -1 ];
+    } else {
+        return argument[ connectionType ];
+    }
 }
 
 wxString Command::getFilename() const
@@ -86,17 +109,22 @@ int Command::getShortcutKey() const
     return shortcutKey;
 }
 
+bool Command::getUseSpecificCommands() const
+{
+    return useSpecificCommands;
+}
+
 void Command::setName( wxString name )
 {
     this->name = name;
 }
 
-void Command::setProgram( wxString program )
+void Command::setProgram( std::map< int, wxString > program )
 {
     this->program = program;
 }
 
-void Command::setArgument( wxString argument )
+void Command::setArgument( std::map< int, wxString > argument )
 {
     this->argument = argument;
 }
@@ -121,10 +149,15 @@ void Command::setShortcutKey( int shortcutKey )
     this->shortcutKey = shortcutKey;
 }
 
+void Command::setUseSpecificCommands( bool useSpecificCommands )
+{
+    this->useSpecificCommands = useSpecificCommands;
+}
+
 bool Command::execute( RDPConnection *connection )
 {
     if ( connection != NULL ) {
-        wxExecute( getProgram() + wxT(" ") + quickRDP::FileParser::getRealArgumentString( getArgument(), connection ) );
+        wxExecute( getProgramByConnection( connection->getConnectionType() ) + wxT(" ") + quickRDP::FileParser::getRealArgumentString( getArgumentByConnection( connection->getConnectionType() ), connection ) );
     } else {
         wxMessageBox( wxT("Invalid connection received when executing command!"), wxT("Error"), wxICON_ERROR );
         return false;
@@ -225,6 +258,8 @@ void CommandDatabase::deleteCommand( wxString name )
 bool CommandDatabase::addCommand( wxString name )
 {
     wxString filename = Resources::Instance()->getSettings()->getCommandDatabasePath() + name;
+    std::map< int, wxString > commandConnectionProgram;
+    std::map< int, wxString > commandConnectionArgument;
     if ( wxFileExists( filename ) == true ) {
         std::ifstream rfile;
 
@@ -249,23 +284,34 @@ bool CommandDatabase::addCommand( wxString name )
             }
 
             wxString properName = quickRDP::FileParser::getStringFromFile( wxT("name:s:"), allLines );
-            wxString program = quickRDP::FileParser::getStringFromFile( wxT("program:s:"), allLines );
-            wxString argument = quickRDP::FileParser::getStringFromFile( wxT("argument:s:"), allLines );
+            commandConnectionProgram[ -1 ] = quickRDP::FileParser::getStringFromFile( wxT("program:s:"), allLines );
+            commandConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = quickRDP::FileParser::getStringFromFile( wxT("programRDP:s:"), allLines );
+            commandConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = quickRDP::FileParser::getStringFromFile( wxT("programTELNET:s:"), allLines );
+            commandConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = quickRDP::FileParser::getStringFromFile( wxT("programSSH:s:"), allLines );
+            commandConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = quickRDP::FileParser::getStringFromFile( wxT("programVNC:s:"), allLines );
+
+            commandConnectionArgument[ -1 ] = quickRDP::FileParser::getStringFromFile( wxT("argument:s:"), allLines );
+            commandConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = quickRDP::FileParser::getStringFromFile( wxT("argumentRDP:s:"), allLines );
+            commandConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = quickRDP::FileParser::getStringFromFile( wxT("argumentTELNET:s:"), allLines );
+            commandConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = quickRDP::FileParser::getStringFromFile( wxT("argumentSSH:s:"), allLines );
+            commandConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = quickRDP::FileParser::getStringFromFile( wxT("argumentVNC:s:"), allLines );
+
             bool favorite = quickRDP::FileParser::getBoolFromFile( wxT("favorite:b:"), allLines );
             bool safety = quickRDP::FileParser::getBoolFromFile( wxT("safety:b:"), allLines );
             int shortcutModifier = quickRDP::FileParser::getIntegerFromFile( wxT("shortcutmodifier:i:"), allLines );
             int shortcutKey = quickRDP::FileParser::getIntegerFromFile( wxT("shortcutkey:i:"), allLines );
+            bool useSpecificCommands = quickRDP::FileParser::getIntegerFromFile( wxT("connectiontarget:b:"), allLines );
             if ( properName.empty() == true ) {
                 properName = name;
             }
-            commands.push_back( new Command( properName, program, argument, name, favorite, safety, shortcutModifier, shortcutKey ) );
+            commands.push_back( new Command( properName, commandConnectionProgram, commandConnectionArgument, name, favorite, safety, shortcutModifier, shortcutKey, useSpecificCommands ) );
             return true;
         }
     }
     return false;
 }
 
-void CommandDatabase::saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey )
+void CommandDatabase::saveCommand( wxString name, std::map< int, wxString > program, std::map< int, wxString > argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey, bool useSpecificCommands )
 {
     wxString filename;
     Command *command = getCommand( name );
@@ -277,10 +323,11 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
         command->setSafety( safety );
         command->setShortcutModifier( shortcutModifier );
         command->setShortcutKey( shortcutKey );
+        command->setUseSpecificCommands( useSpecificCommands );
         filename = command->getFilename();
     } else { /** command doesn't exist, create a new one **/
         filename = quickRDP::Generators::generateHex( 8 );
-        commands.push_back( new Command( name, program, argument, filename, favorite, safety, shortcutModifier, shortcutKey ) );
+        commands.push_back( new Command( name, program, argument, filename, favorite, safety, shortcutModifier, shortcutKey, useSpecificCommands ) );
     }
 
     /** write to the file as well **/
@@ -290,12 +337,21 @@ void CommandDatabase::saveCommand( wxString name, wxString program, wxString arg
         wxMessageBox( wxT("Failed to save the command as file!" ) );
     } else {
         quickRDP::FileParser::writeLineToFile( ofile, wxT("name:s:") + name );
-        quickRDP::FileParser::writeLineToFile( ofile, wxT("program:s:") + program );
-        quickRDP::FileParser::writeLineToFile( ofile, wxT("argument:s:") + argument );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("program:s:") + program[ -1 ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("programRDP:s:") + program[ static_cast< int >( ConnectionType::RDP ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("programTELNET:s:") + program[ static_cast< int >( ConnectionType::TELNET ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("programSSH:s:") + program[ static_cast< int >( ConnectionType::SSH ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("programVNC:s:") + program[ static_cast< int >( ConnectionType::VNC ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("argument:s:") + argument[ -1 ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("argumentRDP:s:") + argument[ static_cast< int >( ConnectionType::RDP ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("argumentTELNET:s:") + argument[ static_cast< int >( ConnectionType::TELNET ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("argumentSSH:s:") + argument[ static_cast< int >( ConnectionType::SSH ) ] );
+        quickRDP::FileParser::writeLineToFile( ofile, wxT("argumentVNC:s:") + argument[ static_cast< int >( ConnectionType::VNC ) ] );
         quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("favorite:b:%d"), favorite ) );
         quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("safety:b:%d"), safety ) );
         quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("shortcutmodifier:i:%d"), shortcutModifier ) );
         quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("shortcutkey:i:%d"), shortcutKey ) );
+        quickRDP::FileParser::writeLineToFile( ofile, wxString::Format( wxT("connectiontarget:b:%d"), useSpecificCommands ) );
     }
     ofile.close();
 }

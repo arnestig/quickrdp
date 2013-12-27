@@ -169,6 +169,8 @@ void Settings::saveSettings()
 
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("GreyListBackground:b:")) << getGreyListBackground() );
 
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("RDPDefaultResolution:i:")) << getRDPDefaultResolution() );
+
     ofile.close();
 }
 
@@ -269,6 +271,9 @@ void Settings::loadSettings()
 
         /** stylistic features **/
         setGreyListBackground( quickRDP::FileParser::getBoolFromFile( wxT("GreyListBackground:b:"), allLines ) );
+
+        /** default settings **/
+        setRDPDefaultResolution( quickRDP::FileParser::getBoolFromFile( wxT("RDPDefaultResolution:i:"), allLines ) );
     }
     rfile.close();
 }
@@ -582,4 +587,14 @@ bool Settings::getGreyListBackground() const
 void Settings::setGreyListBackground( bool greyListBackground )
 {
     this->greyListBackground = greyListBackground;
+}
+
+int Settings::getRDPDefaultResolution() const
+{
+    return RDPDefaultResolution;
+}
+
+void Settings::setRDPDefaultResolution( int RDPDefaultResolution )
+{
+    this->RDPDefaultResolution = RDPDefaultResolution;
 }

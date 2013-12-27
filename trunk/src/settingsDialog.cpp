@@ -86,6 +86,9 @@ const long settingsDialog::ID_SLIDER3 = wxNewId();
 const long settingsDialog::ID_PANEL4 = wxNewId();
 const long settingsDialog::ID_USE_GREY_LIST_BACKGROUND = wxNewId();
 const long settingsDialog::ID_PANEL5 = wxNewId();
+const long settingsDialog::ID_STATICTEXT22 = wxNewId();
+const long settingsDialog::ID_CHOICE1 = wxNewId();
+const long settingsDialog::ID_PANEL6 = wxNewId();
 const long settingsDialog::ID_NOTEBOOK1 = wxNewId();
 const long settingsDialog::ID_BUTTON3 = wxNewId();
 const long settingsDialog::ID_PANEL1 = wxNewId();
@@ -112,25 +115,31 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer21;
 	wxBoxSizer* BoxSizer13;
+	wxStaticBoxSizer* StaticBoxSizer4;
 	wxBoxSizer* BoxSizer23;
 	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer11;
 	wxBoxSizer* BoxSizer16;
+	wxStaticBoxSizer* StaticBoxSizer7;
 	wxBoxSizer* BoxSizer18;
 	wxBoxSizer* BoxSizer30;
 	wxBoxSizer* BoxSizer12;
 	wxBoxSizer* BoxSizer28;
 	wxBoxSizer* BoxSizer14;
 	wxStaticBoxSizer* StaticBoxSizer3;
+	wxStaticBoxSizer* StaticBoxSizer6;
 	wxBoxSizer* BoxSizer27;
+	wxBoxSizer* BoxSizer31;
 	wxBoxSizer* BoxSizer17;
 	wxBoxSizer* BoxSizer24;
 	wxBoxSizer* BoxSizer26;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxBoxSizer* BoxSizer34;
 	wxBoxSizer* BoxSizer22;
 	wxBoxSizer* BoxSizer3;
+	wxStaticBoxSizer* StaticBoxSizer5;
 	wxBoxSizer* BoxSizer25;
 
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
@@ -138,7 +147,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer13 = new wxBoxSizer(wxVERTICAL);
-	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK1"));
+	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(368,397), 0, _T("ID_NOTEBOOK1"));
 	Panel2 = new wxPanel(Notebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -151,7 +160,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	BoxSizer7->Add(TelnetExecutableText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	TelnetExecutableBrowseButton = new wxButton(Panel2, ID_BUTTON1, _("..."), wxDefaultPosition, wxSize(25,23), 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer7->Add(TelnetExecutableBrowseButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticBoxSizer2->Add(BoxSizer7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
+	StaticBoxSizer2->Add(BoxSizer7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
 	BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText4 = new wxStaticText(Panel2, ID_STATICTEXT4, _("Argument"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	BoxSizer8->Add(StaticText4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -162,8 +171,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	TelnetArgumentResetButton = new wxButton(Panel2, ID_BUTTON6, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON6"));
 	BoxSizer8->Add(TelnetArgumentResetButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer2->Add(BoxSizer8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
-	BoxSizer3->Add(StaticBoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer2->Add(BoxSizer3, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer3->Add(StaticBoxSizer2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer4 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("SSH"));
 	BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
@@ -185,8 +194,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	SSHArgumentResetButton = new wxButton(Panel2, ID_BUTTON7, _("reset"), wxDefaultPosition, wxSize(60,23), 0, wxDefaultValidator, _T("ID_BUTTON7"));
 	BoxSizer10->Add(SSHArgumentResetButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticBoxSizer3->Add(BoxSizer10, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 2);
-	BoxSizer4->Add(StaticBoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer2->Add(BoxSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer4->Add(StaticBoxSizer3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer2->Add(BoxSizer4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxVERTICAL);
 	StaticBoxSizer1 = new wxStaticBoxSizer(wxVERTICAL, Panel2, _("VNC"));
 	BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
@@ -213,7 +222,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	Panel2->SetSizer(BoxSizer2);
 	BoxSizer2->Fit(Panel2);
 	BoxSizer2->SetSizeHints(Panel2);
-	Panel3 = new wxPanel(Notebook1, ID_PANEL3, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL3"));
+	Panel3 = new wxPanel(Notebook1, ID_PANEL3, wxDefaultPosition, wxSize(360,373), wxTAB_TRAVERSAL, _T("ID_PANEL3"));
 	BoxSizer14 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer17 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText9 = new wxStaticText(Panel3, ID_STATICTEXT9, _("New connection"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
@@ -271,7 +280,6 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	BoxSizer14->Add(BoxSizer25, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel3->SetSizer(BoxSizer14);
-	BoxSizer14->Fit(Panel3);
 	BoxSizer14->SetSizeHints(Panel3);
 	Panel4 = new wxPanel(Notebook1, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
 	BoxSizer16 = new wxBoxSizer(wxVERTICAL);
@@ -325,11 +333,39 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	Panel5->SetSizer(BoxSizer28);
 	BoxSizer28->Fit(Panel5);
 	BoxSizer28->SetSizeHints(Panel5);
+	Panel6 = new wxPanel(Notebook1, ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL6"));
+	BoxSizer31 = new wxBoxSizer(wxVERTICAL);
+	StaticBoxSizer4 = new wxStaticBoxSizer(wxVERTICAL, Panel6, _("RDP"));
+	BoxSizer34 = new wxBoxSizer(wxHORIZONTAL);
+	StaticText16 = new wxStaticText(Panel6, ID_STATICTEXT22, _("Default resolution"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT22"));
+	BoxSizer34->Add(StaticText16, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	RDPDefaultResolutionChoice = new wxChoice(Panel6, ID_CHOICE1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+	RDPDefaultResolutionChoice->SetSelection( RDPDefaultResolutionChoice->Append(_("Default resolution")) );
+	RDPDefaultResolutionChoice->Append(_("Fullscreen"));
+	RDPDefaultResolutionChoice->Append(_("640 x 480"));
+	RDPDefaultResolutionChoice->Append(_("800 x 600"));
+	RDPDefaultResolutionChoice->Append(_("1024 x 768"));
+	RDPDefaultResolutionChoice->Append(_("1152 x 864"));
+	RDPDefaultResolutionChoice->Append(_("1280 x 960"));
+	RDPDefaultResolutionChoice->Append(_("1400 x 1050"));
+	BoxSizer34->Add(RDPDefaultResolutionChoice, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizer4->Add(BoxSizer34, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer31->Add(StaticBoxSizer4, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizer5 = new wxStaticBoxSizer(wxVERTICAL, Panel6, _("SSH"));
+	BoxSizer31->Add(StaticBoxSizer5, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizer6 = new wxStaticBoxSizer(wxVERTICAL, Panel6, _("Telnet"));
+	BoxSizer31->Add(StaticBoxSizer6, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizer7 = new wxStaticBoxSizer(wxVERTICAL, Panel6, _("VNC"));
+	BoxSizer31->Add(StaticBoxSizer7, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Panel6->SetSizer(BoxSizer31);
+	BoxSizer31->Fit(Panel6);
+	BoxSizer31->SetSizeHints(Panel6);
 	Notebook1->AddPage(Panel2, _("Programs"), false);
 	Notebook1->AddPage(Panel3, _("Hotkeys"), false);
 	Notebook1->AddPage(Panel4, _("Connection checker"), false);
 	Notebook1->AddPage(Panel5, _("Layout"), false);
-	BoxSizer13->Add(Notebook1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Notebook1->AddPage(Panel6, _("Defaults"), false);
+	BoxSizer13->Add(Notebook1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
 	BoxSizer5->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	OKButton = new wxButton(Panel1, ID_BUTTON3, _("Ok"), wxDefaultPosition, wxSize(75,23), 0, wxDefaultValidator, _T("ID_BUTTON3"));
@@ -435,6 +471,8 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
     OnCCWorkerThreadSliderCmdSliderUpdated( evt );
 
     CheckboxGreyListBackground->SetValue( settings->getGreyListBackground() );
+
+    RDPDefaultResolutionChoice->SetSelection( settings->getRDPDefaultResolution() );
 }
 
 settingsDialog::~settingsDialog()
@@ -476,6 +514,9 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
 
     /** layout settings **/
     settings->setGreyListBackground( CheckboxGreyListBackground->GetValue() );
+
+    /** default settings **/
+    settings->setRDPDefaultResolution( RDPDefaultResolutionChoice->GetSelection() );
 
     settings->saveSettings();
     this->EndModal( 0 );

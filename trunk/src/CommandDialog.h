@@ -22,15 +22,16 @@
 #ifndef COMMANDDIALOG_H
 #define COMMANDDIALOG_H
 
+#include "CommandDatabase.h"
+
 //(*Headers(CommandDialog)
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
-#include <wx/listbox.h>
-#include <wx/statline.h>
 #include <wx/panel.h>
 #include <wx/filedlg.h>
+#include <wx/choice.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
@@ -43,12 +44,14 @@ class CommandDialog: public wxDialog
 		virtual ~CommandDialog();
 
 		//(*Declarations(CommandDialog)
+		wxStaticText* StaticText10;
 		wxButton* ArgumentHelpButton;
 		wxStaticText* StaticText9;
+		wxBoxSizer* BoxSizer6;
 		wxTextCtrl* argumentTextCtrl;
+		wxChoice* connectionTypeChoice;
 		wxButton* closeButton;
 		wxStaticText* StaticText2;
-		wxButton* exampleButton;
 		wxButton* Button1;
 		wxStaticText* StaticText6;
 		wxCheckBox* safetyCheckbox;
@@ -61,23 +64,24 @@ class CommandDialog: public wxDialog
 		wxCheckBox* favoriteCheckbox;
 		wxStaticText* StaticText3;
 		wxTextCtrl* nameTextCtrl;
+		wxCheckBox* connectionTargetCheckbox;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText7;
-		wxListBox* CommandList;
-		wxStaticLine* StaticLine1;
 		wxTextCtrl* programTextCtrl;
-		wxButton* RemoveButton;
+		wxBoxSizer* BoxSizer1;
 		wxStaticText* StaticText4;
-		wxButton* editButton;
 		//*)
 
-		void reloadCommandList();
+		void LoadCommand( Command* command );
 
 	protected:
 
 		//(*Identifiers(CommandDialog)
 		static const long ID_STATICTEXT1;
 		static const long ID_TEXTCTRL1;
+		static const long ID_STATICTEXT10;
+		static const long ID_CHECKBOX3;
+		static const long ID_CHOICE2;
 		static const long ID_STATICTEXT2;
 		static const long ID_TEXTCTRL2;
 		static const long ID_BUTTON1;
@@ -94,11 +98,7 @@ class CommandDialog: public wxDialog
 		static const long ID_STATICTEXT8;
 		static const long ID_TEXTCTRL4;
 		static const long ID_BUTTON2;
-		static const long ID_STATICLINE1;
-		static const long ID_LISTBOX1;
 		static const long ID_BUTTON3;
-		static const long ID_BUTTON4;
-		static const long ID_BUTTON6;
 		static const long ID_PANEL1;
 		//*)
 
@@ -106,23 +106,26 @@ class CommandDialog: public wxDialog
 
 		//(*Handlers(CommandDialog)
 		void OnCloseButton(wxCommandEvent& event);
-		void OnListDoubleClick(wxCommandEvent& event);
-		void OnCommandListClick(wxCommandEvent& event);
 		void OnNameTextChange(wxCommandEvent& event);
 		void OnSaveButton(wxCommandEvent& event);
-		void OnRemoveButton(wxCommandEvent& event);
 		void OnInit(wxInitDialogEvent& event);
-		void OnButtonEdit(wxCommandEvent& event);
 		void OnExamplesButton(wxCommandEvent& event);
 		void OnArgumentHelpButton(wxCommandEvent& event);
 		void OnFileDialogClick(wxCommandEvent& event);
 		void HandlePanelKeyDown(wxKeyEvent& event);
 		void OnBindKeyClick(wxCommandEvent& event);
+		void OnconnectionTargetCheckboxClick(wxCommandEvent& event);
+		void OnconnectionTypeChoiceSelect(wxCommandEvent& event);
 		//*)
+
 		void SaveCurrentShortcut( std::pair< int, int > shortcut );
 
         int curShortcutMod;
         int curShortcutKey;
+        std::map< int, wxString > program;
+        std::map< int, wxString > argument;
+        Command *command;
+        int prevChoiceSelection;
 
 		DECLARE_EVENT_TABLE()
 };

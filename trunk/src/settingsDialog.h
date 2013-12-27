@@ -33,6 +33,7 @@
 #include <wx/slider.h>
 #include <wx/panel.h>
 #include <wx/filedlg.h>
+#include <wx/choice.h>
 #include <wx/button.h>
 #include <wx/dialog.h>
 //*)
@@ -80,6 +81,7 @@ class settingsDialog: public wxDialog
 		wxTextCtrl* VNCArgumentText;
 		wxStaticText* StaticText3;
 		wxTextCtrl* ShortcutManualCCText;
+		wxPanel* Panel6;
 		wxPanel* Panel3;
 		wxSlider* CCWorkerThreadSlider;
 		wxTextCtrl* TelnetExecutableText;
@@ -106,6 +108,8 @@ class settingsDialog: public wxDialog
 		wxTextCtrl* SSHExecutableText;
 		wxTextCtrl* TextShortcutConProp;
 		wxTextCtrl* ShortcutConnectWhenReadyText;
+		wxStaticText* StaticText16;
+		wxChoice* RDPDefaultResolutionChoice;
 		wxTextCtrl* ShortcutCloseTabText;
 		//*)
 
@@ -167,6 +171,9 @@ class settingsDialog: public wxDialog
 		static const long ID_PANEL4;
 		static const long ID_USE_GREY_LIST_BACKGROUND;
 		static const long ID_PANEL5;
+		static const long ID_STATICTEXT22;
+		static const long ID_CHOICE1;
+		static const long ID_PANEL6;
 		static const long ID_NOTEBOOK1;
 		static const long ID_BUTTON3;
 		static const long ID_PANEL1;

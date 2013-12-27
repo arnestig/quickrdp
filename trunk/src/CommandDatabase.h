@@ -30,37 +30,42 @@
 class Command
 {
     public:
-        Command( wxString name, wxString program, wxString argument, wxString filename, bool favorite, bool safety, int shortcutModifier, int shortcutKey );
+        Command( wxString name, std::map< int, wxString > program, std::map< int, wxString > argument, wxString filename, bool favorite, bool safety, int shortcutModifier, int shortcutKey, bool useSpecificCommands );
         ~Command();
 
         wxString getName() const;
-        wxString getProgram() const;
-        wxString getArgument() const;
+        std::map< int, wxString > getProgram( );
+        wxString getProgramByConnection( ConnectionType::ConnectionType connectionType );
+        std::map< int, wxString > getArgument();
+        wxString getArgumentByConnection( ConnectionType::ConnectionType connectionType );
         wxString getFilename() const;
         bool getFavorite() const;
         bool getSafety() const;
         int getShortcutModifier() const;
         int getShortcutKey() const;
+        bool getUseSpecificCommands() const;
 
         void setName( wxString name );
-        void setProgram( wxString program );
-        void setArgument( wxString argument );
+        void setProgram( std::map< int, wxString > program );
+        void setArgument( std::map< int, wxString > argument );
         void setFavorite( bool favorite );
         void setSafety( bool safety );
         void setShortcutModifier( int shortcutModifier );
         void setShortcutKey( int shortcutKey );
+        void setUseSpecificCommands( bool useSpecificCommands );
 
         bool execute( RDPConnection *connection );
 
     private:
         wxString name;
-        wxString program;
-        wxString argument;
+        std::map< int, wxString > program;
+        std::map< int, wxString > argument;
         wxString filename;
         bool favorite;
         bool safety;
         int shortcutModifier;
         int shortcutKey;
+        bool useSpecificCommands;
 };
 
 class CommandDatabase
@@ -73,7 +78,7 @@ class CommandDatabase
         Command* getCommand( wxString name );
         Command* getCommandWithShortcut( int shortcutModifier, int shortcutKey );
         void deleteCommand( wxString name );
-        void saveCommand( wxString name, wxString program, wxString argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey );
+        void saveCommand( wxString name, std::map< int, wxString > program, std::map< int, wxString > argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey, bool useSpecificCommands );
 
     private:
         void loadDatabase();

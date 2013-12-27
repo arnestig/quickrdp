@@ -28,7 +28,6 @@
 #include "IPCalculator.h"
 #include "QuickrdpFunctions.h"
 #include "Resources.h"
-#include "CommandDialog.h"
 #include "version.h"
 #include "VersionChecker.h"
 #include "ExampleDialog.h"
@@ -38,6 +37,7 @@
 #include <memory>
 #include <time.h>
 #include "ConnectionList.h"
+#include "CommandList.h"
 
 //(*InternalHeaders(quickRDPFrame)
 #include <wx/settings.h>
@@ -107,7 +107,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     wxStaticBoxSizer* StaticBoxSizer1;
     wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
-    
+
     Create(parent, wxID_ANY, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(172,202));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -232,7 +232,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     StatusBar1->SetStatusStyles(2,__wxStatusBarStyles_1);
     SetStatusBar(StatusBar1);
     BoxSizer1->SetSizeHints(this);
-    
+
     Connect(ID_BITMAPBUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnNewButtonClick);
     Connect(ID_BITMAPBUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDuplicateButtonClick);
     Connect(ID_BITMAPBUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&quickRDPFrame::OnDeleteButtonClick);
@@ -809,9 +809,10 @@ void quickRDPFrame::OnPopupMenuDelete(wxCommandEvent& event)
 
 void quickRDPFrame::OnMenuCommands(wxCommandEvent& WXUNUSED(event) )
 {
-    CommandDialog *commandDlg = new CommandDialog( this, 0 );
-    showDialog( commandDlg );
-    delete commandDlg;
+    CommandList *commandList = new CommandList( this, 0 );
+    showDialog( commandList );
+    delete commandList;
+
 }
 
 void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
