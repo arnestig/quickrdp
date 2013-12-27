@@ -105,6 +105,9 @@ class Settings
         bool getGreyListBackground() const;
         void setGreyListBackground( bool greyListBackground );
 
+        int getRDPDefaultResolution() const;
+        void setRDPDefaultResolution( int RDPDefaultResolution );
+
 
     private:
         void loadSettings();
@@ -151,6 +154,9 @@ class Settings
 
         /** styling features **/
         bool greyListBackground;
+
+        /** default settings **/
+        int RDPDefaultResolution;
 };
 
 #endif

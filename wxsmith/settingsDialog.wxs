@@ -11,6 +11,7 @@
 						<orient>wxVERTICAL</orient>
 						<object class="sizeritem">
 							<object class="wxNotebook" name="ID_NOTEBOOK1" variable="Notebook1" member="yes">
+								<size>368,397</size>
 								<object class="notebookpage">
 									<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
 										<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -52,7 +53,6 @@
 																</object>
 																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																<border>2</border>
-																<option>1</option>
 															</object>
 															<object class="sizeritem">
 																<object class="wxBoxSizer" variable="BoxSizer8" member="no">
@@ -96,12 +96,10 @@
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
-														<option>1</option>
 													</object>
 												</object>
 												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
-												<option>1</option>
 											</object>
 											<object class="sizeritem">
 												<object class="wxBoxSizer" variable="BoxSizer4" member="no">
@@ -185,12 +183,10 @@
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
-														<option>1</option>
 													</object>
 												</object>
 												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
-												<option>1</option>
 											</object>
 											<object class="sizeritem">
 												<object class="wxBoxSizer" variable="BoxSizer6" member="no">
@@ -286,6 +282,7 @@
 								</object>
 								<object class="notebookpage">
 									<object class="wxPanel" name="ID_PANEL3" variable="Panel3" member="yes">
+										<size>360,373</size>
 										<object class="wxBoxSizer" variable="BoxSizer14" member="no">
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
@@ -623,10 +620,79 @@
 									</object>
 									<label>Layout</label>
 								</object>
+								<object class="notebookpage">
+									<object class="wxPanel" name="ID_PANEL6" variable="Panel6" member="yes">
+										<object class="wxBoxSizer" variable="BoxSizer31" member="no">
+											<orient>wxVERTICAL</orient>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizer4" member="no">
+													<label>RDP</label>
+													<orient>wxVERTICAL</orient>
+													<object class="sizeritem">
+														<object class="wxBoxSizer" variable="BoxSizer34" member="no">
+															<object class="sizeritem">
+																<object class="wxStaticText" name="ID_STATICTEXT22" variable="StaticText16" member="yes">
+																	<label>Default resolution</label>
+																</object>
+																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																<border>5</border>
+															</object>
+															<object class="sizeritem">
+																<object class="wxChoice" name="ID_CHOICE1" variable="RDPDefaultResolutionChoice" member="yes">
+																	<content>
+																		<item>Default resolution</item>
+																		<item>Fullscreen</item>
+																		<item>640 x 480</item>
+																		<item>800 x 600</item>
+																		<item>1024 x 768</item>
+																		<item>1152 x 864</item>
+																		<item>1280 x 960</item>
+																		<item>1400 x 1050</item>
+																	</content>
+																	<selection>0</selection>
+																</object>
+																<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																<border>5</border>
+															</object>
+														</object>
+														<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizer5" member="no">
+													<label>SSH</label>
+													<orient>wxVERTICAL</orient>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizer6" member="no">
+													<label>Telnet</label>
+													<orient>wxVERTICAL</orient>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="wxStaticBoxSizer" variable="StaticBoxSizer7" member="no">
+													<label>VNC</label>
+													<orient>wxVERTICAL</orient>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+										</object>
+									</object>
+									<label>Defaults</label>
+								</object>
 							</object>
 							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 							<border>5</border>
-							<option>1</option>
 						</object>
 						<object class="sizeritem">
 							<object class="wxBoxSizer" variable="BoxSizer5" member="no">

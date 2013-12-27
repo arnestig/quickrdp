@@ -107,6 +107,7 @@
 			<Add directory="$(#wx)\include" />
 		</ResourceCompiler>
 		<Linker>
+			<Add option="-static" />
 			<Add option="-mthreads" />
 			<Add option="-static-libgcc" />
 			<Add option="-static-libstdc++" />
@@ -132,6 +133,8 @@
 		<Unit filename="src\CommandDatabase.h" />
 		<Unit filename="src\CommandDialog.cpp" />
 		<Unit filename="src\CommandDialog.h" />
+		<Unit filename="src\CommandList.cpp" />
+		<Unit filename="src\CommandList.h" />
 		<Unit filename="src\ConnectionList.cpp" />
 		<Unit filename="src\ConnectionList.h" />
 		<Unit filename="src\ExampleDialog.cpp" />
@@ -192,6 +195,7 @@
 					<wxDialog wxs="wxsmith/ExampleDialog.wxs" src="src/ExampleDialog.cpp" hdr="src/ExampleDialog.h" name="ExampleDialog" language="CPP" />
 					<wxDialog wxs="wxsmith/NetworkScanner.wxs" src="src/NetworkScanner.cpp" hdr="src/NetworkScanner.h" name="NetworkScanner" language="CPP" />
 					<wxDialog wxs="wxsmith/IPCalculator.wxs" src="src/IPCalculator.cpp" hdr="src/IPCalculator.h" name="IPCalculator" language="CPP" />
+					<wxDialog wxs="wxsmith/CommandList.wxs" src="src/CommandList.cpp" hdr="src/CommandList.h" name="CommandList" language="CPP" />
 				</resources>
 			</wxsmith>
 			<envvars />

@@ -50,6 +50,51 @@ RDPConnection::RDPConnection( wxString filename )
     if ( filename.empty() == false ) {
         parseFile();
     }
+
+    /** handle default settings **/
+    Settings *settings = Resources::Instance()->getSettings();
+    switch ( settings->getRDPDefaultResolution() ) {
+        case 0: // default resolution
+            setDesktopHeight( wxT("0") );
+            setDesktopWidth( wxT("0") );
+            setScreenMode( wxT("1") );
+        break;
+        case 1: // full screen
+            setDesktopHeight( wxT("0") );
+            setDesktopWidth( wxT("0") );
+            setScreenMode( wxT("2") );
+        break;
+        case 2: // custom resolutions 640x480
+            setScreenMode( wxT("1") );
+            setDesktopWidth( wxT("640") );
+            setDesktopHeight( wxT("480") );
+        break;
+        case 3: // custom resolutions 800x600
+            setScreenMode( wxT("1") );
+            setDesktopWidth( wxT("800") );
+            setDesktopHeight( wxT("600") );
+        break;
+        case 4: // custom resolutions 1024x768
+            setScreenMode( wxT("1") );
+            setDesktopWidth( wxT("1024") );
+            setDesktopHeight( wxT("768") );
+        break;
+        case 5: // custom resolutions 1152x864
+            setScreenMode( wxT("1") );
+            setDesktopWidth( wxT("1152") );
+            setDesktopHeight( wxT("864") );
+        break;
+        case 6: // custom resolutions 1280x960
+            setScreenMode( wxT("1") );
+            setDesktopWidth( wxT("1280") );
+            setDesktopHeight( wxT("960") );
+        break;
+        case 7: // custom resolutions 1400x1050
+            setScreenMode( wxT("1") );
+            setDesktopWidth( wxT("1400") );
+            setDesktopHeight( wxT("1050") );
+        break;
+    }
 }
 
 RDPConnection::RDPConnection( wxString filename, RDPConnection *copy )
