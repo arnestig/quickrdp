@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2014 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -52,7 +52,7 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 {
 	//(*Initialize(ConnectionList)
 	wxBoxSizer* BoxSizer1;
-	
+
 	Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	ListCtrl1 = new wxListCtrl(this, ID_LISTCTRL1, wxDefaultPosition, wxDefaultSize, wxLC_REPORT, wxDefaultValidator, _T("ID_LISTCTRL1"));
@@ -77,7 +77,7 @@ ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWin
 	ColumnListChooserMenu.Append(MenuItem8);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&ConnectionList::OnItemSelected);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&ConnectionList::OnItemDeselected);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&ConnectionList::OnItemActivated);
