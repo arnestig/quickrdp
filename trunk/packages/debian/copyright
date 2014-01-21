@@ -16,7 +16,7 @@ Copyright: GNOME ART Project
 
 Files: *.cpp, *.h
 Licence: GPLv3
-Copyright: 2010-2013 Tobias Eliasson
+Copyright: 2010-2014 Tobias Eliasson
 
 License:
 
@@ -38,6 +38,6 @@ Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 
 The Debian packaging is:
 
-    Copyright (C) 2010-2013 Tobias Eliasson <arnestig@gmail.com>
+    Copyright (C) 2010-2014 Tobias Eliasson <arnestig@gmail.com>
 
 and is licensed under the GPL version 3, see above.

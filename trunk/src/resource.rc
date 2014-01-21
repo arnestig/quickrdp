@@ -16,7 +16,7 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "Tobias Eliasson"
       VALUE "FileDescription", "Manages RDP, Telnet, SSH and VNC connections"
-      VALUE "LegalCopyright", "Copyright © 2010-2013 Tobias Eliasson"
+      VALUE "LegalCopyright", "Copyright © 2010-2014 Tobias Eliasson"
       VALUE "OriginalFilename", "QuickRDP.exe"
       VALUE "ProductName", "QuickRDP"
       VALUE "ProductVersion", PRODUCTVERSION_STR

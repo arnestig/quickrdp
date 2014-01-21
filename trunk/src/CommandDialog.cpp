@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2013 QuickRDP - Manages RDP, telnet and SSH connections
+    Copyright (C) 2010-2014 QuickRDP - Manages RDP, telnet and SSH connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -28,7 +28,6 @@
 #include <wx/msgdlg.h>
 
 //(*InternalHeaders(CommandDialog)
-#include <wx/settings.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
@@ -45,7 +44,6 @@ const long CommandDialog::ID_BUTTON1 = wxNewId();
 const long CommandDialog::ID_STATICTEXT3 = wxNewId();
 const long CommandDialog::ID_TEXTCTRL3 = wxNewId();
 const long CommandDialog::ID_BUTTON5 = wxNewId();
-const long CommandDialog::ID_TEXTCTRL5 = wxNewId();
 const long CommandDialog::ID_STATICTEXT4 = wxNewId();
 const long CommandDialog::ID_STATICTEXT9 = wxNewId();
 const long CommandDialog::ID_CHECKBOX1 = wxNewId();
@@ -98,7 +96,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	StaticText10 = new wxStaticText(Panel1, ID_STATICTEXT10, _("Run on"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	BoxSizer9->Add(StaticText10, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer9->Add(6,20,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	connectionTargetCheckbox = new wxCheckBox(Panel1, ID_CHECKBOX3, _("Same on all connections"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
+	connectionTargetCheckbox = new wxCheckBox(Panel1, ID_CHECKBOX3, _("All connections"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
 	connectionTargetCheckbox->SetValue(false);
 	BoxSizer9->Add(connectionTargetCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	connectionTypeChoice = new wxChoice(Panel1, ID_CHOICE2, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
@@ -126,12 +124,6 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	ArgumentHelpButton = new wxButton(Panel1, ID_BUTTON5, _("\?"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_BUTTON5"));
 	BoxSizer10->Add(ArgumentHelpButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6->Add(BoxSizer10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	ArgumentSizer = new wxBoxSizer(wxHORIZONTAL);
-	ArgumentHelpText = new wxTextCtrl(Panel1, ID_TEXTCTRL5, _("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \\\"-telnet %username%@%hostname%\\\" to \\\"-telnet foobar@telnet.example.com\\\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \\\"-ssh {%username%@}%hostname%{ -pw %password%}\\\" to this: \\\"-ssh foobar@ssh.example.com\\\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%\n%port%"), wxDefaultPosition, wxSize(340,271), wxTE_NO_VSCROLL|wxTE_MULTILINE|wxTE_READONLY|wxFULL_REPAINT_ON_RESIZE, wxDefaultValidator, _T("ID_TEXTCTRL5"));
-	ArgumentHelpText->Hide();
-	ArgumentHelpText->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_INFOBK));
-	ArgumentSizer->Add(ArgumentHelpText, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer6->Add(ArgumentSizer, 1, wxBOTTOM|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer6, 0, wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer12 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Favorite"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
