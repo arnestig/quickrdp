@@ -19,12 +19,13 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-#ifndef COMMANDLIST_H
-#define COMMANDLIST_H
+#ifndef COMMANDEXAMPLES_H
+#define COMMANDEXAMPLES_H
 
+#include <map>
 #include "CommandDatabase.h"
 
-//(*Headers(CommandList)
+//(*Headers(CommandExamples)
 #include <wx/listctrl.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
@@ -32,51 +33,42 @@
 #include <wx/dialog.h>
 //*)
 
-class CommandList: public wxDialog
+class CommandExamples: public wxDialog
 {
 	public:
 
-		CommandList(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
-		virtual ~CommandList();
+		CommandExamples(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+		virtual ~CommandExamples();
 
-		//(*Declarations(CommandList)
+		//(*Declarations(CommandExamples)
 		wxListCtrl* ListCtrl1;
-		wxButton* buttonEdit;
-		wxButton* buttonNew;
-		wxButton* Button1;
+		wxButton* ButtonClose;
 		wxPanel* Panel1;
-		wxButton* buttonClose;
-		wxButton* buttonDelete;
+		wxButton* ButtonAdd;
 		//*)
 
 	protected:
 
-		//(*Identifiers(CommandList)
+		//(*Identifiers(CommandExamples)
 		static const long ID_LISTCTRL1;
-		static const long ID_PANEL1;
 		static const long ID_BUTTON1;
-		static const long ID_BUTTON5;
-		static const long ID_BUTTON4;
 		static const long ID_BUTTON2;
-		static const long ID_BUTTON3;
+		static const long ID_PANEL1;
 		//*)
 
 	private:
 
-		//(*Handlers(CommandList)
-		void OnbuttonCloseClick(wxCommandEvent& event);
-		void OnbuttonNewClick(wxCommandEvent& event);
-		void OnbuttonEditClick(wxCommandEvent& event);
-		void OnbuttonDeleteClick(wxCommandEvent& event);
-		void OnListCtrl1ItemActivated(wxListEvent& event);
+		//(*Handlers(CommandExamples)
+		void AddCommand(wxCommandEvent& event);
+		void OnClose(wxCommandEvent& event);
 		void OnListCtrl1ItemSelectDeselect(wxListEvent& event);
-		void OnButtonExamples(wxCommandEvent& event);
+		void OnListCtrl1ItemActivated(wxListEvent& event);
 		//*)
-		void enableDisableButtons( wxListEvent& event );
+		void loadExampleCommands();
+		void displayCommands();
+		Command* getCommandFromList();
 
-		void reloadCommandList();
-		wxString boolToText( bool value );
-		int getSelectedCommand();
+		std::map< wxString, Command* > commands;
 
 		DECLARE_EVENT_TABLE()
 };

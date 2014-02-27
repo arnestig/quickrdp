@@ -22,6 +22,7 @@
 #include "CommandList.h"
 #include "Resources.h"
 #include "CommandDialog.h"
+#include "CommandExamples.h"
 #include "QuickrdpFunctions.h"
 
 #include <wx/msgdlg.h>
@@ -35,6 +36,7 @@
 const long CommandList::ID_LISTCTRL1 = wxNewId();
 const long CommandList::ID_PANEL1 = wxNewId();
 const long CommandList::ID_BUTTON1 = wxNewId();
+const long CommandList::ID_BUTTON5 = wxNewId();
 const long CommandList::ID_BUTTON4 = wxNewId();
 const long CommandList::ID_BUTTON2 = wxNewId();
 const long CommandList::ID_BUTTON3 = wxNewId();
@@ -65,6 +67,8 @@ CommandList::CommandList(wxWindow* parent,wxWindowID WXUNUSED( id ),const wxPoin
 	BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
 	buttonNew = new wxButton(this, ID_BUTTON1, _("New"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
 	BoxSizer3->Add(buttonNew, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	Button1 = new wxButton(this, ID_BUTTON5, _("Examples"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON5"));
+	BoxSizer3->Add(Button1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	buttonEdit = new wxButton(this, ID_BUTTON4, _("Edit"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON4"));
 	BoxSizer3->Add(buttonEdit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	buttonDelete = new wxButton(this, ID_BUTTON2, _("Delete"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON2"));
@@ -81,6 +85,7 @@ CommandList::CommandList(wxWindow* parent,wxWindowID WXUNUSED( id ),const wxPoin
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&CommandList::OnListCtrl1ItemSelectDeselect);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&CommandList::OnListCtrl1ItemActivated);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandList::OnbuttonNewClick);
+	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandList::OnButtonExamples);
 	Connect(ID_BUTTON4,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandList::OnbuttonEditClick);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandList::OnbuttonDeleteClick);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandList::OnbuttonCloseClick);
@@ -97,7 +102,7 @@ CommandList::~CommandList()
 
 void CommandList::reloadCommandList()
 {
-    std::vector< Command* > commandDatabase = Resources::Instance()->getCommandDatabase()->getCommands();
+    std::vector< Command* > commandDatabase = Resources::Instance()->getCommandDatabase()->getCommands( true ); // force load the command database
     ListCtrl1->Freeze();
 
     ListCtrl1->ClearAll();
@@ -245,4 +250,13 @@ void CommandList::OnListCtrl1ItemSelectDeselect(wxListEvent& WXUNUSED( event ) )
         buttonDelete->Enable( true );
         buttonEdit->Enable( true );
     }
+}
+
+void CommandList::OnButtonExamples(wxCommandEvent& WXUNUSED(event) )
+{
+    CommandExamples *commandExampleDlg = new CommandExamples( this, 0 );
+    if ( commandExampleDlg->ShowModal() == 1 ) {
+        reloadCommandList();
+    }
+    delete commandExampleDlg;
 }

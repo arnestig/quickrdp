@@ -185,11 +185,10 @@ CommandDatabase::~CommandDatabase()
 void CommandDatabase::loadDatabase()
 {
     // delete our previous command database
-    for ( size_t commandId = 0; commandId < commands.size(); ++commandId ) {
-        delete commands[ commandId ];
-        commands[ commandId ] = NULL;
-        commands.erase( commands.begin() + commandId );
+    for ( std::vector< Command* >::iterator it = commands.begin(); it != commands.end(); ++it ) {
+        delete (*it);
     }
+    commands.clear();
 
     // traverse the commands folder and add the commands we find there.
     wxString f = wxFindFirstFile( Resources::Instance()->getSettings()->getCommandDatabasePath() );
@@ -201,9 +200,9 @@ void CommandDatabase::loadDatabase()
     }
 }
 
-std::vector< Command* > CommandDatabase::getCommands()
+std::vector< Command* > CommandDatabase::getCommands( bool forceReload )
 {
-    if ( isDatabaseLoaded() == false ) {
+    if ( isDatabaseLoaded() == false || forceReload == true ) {
         loadDatabase();
     }
 
@@ -309,6 +308,11 @@ bool CommandDatabase::addCommand( wxString name )
         }
     }
     return false;
+}
+
+void CommandDatabase::saveCommand( Command *command )
+{
+    saveCommand( command->getName(), command->getProgram(), command->getArgument(), command->getFavorite(), command->getSafety(), command->getShortcutModifier(), command->getShortcutKey(), command->getUseSpecificCommands() );
 }
 
 void CommandDatabase::saveCommand( wxString name, std::map< int, wxString > program, std::map< int, wxString > argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey, bool useSpecificCommands )
