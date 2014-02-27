@@ -74,10 +74,11 @@ class CommandDatabase
         CommandDatabase();
         ~CommandDatabase();
 
-        std::vector< Command* > getCommands();
+        std::vector< Command* > getCommands( bool forceReload = false );
         Command* getCommand( wxString name );
         Command* getCommandWithShortcut( int shortcutModifier, int shortcutKey );
         void deleteCommand( wxString name );
+        void saveCommand( Command *command );
         void saveCommand( wxString name, std::map< int, wxString > program, std::map< int, wxString > argument, bool favorite, bool safety, int shortcutModifier, int shortcutKey, bool useSpecificCommands );
 
     private:
