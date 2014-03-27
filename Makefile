@@ -7,6 +7,8 @@ INSTALL_DIR = install -p -d -o root -g root -m 755
 INSTALL_DATA = install -p -o root -g root -m 644
 CFLAGS = -g -Wall $(shell wx-config --cxxflags)
 LIBS = $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
+SVN_INFO_REV = $(shell svn info | grep Revision | cut -d' ' -f2)
+SVN_DEFINE=-DSVN_REVISION=0
 
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -21,9 +23,12 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	MAKEFLAGS += -j$(NUMJOBS)
 endif
 
+ifneq (,$(SVN_INFO_REV))
+	SVN_DEFINE=-DSVN_REVISION=$(SVN_INFO_REV)
+endif
+
 INCLUDE_DIR=
 DEFAULT_DEFINE=-DDATA_PATH=\"$(DESTDIR)/usr/share/$(PROGNAME)/\" 
-SVN_DEFINE=-DSVN_REVISION=0
 
 OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 
