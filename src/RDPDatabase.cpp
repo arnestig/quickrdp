@@ -619,6 +619,32 @@ RDPDatabase::~RDPDatabase()
 	database.clear();
 }
 
+bool RDPDatabase::hostnameCompareAsc( RDPConnection* left, RDPConnection* right )
+{
+    /** try to compare the ip value to get a correct sorting of the ip addresses if both are correct x.x.x.x ip addresses **/
+    unsigned int leftHostnameInt = quickRDP::FileParser::getIpValue( left->getHostname().mb_str() );
+    unsigned int rightHostnameInt = quickRDP::FileParser::getIpValue( right->getHostname().mb_str() );
+    if ( leftHostnameInt > 0 && rightHostnameInt > 0 ) {
+        return leftHostnameInt < rightHostnameInt;
+    } else {
+        /** else just compare the string value **/
+        return left->getHostname().Lower() < right->getHostname().Lower();
+    }
+}
+
+bool RDPDatabase::hostnameCompareDesc( RDPConnection* left, RDPConnection* right )
+{
+    /** try to compare the ip value to get a correct sorting of the ip addresses if both are correct x.x.x.x ip addresses **/
+    unsigned int leftHostnameInt = quickRDP::FileParser::getIpValue( left->getHostname().mb_str() );
+    unsigned int rightHostnameInt = quickRDP::FileParser::getIpValue( right->getHostname().mb_str() );
+    if ( leftHostnameInt > 0 && rightHostnameInt > 0 ) {
+        return leftHostnameInt > rightHostnameInt;
+    } else {
+        /** else just compare the string value **/
+        return left->getHostname().Lower() > right->getHostname().Lower();
+    }
+}
+
 void RDPDatabase::loadRDPFiles()
 {
     // traverse the database folder, looking for RDPConnections.

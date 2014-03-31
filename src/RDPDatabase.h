@@ -19,12 +19,12 @@
     along with quickRDP.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
+#ifndef __RDP_DATABASE_H__
+#define __RDP_DATABASE_H__
+
 #include <vector>
 #include <wx/string.h>
 #include <wx/thread.h>
-
-#ifndef __RDP_DATABASE_H__
-#define __RDP_DATABASE_H__
 
 namespace ConnectionType
 {
@@ -181,15 +181,9 @@ class RDPDatabase
         std::vector<RDPConnection*> database;
         std::vector<RDPConnection*> listCtrlRelation;
 
-        static bool hostnameCompareAsc( RDPConnection* left, RDPConnection* right )
-        {
-            return left->getHostname().Lower() < right->getHostname().Lower();
-        }
+        static bool hostnameCompareAsc( RDPConnection* left, RDPConnection* right );
 
-        static bool hostnameCompareDesc( RDPConnection* left, RDPConnection* right )
-        {
-            return left->getHostname().Lower() > right->getHostname().Lower();
-        }
+        static bool hostnameCompareDesc( RDPConnection* left, RDPConnection* right );
 
         static bool portCompareAsc( RDPConnection* left, RDPConnection* right )
         {
