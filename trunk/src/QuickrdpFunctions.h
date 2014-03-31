@@ -29,7 +29,6 @@
 #include <fstream>
 #include <sstream>
 
-
 #include <iostream>
 
 namespace quickRDP
@@ -59,6 +58,22 @@ namespace quickRDP
 
     namespace FileParser
     {
+        inline unsigned int getIpValue( const char* ip )
+        {
+            int a, b, c, d;
+            unsigned int addr = 0;
+
+            if (sscanf(ip, "%d.%d.%d.%d", &a, &b, &c, &d) != 4) {
+                return 0;
+            }
+
+            addr = a << 24;
+            addr |= b << 16;
+            addr |= c << 8;
+            addr |= d;
+            return addr;
+        }
+
         inline void writeLineToFile( std::ofstream &file, wxString line )
         {
             file.write( line.mb_str(), line.Len() );
