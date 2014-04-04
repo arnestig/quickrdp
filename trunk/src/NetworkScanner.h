@@ -78,6 +78,7 @@ class NetworkScanner: public wxDialog
 		wxStaticText* StaticText4;
 		wxCheckBox* VNCCheckBox;
 		//*)
+		bool isSortOrderAscending() const;
 
 	protected:
 
@@ -132,6 +133,7 @@ class NetworkScanner: public wxDialog
         void OnQuit(wxCloseEvent& event);
         void OnShowAllConnections(wxCommandEvent& event);
         void OnOtherPortsHelpClick(wxCommandEvent& event);
+        void OnColumnClick(wxListEvent& event);
         //*)
         void onScanResult( wxCommandEvent& event );
 
@@ -147,6 +149,25 @@ class NetworkScanner: public wxDialog
         wxString getNextIP( int ipaddress );
         void startScanner();
         void stopScanner();
+        void sortByName( wxString name );
+        void setSortOrder( bool database_sort_ascending );
+
+        bool database_sort_ascending;
+        wxString last_column_click;
+
+        static bool hostnameCompareAsc( RDPConnection* left, RDPConnection* right );
+
+        static bool hostnameCompareDesc( RDPConnection* left, RDPConnection* right );
+
+        static bool portCompareAsc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getPort() < right->getPort();
+        }
+
+        static bool portCompareDesc( RDPConnection* left, RDPConnection* right )
+        {
+            return left->getPort() > right->getPort();
+        }
 
 		DECLARE_EVENT_TABLE()
 };

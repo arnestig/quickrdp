@@ -170,7 +170,7 @@ class RDPDatabase
         long getListCtrlIndexFromId( long connectionId );
         RDPConnection* getRDPFromConnectionID( long connectionId );
 
-        void sortById( int id );
+        void sortByName( wxString name );
         bool isSortOrderAscending() const;
         void setSortOrder( bool database_sort_ascending );
         bool compareConnection( wxString left, wxString right );

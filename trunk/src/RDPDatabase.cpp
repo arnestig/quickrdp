@@ -655,7 +655,7 @@ void RDPDatabase::loadRDPFiles()
         addRDPConnection( fname.GetName() );
         f = wxFindNextFile();
     }
-    sortById( 0 );
+    sortByName( wxT("Hostname") );
 }
 
 RDPConnection *RDPDatabase::addRDPConnection( wxString filename )
@@ -747,75 +747,56 @@ void RDPDatabase::addRDPToListCtrl( RDPConnection *connection )
     listCtrlRelation.push_back( connection );
 }
 
-void RDPDatabase::sortById( int id )
+void RDPDatabase::sortByName( wxString name )
 {
-    switch ( id )
-    {
-        case 0: // hostname sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), hostnameCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), hostnameCompareDesc );
-            }
-        break;
-        case 1: // port sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), portCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), portCompareDesc );
-            }
-        break;
-        case 2: // username  sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), usernameCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), usernameCompareDesc );
-            }
-        break;
-        case 3: // connection type sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), useConnectionCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), useConnectionCompareDesc );
-            }
-        break;
-        case 4: // use console sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), useConsoleCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), useConsoleCompareDesc );
-            }
-        break;
-        case 5: // resolution sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), resolutionCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), resolutionCompareDesc );
-            }
-        break;
-
-        case 6: // comment sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), commentCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), commentCompareDesc );
-            }
-        break;
-
-        case 7: // client name sorting
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), clientNameCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), clientNameCompareDesc );
-            }
-        break;
-        default:
-            if ( isSortOrderAscending() == true ) {
-                std::sort( database.begin(), database.end(), hostnameCompareAsc );
-            } else {
-                std::sort( database.begin(), database.end(), hostnameCompareDesc );
-            }
-        break;
+    if( name == wxT("Port") ) { // port sorting
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), portCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), portCompareDesc );
+        }
+    } else if( name == wxT("Username") ) { // username sorting
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), usernameCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), usernameCompareDesc );
+        }
+    } else if( name == wxT("Connection") ) { // Connection type
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), useConnectionCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), useConnectionCompareDesc );
+        }
+    } else if( name == wxT("Use console") ) { // Console
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), useConsoleCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), useConsoleCompareDesc );
+        }
+    } else if( name == wxT("Resolution") ) { // Resolution
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), resolutionCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), resolutionCompareDesc );
+        }
+    } else if( name == wxT("Comment") ) { // Comment
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), commentCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), commentCompareDesc );
+        }
+    } else if( name == wxT("Client name") ) { // Client name
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), clientNameCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), clientNameCompareDesc );
+        }
+    } else { // hostname sorting
+        if ( isSortOrderAscending() == true ) {
+            std::sort( database.begin(), database.end(), hostnameCompareAsc );
+        } else {
+            std::sort( database.begin(), database.end(), hostnameCompareDesc );
+        }
     }
 }
 

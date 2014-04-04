@@ -281,7 +281,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     BitmapButton4->SetBitmapLabel( wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("network-workgroup.png") ) ) );
     BitmapButton4->SetBitmapDisabled(wxBitmap( wxImage( Resources::Instance()->getSettings()->getDataPath() + wxT("network-workgroup-disabled.png"))));
 
-    last_column_click = 0;
+    last_column_click = wxT( "Hostname" );
 
     /** init our image list **/
     imageList = new wxImageList( 16,16, true );
@@ -1192,15 +1192,18 @@ wxListCtrl* quickRDPFrame::getConnectionList()
 
 void quickRDPFrame::OnColumnClick(wxListEvent& event)
 {
+    wxListItem column;
+    column.SetMask(wxLIST_MASK_TEXT);
+    getConnectionList()->GetColumn(event.GetColumn(), column);
     RDPDatabase *rdpDatabase = Resources::Instance()->getConnectionDatabase();
-    if ( last_column_click == event.GetColumn() ) {
+    if ( last_column_click == column.GetText() ) {
         // change sort order.
         rdpDatabase->setSortOrder( !rdpDatabase->isSortOrderAscending() );
-        rdpDatabase->sortById( event.GetColumn() );
+        rdpDatabase->sortByName( column.GetText() );
     } else {
-        last_column_click = event.GetColumn();
+        last_column_click = column.GetText();
         rdpDatabase->setSortOrder( true );
-        rdpDatabase->sortById( event.GetColumn() );
+        rdpDatabase->sortByName( column.GetText() );
     }
     loadRDPFromDatabase();
 }

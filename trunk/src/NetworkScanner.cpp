@@ -28,6 +28,7 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include "ExampleDialog.h"
+#include <algorithm>
 
 //(*InternalHeaders(NetworkScanner)
 #include <wx/intl.h>
@@ -213,6 +214,7 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&NetworkScanner::OnListCtrlSelect);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_DESELECTED,(wxObjectEventFunction)&NetworkScanner::OnListCtrlSelect);
 	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&NetworkScanner::OnListCtrlItemActivated);
+	Connect(ID_LISTCTRL1,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&NetworkScanner::OnColumnClick);
 	Connect(ID_CHECKBOX5,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnShowAllConnections);
 	Connect(ID_ADD_SELECTED,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnButtonAdd);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&NetworkScanner::OnClose);
@@ -263,6 +265,8 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
         imageList->Add( wxICON( connectionunk ) );
     #endif
     ListCtrl1->SetImageList( imageList, wxIMAGE_LIST_SMALL );
+    database_sort_ascending = true;
+    last_column_click = wxT( "Hostname" );
 }
 
 NetworkScanner::~NetworkScanner()
@@ -418,7 +422,7 @@ void NetworkScanner::populateListCtrl()
 {
     ListCtrlRDPConnectionTable.clear();
     ListCtrl1->ClearAll();
-    ListCtrl1->InsertColumn( 0, wxT("IP address" ) );
+    ListCtrl1->InsertColumn( 0, wxT("Hostname" ) );
     ListCtrl1->InsertColumn( 1, wxT("Service / port" ) );
     ListCtrl1->SetColumnWidth( 0, 190 );
     ListCtrl1->SetColumnWidth( 1, 90 );
@@ -569,4 +573,74 @@ void NetworkScanner::OnOtherPortsHelpClick(wxCommandEvent& WXUNUSED( event ) )
     ExampleDialog *example = new ExampleDialog( wxT("Define other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"), this );
     example->ShowModal();
     delete example;
+}
+
+void NetworkScanner::sortByName( wxString name )
+{
+    if( name == wxT("Service / port") ) { // port sorting
+        if ( isSortOrderAscending() == true ) {
+            std::sort( targets.begin(), targets.end(), portCompareAsc );
+        } else {
+            std::sort( targets.begin(), targets.end(), portCompareDesc );
+        }
+    } else { // hostname sorting
+        if ( isSortOrderAscending() == true ) {
+            std::sort( targets.begin(), targets.end(), hostnameCompareAsc );
+        } else {
+            std::sort( targets.begin(), targets.end(), hostnameCompareDesc );
+        }
+    }
+}
+
+bool NetworkScanner::hostnameCompareAsc( RDPConnection* left, RDPConnection* right )
+{
+    /** try to compare the ip value to get a correct sorting of the ip addresses if both are correct x.x.x.x ip addresses **/
+    unsigned int leftHostnameInt = quickRDP::FileParser::getIpValue( left->getHostname().mb_str() );
+    unsigned int rightHostnameInt = quickRDP::FileParser::getIpValue( right->getHostname().mb_str() );
+    if ( leftHostnameInt > 0 && rightHostnameInt > 0 ) {
+        return leftHostnameInt < rightHostnameInt;
+    } else {
+        /** else just compare the string value **/
+        return left->getHostname().Lower() < right->getHostname().Lower();
+    }
+}
+
+bool NetworkScanner::hostnameCompareDesc( RDPConnection* left, RDPConnection* right )
+{
+    /** try to compare the ip value to get a correct sorting of the ip addresses if both are correct x.x.x.x ip addresses **/
+    unsigned int leftHostnameInt = quickRDP::FileParser::getIpValue( left->getHostname().mb_str() );
+    unsigned int rightHostnameInt = quickRDP::FileParser::getIpValue( right->getHostname().mb_str() );
+    if ( leftHostnameInt > 0 && rightHostnameInt > 0 ) {
+        return leftHostnameInt > rightHostnameInt;
+    } else {
+        /** else just compare the string value **/
+        return left->getHostname().Lower() > right->getHostname().Lower();
+    }
+}
+
+void NetworkScanner::setSortOrder( bool database_sort_ascending )
+{
+    this->database_sort_ascending = database_sort_ascending;
+}
+
+bool NetworkScanner::isSortOrderAscending() const
+{
+    return database_sort_ascending;
+}
+
+void NetworkScanner::OnColumnClick(wxListEvent& event)
+{
+    wxListItem column;
+    column.SetMask(wxLIST_MASK_TEXT);
+    ListCtrl1->GetColumn(event.GetColumn(), column);
+    if ( last_column_click == column.GetText() ) {
+        // change sort order.
+        setSortOrder( !isSortOrderAscending() );
+        sortByName( column.GetText() );
+    } else {
+        last_column_click = column.GetText();
+        setSortOrder( true );
+        sortByName( column.GetText() );
+    }
+    redrawListCtrl();
 }
