@@ -188,7 +188,7 @@ class quickRDPFrame: public wxFrame
         std::vector< wxMenuItem* > favoriteCommandMenuItems;
         wxImageList *imageList;
 
-        int last_column_click;
+        wxString last_column_click;
         bool globalhotkeys;
 
         void clearListCtrl();
