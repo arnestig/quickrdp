@@ -1141,8 +1141,18 @@ void quickRDPFrame::updateConnectionCheckerStatus()
         for ( long id = getConnectionList()->GetTopItem(); id < getConnectionList()->GetCountPerPage() + getConnectionList()->GetTopItem()+1; ++id  ) {
             RDPConnection *rdpConnection = Resources::Instance()->getConnectionDatabase()->getRDPFromListCtrl( id );
             if ( rdpConnection != NULL ) {
+                /** if we have a connection who has selected "connect when ready" we will use that update interval instead of the connection checker interval. **/
+                int updateInterval;
+                time_t timeSinceLastUpdate = seconds - rdpConnection->getLastChecked();
+
+                if ( rdpConnection->getConnectWhenReady() == true ) {
+                    updateInterval = settings->getCWRUpdateInterval();
+                } else {
+                    updateInterval = settings->getCCUpdateInterval();
+                }
+
                 /** make sure we update only targets who needs to be updated **/
-                if ( ( seconds - rdpConnection->getLastChecked() > settings->getCCUpdateInterval() ) && rdpConnection->isConnectionCheckerRunning() == false ) {
+                if ( timeSinceLastUpdate > updateInterval && rdpConnection->isConnectionCheckerRunning() == false ) {
                     connectionList.push_back( rdpConnection );
                 }
             }

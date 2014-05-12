@@ -62,6 +62,7 @@ class settingsDialog: public wxDialog
 		wxStaticText* StaticText2;
 		wxPanel* Panel4;
 		wxTextCtrl* CCTimeoutTextDisplay;
+		wxStaticText* StaticText14;
 		wxButton* VNCArgumentHelpButton;
 		wxButton* VNCExecutableBrowseButton;
 		wxStaticText* StaticText6;
@@ -109,8 +110,10 @@ class settingsDialog: public wxDialog
 		wxTextCtrl* TextShortcutConProp;
 		wxTextCtrl* ShortcutConnectWhenReadyText;
 		wxStaticText* StaticText16;
+		wxSlider* CWRUpdateIntervalSlider;
 		wxChoice* RDPDefaultResolutionChoice;
 		wxTextCtrl* ShortcutCloseTabText;
+		wxTextCtrl* CWRUpdateIntervalTextDisplay;
 		//*)
 
 	protected:
@@ -164,6 +167,9 @@ class settingsDialog: public wxDialog
 		static const long ID_STATICTEXT10;
 		static const long ID_TEXTCTRL8;
 		static const long ID_SLIDER2;
+		static const long ID_STATICTEXT20;
+		static const long ID_TEXTCTRL10;
+		static const long ID_SLIDER4;
 		static const long ID_STATICTEXT16;
 		static const long ID_STATICTEXT17;
 		static const long ID_TEXTCTRL9;
@@ -196,6 +202,7 @@ class settingsDialog: public wxDialog
 		void OnCCUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& event);
 		void OnCCAutoUpdateCheckboxClick(wxCommandEvent& event);
 		void OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& event);
+		void OnCWRUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& event);
 		//*)
 
 		void HandleKeyShortcutPress( wxKeyEvent& event );
