@@ -554,6 +554,39 @@
 												<border>5</border>
 											</object>
 											<object class="sizeritem">
+												<object class="wxBoxSizer" variable="BoxSizer32" member="no">
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT20" variable="StaticText14" member="yes">
+															<label>&apos;Connect when ready&apos; interval check</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxTextCtrl" name="ID_TEXTCTRL10" variable="CWRUpdateIntervalTextDisplay" member="yes">
+															<value>5 s</value>
+															<size>50,21</size>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+													</object>
+													<object class="sizeritem">
+														<object class="wxSlider" name="ID_SLIDER4" variable="CWRUpdateIntervalSlider" member="yes">
+															<value>5</value>
+															<min>5</min>
+															<max>60</max>
+															<pagesize>10</pagesize>
+															<handler function="OnCWRUpdateIntervalSliderCmdSliderUpdated" entry="EVT_COMMAND_SLIDER_UPDATED" />
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
 												<object class="wxBoxSizer" variable="BoxSizer26" member="no">
 													<object class="sizeritem">
 														<object class="wxStaticText" name="ID_STATICTEXT16" variable="CCWorkerThreadLabel" member="yes">

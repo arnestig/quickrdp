@@ -79,6 +79,9 @@ const long settingsDialog::ID_CHECKBOX1 = wxNewId();
 const long settingsDialog::ID_STATICTEXT10 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL8 = wxNewId();
 const long settingsDialog::ID_SLIDER2 = wxNewId();
+const long settingsDialog::ID_STATICTEXT20 = wxNewId();
+const long settingsDialog::ID_TEXTCTRL10 = wxNewId();
+const long settingsDialog::ID_SLIDER4 = wxNewId();
 const long settingsDialog::ID_STATICTEXT16 = wxNewId();
 const long settingsDialog::ID_STATICTEXT17 = wxNewId();
 const long settingsDialog::ID_TEXTCTRL9 = wxNewId();
@@ -133,6 +136,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	wxBoxSizer* BoxSizer17;
 	wxBoxSizer* BoxSizer24;
 	wxBoxSizer* BoxSizer26;
+	wxBoxSizer* BoxSizer32;
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
@@ -308,6 +312,15 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	CCUpdateIntervalSlider->SetPageSize(10);
 	BoxSizer21->Add(CCUpdateIntervalSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer16->Add(BoxSizer21, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer32 = new wxBoxSizer(wxHORIZONTAL);
+	StaticText14 = new wxStaticText(Panel4, ID_STATICTEXT20, _("\'Connect when ready\' interval check"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT20"));
+	BoxSizer32->Add(StaticText14, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CWRUpdateIntervalTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL10, _("5 s"), wxDefaultPosition, wxSize(50,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL10"));
+	BoxSizer32->Add(CWRUpdateIntervalTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	CWRUpdateIntervalSlider = new wxSlider(Panel4, ID_SLIDER4, 5, 5, 60, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER4"));
+	CWRUpdateIntervalSlider->SetPageSize(10);
+	BoxSizer32->Add(CWRUpdateIntervalSlider, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer16->Add(BoxSizer32, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer26 = new wxBoxSizer(wxHORIZONTAL);
 	CCWorkerThreadLabel = new wxStaticText(Panel4, ID_STATICTEXT16, _("Number of worker threads"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
 	BoxSizer26->Add(CCWorkerThreadLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -395,6 +408,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	Connect(ID_SLIDER1,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCTimeoutSliderCmdSliderUpdated);
 	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&settingsDialog::OnCCAutoUpdateCheckboxClick);
 	Connect(ID_SLIDER2,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCUpdateIntervalSliderCmdSliderUpdated);
+	Connect(ID_SLIDER4,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCWRUpdateIntervalSliderCmdSliderUpdated);
 	Connect(ID_SLIDER3,wxEVT_COMMAND_SLIDER_UPDATED,(wxObjectEventFunction)&settingsDialog::OnCCWorkerThreadSliderCmdSliderUpdated);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonSave);
 	Connect(wxID_CANCEL,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnButtonCancel);
@@ -461,12 +475,14 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 
     CCTimeoutSlider->SetValue( settings->getCCTimeout()/10 );
     CCUpdateIntervalSlider->SetValue( settings->getCCUpdateInterval()/10 );
+    CWRUpdateIntervalSlider->SetValue( settings->getCWRUpdateInterval() );
     CCAutoUpdateCheckbox->SetValue( settings->getCCAutomaticCheck() );
     CCWorkerThreadSlider->SetValue( settings->getCCWorkerThreads() );
 
     wxScrollEvent evt;
     OnCCTimeoutSliderCmdSliderUpdated( evt );
     OnCCUpdateIntervalSliderCmdSliderUpdated( evt );
+    OnCWRUpdateIntervalSliderCmdSliderUpdated( evt );
     OnCCAutoUpdateCheckboxClick( evt );
     OnCCWorkerThreadSliderCmdSliderUpdated( evt );
 
@@ -509,6 +525,7 @@ void settingsDialog::OnButtonSave(wxCommandEvent& WXUNUSED(event) )
     /** our connection checker settings **/
     settings->setCCTimeout( CCTimeoutSlider->GetValue()*10 );
     settings->setCCUpdateInterval( CCUpdateIntervalSlider->GetValue()*10 );
+    settings->setCWRUpdateInterval( CWRUpdateIntervalSlider->GetValue() );
     settings->setCCAutomaticCheck( CCAutoUpdateCheckbox->GetValue() );
     settings->setCCWorkerThreads( CCWorkerThreadSlider->GetValue() );
 
@@ -674,4 +691,9 @@ void settingsDialog::OnCCAutoUpdateCheckboxClick(wxCommandEvent& WXUNUSED(event)
 void settingsDialog::OnCCWorkerThreadSliderCmdSliderUpdated(wxScrollEvent& WXUNUSED(event))
 {
     CCWorkerThreadTextDisplay->SetValue( wxString::Format( wxT("%i"), CCWorkerThreadSlider->GetValue() ) );
+}
+
+void settingsDialog::OnCWRUpdateIntervalSliderCmdSliderUpdated(wxScrollEvent& WXUNUSED(event))
+{
+    CWRUpdateIntervalTextDisplay->SetValue( wxString() << CWRUpdateIntervalSlider->GetValue() << wxT(" s") );
 }

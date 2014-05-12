@@ -164,6 +164,7 @@ void Settings::saveSettings()
 
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCTimeout:i:")) << getCCTimeout() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCUpdateInterval:i:")) << getCCUpdateInterval() );
+    quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CWRUpdateInterval:i:")) << getCWRUpdateInterval() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCAutomaticCheck:i:")) << getCCAutomaticCheck() );
     quickRDP::FileParser::writeLineToFile( ofile, wxString(wxT("CCWorkerThreads:i:")) << getCCWorkerThreads() );
 
@@ -256,11 +257,19 @@ void Settings::loadSettings()
         }
 
         int l_CCUpdateInterval = quickRDP::FileParser::getIntegerFromFile( wxT("CCUpdateInterval:i:"), allLines );
-        if ( l_CCUpdateInterval  < 10 || l_CCTimeout > 360 ) {
+        if ( l_CCUpdateInterval  < 10 || l_CCUpdateInterval > 360 ) {
             setCCUpdateInterval( 60 );
         } else {
             setCCUpdateInterval( l_CCUpdateInterval );
         }
+
+        int l_CWRUpdateInterval = quickRDP::FileParser::getIntegerFromFile( wxT("CWRUpdateInterval:i:"), allLines );
+        if ( l_CWRUpdateInterval  < 5 || l_CWRUpdateInterval > 60 ) {
+            setCWRUpdateInterval( 5 );
+        } else {
+            setCWRUpdateInterval( l_CWRUpdateInterval );
+        }
+
 
         setCCAutomaticCheck( quickRDP::FileParser::getIntegerFromFile( wxT("CCAutomaticCheck:i:"), allLines ) );
         unsigned int workerThreads = quickRDP::FileParser::getIntegerFromFile( wxT("CCWorkerThreads:i:"), allLines );
@@ -386,6 +395,17 @@ void Settings::setCCUpdateInterval( int CCUpdateInterval )
 {
     this->CCUpdateInterval = CCUpdateInterval;
 }
+
+int Settings::getCWRUpdateInterval() const
+{
+    return CWRUpdateInterval;
+}
+
+void Settings::setCWRUpdateInterval( int CWRUpdateInterval )
+{
+    this->CWRUpdateInterval = CWRUpdateInterval;
+}
+
 
 int Settings::getCCAutomaticCheck() const
 {

@@ -82,6 +82,8 @@ class Settings
         void setCCTimeout( int CCTimeout );
         int getCCUpdateInterval() const;
         void setCCUpdateInterval( int CCUpdateInterval );
+        int getCWRUpdateInterval() const;
+        void setCWRUpdateInterval( int CWRUpdateInterval );
         int getCCAutomaticCheck() const;
         void  setCCAutomaticCheck( int CCAutomaticCheck );
         unsigned int getCCWorkerThreads() const;
@@ -140,6 +142,7 @@ class Settings
         /** Connection checker settings **/
         int CCTimeout;
         int CCUpdateInterval;
+        int CWRUpdateInterval;
         int CCAutomaticCheck;
         unsigned int CCWorkerThreads;
 
