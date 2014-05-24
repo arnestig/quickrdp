@@ -182,16 +182,11 @@ void CommandList::OnbuttonCloseClick(wxCommandEvent& WXUNUSED( event ) )
 
 void CommandList::OnbuttonNewClick(wxCommandEvent& WXUNUSED( event ) )
 {
-    int selectedIndex = getSelectedCommand();
-    if ( selectedIndex != -1 ) {
-        CommandDialog *commandDlg = new CommandDialog( this, 0 );
-        Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommands()[ selectedIndex ];
-        commandDlg->LoadCommand( curCommand );
-        if ( commandDlg->ShowModal() == 1 ) {
-            reloadCommandList();
-        }
-        delete commandDlg;
+    CommandDialog *commandDlg = new CommandDialog( this, 0 );
+    if ( commandDlg->ShowModal() == 1 ) {
+        reloadCommandList();
     }
+    delete commandDlg;
 }
 
 void CommandList::OnbuttonEditClick(wxCommandEvent& WXUNUSED( event ) )
