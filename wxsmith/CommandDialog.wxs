@@ -59,6 +59,7 @@
 												<object class="sizeritem">
 													<object class="wxCheckBox" name="ID_CHECKBOX3" variable="connectionTargetCheckbox" member="yes">
 														<label>All connections</label>
+														<checked>1</checked>
 														<handler function="OnconnectionTargetCheckboxClick" entry="EVT_CHECKBOX" />
 													</object>
 													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

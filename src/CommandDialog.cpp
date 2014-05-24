@@ -97,7 +97,7 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	BoxSizer9->Add(StaticText10, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer9->Add(6,20,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	connectionTargetCheckbox = new wxCheckBox(Panel1, ID_CHECKBOX3, _("All connections"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
-	connectionTargetCheckbox->SetValue(false);
+	connectionTargetCheckbox->SetValue(true);
 	BoxSizer9->Add(connectionTargetCheckbox, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	connectionTypeChoice = new wxChoice(Panel1, ID_CHOICE2, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
 	connectionTypeChoice->Append(_("RDP"));
@@ -248,6 +248,14 @@ void CommandDialog::OnSaveButton(wxCommandEvent& WXUNUSED(event) )
     /** also make sure that we've triggered the last save on the choice list if that's being used. **/
     wxCommandEvent evt;
     OnconnectionTypeChoiceSelect( evt );
+
+    if ( connectionTargetCheckbox->IsChecked() == true ) {
+        program[ -1 ] = programTextCtrl->GetValue();
+        argument[ -1 ] = argumentTextCtrl->GetValue();
+    } else {
+        program[ connectionTypeChoice->GetSelection() ] = programTextCtrl->GetValue();
+        argument[ connectionTypeChoice->GetSelection() ] = argumentTextCtrl->GetValue();
+    }
 
     Resources::Instance()->getCommandDatabase()->saveCommand(
                                                     nameTextCtrl->GetValue(),
