@@ -11,7 +11,7 @@
 						<orient>wxVERTICAL</orient>
 						<object class="sizeritem">
 							<object class="wxNotebook" name="ID_NOTEBOOK1" variable="Notebook1" member="yes">
-								<size>368,397</size>
+								<size>416,397</size>
 								<object class="notebookpage">
 									<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
 										<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -94,7 +94,7 @@
 																<border>2</border>
 															</object>
 														</object>
-														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>
 												</object>
@@ -181,11 +181,11 @@
 																<border>2</border>
 															</object>
 														</object>
-														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>
 												</object>
-												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
 											</object>
 											<object class="sizeritem">
@@ -268,12 +268,12 @@
 																<border>2</border>
 															</object>
 														</object>
-														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 														<option>1</option>
 													</object>
 												</object>
-												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
 											</object>
 										</object>
@@ -478,10 +478,15 @@
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>
+													<object class="spacer">
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<size>24,20</size>
+													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="CCTimeoutTextDisplay" member="yes">
 															<value>0000 ms</value>
-															<size>60,21</size>
+															<size>69,21</size>
 															<style>wxTE_READONLY</style>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -530,6 +535,11 @@
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>
+													<object class="spacer">
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<size>22,20</size>
+													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL8" variable="CCUpdateIntervalTextDisplay" member="yes">
 															<value>180 s</value>
@@ -557,10 +567,15 @@
 												<object class="wxBoxSizer" variable="BoxSizer32" member="no">
 													<object class="sizeritem">
 														<object class="wxStaticText" name="ID_STATICTEXT20" variable="StaticText14" member="yes">
-															<label>&apos;Connect when ready&apos; interval check</label>
+															<label>&apos;Connect when ready&apos;&#x0A;interval check</label>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
+													</object>
+													<object class="spacer">
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<size>44,20</size>
 													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL10" variable="CWRUpdateIntervalTextDisplay" member="yes">
@@ -605,6 +620,11 @@
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>
+													<object class="spacer">
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<size>13,20</size>
+													</object>
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL9" variable="CCWorkerThreadTextDisplay" member="yes">
 															<value>0</value>
@@ -633,13 +653,14 @@
 								</object>
 								<object class="notebookpage">
 									<object class="wxPanel" name="ID_PANEL5" variable="Panel5" member="yes">
+										<size>478,368</size>
 										<object class="wxBoxSizer" variable="BoxSizer28" member="no">
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
 												<object class="wxBoxSizer" variable="BoxSizer29" member="no">
 													<object class="sizeritem">
 														<object class="wxCheckBox" name="ID_USE_GREY_LIST_BACKGROUND" variable="CheckboxGreyListBackground" member="yes">
-															<label>Use grey background for every second item in the connection list</label>
+															<label>Use grey background for every second&#x0A;item in the connection list</label>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
@@ -737,7 +758,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="ID_BUTTON3" variable="OKButton" member="yes">
 										<label>Ok</label>
-										<size>75,23</size>
+										<size>75,28</size>
 										<handler function="OnButtonSave" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -746,7 +767,7 @@
 								<object class="sizeritem">
 									<object class="wxButton" name="wxID_CANCEL" variable="CancelButton" member="yes">
 										<label>Cancel</label>
-										<size>75,23</size>
+										<size>75,28</size>
 										<handler function="OnButtonCancel" entry="EVT_BUTTON" />
 									</object>
 									<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

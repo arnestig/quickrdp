@@ -25,17 +25,17 @@
 #include <map>
 
 //(*Headers(settingsDialog)
-#include <wx/notebook.h>
+#include <wx/checkbox.h>
+#include <wx/dialog.h>
 #include <wx/sizer.h>
+#include <wx/notebook.h>
+#include <wx/button.h>
+#include <wx/filedlg.h>
+#include <wx/panel.h>
+#include <wx/slider.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
-#include <wx/checkbox.h>
-#include <wx/slider.h>
-#include <wx/panel.h>
-#include <wx/filedlg.h>
 #include <wx/choice.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
 //*)
 
 class settingsDialog: public wxDialog
@@ -46,74 +46,74 @@ class settingsDialog: public wxDialog
 		virtual ~settingsDialog();
 
 		//(*Declarations(settingsDialog)
-		wxStaticText* StaticText10;
-		wxStaticText* StaticText9;
+		wxButton* CancelButton;
+		wxTextCtrl* ShortcutManualCCText;
 		wxButton* TelnetArgumentHelpButton;
+		wxButton* SSHExecutableBrowseButton;
+		wxButton* VNCArgumentHelpButton;
+		wxPanel* Panel1;
+		wxPanel* Panel6;
+		wxStaticText* StaticText13;
+		wxStaticText* StaticText14;
+		wxFileDialog* SSHExecDialog;
+		wxStaticText* ShortcutCloseTabLabel;
+		wxStaticText* ShortcutManualCCLabel;
+		wxTextCtrl* TextShortcutCommandDialog;
+		wxTextCtrl* TextShortcutNewCon;
+		wxStaticText* CCWorkerThreadLabel;
+		wxButton* VNCArgumentResetButton;
+		wxSlider* CCWorkerThreadSlider;
+		wxStaticText* ShortcutNewTabLabel;
+		wxButton* VNCExecutableBrowseButton;
+		wxButton* SSHArgumentResetButton;
+		wxTextCtrl* ShortcutCloseTabText;
+		wxTextCtrl* TelnetArgumentText;
+		wxStaticText* StaticText1;
+		wxStaticText* StaticText10;
+		wxStaticText* StaticText16;
+		wxTextCtrl* TextShortcutDupCon;
+		wxPanel* Panel2;
+		wxStaticText* StaticText3;
+		wxPanel* Panel4;
+		wxTextCtrl* SSHArgumentText;
 		wxFileDialog* TelnetExecDialog;
+		wxTextCtrl* ShortcutNewTabText;
 		wxPanel* Panel5;
+		wxTextCtrl* TextShortcutConProp;
+		wxStaticText* StaticText8;
+		wxStaticText* StaticText12;
+		wxStaticText* CCTimeoutLabel;
+		wxPanel* Panel3;
+		wxStaticText* StaticText7;
 		wxCheckBox* CCAutoUpdateCheckbox;
+		wxTextCtrl* SSHExecutableText;
+		wxButton* TelnetExecutableBrowseButton;
+		wxSlider* CCUpdateIntervalSlider;
+		wxSlider* CCTimeoutSlider;
+		wxButton* SSHArgumentHelpButton;
+		wxStaticText* StaticText4;
+		wxTextCtrl* CWRUpdateIntervalTextDisplay;
+		wxSlider* CWRUpdateIntervalSlider;
+		wxStaticText* StaticText5;
+		wxStaticText* StaticText2;
+		wxTextCtrl* ShortcutConnectWhenReadyText;
+		wxTextCtrl* CCUpdateIntervalTextDisplay;
+		wxNotebook* Notebook1;
+		wxStaticText* StaticText6;
+		wxTextCtrl* TextShortcutSelectAllCon;
+		wxTextCtrl* TelnetExecutableText;
+		wxTextCtrl* VNCExecutableText;
 		wxTextCtrl* CCWorkerThreadTextDisplay;
 		wxButton* OKButton;
-		wxNotebook* Notebook1;
-		wxButton* VNCArgumentResetButton;
-		wxStaticText* ShortcutNewTabLabel;
-		wxFileDialog* VNCExecDialog;
-		wxStaticText* StaticText13;
-		wxStaticText* StaticText2;
-		wxPanel* Panel4;
-		wxTextCtrl* CCTimeoutTextDisplay;
-		wxStaticText* StaticText14;
-		wxButton* VNCArgumentHelpButton;
-		wxButton* VNCExecutableBrowseButton;
-		wxStaticText* StaticText6;
-		wxTextCtrl* VNCExecutableText;
-		wxTextCtrl* CCUpdateIntervalTextDisplay;
-		wxStaticText* CCTimeoutLabel;
-		wxTextCtrl* SSHArgumentText;
-		wxSlider* CCUpdateIntervalSlider;
-		wxTextCtrl* TextShortcutSelectAllCon;
-		wxStaticText* StaticText8;
-		wxStaticText* StaticText11;
-		wxButton* SSHExecutableBrowseButton;
 		wxStaticText* CCUpdateIntervalLabel;
-		wxPanel* Panel1;
-		wxTextCtrl* ShortcutNewTabText;
-		wxStaticText* StaticText1;
+		wxFileDialog* VNCExecDialog;
 		wxTextCtrl* VNCArgumentText;
-		wxStaticText* StaticText3;
-		wxTextCtrl* ShortcutManualCCText;
-		wxPanel* Panel6;
-		wxPanel* Panel3;
-		wxSlider* CCWorkerThreadSlider;
-		wxTextCtrl* TelnetExecutableText;
-		wxTextCtrl* TelnetArgumentText;
-		wxButton* SSHArgumentHelpButton;
-		wxSlider* CCTimeoutSlider;
-		wxButton* TelnetExecutableBrowseButton;
-		wxTextCtrl* TextShortcutDupCon;
-		wxStaticText* StaticText5;
-		wxStaticText* StaticText7;
-		wxFileDialog* SSHExecDialog;
-		wxTextCtrl* TextShortcutCommandDialog;
-		wxButton* TelnetArgumentResetButton;
-		wxStaticText* ShortcutManualCCLabel;
-		wxTextCtrl* TextShortcutNewCon;
 		wxCheckBox* CheckboxGreyListBackground;
-		wxStaticText* StaticText12;
-		wxPanel* Panel2;
-		wxStaticText* CCWorkerThreadLabel;
-		wxButton* SSHArgumentResetButton;
-		wxStaticText* StaticText4;
-		wxStaticText* ShortcutCloseTabLabel;
-		wxButton* CancelButton;
-		wxTextCtrl* SSHExecutableText;
-		wxTextCtrl* TextShortcutConProp;
-		wxTextCtrl* ShortcutConnectWhenReadyText;
-		wxStaticText* StaticText16;
-		wxSlider* CWRUpdateIntervalSlider;
+		wxStaticText* StaticText9;
 		wxChoice* RDPDefaultResolutionChoice;
-		wxTextCtrl* ShortcutCloseTabText;
-		wxTextCtrl* CWRUpdateIntervalTextDisplay;
+		wxButton* TelnetArgumentResetButton;
+		wxTextCtrl* CCTimeoutTextDisplay;
+		wxStaticText* StaticText11;
 		//*)
 
 	protected:
