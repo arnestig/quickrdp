@@ -86,7 +86,7 @@ CommandExamples::~CommandExamples()
 	//(*Destroy(CommandExamples)
 	//*)
 	for ( std::map< wxString, Command* >::iterator it = commands.begin(); it != commands.end(); ++it ) {
-		delete (*it).first;
+		delete (*it).second;
 	}
 }
 
