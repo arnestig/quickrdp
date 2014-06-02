@@ -26,8 +26,8 @@
 
 //(*InternalHeaders(settingsDialog)
 #include <wx/settings.h>
-#include <wx/intl.h>
 #include <wx/string.h>
+#include <wx/intl.h>
 //*)
 
 //(*IdInit(settingsDialog)
@@ -105,53 +105,53 @@ END_EVENT_TABLE()
 settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(settingsDialog)
-	wxBoxSizer* BoxSizer4;
-	wxStaticBoxSizer* StaticBoxSizer2;
-	wxBoxSizer* BoxSizer6;
-	wxBoxSizer* BoxSizer29;
-	wxBoxSizer* BoxSizer19;
 	wxBoxSizer* BoxSizer15;
-	wxBoxSizer* BoxSizer20;
-	wxBoxSizer* BoxSizer5;
-	wxBoxSizer* BoxSizer10;
-	wxBoxSizer* BoxSizer7;
-	wxBoxSizer* BoxSizer8;
-	wxBoxSizer* BoxSizer21;
-	wxBoxSizer* BoxSizer13;
-	wxStaticBoxSizer* StaticBoxSizer4;
-	wxBoxSizer* BoxSizer23;
-	wxBoxSizer* BoxSizer2;
-	wxBoxSizer* BoxSizer11;
-	wxBoxSizer* BoxSizer16;
-	wxStaticBoxSizer* StaticBoxSizer7;
-	wxBoxSizer* BoxSizer18;
-	wxBoxSizer* BoxSizer30;
-	wxBoxSizer* BoxSizer12;
-	wxBoxSizer* BoxSizer28;
-	wxBoxSizer* BoxSizer14;
-	wxStaticBoxSizer* StaticBoxSizer3;
-	wxStaticBoxSizer* StaticBoxSizer6;
-	wxBoxSizer* BoxSizer27;
-	wxBoxSizer* BoxSizer31;
-	wxBoxSizer* BoxSizer17;
-	wxBoxSizer* BoxSizer24;
-	wxBoxSizer* BoxSizer26;
+	wxStaticBoxSizer* StaticBoxSizer2;
 	wxBoxSizer* BoxSizer32;
-	wxBoxSizer* BoxSizer1;
-	wxBoxSizer* BoxSizer9;
-	wxStaticBoxSizer* StaticBoxSizer1;
-	wxBoxSizer* BoxSizer34;
-	wxBoxSizer* BoxSizer22;
 	wxBoxSizer* BoxSizer3;
+	wxStaticBoxSizer* StaticBoxSizer7;
+	wxBoxSizer* BoxSizer16;
+	wxBoxSizer* BoxSizer27;
 	wxStaticBoxSizer* StaticBoxSizer5;
+	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer25;
-
+	wxBoxSizer* BoxSizer29;
+	wxBoxSizer* BoxSizer24;
+	wxBoxSizer* BoxSizer7;
+	wxBoxSizer* BoxSizer11;
+	wxBoxSizer* BoxSizer13;
+	wxBoxSizer* BoxSizer22;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer28;
+	wxBoxSizer* BoxSizer31;
+	wxStaticBoxSizer* StaticBoxSizer3;
+	wxBoxSizer* BoxSizer17;
+	wxBoxSizer* BoxSizer9;
+	wxBoxSizer* BoxSizer18;
+	wxBoxSizer* BoxSizer21;
+	wxBoxSizer* BoxSizer34;
+	wxBoxSizer* BoxSizer19;
+	wxBoxSizer* BoxSizer4;
+	wxStaticBoxSizer* StaticBoxSizer4;
+	wxStaticBoxSizer* StaticBoxSizer6;
+	wxBoxSizer* BoxSizer8;
+	wxBoxSizer* BoxSizer30;
+	wxBoxSizer* BoxSizer23;
+	wxBoxSizer* BoxSizer20;
+	wxBoxSizer* BoxSizer1;
+	wxBoxSizer* BoxSizer12;
+	wxBoxSizer* BoxSizer14;
+	wxBoxSizer* BoxSizer26;
+	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer5;
+	wxStaticBoxSizer* StaticBoxSizer1;
+	
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(392,465));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer13 = new wxBoxSizer(wxVERTICAL);
-	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(355,397), 0, _T("ID_NOTEBOOK1"));
+	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(424,397), 0, _T("ID_NOTEBOOK1"));
 	Panel2 = new wxPanel(Notebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -291,7 +291,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	CCTimeoutLabel = new wxStaticText(Panel4, ID_STATICTEXT8, _("Connect scan timeout"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	BoxSizer18->Add(CCTimeoutLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer18->Add(24,20,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	CCTimeoutTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL7, _("0000 ms"), wxDefaultPosition, wxSize(55,21), wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+	CCTimeoutTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL7, _("0000 ms"), wxDefaultPosition, wxSize(66,21), wxTE_READONLY, wxDefaultValidator, _T("ID_TEXTCTRL7"));
 	BoxSizer18->Add(CCTimeoutTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CCTimeoutSlider = new wxSlider(Panel4, ID_SLIDER1, 0, 2, 200, wxDefaultPosition, wxSize(100,24), 0, wxDefaultValidator, _T("ID_SLIDER1"));
 	CCTimeoutSlider->SetPageSize(10);
@@ -308,7 +308,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	CCUpdateIntervalLabel = new wxStaticText(Panel4, ID_STATICTEXT10, _("Check connections every"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	BoxSizer21->Add(CCUpdateIntervalLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer21->Add(22,20,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	CCUpdateIntervalTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL8, _("180 s"), wxDefaultPosition, wxSize(41,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
+	CCUpdateIntervalTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL8, _("180 s"), wxDefaultPosition, wxSize(44,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL8"));
 	BoxSizer21->Add(CCUpdateIntervalTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CCUpdateIntervalSlider = new wxSlider(Panel4, ID_SLIDER2, 0, 1, 36, wxDefaultPosition, wxSize(100,24), 0, wxDefaultValidator, _T("ID_SLIDER2"));
 	CCUpdateIntervalSlider->SetPageSize(10);
@@ -330,7 +330,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	StaticText8 = new wxStaticText(Panel4, ID_STATICTEXT17, _(" \? "), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICTEXT17"));
 	StaticText8->SetForegroundColour(wxColour(255,0,0));
 	StaticText8->SetToolTip(_("Experimental setting. \nWill alter the number of threads used for connection checks. \nYou will need to restart the program for this setting to be effective."));
-	BoxSizer26->Add(StaticText8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	BoxSizer26->Add(StaticText8, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer26->Add(13,20,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	CCWorkerThreadTextDisplay = new wxTextCtrl(Panel4, ID_TEXTCTRL9, _("0"), wxDefaultPosition, wxSize(25,21), 0, wxDefaultValidator, _T("ID_TEXTCTRL9"));
 	BoxSizer26->Add(CCWorkerThreadTextDisplay, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -398,7 +398,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	SSHExecDialog = new wxFileDialog(this, _("Locate SSH executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	VNCExecDialog = new wxFileDialog(this, _("Locate VNC executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetBrowseClick);
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetArgumentReset);
