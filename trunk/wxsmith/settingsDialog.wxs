@@ -11,7 +11,7 @@
 						<orient>wxVERTICAL</orient>
 						<object class="sizeritem">
 							<object class="wxNotebook" name="ID_NOTEBOOK1" variable="Notebook1" member="yes">
-								<size>355,397</size>
+								<size>424,397</size>
 								<object class="notebookpage">
 									<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
 										<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -488,7 +488,7 @@
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="CCTimeoutTextDisplay" member="yes">
 															<value>0000 ms</value>
-															<size>55,21</size>
+															<size>66,21</size>
 															<style>wxTE_READONLY</style>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -545,7 +545,7 @@
 													<object class="sizeritem">
 														<object class="wxTextCtrl" name="ID_TEXTCTRL8" variable="CCUpdateIntervalTextDisplay" member="yes">
 															<value>180 s</value>
-															<size>41,21</size>
+															<size>44,21</size>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
@@ -620,7 +620,7 @@
 															<tooltip>Experimental setting. &#x0A;Will alter the number of threads used for connection checks. &#x0A;You will need to restart the program for this setting to be effective.</tooltip>
 															<style>wxSIMPLE_BORDER</style>
 														</object>
-														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 														<border>5</border>
 													</object>
 													<object class="spacer">
