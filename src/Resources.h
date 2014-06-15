@@ -38,6 +38,7 @@ class Resources
         CommandDatabase* getCommandDatabase() const;
         ConnectionChecker* getConnectionChecker() const;
         void addConnectionChecker( wxEvtHandler *parent );
+		void removeConnectionCheckerThread();
 
     private:
         static Resources* instance;

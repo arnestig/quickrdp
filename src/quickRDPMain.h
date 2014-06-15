@@ -105,6 +105,7 @@ class quickRDPFrame: public wxFrame
         void OnChangelogClick( wxCommandEvent& event );
         void onConnectionCheckerUpdate( wxCommandEvent& event );
         void onConnectionCheckerWantData( wxCommandEvent& event );
+        void onConnectionCheckerDone( wxCommandEvent& event );
         wxListCtrl* getConnectionList();
 
         //(*Identifiers(quickRDPFrame)

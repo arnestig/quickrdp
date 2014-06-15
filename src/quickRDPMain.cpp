@@ -89,6 +89,7 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     EVT_COMMAND(wxID_ANY, wxEVT_AUTOMATIC_VERSION_CHECK_DONE, quickRDPFrame::onAutomaticVersionCheckExecuted)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_STATUS_UPDATE, quickRDPFrame::onConnectionCheckerUpdate)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_SEND_DATA, quickRDPFrame::onConnectionCheckerWantData)
+    EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECKER_DONE, quickRDPFrame::onConnectionCheckerDone)
 END_EVENT_TABLE()
 
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
@@ -1106,6 +1107,11 @@ void quickRDPFrame::onConnectionCheckerWantData( wxCommandEvent& WXUNUSED(event)
     updateConnectionCheckerStatus();
 }
 
+void quickRDPFrame::onConnectionCheckerDone( wxCommandEvent& WXUNUSED(event) )
+{
+    Resources::Instance()->removeConnectionCheckerThread();
+}
+
 void quickRDPFrame::updatePopupmenuShortcuts()
 {
     Settings *settings = Resources::Instance()->getSettings();
@@ -1408,3 +1414,4 @@ void quickRDPFrame::OnIPCalculator(wxCommandEvent& WXUNUSED( event ) )
     showDialog( IPCalc );
     delete IPCalc;
 }
+

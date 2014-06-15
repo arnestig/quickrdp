@@ -48,26 +48,30 @@
 BEGIN_DECLARE_EVENT_TYPES()
     DECLARE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE, -1 )
     DECLARE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA, -1 )
+    DECLARE_EVENT_TYPE( wxEVT_CONNECTION_CHECKER_DONE, -1 )
 END_DECLARE_EVENT_TYPES()
 
 class ConnectionCheckerWorkerThread;
 
 class ConnectionChecker : public wxThread
 {
+	friend class ConnectionCheckerWorkerThread;
     public:
         ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers, unsigned int timeout );
         ~ConnectionChecker();
 
         void addTargets( std::vector< RDPConnection* > newTargets );
-        void publishTarget( RDPConnection*& target );
         void postEvent( wxCommandEvent event );
 
     private:
         virtual void *Entry();
 
+        void publishTarget( RDPConnection*& target );
+		void threadDone( ConnectionCheckerWorkerThread *thread );
         unsigned int numWorkers; /** how many worker threads we will spawn **/
         unsigned int timeout; /** socket select timeout **/
         ConnectionCheckerWorkerThread *workerThreads[ 8 ];
+        wxMutex threadMutex;
         wxMutex eventMutex;
         wxMutex mutex;
         std::map< long, RDPConnection* > targets;
