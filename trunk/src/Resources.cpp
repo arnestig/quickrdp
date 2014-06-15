@@ -37,7 +37,17 @@ Resources::Resources()
 
 Resources::~Resources()
 {
+	/** check that connection checker has exited cleanly **/
 	connectionChecker->Delete();
+	while ( true ) {
+		/** make sure we process events here, since the thread will signal with an event when done **/
+		wxTheApp->ProcessPendingEvents();
+		if ( connectionChecker == NULL ) {
+			break;
+		}
+		wxMilliSleep( 1 );
+	}
+
 	delete settings;
 	delete connectionDatabase;
 	delete commandDatabase;
@@ -75,6 +85,11 @@ CommandDatabase* Resources::getCommandDatabase() const
 ConnectionChecker* Resources::getConnectionChecker() const
 {
     return connectionChecker;
+}
+
+void Resources::removeConnectionCheckerThread()
+{
+	connectionChecker = NULL;
 }
 
 void Resources::addConnectionChecker( wxEvtHandler *parent )

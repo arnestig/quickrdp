@@ -28,6 +28,7 @@
 
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
+DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECKER_DONE )
 
 ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWorkers, unsigned int timeout )
     :   wxThread( wxTHREAD_DETACHED),
@@ -75,11 +76,31 @@ ConnectionChecker::~ConnectionChecker()
         workerThreads[ threadid ]->Delete();
 	}
 
+	/** make sure that the threads are dead before leaving here **/
+	while ( true ) {
+		bool threadsDone = true;
+		for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {
+			if ( workerThreads[ threadid ] != NULL ) {
+				threadsDone = false;
+			}
+		}
+		
+		if ( threadsDone == true ) {
+			break;
+		}
+
+		Sleep( 1 );
+	}
+
     /** remove all our targets left behind **/
 	mutex.Lock();
 	targets.clear();
 	mutex.Unlock();
 	delete queue;
+	
+	/** inform parent that we're done **/
+	wxCommandEvent evt_done( wxEVT_CONNECTION_CHECKER_DONE, wxID_ANY );
+	wxPostEvent( parent, evt_done );
 }
 
 void *ConnectionChecker::Entry()
@@ -125,6 +146,17 @@ void ConnectionChecker::publishTarget( RDPConnection*& target )
     mutex.Unlock();
 }
 
+void ConnectionChecker::threadDone( ConnectionCheckerWorkerThread *thread )
+{
+	threadMutex.Lock();
+    for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {
+        if ( workerThreads[ threadid ] == thread ) {
+			workerThreads[ threadid ] = NULL;
+		}
+	}
+	threadMutex.Unlock();
+}
+
 void ConnectionChecker::postEvent( wxCommandEvent event )
 {
     mutex.Lock();
@@ -160,6 +192,8 @@ ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker 
 
 ConnectionCheckerWorkerThread::~ConnectionCheckerWorkerThread()
 {
+	/** set the reference to NULL for this thread, marking it done **/
+	parent->threadDone( this );
 }
 
 void *ConnectionCheckerWorkerThread::Entry()

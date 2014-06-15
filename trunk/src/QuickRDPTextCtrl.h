@@ -49,8 +49,6 @@ class QuickRDPTextCtrl : public wxTextCtrl
             :   nextTextCtrl( NULL ),
                 nextTextCtrlKey( 0 )
         {
-            Init();
-
             Create(parent, id, value, pos, size, style, validator, name);
             nextTextCtrl = NULL;
             nextTextCtrlKey = 0;
