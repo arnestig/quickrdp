@@ -20,6 +20,7 @@
 **/
 
 #include "Resources.h"
+#include "quickRDPApp.h"
 #include <wx/msgdlg.h>
 
 Resources* Resources::instance = NULL;
