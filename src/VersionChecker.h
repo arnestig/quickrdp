@@ -25,6 +25,7 @@
 #include <wx/string.h>
 #include <curl/curl.h>
 #include <iostream>
+#include <vector>
 #include <wx/thread.h>
 #include <wx/event.h>
 
@@ -33,21 +34,41 @@ BEGIN_DECLARE_EVENT_TYPES()
     DECLARE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE, -1 )
 END_DECLARE_EVENT_TYPES()
 
-class VersionChecker : public wxThread
+class VersionCheckerWorker;
+
+class VersionChecker
+{
+	friend class VersionCheckerWorker;
+    public:
+        VersionChecker( wxEvtHandler *parent );
+        ~VersionChecker();
+
+        void checkForNewVersion( std::string url, bool automatic_check = true );
+
+    private:
+		void workerThreadDone( VersionCheckerWorker *thread );
+		void postEvent( wxCommandEvent event );
+		std::vector< VersionCheckerWorker* > workerThreads;
+		wxMutex mutex;
+
+        wxEvtHandler *parent;
+};
+
+class VersionCheckerWorker : public wxThread
 {
     public:
-        VersionChecker( wxEvtHandler *parent, std::string url, bool automatic_check = true );
-        ~VersionChecker();
+        VersionCheckerWorker( VersionChecker *parent, std::string url, bool automatic_check );
+        ~VersionCheckerWorker();
 
     private:
         static int writer( char *data, size_t size, size_t nmemb, std::string *buffer_in );
         std::string get( const char* url );
         bool execute( wxString &version);
         virtual void *Entry();
+		VersionChecker *parent;
 
-        wxEvtHandler *parent;
-        std::string url;
-        bool automatic_check;
+		std::string url;
+		bool automatic_check;
 };
 
 #endif

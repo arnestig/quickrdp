@@ -52,11 +52,14 @@ bool quickRDPApp::OnInit()
     	Frame->Show();
     	SetTopWindow(Frame);
 
-    	/** Check if new version is available... **/
-    	Frame->checkForNewAvailableVersion();
-
         /** Initialize the connection checker **/
         Resources::Instance()->addConnectionChecker( Frame );
+
+        /** Initialize the version checker **/
+        Resources::Instance()->addVersionChecker( Frame );
+
+    	/** Check if new version is available... **/
+    	Frame->checkForNewAvailableVersion();
 
     	/** run our init method for stuff that couldn't be done during the constructor of main frame **/
     	Frame->init();

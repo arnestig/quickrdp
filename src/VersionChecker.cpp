@@ -26,20 +26,89 @@
 DEFINE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE )
 DEFINE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE )
 
-VersionChecker::VersionChecker( wxEvtHandler *parent, std::string url, bool automatic_check )
-    :   wxThread( wxTHREAD_DETACHED ),
-        parent( parent ),
-        url( url ),
-        automatic_check( automatic_check )
-
+VersionChecker::VersionChecker( wxEvtHandler *parent )
+	:	parent( parent )
 {
 }
 
 VersionChecker::~VersionChecker()
 {
+	/** delete all our worker threads gracefully **/
+	for ( std::vector< VersionCheckerWorker* >::iterator it = workerThreads.begin(); it != workerThreads.end(); ++it ) {
+		if ( (*it) != NULL ) {
+			(*it)->Delete();
+		}
+	}
+
+	/** make sure that the threads are dead before leaving here **/
+	while ( true ) {
+		bool threadsDone = true;
+		for ( std::vector< VersionCheckerWorker* >::iterator it = workerThreads.begin(); it != workerThreads.end(); ++it ) {
+			if ( (*it) != NULL ) {
+				threadsDone = false;
+			}
+		}
+		
+		if ( threadsDone == true ) {
+			break;
+		}
+
+		wxMilliSleep( 1 );
+	}
 }
 
-bool VersionChecker::execute( wxString &version )
+void VersionChecker::checkForNewVersion( std::string url, bool automatic_check )
+{
+    VersionCheckerWorker *worker = new VersionCheckerWorker( this, url, automatic_check );
+    if ( worker->Create() != wxTHREAD_NO_ERROR ) {
+        delete worker;
+        worker = NULL;
+        wxMessageBox( wxT("Error while creating HTTP thread!") );
+    } else {
+        if ( worker->Run() != wxTHREAD_NO_ERROR ) {
+            delete worker;
+            worker = NULL;
+            wxMessageBox( wxT("Error while running HTTP thread!") );
+        }
+    }
+
+	if ( worker != NULL ) {
+		workerThreads.push_back( worker );
+	}
+}
+
+void VersionChecker::workerThreadDone( VersionCheckerWorker *thread )
+{
+	mutex.Lock();
+	for( unsigned int i = 0; i < workerThreads.size(); i++ ) {
+		if ( workerThreads[ i ] == thread ) {
+			workerThreads[ i ] = NULL;	
+		}
+	}
+	mutex.Unlock();
+}
+
+void VersionChecker::postEvent( wxCommandEvent event )
+{
+    mutex.Lock();
+    wxPostEvent( parent, event );
+    mutex.Unlock();
+}
+
+VersionCheckerWorker::VersionCheckerWorker( VersionChecker *parent, std::string url, bool automatic_check )
+    :   wxThread( wxTHREAD_DETACHED ),
+        parent( parent ),
+        url( url ),
+        automatic_check( automatic_check )
+{
+}
+
+VersionCheckerWorker::~VersionCheckerWorker()
+{
+	parent->workerThreadDone( this );
+}
+
+bool VersionCheckerWorker::execute( wxString &version )
 {
     std::string retData = get( url.c_str() );
 
@@ -70,7 +139,7 @@ bool VersionChecker::execute( wxString &version )
 
 }
 
-int VersionChecker::writer( char *data, size_t size, size_t nmemb, std::string *buffer_in )
+int VersionCheckerWorker::writer( char *data, size_t size, size_t nmemb, std::string *buffer_in )
 {
     if ( buffer_in != NULL )
     {
@@ -80,7 +149,8 @@ int VersionChecker::writer( char *data, size_t size, size_t nmemb, std::string *
 
     return 0;
 }
-std::string VersionChecker::get( const char* url )
+
+std::string VersionCheckerWorker::get( const char* url )
 {
     CURL *curl;
     CURLcode result = CURLE_FAILED_INIT;
@@ -90,7 +160,7 @@ std::string VersionChecker::get( const char* url )
 
     if ( curl ) {
         curl_easy_setopt( curl, CURLOPT_URL, url );
-        curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, &VersionChecker::writer );
+        curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, &VersionCheckerWorker::writer );
         curl_easy_setopt( curl, CURLOPT_WRITEDATA, &buffer );
         result = curl_easy_perform( curl );
     }
@@ -103,7 +173,7 @@ std::string VersionChecker::get( const char* url )
     return "";
 }
 
-void *VersionChecker::Entry()
+void *VersionCheckerWorker::Entry()
 {
     /** execute our thread and check for a new version, then return information to the main frame **/
 
@@ -120,6 +190,6 @@ void *VersionChecker::Entry()
         evt.SetInt( 0 );
     }
 
-    wxPostEvent( parent, evt );
+    parent->postEvent( evt );
     return 0;
 }

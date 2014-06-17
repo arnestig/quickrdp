@@ -823,18 +823,7 @@ void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
-    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/", false );
-    if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
-        delete versionCheck;
-        versionCheck = NULL;
-        wxMessageBox( wxT("Error while creating HTTP thread!") );
-    } else {
-        if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
-            delete versionCheck;
-            versionCheck = NULL;
-            wxMessageBox( wxT("Error while running HTTP thread!") );
-        }
-    }
+	Resources::Instance()->getVersionChecker()->checkForNewVersion( "http://sourceforge.net/projects/quickrdp/files/quickRDP/", false );
 }
 
 void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
@@ -1050,18 +1039,7 @@ void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::checkForNewAvailableVersion( )
 {
-    VersionChecker *versionCheck = new VersionChecker( this, "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
-    if ( versionCheck->Create() != wxTHREAD_NO_ERROR ) {
-        delete versionCheck;
-        versionCheck = NULL;
-        wxMessageBox( wxT("Error while creating HTTP thread!") );
-    } else {
-        if ( versionCheck->Run() != wxTHREAD_NO_ERROR ) {
-            delete versionCheck;
-            versionCheck = NULL;
-            wxMessageBox( wxT("Error while running HTTP thread!") );
-        }
-    }
+	Resources::Instance()->getVersionChecker()->checkForNewVersion( "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
 }
 
 void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )

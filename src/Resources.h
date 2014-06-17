@@ -26,6 +26,7 @@
 #include "RDPDatabase.h"
 #include "CommandDatabase.h"
 #include "connectionchecker.h"
+#include "VersionChecker.h"
 
 class Resources
 {
@@ -34,9 +35,11 @@ class Resources
         static void DestroyInstance();
 
         Settings* getSettings() const;
+		VersionChecker* getVersionChecker() const;
         RDPDatabase* getConnectionDatabase() const;
         CommandDatabase* getCommandDatabase() const;
         ConnectionChecker* getConnectionChecker() const;
+		void addVersionChecker( wxEvtHandler *parent );
         void addConnectionChecker( wxEvtHandler *parent );
 		void removeConnectionCheckerThread();
 
@@ -50,6 +53,7 @@ class Resources
         RDPDatabase *connectionDatabase;
         CommandDatabase *commandDatabase;
         ConnectionChecker *connectionChecker;
+        VersionChecker *versionChecker;
 };
 
 #endif
