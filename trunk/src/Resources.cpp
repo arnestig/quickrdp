@@ -29,7 +29,8 @@ Resources::Resources()
     :   settings( NULL ),
         connectionDatabase( NULL ),
         commandDatabase( NULL ),
-        connectionChecker( NULL )
+        connectionChecker( NULL ),
+		versionChecker( NULL )
 {
     settings = new Settings();
     connectionDatabase = new RDPDatabase();
@@ -52,6 +53,7 @@ Resources::~Resources()
 	delete settings;
 	delete connectionDatabase;
 	delete commandDatabase;
+	delete versionChecker;
 }
 
 void Resources::DestroyInstance()
@@ -73,6 +75,11 @@ Settings* Resources::getSettings() const
     return settings;
 }
 
+VersionChecker* Resources::getVersionChecker() const
+{
+    return versionChecker;
+}
+
 RDPDatabase* Resources::getConnectionDatabase() const
 {
     return connectionDatabase;
@@ -91,6 +98,11 @@ ConnectionChecker* Resources::getConnectionChecker() const
 void Resources::removeConnectionCheckerThread()
 {
 	connectionChecker = NULL;
+}
+
+void Resources::addVersionChecker( wxEvtHandler *parent )
+{
+	versionChecker = new VersionChecker( parent );
 }
 
 void Resources::addConnectionChecker( wxEvtHandler *parent )

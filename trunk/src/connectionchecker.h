@@ -71,8 +71,6 @@ class ConnectionChecker : public wxThread
         unsigned int numWorkers; /** how many worker threads we will spawn **/
         unsigned int timeout; /** socket select timeout **/
         ConnectionCheckerWorkerThread *workerThreads[ 8 ];
-        wxMutex threadMutex;
-        wxMutex eventMutex;
         wxMutex mutex;
         std::map< long, RDPConnection* > targets;
         wxEvtHandler *parent;

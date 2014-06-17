@@ -148,13 +148,13 @@ void ConnectionChecker::publishTarget( RDPConnection*& target )
 
 void ConnectionChecker::threadDone( ConnectionCheckerWorkerThread *thread )
 {
-	threadMutex.Lock();
+	mutex.Lock();
     for ( unsigned int threadid = 0; threadid < numWorkers; ++threadid ) {
         if ( workerThreads[ threadid ] == thread ) {
 			workerThreads[ threadid ] = NULL;
 		}
 	}
-	threadMutex.Unlock();
+	mutex.Unlock();
 }
 
 void ConnectionChecker::postEvent( wxCommandEvent event )
