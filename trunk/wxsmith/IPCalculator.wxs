@@ -20,6 +20,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxTextCtrl" name="ID_TEXTCTRL1" subclass="QuickRDPTextCtrl" variable="IPAddressText" member="yes">
+												<size>120,25</size>
 												<style>wxTE_PROCESS_ENTER</style>
 												<handler function="OnNetmaskCIDRText" entry="EVT_TEXT" />
 												<handler function="OnButtonCalcClick" entry="EVT_TEXT_ENTER" />
@@ -44,6 +45,7 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxTextCtrl" name="ID_TEXTCTRL2" subclass="QuickRDPTextCtrl" variable="NetmaskText" member="yes">
+												<size>120,25</size>
 												<style>wxTE_PROCESS_ENTER</style>
 												<handler function="OnNetmaskCIDRText" entry="EVT_TEXT" />
 												<handler function="OnButtonCalcClick" entry="EVT_TEXT_ENTER" />
@@ -80,7 +82,7 @@
 							<object class="wxBoxSizer" variable="BoxSizer7" member="no">
 								<object class="sizeritem">
 									<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextOutput" member="yes">
-										<size>315,91</size>
+										<size>315,102</size>
 										<bg>wxSYS_COLOUR_INFOBK</bg>
 										<style>wxTE_NO_VSCROLL|wxTE_MULTILINE|wxTE_READONLY|wxFULL_REPAINT_ON_RESIZE</style>
 									</object>
