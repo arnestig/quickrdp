@@ -23,8 +23,8 @@
 
 //(*InternalHeaders(IPCalculator)
 #include <wx/settings.h>
-#include <wx/intl.h>
 #include <wx/string.h>
+#include <wx/intl.h>
 //*)
 
 //(*IdInit(IPCalculator)
@@ -45,14 +45,14 @@ END_EVENT_TABLE()
 IPCalculator::IPCalculator(wxWindow* parent,wxWindowID id)
 {
 	//(*Initialize(IPCalculator)
-	wxBoxSizer* BoxSizer4;
-	wxBoxSizer* BoxSizer6;
-	wxBoxSizer* BoxSizer5;
+	wxBoxSizer* BoxSizer3;
 	wxBoxSizer* BoxSizer7;
 	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer4;
 	wxBoxSizer* BoxSizer1;
-	wxBoxSizer* BoxSizer3;
-
+	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer5;
+	
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -61,13 +61,13 @@ IPCalculator::IPCalculator(wxWindow* parent,wxWindowID id)
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
 	StaticText1 = new wxStaticText(Panel1, ID_STATICTEXT1, _("IP-address"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	BoxSizer3->Add(StaticText1, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL, 5);
-	IPAddressText = new QuickRDPTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	IPAddressText = new QuickRDPTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(120,25), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
 	BoxSizer3->Add(IPAddressText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6->Add(BoxSizer3, 1, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer4 = new wxBoxSizer(wxVERTICAL);
 	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Netmask or CIDR"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer4->Add(StaticText2, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	NetmaskText = new QuickRDPTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	NetmaskText = new QuickRDPTextCtrl(Panel1, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(120,25), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	BoxSizer4->Add(NetmaskText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6->Add(BoxSizer4, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
@@ -77,7 +77,7 @@ IPCalculator::IPCalculator(wxWindow* parent,wxWindowID id)
 	BoxSizer6->Add(BoxSizer5, 0, wxALL|wxALIGN_BOTTOM|wxALIGN_CENTER_HORIZONTAL, 5);
 	BoxSizer2->Add(BoxSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-	TextOutput = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(315,91), wxTE_NO_VSCROLL|wxTE_MULTILINE|wxTE_READONLY|wxFULL_REPAINT_ON_RESIZE, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+	TextOutput = new wxTextCtrl(Panel1, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(315,102), wxTE_NO_VSCROLL|wxTE_MULTILINE|wxTE_READONLY|wxFULL_REPAINT_ON_RESIZE, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	TextOutput->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_INFOBK));
 	BoxSizer7->Add(TextOutput, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2->Add(BoxSizer7, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -88,7 +88,7 @@ IPCalculator::IPCalculator(wxWindow* parent,wxWindowID id)
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-
+	
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&IPCalculator::OnNetmaskCIDRText);
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&IPCalculator::OnButtonCalcClick);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&IPCalculator::OnNetmaskCIDRText);
@@ -196,6 +196,7 @@ void IPCalculator::OnButtonCalcClick(wxCommandEvent& WXUNUSED( event ) )
 bool IPCalculator::isValidNetmaskValue( short value )
 {
     switch( value ) {
+        case 0:
         case 128:
         case 192:
         case 224:
