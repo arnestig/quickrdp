@@ -47,6 +47,7 @@ class QuickRDPTextCtrl : public wxTextCtrl
                        const wxValidator& validator = wxDefaultValidator,
                        const wxString& name = wxTextCtrlNameStr)
             :   nextTextCtrl( NULL ),
+                maxLength( 0 ),
                 nextTextCtrlKey( 0 )
         {
             Create(parent, id, value, pos, size, style, validator, name);
@@ -54,12 +55,15 @@ class QuickRDPTextCtrl : public wxTextCtrl
             nextTextCtrlKey = 0;
         }
 
+		bool isValidInput( int keycode );
         void OnChar( wxKeyEvent &event );
+		void setMaxLength( int maxLength );
         void setNextTextCtrl( wxTextCtrl *nextTextCtrl, int nextTextCtrlKey );
         void addValidKeyCodes( std::pair< int, int > validKeyCodes );
 
     private:
         wxTextCtrl *nextTextCtrl;
+		unsigned int maxLength;
         int nextTextCtrlKey;
         std::vector< std::pair< int, int > > validKeyCodes;
 };

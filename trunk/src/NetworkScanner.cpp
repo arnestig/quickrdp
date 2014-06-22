@@ -228,27 +228,27 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
     populateListCtrl();
 
     IPFrom1->setNextTextCtrl( IPFrom2, 46 );
-    IPFrom1->SetMaxLength( 3 );
+    IPFrom1->setMaxLength( 3 );
     IPFrom1->addValidKeyCodes( std::make_pair( 48, 57 ) );
     IPFrom2->setNextTextCtrl( IPFrom3, 46 );
-    IPFrom2->SetMaxLength( 3 );
+    IPFrom2->setMaxLength( 3 );
     IPFrom2->addValidKeyCodes( std::make_pair( 48, 57 ) );
     IPFrom3->setNextTextCtrl( IPFrom4, 46 );
-    IPFrom3->SetMaxLength( 3 );
+    IPFrom3->setMaxLength( 3 );
     IPFrom3->addValidKeyCodes( std::make_pair( 48, 57 ) );
     IPFrom4->setNextTextCtrl( IPTo1, 46 );
-    IPFrom4->SetMaxLength( 3 );
+    IPFrom4->setMaxLength( 3 );
     IPFrom4->addValidKeyCodes( std::make_pair( 48, 57 ) );
     IPTo1->setNextTextCtrl( IPTo2, 46 );
-    IPTo1->SetMaxLength( 3 );
+    IPTo1->setMaxLength( 3 );
     IPTo1->addValidKeyCodes( std::make_pair( 48, 57 ) );
     IPTo2->setNextTextCtrl( IPTo3, 46 );
-    IPTo2->SetMaxLength( 3 );
+    IPTo2->setMaxLength( 3 );
     IPTo2->addValidKeyCodes( std::make_pair( 48, 57 ) );
     IPTo3->setNextTextCtrl( IPTo4, 46 );
-    IPTo3->SetMaxLength( 3 );
+    IPTo3->setMaxLength( 3 );
     IPTo3->addValidKeyCodes( std::make_pair( 48, 57 ) );
-    IPTo4->SetMaxLength( 3 );
+    IPTo4->setMaxLength( 3 );
     IPTo4->addValidKeyCodes( std::make_pair( 48, 57 ) );
 
     OtherPortsText->addValidKeyCodes( std::make_pair( 44, 45 ) );

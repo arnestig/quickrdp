@@ -27,31 +27,47 @@ BEGIN_EVENT_TABLE(QuickRDPTextCtrl, wxTextCtrl)
     EVT_CHAR(QuickRDPTextCtrl::OnChar)
 END_EVENT_TABLE()
 
+bool QuickRDPTextCtrl::isValidInput( int keycode )
+{
+	for ( std::vector< std::pair< int, int > >::iterator it = validKeyCodes.begin(); it != validKeyCodes.end(); ++it ) {
+		if ( (*it).first <= keycode && (*it).second >= keycode ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void QuickRDPTextCtrl::OnChar(wxKeyEvent &event)
 {
     int keycode = event.GetKeyCode();
-    /** check if we should hop to our next specified textCtrl. **/
-    if ( nextTextCtrl != NULL && nextTextCtrlKey == keycode ) {
+    /** First we will allow backspace and DEL, left arrow and right arrow, TAB no matter what **/
+    if ( keycode == 8 || keycode == 127 || keycode == 314 || keycode == 316 || keycode == 13 || keycode == 9 ) {
+        event.Skip();
+    } else if ( nextTextCtrl != NULL && nextTextCtrlKey == keycode ) { // next text ctrl key pressed?
         nextTextCtrl->SetSelection( -1, -1 );
         nextTextCtrl->SetFocus();
-    } else {
+    } else if ( nextTextCtrl != NULL && GetValue().Length()+1 == maxLength ) { // max length input received?
+		if ( isValidInput( keycode ) == true ) {
+			event.Skip();
+			nextTextCtrl->SetSelection( -1, -1 );
+			nextTextCtrl->SetFocus();
+		}
+	} else { 
         /** check if input key is a valid key **/
-        for ( std::vector< std::pair< int, int > >::iterator it = validKeyCodes.begin(); it != validKeyCodes.end(); ++it ) {
-            if ( (*it).first <= keycode && (*it).second >= keycode ) {
-                event.Skip();
-            }
-        }
+		if ( isValidInput( keycode ) == true ) {
+			event.Skip();
+		}
 
         /** if we don't have any restriction on keycodes, we pass the input **/
         if ( validKeyCodes.empty() == true ) {
             event.Skip();
         }
     }
+}
 
-    /** we will also allow backspace and DEL, left arrow and right arrow, TAB no matter what **/
-    if ( keycode == 8 || keycode == 127 || keycode == 314 || keycode == 316 || keycode == 13 || keycode == 9 ) {
-        event.Skip();
-    }
+void QuickRDPTextCtrl::setMaxLength( int maxLength )
+{
+    this->maxLength = maxLength;
 }
 
 void QuickRDPTextCtrl::setNextTextCtrl( wxTextCtrl *nextTextCtrl, int nextTextCtrlKey  )
@@ -64,3 +80,4 @@ void QuickRDPTextCtrl::addValidKeyCodes( std::pair< int, int > validKeyCodes )
 {
     this->validKeyCodes.push_back( validKeyCodes );
 }
+
