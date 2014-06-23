@@ -43,16 +43,18 @@ void QuickRDPTextCtrl::OnChar(wxKeyEvent &event)
     /** First we will allow backspace and DEL, left arrow and right arrow, TAB no matter what **/
     if ( keycode == 8 || keycode == 127 || keycode == 314 || keycode == 316 || keycode == 13 || keycode == 9 ) {
         event.Skip();
-    } else if ( nextTextCtrl != NULL && nextTextCtrlKey == keycode ) { // next text ctrl key pressed?
+    } else if ( GetStringSelection().IsEmpty() == false ) { /** we also want to allow replace text when something is selected **/
+        event.Skip();
+    } else if ( nextTextCtrl != NULL && nextTextCtrlKey == keycode ) { /** next text ctrl key pressed? **/
         nextTextCtrl->SetSelection( -1, -1 );
         nextTextCtrl->SetFocus();
-    } else if ( nextTextCtrl != NULL && GetValue().Length()+1 == maxLength ) { // max length input received?
+    } else if ( nextTextCtrl != NULL && GetValue().Length()+1 == maxLength ) { /** max length input received? **/
 		if ( isValidInput( keycode ) == true ) {
 			event.Skip();
 			nextTextCtrl->SetSelection( -1, -1 );
 			nextTextCtrl->SetFocus();
 		}
-	} else { 
+	} else {
         /** check if input key is a valid key **/
 		if ( isValidInput( keycode ) == true ) {
 			event.Skip();
