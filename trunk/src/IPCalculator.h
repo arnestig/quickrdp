@@ -25,12 +25,12 @@
 #include "QuickRDPTextCtrl.h"
 
 //(*Headers(IPCalculator)
-#include <wx/dialog.h>
 #include <wx/sizer.h>
-#include <wx/button.h>
-#include <wx/panel.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/panel.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
 //*)
 
 class IPCalculator: public wxDialog
@@ -41,13 +41,13 @@ class IPCalculator: public wxDialog
 		virtual ~IPCalculator();
 
 		//(*Declarations(IPCalculator)
+		wxStaticText* StaticText2;
 		QuickRDPTextCtrl* IPAddressText;
 		wxTextCtrl* TextOutput;
 		wxPanel* Panel1;
-		wxButton* ButtonCalc;
 		wxStaticText* StaticText1;
+		wxButton* ButtonCalc;
 		QuickRDPTextCtrl* NetmaskText;
-		wxStaticText* StaticText2;
 		//*)
 
 	protected:

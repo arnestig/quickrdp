@@ -715,7 +715,7 @@ void quickRDPFrame::OnCommandSelected(wxCommandEvent& event)
     wxMenuItem *usedMenuItem = PopupMenu1.FindItem( event.GetId() );
     std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() );
     for ( size_t con = 0; con < connections.size(); ++con ) {
-        Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetLabel() );
+        Command* executeCommand = Resources::Instance()->getCommandDatabase()->getCommand( usedMenuItem->GetItemLabelText() );
         if ( executeCommand != NULL ) {
             if ( executeCommand->getSafety() == true && doneSafetyCheck == false ) {
                 if ( wxMessageBox( wxT("Do you want to run the command ") + executeCommand->getName() + wxT("?"), wxT("Run command?"), wxOK | wxCANCEL ) != wxOK ) {
@@ -1095,22 +1095,22 @@ void quickRDPFrame::updatePopupmenuShortcuts()
     Settings *settings = Resources::Instance()->getSettings();
     wxMenuItem *propConMenu = PopupMenu1.FindItem( ID_POPUPMENUPROPERTIES );
     if ( propConMenu != NULL ) {
-        propConMenu->SetText( wxT("Properties\t") + quickRDP::Shortcuts::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getPropConnectionShortcut().first ) );
+        propConMenu->SetItemLabel( wxT("Properties\t") + quickRDP::Shortcuts::ModifierString( settings->getPropConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getPropConnectionShortcut().first ) );
     }
 
     wxMenuItem *dupConMenu = PopupMenu1.FindItem( ID_POPUPMENU_DUPLICATE );
     if ( dupConMenu != NULL ) {
-        dupConMenu->SetText( wxT("Duplicate\t") + quickRDP::Shortcuts::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getDupConnectionShortcut().first ) );
+        dupConMenu->SetItemLabel( wxT("Duplicate\t") + quickRDP::Shortcuts::ModifierString( settings->getDupConnectionShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getDupConnectionShortcut().first ) );
     }
 
     wxMenuItem *manualCCMenu = PopupMenu1.FindItem( ID_POPUPMENUMANUALCC );
     if ( manualCCMenu != NULL ) {
-        manualCCMenu->SetText( wxT("Connection check\t") + quickRDP::Shortcuts::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getManualCCShortcut().first ) );
+        manualCCMenu->SetItemLabel( wxT("Connection check\t") + quickRDP::Shortcuts::ModifierString( settings->getManualCCShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getManualCCShortcut().first ) );
     }
 
     wxMenuItem *connectWhenReadyMenu = PopupMenu1.FindItem( ID_POPUPMENUCONNECTWHENREADY );
     if ( connectWhenReadyMenu != NULL ) {
-        connectWhenReadyMenu->SetText( wxT("Connect when ready\t") + quickRDP::Shortcuts::ModifierString( settings->getConnectWhenReadyShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getConnectWhenReadyShortcut().first )  );
+        connectWhenReadyMenu->SetItemLabel( wxT("Connect when ready\t") + quickRDP::Shortcuts::ModifierString( settings->getConnectWhenReadyShortcut().second ) + quickRDP::Shortcuts::KeycodeString( settings->getConnectWhenReadyShortcut().first )  );
     }
 }
 

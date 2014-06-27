@@ -23,8 +23,8 @@
 
 //(*InternalHeaders(IPCalculator)
 #include <wx/settings.h>
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(IPCalculator)
@@ -45,14 +45,14 @@ END_EVENT_TABLE()
 IPCalculator::IPCalculator(wxWindow* parent,wxWindowID id)
 {
 	//(*Initialize(IPCalculator)
-	wxBoxSizer* BoxSizer3;
-	wxBoxSizer* BoxSizer7;
-	wxBoxSizer* BoxSizer2;
 	wxBoxSizer* BoxSizer4;
-	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer6;
 	wxBoxSizer* BoxSizer5;
-	
+	wxBoxSizer* BoxSizer7;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer1;
+	wxBoxSizer* BoxSizer3;
+
 	Create(parent, id, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
@@ -88,7 +88,7 @@ IPCalculator::IPCalculator(wxWindow* parent,wxWindowID id)
 	SetSizer(BoxSizer1);
 	BoxSizer1->Fit(this);
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&IPCalculator::OnNetmaskCIDRText);
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&IPCalculator::OnButtonCalcClick);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&IPCalculator::OnNetmaskCIDRText);
