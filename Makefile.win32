@@ -17,11 +17,11 @@ ifeq (,$(CURL_LIB_PATH))
 endif
 INCLUDE_DIR=-I$(WXWIDGETS_INCLUDE_PATH) -I$(CURL_INCLUDE_PATH) -I$(WXWIDGETS_LIB_PATH)/mswu
 LIBS = -L$(WXWIDGETS_LIB_PATH) -L$(CURL_LIB_PATH) -lwxmsw30u_adv -lwxmsw30u_core -lwxbase30u -lwxpng -lwxjpeg -lwxtiff -lwxzlib -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lcomctl32 -lwsock32 -lodbc32 -lcurl -lws2_32 -lwldap32 
-SVN_DEFINE=-DSVN_REVISION=0
-
-ifneq (,$(SVN_INFO_REV))
-	SVN_DEFINE=-DSVN_REVISION=$(SVN_INFO_REV)
+SVN_DEFINE=-DSVN_REVISION=$(SVN_REVISION)
+ifneq (,$(SVN_REVISION))
+	SVN_DEFINE=-DSVN_REVISION=$(SVN_REVISION)
 endif
+
 
 OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 RESFILE = obj/resource.res
