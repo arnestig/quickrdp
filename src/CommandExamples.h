@@ -64,7 +64,8 @@ class CommandExamples: public wxDialog
 		void OnListCtrl1ItemSelectDeselect(wxListEvent& event);
 		void OnListCtrl1ItemActivated(wxListEvent& event);
 		//*)
-		void loadExampleCommands();
+		void loadExampleCommandsWindows();
+		void loadExampleCommandsLinux();
 		void displayCommands();
 		Command* getCommandFromList();
 

@@ -77,7 +77,11 @@ CommandExamples::CommandExamples(wxWindow* parent,wxWindowID id,const wxPoint& W
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandExamples::OnClose);
 	//*)
 
-	loadExampleCommands();
+    #if defined(__WXMSW__)
+        loadExampleCommandsWindows();
+    #elif defined(__UNIX__)
+        loadExampleCommandsLinux();
+    #endif
 	displayCommands();
 }
 
@@ -90,7 +94,11 @@ CommandExamples::~CommandExamples()
 	}
 }
 
-void CommandExamples::loadExampleCommands()
+void CommandExamples::loadExampleCommandsLinux()
+{
+}
+
+void CommandExamples::loadExampleCommandsWindows()
 {
     /** mount C$ **/
     wxString mount_C_name = wxT("mount C$");
@@ -113,6 +121,28 @@ void CommandExamples::loadExampleCommands()
     bool mount_C_useSpecificCommands = false;
     Command *mount_C = new Command( mount_C_name, mount_C_ConnectionProgram, mount_C_ConnectionArgument, mount_C_name, mount_C_favorite, mount_C_safety, mount_C_shortcutModifier, mount_C_shortcutKey, mount_C_useSpecificCommands );
     commands[ wxT("Mounts the share C$ on a Windows controller and opens it in Explorer") ] = mount_C;
+
+    /** web browser C$ **/
+    wxString webbrowser_name = wxT("Chrome");
+    std::map< int, wxString > webbrowser_ConnectionProgram;
+    std::map< int, wxString > webbrowser_ConnectionArgument;
+    webbrowser_ConnectionProgram[ -1 ] = wxT("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    webbrowser_ConnectionArgument[ -1 ] = wxT("http://%hostname%/");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    bool webbrowser_favorite = true;
+    bool webbrowser_safety = false;
+    int webbrowser_shortcutModifier = 0;
+    int webbrowser_shortcutKey = 0;
+    bool webbrowser_useSpecificCommands = false;
+    Command *webbrowser = new Command( webbrowser_name, webbrowser_ConnectionProgram, webbrowser_ConnectionArgument, webbrowser_name, webbrowser_favorite, webbrowser_safety, webbrowser_shortcutModifier, webbrowser_shortcutKey, webbrowser_useSpecificCommands );
+    commands[ wxT("Opens up Chrome browser with the connection as target") ] = webbrowser;
 }
 
 void CommandExamples::displayCommands()
