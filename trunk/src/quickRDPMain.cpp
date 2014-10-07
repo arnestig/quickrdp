@@ -403,6 +403,9 @@ void quickRDPFrame::OnEditButtonClick(wxCommandEvent& WXUNUSED(event) , RDPConne
         newFrame->loadRDPConnection( curCon );
         if ( showDialog( newFrame ) != wxCANCEL ) {
             loadRDPFromDatabase(); /** only reload database if we changed anything.. (clicked save in this dialog ) **/
+            std::vector< RDPConnection* > connections;
+            connections.push_back( curCon );
+            manuallyDoConnectionCheck( connections );
         }
         delete newFrame;
         if ( getConnectionList()->GetSelectedItemCount() <= 0 ) {
