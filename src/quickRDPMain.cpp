@@ -1276,8 +1276,8 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
     /** and append our command submenu as well **/
     if ( commandMenu->GetMenuItemCount() <= 0 ) {
         wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, wxID_ANY, wxT("-- no commands in database --") );
-        newCommandMenuItem->Enable( false );
         commandMenu->Append( newCommandMenuItem );
+        newCommandMenuItem->Enable( false );
     }
 
     PopupMenu( &PopupMenu1 );
