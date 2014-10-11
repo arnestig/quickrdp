@@ -162,6 +162,27 @@ void CommandExamples::loadExampleCommandsLinux()
     Command *webbrowser = new Command( webbrowser_name, webbrowser_ConnectionProgram, webbrowser_ConnectionArgument, webbrowser_name, webbrowser_favorite, webbrowser_safety, webbrowser_shortcutModifier, webbrowser_shortcutKey, webbrowser_useSpecificCommands );
     commands[ wxT("Opens up Chrome browser with the connection as target") ] = webbrowser;
 
+    /** SSH command **/
+    wxString sshcommand_name = wxT("SSH command");
+    std::map< int, wxString > sshcommand_ConnectionProgram;
+    std::map< int, wxString > sshcommand_ConnectionArgument;
+    sshcommand_ConnectionProgram[ -1 ] = wxT("/usr/bin/x-terminal-emulator");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    sshcommand_ConnectionArgument[ -1 ] = wxT("-e \"ssh %username%@%hostname% $command$\"");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    bool sshcommand_favorite = false;
+    bool sshcommand_safety = false;
+    int sshcommand_shortcutModifier = 0;
+    int sshcommand_shortcutKey = 0;
+    bool sshcommand_useSpecificCommands = false;
+    Command *sshcommand = new Command( sshcommand_name, sshcommand_ConnectionProgram, sshcommand_ConnectionArgument, sshcommand_name, sshcommand_favorite, sshcommand_safety, sshcommand_shortcutModifier, sshcommand_shortcutKey, sshcommand_useSpecificCommands );
+    commands[ wxT("Run an SSH command on target provided as a custom argument") ] = sshcommand;
     /** ping **/
     wxString ping_name = wxT("ping");
     std::map< int, wxString > ping_ConnectionProgram;
