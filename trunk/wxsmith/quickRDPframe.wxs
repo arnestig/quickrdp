@@ -82,7 +82,7 @@
 													<border>5</border>
 												</object>
 											</object>
-											<flag>wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxBOTTOM|wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
