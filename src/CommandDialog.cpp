@@ -28,8 +28,8 @@
 #include <wx/msgdlg.h>
 
 //(*InternalHeaders(CommandDialog)
-#include <wx/intl.h>
 #include <wx/string.h>
+#include <wx/intl.h>
 //*)
 
 //(*IdInit(CommandDialog)
@@ -66,17 +66,17 @@ END_EVENT_TABLE()
 CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 {
 	//(*Initialize(CommandDialog)
-	wxBoxSizer* BoxSizer4;
-	wxBoxSizer* BoxSizer5;
+	wxBoxSizer* BoxSizer3;
 	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
-	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer13;
 	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer9;
+	wxBoxSizer* BoxSizer4;
+	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer12;
 	wxBoxSizer* BoxSizer14;
-	wxBoxSizer* BoxSizer9;
-	wxBoxSizer* BoxSizer3;
+	wxBoxSizer* BoxSizer5;
 
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(509,247));
@@ -175,8 +175,12 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnNameTextChange);
 	Connect(ID_CHECKBOX3,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&CommandDialog::OnconnectionTargetCheckboxClick);
 	Connect(ID_CHOICE2,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&CommandDialog::OnconnectionTypeChoiceSelect);
+	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnChangesMade);
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnFileDialogClick);
+	Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&CommandDialog::OnChangesMade);
 	Connect(ID_BUTTON5,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnArgumentHelpButton);
+	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&CommandDialog::OnChangesMade);
+	Connect(ID_CHECKBOX2,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&CommandDialog::OnChangesMade);
 	Connect(ID_BUTTON2,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnSaveButton);
 	Connect(ID_BUTTON3,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&CommandDialog::OnCloseButton);
 	Connect(wxID_ANY,wxEVT_INIT_DIALOG,(wxObjectEventFunction)&CommandDialog::OnInit);
@@ -227,6 +231,7 @@ void CommandDialog::LoadCommand( Command* command )
 
     prevChoiceSelection = 0;
     connectionTypeChoice->SetSelection( 0 );
+	saveButton->Enable( false );
 }
 
 void CommandDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
@@ -329,6 +334,7 @@ void CommandDialog::HandlePanelKeyDown(wxKeyEvent& event)
             }
         }
     }
+	saveButton->Enable( true );
 }
 
 void CommandDialog::OnconnectionTargetCheckboxClick(wxCommandEvent& WXUNUSED( event ) )
@@ -353,6 +359,7 @@ void CommandDialog::OnconnectionTargetCheckboxClick(wxCommandEvent& WXUNUSED( ev
         argumentTextCtrl->SetValue( argument[ connectionTypeChoice->GetSelection() ] );
         prevChoiceSelection = connectionTypeChoice->GetSelection();
     }
+    saveButton->Enable( true );
 }
 
 void CommandDialog::OnconnectionTypeChoiceSelect(wxCommandEvent& WXUNUSED( event ) )
@@ -367,4 +374,9 @@ void CommandDialog::OnconnectionTypeChoiceSelect(wxCommandEvent& WXUNUSED( event
         argumentTextCtrl->SetValue( argument[ connectionTypeChoice->GetSelection() ] );
         prevChoiceSelection = connectionTypeChoice->GetSelection();
     }
+}
+
+void CommandDialog::OnChangesMade(wxCommandEvent& event)
+{
+    saveButton->Enable( true );
 }

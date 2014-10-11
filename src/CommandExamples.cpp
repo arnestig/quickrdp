@@ -118,6 +118,28 @@ void CommandExamples::loadExampleCommandsLinux()
     Command *vlc = new Command( vlc_name, vlc_ConnectionProgram, vlc_ConnectionArgument, vlc_name, vlc_favorite, vlc_safety, vlc_shortcutModifier, vlc_shortcutKey, vlc_useSpecificCommands );
     commands[ wxT("Opens up VLC with the connection as a streaming target") ] = vlc;
 
+	/** FTP/SFTP **/
+    wxString ftp_sftp_name = wxT("FTP/SFTP");
+    std::map< int, wxString > ftp_sftp_ConnectionProgram;
+    std::map< int, wxString > ftp_sftp_ConnectionArgument;
+    ftp_sftp_ConnectionProgram[ -1 ] = wxT("");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("/usr/bin/filezilla");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("/usr/bin/filezilla");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("/usr/bin/filezilla");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("/usr/bin/filezilla");
+    ftp_sftp_ConnectionArgument[ -1 ] = wxT("");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("%username%:%password%@%hostname%:21");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("%username%:%password%@%hostname%:22");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("%username%:%password%@%hostname%:22");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("%username%:%password%@%hostname%:21");
+    bool ftp_sftp_favorite = true;
+    bool ftp_sftp_safety = false;
+    int ftp_sftp_shortcutModifier = 2;
+    int ftp_sftp_shortcutKey = 70;
+    bool ftp_sftp_useSpecificCommands = false;
+    Command *ftp_sftp = new Command( ftp_sftp_name, ftp_sftp_ConnectionProgram, ftp_sftp_ConnectionArgument, ftp_sftp_name, ftp_sftp_favorite, ftp_sftp_safety, ftp_sftp_shortcutModifier, ftp_sftp_shortcutKey, ftp_sftp_useSpecificCommands );
+    commands[ wxT("Opens up FTP connections against RDP and VNC hosts while using SFTP protocol against Telnet and SSH connections.") ] = ftp_sftp;
+
     /** web browser **/
     wxString webbrowser_name = wxT("Chrome");
     std::map< int, wxString > webbrowser_ConnectionProgram;
