@@ -96,6 +96,27 @@ CommandExamples::~CommandExamples()
 
 void CommandExamples::loadExampleCommandsLinux()
 {
+    /** web browser **/
+    wxString webbrowser_name = wxT("Chrome");
+    std::map< int, wxString > webbrowser_ConnectionProgram;
+    std::map< int, wxString > webbrowser_ConnectionArgument;
+    webbrowser_ConnectionProgram[ -1 ] = wxT("/usr/bin/chromium-browser");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    webbrowser_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    webbrowser_ConnectionArgument[ -1 ] = wxT("http://%hostname%/");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    webbrowser_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    bool webbrowser_favorite = true;
+    bool webbrowser_safety = false;
+    int webbrowser_shortcutModifier = 0;
+    int webbrowser_shortcutKey = 0;
+    bool webbrowser_useSpecificCommands = false;
+    Command *webbrowser = new Command( webbrowser_name, webbrowser_ConnectionProgram, webbrowser_ConnectionArgument, webbrowser_name, webbrowser_favorite, webbrowser_safety, webbrowser_shortcutModifier, webbrowser_shortcutKey, webbrowser_useSpecificCommands );
+    commands[ wxT("Opens up Chrome browser with the connection as target") ] = webbrowser;
 }
 
 void CommandExamples::loadExampleCommandsWindows()
