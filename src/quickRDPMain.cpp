@@ -41,9 +41,9 @@
 
 //(*InternalHeaders(quickRDPFrame)
 #include <wx/settings.h>
-#include <wx/font.h>
-#include <wx/intl.h>
 #include <wx/string.h>
+#include <wx/intl.h>
+#include <wx/font.h>
 //*)
 
 //(*IdInit(quickRDPFrame)
@@ -95,19 +95,19 @@ END_EVENT_TABLE()
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
 {
     //(*Initialize(quickRDPFrame)
-    wxBoxSizer* BoxSizer4;
-    wxBoxSizer* BoxSizer6;
-    wxBoxSizer* BoxSizer5;
-    wxBoxSizer* BoxSizer7;
     wxMenuItem* MenuItem2;
     wxMenuItem* MenuItem1;
-    wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer3;
     wxMenu* Menu1;
+    wxBoxSizer* BoxSizer7;
+    wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer1;
     wxMenuBar* MenuBar1;
-    wxStaticBoxSizer* StaticBoxSizer1;
-    wxBoxSizer* BoxSizer3;
     wxMenu* Menu2;
+    wxBoxSizer* BoxSizer6;
+    wxBoxSizer* BoxSizer5;
+    wxStaticBoxSizer* StaticBoxSizer1;
 
     Create(parent, wxID_ANY, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(172,202));
@@ -143,7 +143,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     VersionNotifyTextFont.SetUnderlined(true);
     VersionNotifyText->SetFont(VersionNotifyTextFont);
     BoxSizer7->Add(VersionNotifyText, 0, wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    BoxSizer6->Add(BoxSizer7, 1, wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer6->Add(BoxSizer7, 1, wxBOTTOM|wxEXPAND|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, Panel1, _("Search"));
     TextCtrl1 = new wxTextCtrl(Panel1, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(172,27), wxTE_PROCESS_ENTER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
