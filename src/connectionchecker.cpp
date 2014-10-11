@@ -26,6 +26,10 @@
 #include <iostream>
 #include "Resources.h"
 
+#if defined(__UNIX__)
+	#include <poll.h>
+#endif
+
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECKER_DONE )
@@ -45,7 +49,7 @@ ConnectionChecker::ConnectionChecker( wxEvtHandler *parent, unsigned int numWork
     }
 
     /** define our socket select timeout.. Not too high and not too low. **/
-    if ( timeout < 200000 ) {
+    if ( timeout < 20000 ) {
         this->timeout = 20000;
     } else if ( timeout > 2000000 ) {
         this->timeout = 2000000;
@@ -84,7 +88,7 @@ ConnectionChecker::~ConnectionChecker()
 				threadsDone = false;
 			}
 		}
-		
+
 		if ( threadsDone == true ) {
 			break;
 		}
@@ -97,7 +101,7 @@ ConnectionChecker::~ConnectionChecker()
 	targets.clear();
 	mutex.Unlock();
 	delete queue;
-	
+
 	/** inform parent that we're done **/
 	wxCommandEvent evt_done( wxEVT_CONNECTION_CHECKER_DONE, wxID_ANY );
 	wxPostEvent( parent, evt_done );
@@ -196,6 +200,31 @@ ConnectionCheckerWorkerThread::~ConnectionCheckerWorkerThread()
 	parent->threadDone( this );
 }
 
+bool ConnectionCheckerWorkerThread::isConnectionOpen()
+{
+	bool retval = false;
+    #if defined(__WXMSW__)
+		FD_ZERO( &wfds );
+		FD_SET( m_socket, &wfds );
+		t.tv_sec = 2;
+		if ( select( m_socket+1, 0, &wfds, 0, &t ) > 0 ) {
+			retval = true;
+		}
+    #elif defined(__UNIX__)
+		struct pollfd pfd[1];
+		memset(pfd, '\0', sizeof(pfd));
+		pfd[ 0 ].fd = m_socket;;
+		pfd[ 0 ].events = POLLOUT;
+
+		if ( poll( pfd, 1, ( t.tv_usec/1000 ) ) != -1 ) {
+			if ( pfd[ 0 ].revents & POLLOUT ) {
+				retval = true;
+			}
+		}
+	#endif
+	return retval;
+}
+
 void *ConnectionCheckerWorkerThread::Entry()
 {
     hostent *host;
@@ -226,15 +255,10 @@ void *ConnectionCheckerWorkerThread::Entry()
             ioctlsocket( m_socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
             connect( m_socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
 
-            fd_set wfds;
-            FD_ZERO( &wfds );
-            FD_SET( m_socket, &wfds );
-            int retval = select( m_socket+1, 0, &wfds, 0, &t );
-
-            if ( retval <= 0 ) {
-                event.SetInt( 0 );
-            } else {
+            if ( isConnectionOpen() == true ) {
                 event.SetInt( 1 );
+            } else {
+                event.SetInt( 0 );
             }
 
             event.SetExtraLong( connectionId );
