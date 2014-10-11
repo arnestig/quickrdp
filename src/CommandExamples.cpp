@@ -117,6 +117,29 @@ void CommandExamples::loadExampleCommandsLinux()
     bool webbrowser_useSpecificCommands = false;
     Command *webbrowser = new Command( webbrowser_name, webbrowser_ConnectionProgram, webbrowser_ConnectionArgument, webbrowser_name, webbrowser_favorite, webbrowser_safety, webbrowser_shortcutModifier, webbrowser_shortcutKey, webbrowser_useSpecificCommands );
     commands[ wxT("Opens up Chrome browser with the connection as target") ] = webbrowser;
+
+    /** ping **/
+    wxString ping_name = wxT("ping");
+    std::map< int, wxString > ping_ConnectionProgram;
+    std::map< int, wxString > ping_ConnectionArgument;
+    ping_ConnectionProgram[ -1 ] = wxT("/usr/bin/x-terminal-emulator");
+    ping_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    ping_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    ping_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    ping_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    ping_ConnectionArgument[ -1 ] = wxT("-e \"ping %hostname%\"");
+    ping_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    ping_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    ping_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    ping_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    bool ping_favorite = true;
+    bool ping_safety = false;
+    int ping_shortcutModifier = 6;
+    int ping_shortcutKey = 80;
+    bool ping_useSpecificCommands = false;
+    Command *ping = new Command( ping_name, ping_ConnectionProgram, ping_ConnectionArgument, ping_name, ping_favorite, ping_safety, ping_shortcutModifier, ping_shortcutKey, ping_useSpecificCommands );
+    commands[ wxT("Starting a continuous ping session against the connection") ] = ping;
+
 }
 
 void CommandExamples::loadExampleCommandsWindows()
