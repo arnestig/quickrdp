@@ -1256,9 +1256,9 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
         }
         wxMenuItem *newCommandMenuItem = new wxMenuItem( commandMenu, newCommandId, commandName, wxEmptyString, wxITEM_NORMAL );
 
-        /** if we have favorite commands, insert them before the "RDP" submenu **/
+        /** if we have favorite commands, insert them before the "RDP" submenu, but after "Connection check" **/
         if ( commandDb[ cId ]->getFavorite() == true ) {
-            PopupMenu1.Insert( 5, newCommandMenuItem );
+            PopupMenu1.Insert( 6, newCommandMenuItem );
             /** we also need to add the reference to all favorite commands we create so that we can destroy them once we reload the popup menu **/
             favoriteCommandMenuItems.push_back( newCommandMenuItem );
         } else { /** otherwise just add them to the command submenu **/
@@ -1268,7 +1268,7 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
 
     /** insert a seperator if we added any favorite commands **/
     if ( favoriteCommandMenuItems.size() > 0 ) {
-        wxMenuItem *separator = PopupMenu1.InsertSeparator( favoriteCommandMenuItems.size() + 4 );
+        wxMenuItem *separator = PopupMenu1.InsertSeparator( 6 );
         favoriteCommandMenuItems.push_back( separator );
     }
 
