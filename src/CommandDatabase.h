@@ -54,6 +54,8 @@ class Command
         void setShortcutKey( int shortcutKey );
         void setUseSpecificCommands( bool useSpecificCommands );
 
+        wxString loadCustomArguments( wxString &argument );
+
         bool execute( RDPConnection *connection );
 
     private:

@@ -26,6 +26,7 @@
 #include <wx/log.h>
 #include <wx/filefn.h>
 #include <wx/filename.h>
+#include <wx/textdlg.h>
 #include "QuickrdpFunctions.h"
 
 /** BEGIN COMMAND **/
@@ -154,10 +155,35 @@ void Command::setUseSpecificCommands( bool useSpecificCommands )
     this->useSpecificCommands = useSpecificCommands;
 }
 
+wxString Command::loadCustomArguments( wxString &argument )
+{
+    /** locate custom ampersand arguments **/
+    size_t cust_arg_pos = argument.find_first_of( wxT( "$" ) );
+    while( cust_arg_pos != std::string::npos ) {
+        size_t offset = 0;
+        size_t next_arg_pos = argument.find_first_of( wxT("$"), cust_arg_pos+1 );
+        if ( next_arg_pos != std::string::npos ) {
+            int argLength = ( next_arg_pos - cust_arg_pos ) + 1;
+            if ( argLength > 2 ) {
+                wxString arg = argument.substr( cust_arg_pos, (next_arg_pos-cust_arg_pos)+1 );
+                wxString newArgument = wxGetTextFromUser( wxString::Format( wxT("%s:"), arg.substr( 1, arg.length() - 2) ), wxT("Custom argument") );
+                argument.Replace( arg, newArgument );
+            } else {
+                offset = next_arg_pos + 1;
+            }
+        }
+        cust_arg_pos = argument.find_first_of( wxT("$"), offset );
+    }
+
+    return argument;
+}
+
 bool Command::execute( RDPConnection *connection )
 {
     if ( connection != NULL ) {
-        wxExecute( getProgramByConnection( connection->getConnectionType() ) + wxT(" ") + quickRDP::FileParser::getRealArgumentString( getArgumentByConnection( connection->getConnectionType() ), connection ) );
+        wxString arguments = getArgumentByConnection( connection->getConnectionType() );
+        loadCustomArguments( arguments );
+        wxExecute( getProgramByConnection( connection->getConnectionType() ) + wxT(" ") + quickRDP::FileParser::getRealArgumentString( arguments, connection ) );
     } else {
         wxMessageBox( wxT("Invalid connection received when executing command!"), wxT("Error"), wxICON_ERROR );
         return false;
