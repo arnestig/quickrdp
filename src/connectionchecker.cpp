@@ -204,6 +204,7 @@ bool ConnectionCheckerWorkerThread::isConnectionOpen()
 {
 	bool retval = false;
     #if defined(__WXMSW__)
+		fd_set wfds;
 		FD_ZERO( &wfds );
 		FD_SET( m_socket, &wfds );
 		t.tv_sec = 2;
