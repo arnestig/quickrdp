@@ -136,7 +136,7 @@ void CommandExamples::loadExampleCommandsLinux()
     bool ftp_sftp_safety = false;
     int ftp_sftp_shortcutModifier = 2;
     int ftp_sftp_shortcutKey = 70;
-    bool ftp_sftp_useSpecificCommands = false;
+    bool ftp_sftp_useSpecificCommands = true;
     Command *ftp_sftp = new Command( ftp_sftp_name, ftp_sftp_ConnectionProgram, ftp_sftp_ConnectionArgument, ftp_sftp_name, ftp_sftp_favorite, ftp_sftp_safety, ftp_sftp_shortcutModifier, ftp_sftp_shortcutKey, ftp_sftp_useSpecificCommands );
     commands[ wxT("Opens up FTP connections against RDP and VNC hosts while using SFTP protocol against Telnet and SSH connections.") ] = ftp_sftp;
 
@@ -183,6 +183,7 @@ void CommandExamples::loadExampleCommandsLinux()
     bool sshcommand_useSpecificCommands = false;
     Command *sshcommand = new Command( sshcommand_name, sshcommand_ConnectionProgram, sshcommand_ConnectionArgument, sshcommand_name, sshcommand_favorite, sshcommand_safety, sshcommand_shortcutModifier, sshcommand_shortcutKey, sshcommand_useSpecificCommands );
     commands[ wxT("Run an SSH command on target provided as a custom argument") ] = sshcommand;
+
     /** ping **/
     wxString ping_name = wxT("ping");
     std::map< int, wxString > ping_ConnectionProgram;
@@ -274,6 +275,29 @@ void CommandExamples::loadExampleCommandsWindows()
     bool ping_useSpecificCommands = false;
     Command *ping = new Command( ping_name, ping_ConnectionProgram, ping_ConnectionArgument, ping_name, ping_favorite, ping_safety, ping_shortcutModifier, ping_shortcutKey, ping_useSpecificCommands );
     commands[ wxT("Starting a continuous ping session against the connection") ] = ping;
+
+    /** FTP/SFTP **/
+    wxString ftp_sftp_name = wxT("FTP/SFTP");
+    std::map< int, wxString > ftp_sftp_ConnectionProgram;
+    std::map< int, wxString > ftp_sftp_ConnectionArgument;
+    ftp_sftp_ConnectionProgram[ -1 ] = wxT("");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe");
+    ftp_sftp_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe");
+    ftp_sftp_ConnectionArgument[ -1 ] = wxT("");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("%username%:%password%@%hostname%:21");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("%username%:%password%@%hostname%:22");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("%username%:%password%@%hostname%:22");
+    ftp_sftp_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("%username%:%password%@%hostname%:21");
+    bool ftp_sftp_favorite = true;
+    bool ftp_sftp_safety = false;
+    int ftp_sftp_shortcutModifier = 2;
+    int ftp_sftp_shortcutKey = 70;
+    bool ftp_sftp_useSpecificCommands = true;
+    Command *ftp_sftp = new Command( ftp_sftp_name, ftp_sftp_ConnectionProgram, ftp_sftp_ConnectionArgument, ftp_sftp_name, ftp_sftp_favorite, ftp_sftp_safety, ftp_sftp_shortcutModifier, ftp_sftp_shortcutKey, ftp_sftp_useSpecificCommands );
+    commands[ wxT("Opens up FTP connections against RDP and VNC hosts while using SFTP protocol against Telnet and SSH connections.") ] = ftp_sftp;
+
 }
 
 void CommandExamples::displayCommands()
