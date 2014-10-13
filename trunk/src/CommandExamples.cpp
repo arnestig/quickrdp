@@ -298,6 +298,27 @@ void CommandExamples::loadExampleCommandsWindows()
     Command *ftp_sftp = new Command( ftp_sftp_name, ftp_sftp_ConnectionProgram, ftp_sftp_ConnectionArgument, ftp_sftp_name, ftp_sftp_favorite, ftp_sftp_safety, ftp_sftp_shortcutModifier, ftp_sftp_shortcutKey, ftp_sftp_useSpecificCommands );
     commands[ wxT("Opens up FTP connections against RDP and VNC hosts while using SFTP protocol against Telnet and SSH connections.") ] = ftp_sftp;
 
+	/** VLC **/
+    wxString vlc_name = wxT("VLC");
+    std::map< int, wxString > vlc_ConnectionProgram;
+    std::map< int, wxString > vlc_ConnectionArgument;
+    vlc_ConnectionProgram[ -1 ] = wxT("C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe");
+    vlc_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    vlc_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    vlc_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    vlc_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    vlc_ConnectionArgument[ -1 ] = wxT("http://%hostname%/stream.mp4");
+    vlc_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    vlc_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    vlc_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    vlc_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    bool vlc_favorite = true;
+    bool vlc_safety = false;
+    int vlc_shortcutModifier = 0;
+    int vlc_shortcutKey = 0;
+    bool vlc_useSpecificCommands = false;
+    Command *vlc = new Command( vlc_name, vlc_ConnectionProgram, vlc_ConnectionArgument, vlc_name, vlc_favorite, vlc_safety, vlc_shortcutModifier, vlc_shortcutKey, vlc_useSpecificCommands );
+    commands[ wxT("Opens up VLC with the connection as a streaming target") ] = vlc;
 }
 
 void CommandExamples::displayCommands()
