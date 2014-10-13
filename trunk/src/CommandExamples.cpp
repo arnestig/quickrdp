@@ -319,6 +319,28 @@ void CommandExamples::loadExampleCommandsWindows()
     bool vlc_useSpecificCommands = false;
     Command *vlc = new Command( vlc_name, vlc_ConnectionProgram, vlc_ConnectionArgument, vlc_name, vlc_favorite, vlc_safety, vlc_shortcutModifier, vlc_shortcutKey, vlc_useSpecificCommands );
     commands[ wxT("Opens up VLC with the connection as a streaming target") ] = vlc;
+
+    /** SSH command **/
+    wxString sshcommand_name = wxT("SSH command (plink)");
+    std::map< int, wxString > sshcommand_ConnectionProgram;
+    std::map< int, wxString > sshcommand_ConnectionArgument;
+    sshcommand_ConnectionProgram[ -1 ] = wxT("C:\\Program Files (x86)\\Putty\\plink.exe");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    sshcommand_ConnectionProgram[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    sshcommand_ConnectionArgument[ -1 ] = wxT("%username%@%hostname% {-pwd %password%} \"$command$\"");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::RDP ) ] = wxT("");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::TELNET ) ] = wxT("");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::SSH ) ] = wxT("");
+    sshcommand_ConnectionArgument[ static_cast< int >( ConnectionType::VNC ) ] = wxT("");
+    bool sshcommand_favorite = false;
+    bool sshcommand_safety = false;
+    int sshcommand_shortcutModifier = 0;
+    int sshcommand_shortcutKey = 0;
+    bool sshcommand_useSpecificCommands = false;
+    Command *sshcommand = new Command( sshcommand_name, sshcommand_ConnectionProgram, sshcommand_ConnectionArgument, sshcommand_name, sshcommand_favorite, sshcommand_safety, sshcommand_shortcutModifier, sshcommand_shortcutKey, sshcommand_useSpecificCommands );
+    commands[ wxT("Run an SSH command on target provided as a custom argument") ] = sshcommand;
 }
 
 void CommandExamples::displayCommands()
