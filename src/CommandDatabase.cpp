@@ -166,7 +166,8 @@ wxString Command::loadCustomArguments( wxString &argument )
             int argLength = ( next_arg_pos - cust_arg_pos ) + 1;
             if ( argLength > 2 ) {
                 wxString arg = argument.substr( cust_arg_pos, (next_arg_pos-cust_arg_pos)+1 );
-                wxString newArgument = wxGetTextFromUser( wxString::Format( wxT("%s:"), arg.substr( 1, arg.length() - 2) ), wxT("Custom argument") );
+                wxString argName = wxT(":") + arg.substr( 1, arg.length() - 2 );
+                wxString newArgument = wxGetTextFromUser( argName, wxT("Custom argument") );
                 argument.Replace( arg, newArgument );
             } else {
                 offset = next_arg_pos + 1;
