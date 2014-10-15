@@ -2,7 +2,7 @@ Source: quickrdp
 Section: x11
 Priority: optional
 Maintainer: Tobias Eliasson <arnestig@gmail.com>
-Build-Depends: debhelper (>= 8), libwxgtk2.8-dev, libwxbase2.8-dev
+Build-Depends: debhelper (>= 8), libwxgtk2.8-dev, dpkg-dev (>= 1.16.1), libcurl4-gnutls-dev
 Standards-Version: 3.9.3
 Homepage: http://sourceforge.net/projects/quickrdp/
 Vcs-svn: https://quickrdp.svn.sourceforge.net/svnroot/quickrdp/trunk

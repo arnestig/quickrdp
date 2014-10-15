@@ -1,19 +1,20 @@
 PROGNAME=quickrdp
 
 CXX = g++
-LDFLAGS =
 INSTALL = install -o root -g root -m 755
 INSTALL_DIR = install -p -d -o root -g root -m 755
 INSTALL_DATA = install -p -o root -g root -m 644
-CFLAGS = -g -Wall $(shell wx-config --cxxflags)
-LIBS = $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
+CFLAGS += 
+CPPFLAGS +=
+CXXFLAGS += -g -Wall $(shell wx-config --cxxflags)
+LDFLAGS += $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
 SVN_INFO_REV = $(shell svn info | grep Revision | cut -d' ' -f2)
 SVN_DEFINE=-DSVN_REVISION=0
 
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
+	CXXFLAGS += -O0
 else
-	CFLAGS += -O2
+	CXXFLAGS += -O2
 endif
 ifeq (,$(filter nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL += -s
@@ -32,17 +33,17 @@ DEFAULT_DEFINE=-DDATA_PATH=\"$(DESTDIR)/usr/share/$(PROGNAME)/\"
 
 OBJFILES := $(patsubst src/%.cpp,obj/%.o,$(wildcard src/*.cpp))
 
-all: $(PROGNAME) $(TOOLS)
+all: $(PROGNAME)
 
 devel: DEFAULT_DEFINE=-DDATA_PATH=\"\"
-devel: $(PROGNAME) $(TOOLS) 
+devel: $(PROGNAME)
 
 $(PROGNAME): $(OBJFILES) 
-	$(CXX) -o $(PROGNAME) $(INCLUDE_DIR) $(OBJFILES) $(LIBS)
+	$(CXX) -o $(PROGNAME) $(INCLUDE_DIR) $(OBJFILES) $(LDFLAGS)
 
 obj/%.o: src/%.cpp 
 	@mkdir -p obj
-	$(CXX) -c $< -o $@ $(CFLAGS) $(LIBS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_DEFINE)
+	$(CXX) -c $< -o $@ $(CFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_DEFINE)
 
 clean:
 	rm -f $(OBJFILES) $(PROGNAME)
