@@ -1,7 +1,7 @@
     !define APPNAME "QuickRDP"
     !define COMPANYNAME "Tobias Eliasson"
     !ifndef VERSION
-    !define VERSION "2.3"
+    !define VERSION "2.4"
     !endif
     !define HELPURL "http://sourceforge.net/projects/quickrdp/" # "Support Information" link
     !define UPDATEURL "http://sourceforge.net/projects/quickrdp/" # "Product Updates" link
