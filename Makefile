@@ -43,7 +43,7 @@ $(PROGNAME): $(OBJFILES)
 
 obj/%.o: src/%.cpp 
 	@mkdir -p obj
-	$(CXX) -c $< -o $@ $(CFLAGS) $(CPPFLAGS) $(CXXFLAGS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_DEFINE)
+	$(CXX) -c $< -o $@ $(CPPFLAGS) $(CXXFLAGS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_DEFINE)
 
 clean:
 	rm -f $(OBJFILES) $(PROGNAME)
