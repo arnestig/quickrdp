@@ -11,7 +11,7 @@
 						<orient>wxVERTICAL</orient>
 						<object class="sizeritem">
 							<object class="wxNotebook" name="ID_NOTEBOOK1" variable="Notebook1" member="yes">
-								<size>424,397</size>
+								<size>424,432</size>
 								<object class="notebookpage">
 									<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
 										<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -456,11 +456,6 @@
 												</object>
 												<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 												<border>5</border>
-											</object>
-											<object class="spacer">
-												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-												<border>5</border>
-												<option>1</option>
 											</object>
 										</object>
 									</object>
