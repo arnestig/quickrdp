@@ -1,3 +1,29 @@
+quickrdp 2.4 - 2014-10-18
+ New features
+ ------------
+ * New command interface. Command per connection can now be used so that a
+ command that mounts C$ on a RDP connection could instead connect Filezilla on
+ SFTP instead. Command examples added as well to help users configure this.
+ * Custom arguments added to commands. Using $argument_name$ inside arguments
+ will query input when used and use the input for the command executed.
+ * Connect When Ready now have a setting for frequency which allows much more
+ quick reconnection.
+ * Network scanner now support sorting in the result list.
+
+ Bug fixes
+ ---------
+ * Fixing issues with IP calculator not allowing netmasks ending with 0.
+ * Fixed some issues with the network scanner interface.
+ * Better handling of shutting down threads, now shutting down threads
+ gracefully.
+ * Fixed issue with incorrect sorting in connection list.
+ * Fixed network scanner sorting issues.
+ * Fixed windows uninstallation icon and information.
+ * "New version available" should not overlap on the search box anymore.
+ * Fixed connection checker on Linux using poll instead.
+ * Fixed incorrect positioning of popup menu item separator.
+ * Fixed settings frame to allow all hotkeys to be displayed.
+
 quickrdp 2.3 - 2013-11-07
  New features
  ------------
