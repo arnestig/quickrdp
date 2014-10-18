@@ -26,8 +26,8 @@
 
 //(*InternalHeaders(settingsDialog)
 #include <wx/settings.h>
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(settingsDialog)
@@ -105,53 +105,53 @@ END_EVENT_TABLE()
 settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const wxPoint& WXUNUSED(pos),const wxSize& WXUNUSED(size) )
 {
 	//(*Initialize(settingsDialog)
-	wxBoxSizer* BoxSizer15;
-	wxStaticBoxSizer* StaticBoxSizer2;
-	wxBoxSizer* BoxSizer32;
-	wxBoxSizer* BoxSizer3;
-	wxStaticBoxSizer* StaticBoxSizer7;
-	wxBoxSizer* BoxSizer16;
-	wxBoxSizer* BoxSizer27;
-	wxStaticBoxSizer* StaticBoxSizer5;
-	wxBoxSizer* BoxSizer10;
-	wxBoxSizer* BoxSizer25;
-	wxBoxSizer* BoxSizer29;
-	wxBoxSizer* BoxSizer24;
-	wxBoxSizer* BoxSizer7;
-	wxBoxSizer* BoxSizer11;
-	wxBoxSizer* BoxSizer13;
-	wxBoxSizer* BoxSizer22;
-	wxBoxSizer* BoxSizer2;
-	wxBoxSizer* BoxSizer28;
-	wxBoxSizer* BoxSizer31;
-	wxStaticBoxSizer* StaticBoxSizer3;
-	wxBoxSizer* BoxSizer17;
-	wxBoxSizer* BoxSizer9;
-	wxBoxSizer* BoxSizer18;
-	wxBoxSizer* BoxSizer21;
-	wxBoxSizer* BoxSizer34;
-	wxBoxSizer* BoxSizer19;
 	wxBoxSizer* BoxSizer4;
-	wxStaticBoxSizer* StaticBoxSizer4;
-	wxStaticBoxSizer* StaticBoxSizer6;
-	wxBoxSizer* BoxSizer8;
-	wxBoxSizer* BoxSizer30;
-	wxBoxSizer* BoxSizer23;
-	wxBoxSizer* BoxSizer20;
-	wxBoxSizer* BoxSizer1;
-	wxBoxSizer* BoxSizer12;
-	wxBoxSizer* BoxSizer14;
-	wxBoxSizer* BoxSizer26;
+	wxStaticBoxSizer* StaticBoxSizer2;
 	wxBoxSizer* BoxSizer6;
+	wxBoxSizer* BoxSizer29;
+	wxBoxSizer* BoxSizer19;
+	wxBoxSizer* BoxSizer15;
+	wxBoxSizer* BoxSizer20;
 	wxBoxSizer* BoxSizer5;
+	wxBoxSizer* BoxSizer10;
+	wxBoxSizer* BoxSizer7;
+	wxBoxSizer* BoxSizer8;
+	wxBoxSizer* BoxSizer21;
+	wxBoxSizer* BoxSizer13;
+	wxStaticBoxSizer* StaticBoxSizer4;
+	wxBoxSizer* BoxSizer23;
+	wxBoxSizer* BoxSizer2;
+	wxBoxSizer* BoxSizer11;
+	wxBoxSizer* BoxSizer16;
+	wxStaticBoxSizer* StaticBoxSizer7;
+	wxBoxSizer* BoxSizer18;
+	wxBoxSizer* BoxSizer30;
+	wxBoxSizer* BoxSizer12;
+	wxBoxSizer* BoxSizer28;
+	wxBoxSizer* BoxSizer14;
+	wxStaticBoxSizer* StaticBoxSizer3;
+	wxStaticBoxSizer* StaticBoxSizer6;
+	wxBoxSizer* BoxSizer27;
+	wxBoxSizer* BoxSizer31;
+	wxBoxSizer* BoxSizer17;
+	wxBoxSizer* BoxSizer24;
+	wxBoxSizer* BoxSizer26;
+	wxBoxSizer* BoxSizer32;
+	wxBoxSizer* BoxSizer1;
+	wxBoxSizer* BoxSizer9;
 	wxStaticBoxSizer* StaticBoxSizer1;
+	wxBoxSizer* BoxSizer34;
+	wxBoxSizer* BoxSizer22;
+	wxBoxSizer* BoxSizer3;
+	wxStaticBoxSizer* StaticBoxSizer5;
+	wxBoxSizer* BoxSizer25;
 	
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(392,465));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
 	Panel1 = new wxPanel(this, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
 	BoxSizer13 = new wxBoxSizer(wxVERTICAL);
-	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(424,397), 0, _T("ID_NOTEBOOK1"));
+	Notebook1 = new wxNotebook(Panel1, ID_NOTEBOOK1, wxDefaultPosition, wxSize(424,432), 0, _T("ID_NOTEBOOK1"));
 	Panel2 = new wxPanel(Notebook1, ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL2"));
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
@@ -282,7 +282,6 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	ShortcutCloseTabText = new wxTextCtrl(Panel3, ID_CLOSETAB, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CLOSETAB"));
 	BoxSizer25->Add(ShortcutCloseTabText, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer14->Add(BoxSizer25, 0, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer14->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	Panel3->SetSizer(BoxSizer14);
 	BoxSizer14->SetSizeHints(Panel3);
 	Panel4 = new wxPanel(Notebook1, ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL4"));
