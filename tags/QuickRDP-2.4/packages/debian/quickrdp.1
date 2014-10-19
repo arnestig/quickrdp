@@ -1,0 +1,64 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH QUICKRDP 1 "October 18, 2014"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+quickrdp - Manages RDP, SSH, Telnet and VNC connections
+.SH SYNOPSIS
+.B quickrdp
+.br
+.SH DESCRIPTION
+This manual page documents briefly describes
+.B quickrdp
+.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
+.\" respectively.
+\fBquickrdp\fP is a connection manager program for your remote desktop, Telnet,
+SSH and VNC connections. Makes it easy to keep track of all your connections. 
+Some key features of quickrdp: custom commands against connections, 
+connection status indication, "connect when ready" - connects to the target 
+when a connection can be established, network scanner which can convert 
+scanned hosts to connections, netmask calculator and more.
+
+Used with your own favorite RDP, SSH, telnet or VNC application, tailor the 
+arguments passed to the program of your choice to gain the most of quickrdp.
+.PP
+\fBExternal applications and command\(hyline arguments\fP
+.br
+Remote desktop connections are currently executed by tsclient, only the connection file is passed as argument to tsclient when executing an RDP connection.
+SSH and telnet connections uses specific command settings when executing. What commands and arguments are being executed can be customized under \fBSettings \-> Preferences\fP.
+Commandline\(hyarguments sent to the telnet and ssh application will be parsed before sent.
+
+Example: A connection with hostname \fItelnet.example.com\fP and username \fIfoobar\fP connecting with the argument string \fB"\-telnet %username%@%hostname%"\fP would expand to \fB"\-telnet foobar@telnet.example.com"\fP.
+
+To avoid expanding part of the argument if a specific string is \fBempty\fP you can define this using brackets '{' and '}'.
+
+Example: A connection without a password would expand the following argument \fB"\-ssh {%username%@}%hostname%{ \-pw %password%}"\fP to this: \fB"\-ssh foobar@ssh.example.com"\fP.
+.TP
+Following strings can be used:
+.IP \bu
+%hostname%
+.br
+%connectiontype%
+.br
+%username%
+.br
+%password%
+
+.SH AUTHOR
+This manual page was written by Tobias Eliasson <arnestig@gmail.com>.
