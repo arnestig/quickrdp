@@ -890,6 +890,12 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
     Settings *settings = Resources::Instance()->getSettings();
     int keyCode = event.GetKeyCode();
     int keyModifier = event.GetModifiers();
+	bool listCtrlHasFocus = false;
+	if ( wxWindow::FindFocus() != NULL ) {
+	    if ( wxWindow::FindFocus()->GetName() == wxT("ID_LISTCTRL1") ) {
+			listCtrlHasFocus = true;
+		}
+	}
 
     if ( wantGlobalHotkeys() == true ) {
         /** check if we are tabbing between controls **/
@@ -919,7 +925,7 @@ bool quickRDPFrame::handleShortcutKeys( wxKeyEvent &event )
             return true;
 
         /** Okay, now we only check our connection only shortcuts.. (ListCtrl is in focus) **/
-        } else if ( wxWindow::FindFocus()->GetName() == wxT("ID_LISTCTRL1") ) {
+        } else if ( listCtrlHasFocus == true ) {
             /** first we look for commands that have this specific keycombination and try to execute it **/
             std::vector< RDPConnection* > connections = quickRDP::Connections::getAllSelectedConnections( getConnectionList() );
             Command* curCommand = Resources::Instance()->getCommandDatabase()->getCommandWithShortcut( keyModifier, keyCode );
