@@ -20,12 +20,15 @@
 **/
 
 #include "connectionchecker.h"
-#include <errno.h>
 #include "QuickrdpFunctions.h"
 
 #include <wx/msgdlg.h>
 #include <iostream>
 #include "Resources.h"
+
+#if defined(__UNIX__)
+	#include <poll.h>
+#endif
 
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_SEND_DATA )
 DEFINE_EVENT_TYPE( wxEVT_CONNECTION_CHECK_STATUS_UPDATE )
@@ -197,6 +200,31 @@ ConnectionCheckerWorkerThread::~ConnectionCheckerWorkerThread()
 	parent->threadDone( this );
 }
 
+bool ConnectionCheckerWorkerThread::isConnectionOpen()
+{
+	bool retval = false;
+    #if defined(__WXMSW__)
+		fd_set wfds;
+		FD_ZERO( &wfds );
+		FD_SET( m_socket, &wfds );
+		if ( select( m_socket+1, 0, &wfds, 0, &t ) > 0 ) {
+			retval = true;
+		}
+    #elif defined(__UNIX__)
+		struct pollfd pfd[1];
+		memset(pfd, '\0', sizeof(pfd));
+		pfd[ 0 ].fd = m_socket;;
+		pfd[ 0 ].events = POLLOUT;
+
+		if ( poll( pfd, 1, ( t.tv_usec/1000 ) ) != -1 ) {
+			if ( pfd[ 0 ].revents & POLLOUT ) {
+				retval = true;
+			}
+		}
+	#endif
+	return retval;
+}
+
 void *ConnectionCheckerWorkerThread::Entry()
 {
     hostent *host;
@@ -214,14 +242,14 @@ void *ConnectionCheckerWorkerThread::Entry()
             long connectionId = target->getConnectionCheckerId();
             sock_addr.sin_port = htons( port );
             sock_addr.sin_addr.s_addr = 0;
-			bool hostLookedUp = true;
+            bool hostOk = true;
             if ( inet_addr( hostname.c_str() ) == INADDR_NONE ) {
                 host = gethostbyname( hostname.c_str() );
                 if ( host != NULL ) {
                     sock_addr.sin_addr.s_addr = *((unsigned long*) host->h_addr_list[0] );
                 } else {
-					hostLookedUp = false;
-				}
+                    hostOk = false;
+                }
             } else {
                 sock_addr.sin_addr.s_addr = inet_addr( hostname.c_str() );
             }
@@ -230,14 +258,9 @@ void *ConnectionCheckerWorkerThread::Entry()
             ioctlsocket( m_socket, FIONBIO, &socket_mode ); // Put the socket in non-blocking mode
             connect( m_socket, (struct sockaddr*) &sock_addr, sizeof( struct sockaddr ) );
 
-			fd_set wfds;
-			FD_ZERO( &wfds );
-			FD_SET( m_socket, &wfds );
-			t.tv_sec = 2;
-			int selectStatus = select( m_socket+1, 0, &wfds, 0, &t );
-			if ( selectStatus > 0 && hostLookedUp == true ) {
+            if ( isConnectionOpen() == true && hostOk == true ) {
                 event.SetInt( 1 );
-			} else {
+            } else {
                 event.SetInt( 0 );
             }
 
