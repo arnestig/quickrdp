@@ -1,2 +1,0 @@
-?package(quickrdp):needs="X11" section="Applications/Network/Communication"\
-  title="quickrdp" command="/usr/bin/quickrdp" icon="/usr/share/quickrdp/data/quickrdp.xpm"
