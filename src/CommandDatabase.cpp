@@ -160,8 +160,7 @@ wxString Command::loadCustomArguments( wxString &argument )
     /** locate custom ampersand arguments **/
     size_t cust_arg_pos = argument.find_first_of( wxT( "$" ) );
     while( cust_arg_pos != std::string::npos ) {
-        size_t offset = 0;
-        size_t next_arg_pos = argument.find_first_of( wxT("$"), cust_arg_pos+1 );
+        size_t next_arg_pos = argument.find_first_of( wxT("$"), cust_arg_pos + 1 );
         if ( next_arg_pos != std::string::npos ) {
             int argLength = ( next_arg_pos - cust_arg_pos ) + 1;
             if ( argLength > 2 ) {
@@ -169,11 +168,9 @@ wxString Command::loadCustomArguments( wxString &argument )
                 wxString argName = wxT(":") + arg.substr( 1, arg.length() - 2 );
                 wxString newArgument = wxGetTextFromUser( argName, wxT("Custom argument") );
                 argument.Replace( arg, newArgument );
-            } else {
-                offset = next_arg_pos + 1;
             }
         }
-        cust_arg_pos = argument.find_first_of( wxT("$"), offset );
+        cust_arg_pos = argument.find_first_of( wxT("$"), cust_arg_pos + 1 );
     }
 
     return argument;
