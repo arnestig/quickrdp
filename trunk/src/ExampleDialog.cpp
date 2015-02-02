@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2014 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
+    Copyright (C) 2010-2015 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
