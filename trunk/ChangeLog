@@ -1,3 +1,10 @@
+quickrdp 2.4.1 - 2015-02-02
+ Bug fixes
+ ---------
+ * Fixed problem displaying custom command name during user input
+ * Fixed problem when parsing commands containing only a single $ (for example
+ the command example for mounting windows shared folder)
+
 quickrdp 2.4 - 2014-10-23
  New features
  ------------
