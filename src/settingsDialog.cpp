@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2014 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
+    Copyright (C) 2010-2015 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -145,7 +145,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	wxBoxSizer* BoxSizer3;
 	wxStaticBoxSizer* StaticBoxSizer5;
 	wxBoxSizer* BoxSizer25;
-	
+
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(392,465));
 	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
@@ -397,7 +397,7 @@ settingsDialog::settingsDialog(wxWindow* parent,wxWindowID WXUNUSED( id ),const 
 	SSHExecDialog = new wxFileDialog(this, _("Locate SSH executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	VNCExecDialog = new wxFileDialog(this, _("Locate VNC executable"), wxEmptyString, wxEmptyString, _("PuTTY (putty.exe)|putty.exe|All files (*.*)|*.*"), wxFD_DEFAULT_STYLE, wxDefaultPosition, wxDefaultSize, _T("wxFileDialog"));
 	BoxSizer1->SetSizeHints(this);
-	
+
 	Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetBrowseClick);
 	Connect(ID_BUTTON9,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnHelpArgumentClick);
 	Connect(ID_BUTTON6,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&settingsDialog::OnTelnetArgumentReset);

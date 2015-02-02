@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2014 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
+    Copyright (C) 2010-2015 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -48,7 +48,7 @@ VersionChecker::~VersionChecker()
 				threadsDone = false;
 			}
 		}
-		
+
 		if ( threadsDone == true ) {
 			break;
 		}
@@ -82,7 +82,7 @@ void VersionChecker::workerThreadDone( VersionCheckerWorker *thread )
 	mutex.Lock();
 	for( unsigned int i = 0; i < workerThreads.size(); i++ ) {
 		if ( workerThreads[ i ] == thread ) {
-			workerThreads[ i ] = NULL;	
+			workerThreads[ i ] = NULL;
 		}
 	}
 	mutex.Unlock();
