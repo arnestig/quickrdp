@@ -1,3 +1,11 @@
+quickrdp 2.4.2 - 2015-04-02
+ Moving from sourceforge to github.
+ Since Sourceforge now apparently approve of adware / malware / spyware bundled by
+ their "software installers" I have decided to move to github instead.
+ This update only enables the redirection of checking for new software
+ versions on github instead of sourceforge. Also libcurl on Windows has been
+ updated to 7.41.0.
+
 quickrdp 2.4.1 - 2015-02-02
  Bug fixes
  ---------

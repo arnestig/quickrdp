@@ -3,7 +3,7 @@
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
-    This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
+    This file is part of quickRDP <https://github.com/arnestig/quickrdp>.
 
     quickRDP is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -160,6 +160,7 @@ std::string VersionCheckerWorker::get( const char* url )
 
     if ( curl ) {
         curl_easy_setopt( curl, CURLOPT_URL, url );
+        curl_easy_setopt( curl, CURLOPT_FOLLOWLOCATION, 1 );
         curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, &VersionCheckerWorker::writer );
         curl_easy_setopt( curl, CURLOPT_WRITEDATA, &buffer );
         result = curl_easy_perform( curl );

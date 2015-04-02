@@ -66,7 +66,7 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
-										<label>Copyright © 2010 - 2014 Tobias Eliasson</label>
+										<label>Copyright © 2010 - 2015 Tobias Eliasson</label>
 										<font>
 											<size>8</size>
 											<style>normal</style>
@@ -75,6 +75,7 @@
 											<family>swiss</family>
 											<face>Sans</face>
 										</font>
+										<extra_code>StaticText3-&gt;SetLabel( wxT(&quot;Copyright © 2010 - 2015 Tobias Eliasson&quot;) );</extra_code>
 									</object>
 									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
@@ -133,9 +134,9 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
-												<label>http://sourceforge.net/projects/quickrdp</label>
+												<label>https://github.com/arnestig/quickrdp</label>
 												<hidden>1</hidden>
-												<extra_code>Hyperlink2 = new wxHyperlinkCtrl(Panel1, ID__HYPERLINK2, __(&quot;http://sourceforge.net/projects/quickrdp&quot;), __(&quot;http://sourceforge.net/projects/quickrdp&quot;),wxDefaultPosition, wxDefaultSize, wxHL__ALIGN__CENTRE|wxNO__BORDER, __T(&quot;ID__HYPERLINK2&quot;));&#x0A;&#x09;BoxSizer5-&gt;Add(Hyperlink2, 1, wxALL|wxALIGN__CENTER__HORIZONTAL|wxALIGN__CENTER__VERTICAL, 5);</extra_code>
+												<extra_code>Hyperlink2 = new wxHyperlinkCtrl(Panel1, ID__HYPERLINK2, __(&quot;https://github.com/arnestig/quickrdp&quot;), __(&quot;https://github.com/arnestig/quickrdp&quot;),wxDefaultPosition, wxDefaultSize, wxHL__ALIGN__CENTRE|wxNO__BORDER, __T(&quot;ID__HYPERLINK2&quot;));&#x0A;&#x09;BoxSizer5-&gt;Add(Hyperlink2, 1, wxALL|wxALIGN__CENTER__HORIZONTAL|wxALIGN__CENTER__VERTICAL, 5);</extra_code>
 											</object>
 											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 											<border>5</border>

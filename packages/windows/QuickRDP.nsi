@@ -1,11 +1,11 @@
     !define APPNAME "QuickRDP"
     !define COMPANYNAME "Tobias Eliasson"
     !ifndef VERSION
-    !define VERSION "2.4.1"
+    !define VERSION "2.4.2"
     !endif
-    !define HELPURL "http://sourceforge.net/projects/quickrdp/" # "Support Information" link
-    !define UPDATEURL "http://sourceforge.net/projects/quickrdp/" # "Product Updates" link
-    !define ABOUTURL "http://sourceforge.net/projects/quickrdp/" # "Publisher" link
+    !define HELPURL "https://github.com/arnestig/quickrdp" # "Support Information" link
+    !define UPDATEURL "https://github.com/arnestig/quickrdp" # "Product Updates" link
+    !define ABOUTURL "https://github.com/arnestig/quickrdp" # "Publisher" link
     !define INSTALLSIZE 3332
 
 RequestExecutionLevel admin ;Require admin rights on NT6+ (When UAC is turned on)

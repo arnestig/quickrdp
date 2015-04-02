@@ -3,7 +3,7 @@
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
-    This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
+    This file is part of quickRDP <https://github.com/arnestig/quickrdp>.
 
     quickRDP is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -86,9 +86,10 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	BoxSizer3->Add(-1,-1,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Manages RDP, telnet, SSH and VNC connections"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer3->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2014 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2015 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	StaticText3->SetFont(StaticText3Font);
+	StaticText3->SetLabel( wxT("Copyright © 2010 - 2015 Tobias Eliasson") );
 	BoxSizer3->Add(StaticText3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxVERTICAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Licence: GNU GPLv3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
@@ -107,9 +108,9 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	wxFont StaticText7Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxBOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
 	StaticText7->SetFont(StaticText7Font);
 	BoxSizer5->Add(StaticText7, 0, wxTOP|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	StaticText6 = new wxStaticText(Panel1, ID_STATICTEXT6, _("http://sourceforge.net/projects/quickrdp"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+	StaticText6 = new wxStaticText(Panel1, ID_STATICTEXT6, _("https://github.com/arnestig/quickrdp"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
 	StaticText6->Hide();
-	Hyperlink2 = new wxHyperlinkCtrl(Panel1, ID_HYPERLINK2, _("http://sourceforge.net/projects/quickrdp"), _("http://sourceforge.net/projects/quickrdp"),wxDefaultPosition, wxDefaultSize, wxHL_ALIGN_CENTRE|wxNO_BORDER, _T("ID_HYPERLINK2"));
+	Hyperlink2 = new wxHyperlinkCtrl(Panel1, ID_HYPERLINK2, _("https://github.com/arnestig/quickrdp"), _("https://github.com/arnestig/quickrdp"),wxDefaultPosition, wxDefaultSize, wxHL_ALIGN_CENTRE|wxNO_BORDER, _T("ID_HYPERLINK2"));
 		BoxSizer5->Add(Hyperlink2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer5->Add(StaticText6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);

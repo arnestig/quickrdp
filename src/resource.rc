@@ -5,7 +5,7 @@ connectionunk ICON "data/connectionunk.ico"
 connectionchecker ICON "data/connectionchecker.ico"
 
 #ifndef PRODUCTVERSION_STR
-#define PRODUCTVERSION_STR "2.4.1"
+#define PRODUCTVERSION_STR "2.4.2"
 #endif
 
 1 VERSIONINFO

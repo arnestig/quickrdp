@@ -3,7 +3,7 @@
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
-    This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
+    This file is part of quickRDP <https://github.com/arnestig/quickrdp>.
 
     quickRDP is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 
 namespace Version {
 	static wxString name = wxT("QuickRDP");
-	static wxString version = wxT("2.4.1");
+	static wxString version = wxT("2.4.2");
 
 	inline wxString getNumericVersion()
 	{

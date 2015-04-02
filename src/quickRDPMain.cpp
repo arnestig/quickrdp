@@ -3,7 +3,7 @@
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
-    This file is part of quickRDP <http://sourceforge.net/projects/quickrdp/>.
+    This file is part of quickRDP <https://github.com/arnestig/quickrdp>.
 
     quickRDP is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -826,7 +826,7 @@ void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
-	Resources::Instance()->getVersionChecker()->checkForNewVersion( "http://sourceforge.net/projects/quickrdp/files/quickRDP/", false );
+	Resources::Instance()->getVersionChecker()->checkForNewVersion( "https://github.com/arnestig/quickrdp/releases/latest", false );
 }
 
 void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
@@ -834,7 +834,7 @@ void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
     /** event handler for when we're checking for a new version manually **/
     if ( event.GetInt() == 1 ) {
         if ( wxMessageBox( wxT("Version ") + event.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
-            wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
+            wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
         }
     } else {
         wxMessageBox( wxT("You already got the latest version of QuickRDP.") );
@@ -1048,12 +1048,12 @@ void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::checkForNewAvailableVersion( )
 {
-	Resources::Instance()->getVersionChecker()->checkForNewVersion( "http://sourceforge.net/projects/quickrdp/files/quickRDP/" );
+	Resources::Instance()->getVersionChecker()->checkForNewVersion( "https://github.com/arnestig/quickrdp/releases/latest" );
 }
 
 void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
 {
-    wxLaunchDefaultBrowser( wxT("http://sourceforge.net/projects/quickrdp/files/quickRDP/") );
+    wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
 }
 
 void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )
