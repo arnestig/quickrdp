@@ -8,8 +8,8 @@ CFLAGS +=
 CPPFLAGS +=
 CXXFLAGS += -g -Wall $(shell wx-config --cxxflags)
 LDFLAGS += $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
-SVN_INFO_REV = $(shell svn info | grep Revision | cut -d' ' -f2)
-SVN_DEFINE=-DSVN_REVISION=0
+GIT_INFO_REV = $(git rev-parse --short HEAD)
+GIT_DEFINE =-DGIT_HASH=\"\"
 
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
 	CXXFLAGS += -O0
@@ -24,8 +24,8 @@ ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 	MAKEFLAGS += -j$(NUMJOBS)
 endif
 
-ifneq (,$(SVN_INFO_REV))
-	SVN_DEFINE=-DSVN_REVISION=$(SVN_INFO_REV)
+ifneq (,$(GIT_INFO_REV))
+	GIT_DEFINE=-DGIT_HASH=\"$(GIT_INFO_REV)\"
 endif
 
 INCLUDE_DIR=
@@ -43,7 +43,7 @@ $(PROGNAME): $(OBJFILES)
 
 obj/%.o: src/%.cpp 
 	@mkdir -p obj
-	$(CXX) -c $< -o $@ $(CPPFLAGS) $(CXXFLAGS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(SVN_DEFINE)
+	$(CXX) -c $< -o $@ $(CPPFLAGS) $(CXXFLAGS) $(INCLUDE_DIR) $(DEFAULT_DEFINE) $(GIT_DEFINE)
 
 clean:
 	rm -f $(OBJFILES) $(PROGNAME)
