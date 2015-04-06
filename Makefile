@@ -8,7 +8,7 @@ CFLAGS +=
 CPPFLAGS +=
 CXXFLAGS += -g -Wall $(shell wx-config --cxxflags)
 LDFLAGS += $(shell wx-config --libs base,core,adv)$(shell curl-config --libs)
-GIT_INFO_REV = $(git rev-parse --short HEAD)
+GIT_INFO_REV = $(shell git rev-parse --short HEAD)
 GIT_DEFINE =-DGIT_HASH=\"\"
 
 ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
