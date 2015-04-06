@@ -22,8 +22,8 @@
 #ifndef __VERSION_H__
 #define __VERSION_H__
 
-#ifndef SVN_REVISION
-#define SVN_REVISION 0
+#ifndef GIT_HASH
+#define GIT_HASH ""
 #endif
 
 #include <curl/curlver.h>
@@ -45,9 +45,10 @@ namespace Version {
 	inline wxString getLongVersion()
 	{
 	    wxString retval = version;
-	    if ( SVN_REVISION > 0 ) {
-            retval << wxT("-") + wxString::Format( wxT("%d"), SVN_REVISION );
-	    }
+	    #ifdef GIT_HASH
+            wxString gitHash( GIT_HASH, wxConvUTF8 );
+            retval << wxT("-") + gitHash;
+	    #endif
 	    return retval;
 	}
 
