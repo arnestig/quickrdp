@@ -1,4 +1,4 @@
-PROGNAME=QuickRDP
+PROGNAME=QuickRDP.exe
 
 CXX = g++
 LDFLAGS =
@@ -44,7 +44,8 @@ $(RESFILE):
 	windres -i src\resource.rc -J rc -o obj\resource.res -O coff $(INCLUDE_DIR)
 
 clean:
-	-del /Q /F obj\*.* $(PROGNAME)
+	-$(rmdir /S obj)
+	-$(del /Q /F $(PROGNAME))
 
 rebuild: clean all
 
