@@ -45,10 +45,10 @@ namespace Version {
 	inline wxString getLongVersion()
 	{
 	    wxString retval = version;
-	    #ifdef GIT_HASH
-            wxString gitHash( GIT_HASH, wxConvUTF8 );
+        wxString gitHash( GIT_HASH, wxConvUTF8 );
+        if ( gitHash.length() > 0 ) {
             retval << wxT("-") + gitHash;
-	    #endif
+        }
 	    return retval;
 	}
 
