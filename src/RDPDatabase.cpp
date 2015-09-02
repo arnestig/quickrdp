@@ -471,9 +471,9 @@ void RDPConnection::connect()
                         }
                         ///window caption
 						if ( getComment().empty() == true ) {
-							RDPargument.append( wxT(" -T") + getHostname() );
+							RDPargument.append( wxT(" -T\"") + getHostname() + wxT("\"") );
 						} else {
-							RDPargument.append( wxT(" -T") + getComment() );
+							RDPargument.append( wxT(" -T\"") + getComment() + wxT("\"") );
 						}
                         ///client hostname
                         if ( getClientHostname().empty() == false ) {
