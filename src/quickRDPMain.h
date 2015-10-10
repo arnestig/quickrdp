@@ -29,15 +29,15 @@
 #include <wx/listctrl.h>
 
 //(*Headers(quickRDPFrame)
-#include <wx/bmpbuttn.h>
-#include <wx/sizer.h>
 #include <wx/notebook.h>
-#include <wx/menu.h>
-#include <wx/panel.h>
-#include <wx/statusbr.h>
-#include <wx/frame.h>
+#include <wx/sizer.h>
 #include <wx/stattext.h>
+#include <wx/menu.h>
 #include <wx/textctrl.h>
+#include <wx/panel.h>
+#include <wx/bmpbuttn.h>
+#include <wx/frame.h>
+#include <wx/statusbr.h>
 //*)
 
 class quickRDPFrame: public wxFrame
@@ -95,6 +95,7 @@ class quickRDPFrame: public wxFrame
         void OnMenuNetworkScanner(wxCommandEvent& event);
         void OnMenuItemConnectWhenReady(wxCommandEvent& event);
         void OnIPCalculator(wxCommandEvent& event);
+        void OnResize(wxSizeEvent& event);
         //*)
         void OnTextCtrlClick(wxCommandEvent& event);
         void OnNewVersionTextClick(wxCommandEvent& event);
@@ -145,43 +146,43 @@ class quickRDPFrame: public wxFrame
         //*)
 
         //(*Declarations(quickRDPFrame)
-        wxMenuItem* MenuItem23;
         wxMenu* MenuItem19;
-        wxStaticText* VersionNotifyText;
-        wxPanel* Panel1;
-        wxStatusBar* StatusBar1;
-        wxMenuItem* MenuItem16;
-        wxMenuItem* MenuItem12;
-        wxMenuItem* MenuItem25;
-        wxMenu* Menu3;
-        wxMenuItem* MenuItem20;
-        wxMenuItem* MenuItem24;
-        wxMenuItem* MenuItem15;
-        wxMenuItem* MenuItem21;
-        wxMenuItem* MenuItem17;
-        wxMenuItem* MenuItem3;
-        QuickRDPBitmapButton* BitmapButton2;
-        wxMenuItem* MenuItem9;
-        wxMenu* Menu4;
-        wxMenu* MenuItem5;
-        wxMenuItem* MenuItem11;
-        QuickRDPBitmapButton* BitmapButton1;
-        wxMenuItem* MenuItem22;
-        QuickRDPBitmapButton* BitmapButton4;
-        wxTextCtrl* TextCtrl1;
-        wxMenu ColumnMenu;
-        wxMenuItem* MenuItem10;
-        wxNotebook* Notebook1;
-        wxMenuItem* MenuItem18;
         wxMenuItem* MenuItem7;
-        wxMenuItem* MenuItem6;
-        wxMenuItem* MenuItem4;
-        wxMenu PopupMenu1;
         wxMenuItem* MenuItem26;
+        wxMenuItem* MenuItem25;
+        wxNotebook* Notebook1;
+        QuickRDPBitmapButton* BitmapButton4;
+        wxMenu PopupMenu1;
+        wxMenu* Menu3;
+        wxStaticText* VersionNotifyText;
+        wxMenuItem* MenuItem4;
+        wxMenuItem* MenuItem14;
+        wxMenuItem* MenuItem11;
+        wxMenu ColumnMenu;
+        wxMenuItem* MenuItem15;
+        wxMenuItem* MenuItem22;
+        wxPanel* Panel1;
+        wxMenuItem* MenuItem17;
         wxMenuItem* MenuItem13;
         wxMenu* MenuItem8;
+        wxMenuItem* MenuItem10;
+        wxMenuItem* MenuItem12;
+        wxMenuItem* MenuItem24;
+        wxMenuItem* MenuItem3;
+        wxMenuItem* MenuItem20;
+        wxStatusBar* StatusBar1;
+        wxMenuItem* MenuItem6;
+        wxMenuItem* MenuItem23;
         QuickRDPBitmapButton* BitmapButton3;
-        wxMenuItem* MenuItem14;
+        QuickRDPBitmapButton* BitmapButton1;
+        wxTextCtrl* TextCtrl1;
+        wxMenu* MenuItem5;
+        wxMenuItem* MenuItem21;
+        QuickRDPBitmapButton* BitmapButton2;
+        wxMenuItem* MenuItem16;
+        wxMenuItem* MenuItem9;
+        wxMenuItem* MenuItem18;
+        wxMenu* Menu4;
         //*)
 
         wxPanel *connectionListPanel;
@@ -199,7 +200,6 @@ class quickRDPFrame: public wxFrame
 
         void saveConnectionTabs();
         void loadConnectionTabs();
-        void saveFrameSettings();
         void loadFrameSettings();
         int showDialog( wxDialog* dialog );
         bool wantGlobalHotkeys() const;

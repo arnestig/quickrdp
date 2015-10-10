@@ -41,9 +41,9 @@
 
 //(*InternalHeaders(quickRDPFrame)
 #include <wx/settings.h>
-#include <wx/string.h>
-#include <wx/intl.h>
 #include <wx/font.h>
+#include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(quickRDPFrame)
@@ -95,19 +95,19 @@ END_EVENT_TABLE()
 quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
 {
     //(*Initialize(quickRDPFrame)
-    wxMenuItem* MenuItem2;
-    wxMenuItem* MenuItem1;
-    wxBoxSizer* BoxSizer3;
-    wxMenu* Menu1;
-    wxBoxSizer* BoxSizer7;
-    wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer4;
-    wxBoxSizer* BoxSizer1;
-    wxMenuBar* MenuBar1;
-    wxMenu* Menu2;
     wxBoxSizer* BoxSizer6;
     wxBoxSizer* BoxSizer5;
+    wxBoxSizer* BoxSizer7;
+    wxMenuItem* MenuItem2;
+    wxMenuItem* MenuItem1;
+    wxBoxSizer* BoxSizer2;
+    wxMenu* Menu1;
+    wxBoxSizer* BoxSizer1;
+    wxMenuBar* MenuBar1;
     wxStaticBoxSizer* StaticBoxSizer1;
+    wxBoxSizer* BoxSizer3;
+    wxMenu* Menu2;
 
     Create(parent, wxID_ANY, _("quickRDP"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(172,202));
@@ -264,6 +264,7 @@ quickRDPFrame::quickRDPFrame(wxWindow* parent,wxWindowID WXUNUSED(id) )
     Connect(ID_MENUITEM8,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1152);
     Connect(ID_MENUITEM9,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1280);
     Connect(ID_MENUITEM10,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&quickRDPFrame::OnMenuItem1400);
+    Connect(wxEVT_SIZE,(wxObjectEventFunction)&quickRDPFrame::OnResize);
     //*)
     TextCtrl1->Connect(ID_TEXTCTRL1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnTextCtrlClick,0,this);
     VersionNotifyText->Connect(ID_STATICTEXT1,wxEVT_LEFT_DOWN,(wxObjectEventFunction)&quickRDPFrame::OnNewVersionTextClick,0,this);
@@ -320,7 +321,6 @@ quickRDPFrame::~quickRDPFrame()
     //(*Destroy(quickRDPFrame)
     //*)
     saveConnectionTabs();
-    saveFrameSettings();
     delete imageList;
     Resources::DestroyInstance();
 }
@@ -749,16 +749,6 @@ void quickRDPFrame::execute_connections()
         if ( connections[ con ] != NULL ) {
             connections[ con ]->connect();
         }
-    }
-}
-
-void quickRDPFrame::saveFrameSettings()
-{
-    Settings* settings = Resources::Instance()->getSettings();
-    if ( settings != NULL ) {
-        settings->setMainFrameHeight( GetSize().GetHeight() );
-        settings->setMainFrameWidth( GetSize().GetWidth() );
-        settings->saveSettings();
     }
 }
 
@@ -1402,3 +1392,14 @@ void quickRDPFrame::OnIPCalculator(wxCommandEvent& WXUNUSED( event ) )
     delete IPCalc;
 }
 
+
+void quickRDPFrame::OnResize(wxSizeEvent& event)
+{
+    /** update our settings if we move the window **/
+    Settings* settings = Resources::Instance()->getSettings();
+    if ( settings != NULL ) {
+        settings->setMainFrameHeight( GetSize().GetHeight() );
+        settings->setMainFrameWidth( GetSize().GetWidth() );
+    }
+    event.Skip();
+}
