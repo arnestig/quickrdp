@@ -28,8 +28,8 @@
 #include <wx/msgdlg.h>
 
 //(*InternalHeaders(CommandDialog)
-#include <wx/string.h>
 #include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(CommandDialog)
@@ -66,17 +66,17 @@ END_EVENT_TABLE()
 CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
 {
 	//(*Initialize(CommandDialog)
-	wxBoxSizer* BoxSizer3;
+	wxBoxSizer* BoxSizer4;
+	wxBoxSizer* BoxSizer5;
 	wxBoxSizer* BoxSizer10;
 	wxBoxSizer* BoxSizer7;
+	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer13;
 	wxBoxSizer* BoxSizer2;
-	wxBoxSizer* BoxSizer9;
-	wxBoxSizer* BoxSizer4;
-	wxBoxSizer* BoxSizer8;
 	wxBoxSizer* BoxSizer12;
 	wxBoxSizer* BoxSizer14;
-	wxBoxSizer* BoxSizer5;
+	wxBoxSizer* BoxSizer9;
+	wxBoxSizer* BoxSizer3;
 
 	Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("wxID_ANY"));
 	SetClientSize(wxSize(509,247));
@@ -199,12 +199,17 @@ CommandDialog::CommandDialog(wxWindow* parent,wxWindowID WXUNUSED(id) )
     /** make sure our shortcut modifiers are 0 **/
     curShortcutMod = 0;
     curShortcutKey = 0;
+    exampleDialog = NULL;
 }
 
 CommandDialog::~CommandDialog()
 {
 	//(*Destroy(CommandDialog)
 	//*)
+
+	if ( exampleDialog != NULL ) {
+        delete exampleDialog;
+	}
 }
 
 void CommandDialog::LoadCommand( Command* command )
@@ -278,23 +283,12 @@ void CommandDialog::OnInit(wxInitDialogEvent& WXUNUSED(event) )
 {
 }
 
-void CommandDialog::OnExamplesButton(wxCommandEvent& WXUNUSED(event) )
-{
-    ExampleDialog *example;
-    #if defined(__WXMSW__)
-        example = new ExampleDialog( wxT("Example: Filezilla FTP connection\nProgram: C:\\Program Files (x86)\\FileZilla FTP Client\\filezilla.exe\nArgument: ftp://%username%:%password%@%hostname%\n\nExample: Mount and open shared folder\nProgram: cmd.exe\nArgument: /C \"net use X: /DELETE & net use X: \\\\%hostname%\\C$ %password% /USER:%username% & explorer X:\"\n\nExample: Continuously ping host\nProgram: ping.exe\nArgument: %hostname% -t"), this );
-    #else
-        example = new ExampleDialog( wxT("Example: Scan host on port 21,22,23 and 80 with nmap\nProgram: nmap\nArgument: -p21-23,80 %hostname%"), this );
-    #endif
-    example->ShowModal();
-    delete example;
-}
-
 void CommandDialog::OnArgumentHelpButton(wxCommandEvent& WXUNUSED(event) )
 {
-    ExampleDialog *example = new ExampleDialog( wxT("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%\n%port%\n\nCustom arguments using $<argument_name>$ - Each time a command is executed using custom arguments they will require input from user and replaces the $argument$ in the argument string."), this );
-    example->ShowModal();
-    delete example;
+    if ( exampleDialog == NULL ) {
+        exampleDialog = new ExampleDialog( wxT("Arguments sent to the command will be parsed before sent. Some special variables can be used to specialize the command.\n\nExample: A connection with the hostname telnet.example.com and username foobar would expand the argument string \"-telnet %username%@%hostname%\" to \"-telnet foobar@telnet.example.com\".\n\nIf you want to avoid expanding part of the argument if a specific string is empty you can define this using {}.\nExample: A connection without a password would expand the following argument \"-ssh {%username%@}%hostname%{ -pw %password%}\" to this: \"-ssh foobar@ssh.example.com\".\n\nFollowing strings can be used:\n%hostname%\n%connectiontype%\n%username%\n%password%\n%port%\n\nCustom arguments using $<argument_name>$ - Each time a command is executed using custom arguments they will require input from user and replaces the $argument$ in the argument string."), this );
+    }
+    exampleDialog->Show();
 }
 
 void CommandDialog::OnFileDialogClick(wxCommandEvent& WXUNUSED(event) )

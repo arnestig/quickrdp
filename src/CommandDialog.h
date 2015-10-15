@@ -23,17 +23,18 @@
 #define COMMANDDIALOG_H
 
 #include "CommandDatabase.h"
+#include "ExampleDialog.h"
 
 //(*Headers(CommandDialog)
-#include <wx/checkbox.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
-#include <wx/button.h>
-#include <wx/filedlg.h>
-#include <wx/panel.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
+#include <wx/checkbox.h>
+#include <wx/panel.h>
+#include <wx/filedlg.h>
 #include <wx/choice.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
 //*)
 
 class CommandDialog: public wxDialog
@@ -44,32 +45,32 @@ class CommandDialog: public wxDialog
 		virtual ~CommandDialog();
 
 		//(*Declarations(CommandDialog)
-		wxCheckBox* connectionTargetCheckbox;
-		wxPanel* Panel1;
-		wxCheckBox* favoriteCheckbox;
-		wxTextCtrl* argumentTextCtrl;
-		wxButton* saveButton;
-		wxTextCtrl* TextShortcut;
-		wxButton* Button1;
-		wxStaticText* StaticText1;
 		wxStaticText* StaticText10;
-		wxStaticText* StaticText3;
-		wxCheckBox* safetyCheckbox;
-		wxChoice* connectionTypeChoice;
-		wxStaticText* StaticText8;
-		wxFileDialog* FileDialog1;
-		wxStaticText* StaticText7;
-		wxTextCtrl* nameTextCtrl;
-		wxStaticText* StaticText4;
-		wxBoxSizer* BoxSizer1;
-		wxStaticText* StaticText5;
-		wxStaticText* StaticText2;
-		wxStaticText* StaticText6;
-		wxStaticText* StaticText9;
 		wxButton* ArgumentHelpButton;
-		wxTextCtrl* programTextCtrl;
+		wxStaticText* StaticText9;
 		wxBoxSizer* BoxSizer6;
+		wxTextCtrl* argumentTextCtrl;
+		wxChoice* connectionTypeChoice;
 		wxButton* closeButton;
+		wxStaticText* StaticText2;
+		wxButton* Button1;
+		wxStaticText* StaticText6;
+		wxCheckBox* safetyCheckbox;
+		wxTextCtrl* TextShortcut;
+		wxStaticText* StaticText8;
+		wxButton* saveButton;
+		wxPanel* Panel1;
+		wxStaticText* StaticText1;
+		wxFileDialog* FileDialog1;
+		wxCheckBox* favoriteCheckbox;
+		wxStaticText* StaticText3;
+		wxTextCtrl* nameTextCtrl;
+		wxCheckBox* connectionTargetCheckbox;
+		wxStaticText* StaticText5;
+		wxStaticText* StaticText7;
+		wxTextCtrl* programTextCtrl;
+		wxBoxSizer* BoxSizer1;
+		wxStaticText* StaticText4;
 		//*)
 
 		void LoadCommand( Command* command );
@@ -109,7 +110,6 @@ class CommandDialog: public wxDialog
 		void OnNameTextChange(wxCommandEvent& event);
 		void OnSaveButton(wxCommandEvent& event);
 		void OnInit(wxInitDialogEvent& event);
-		void OnExamplesButton(wxCommandEvent& event);
 		void OnArgumentHelpButton(wxCommandEvent& event);
 		void OnFileDialogClick(wxCommandEvent& event);
 		void HandlePanelKeyDown(wxKeyEvent& event);
@@ -120,6 +120,8 @@ class CommandDialog: public wxDialog
 		//*)
 
 		void SaveCurrentShortcut( std::pair< int, int > shortcut );
+
+		ExampleDialog* exampleDialog;
 
         int curShortcutMod;
         int curShortcutKey;

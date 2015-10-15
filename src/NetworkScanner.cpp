@@ -267,6 +267,8 @@ NetworkScanner::NetworkScanner(wxWindow* parent,wxWindowID WXUNUSED( id) )
     ListCtrl1->SetImageList( imageList, wxIMAGE_LIST_SMALL );
     database_sort_ascending = true;
     last_column_click = wxT( "Hostname" );
+
+    exampleDialog = NULL;
 }
 
 NetworkScanner::~NetworkScanner()
@@ -276,6 +278,9 @@ NetworkScanner::~NetworkScanner()
     stopScanner();
 	cleanTargets();
 	delete imageList;
+	if ( exampleDialog != NULL ) {
+        delete exampleDialog;
+	}
 }
 
 void NetworkScanner::startScanner()
@@ -570,9 +575,10 @@ void NetworkScanner::OnShowAllConnections(wxCommandEvent& WXUNUSED( event ) )
 
 void NetworkScanner::OnOtherPortsHelpClick(wxCommandEvent& WXUNUSED( event ) )
 {
-    ExampleDialog *example = new ExampleDialog( wxT("Define other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"), this );
-    example->ShowModal();
-    delete example;
+    if ( exampleDialog == NULL ) {
+        exampleDialog = new ExampleDialog( wxT("Define other ports to be scanned here.\nSeparate ports with comma (,) or create a range using hyphen (-).\n\nExample: 21-23,80,8080"), this );
+    }
+    exampleDialog->Show();
 }
 
 void NetworkScanner::sortByName( wxString name )

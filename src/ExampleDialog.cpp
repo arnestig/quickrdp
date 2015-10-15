@@ -66,6 +66,7 @@ ExampleDialog::ExampleDialog(wxString example, wxWindow* parent,wxWindowID id)
 	exampleTextCtrl->ChangeValue( example );
 
 	Button1->SetFocus();
+	SetEscapeId( wxID_ANY );
 }
 
 ExampleDialog::~ExampleDialog()
@@ -76,5 +77,9 @@ ExampleDialog::~ExampleDialog()
 
 void ExampleDialog::OnCloseButton(wxCommandEvent& WXUNUSED(event) )
 {
-    EndModal( 0 );
+    if ( IsModal() == true ) {
+        EndModal( 0 );
+    } else {
+        Hide();
+    }
 }

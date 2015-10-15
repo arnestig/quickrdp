@@ -37,6 +37,7 @@
 
 #include "connectionchecker.h"
 #include "QuickRDPTextCtrl.h"
+#include "ExampleDialog.h"
 
 class NetworkScanner: public wxDialog
 {
@@ -123,6 +124,7 @@ class NetworkScanner: public wxDialog
         std::map< int, RDPConnection* > ListCtrlRDPConnectionTable;
         unsigned int targetsAdded;
         wxImageList *imageList;
+        ExampleDialog *exampleDialog;
         //(*Handlers(NetworkScanner)
         void OnScan(wxCommandEvent& event);
         void OnCheckBoxesClick(wxCommandEvent& event);
