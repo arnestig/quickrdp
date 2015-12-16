@@ -156,7 +156,7 @@ bool VersionCheckerWorker::execute( wxString &version )
             version = wxString::FromUTF8( latestVersion.c_str() );
             return true;
         } else {
-            return true;
+            return false;
         }
     } else {
         return false;
