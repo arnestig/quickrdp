@@ -28,13 +28,23 @@
 #include <vector>
 #include <wx/thread.h>
 #include <wx/event.h>
+#include <wx/filename.h>
+#include <fstream>
 
 BEGIN_DECLARE_EVENT_TYPES()
     DECLARE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE, -1 )
     DECLARE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE, -1 )
+    DECLARE_EVENT_TYPE( wxEVT_VERSION_DOWNLOAD_COMPLETE, -1 )
 END_DECLARE_EVENT_TYPES()
 
 class VersionCheckerWorker;
+
+enum TaskType
+{
+    AUTOMATIC_CHECK,
+    MANUAL_CHECK,
+    DOWNLOAD_BINARY
+};
 
 class VersionChecker
 {
@@ -43,13 +53,16 @@ class VersionChecker
         VersionChecker( wxEvtHandler *parent );
         ~VersionChecker();
 
-        void checkForNewVersion( std::string url, bool automatic_check = true );
+        void checkForNewVersion( TaskType taskType, std::string url = "" );
 
     private:
 		void workerThreadDone( VersionCheckerWorker *thread );
 		void postEvent( wxCommandEvent event );
+		void setNewVersionURL( wxString newVersionURL );
+		wxString getNewVersionURL();
 		std::vector< VersionCheckerWorker* > workerThreads;
 		wxMutex mutex;
+		wxString newVersionURL;
 
         wxEvtHandler *parent;
 };
@@ -57,18 +70,19 @@ class VersionChecker
 class VersionCheckerWorker : public wxThread
 {
     public:
-        VersionCheckerWorker( VersionChecker *parent, std::string url, bool automatic_check );
+        VersionCheckerWorker( VersionChecker *parent, std::string url, TaskType taskType );
         ~VersionCheckerWorker();
 
     private:
         static int writer( char *data, size_t size, size_t nmemb, std::string *buffer_in );
         std::string get( const char* url );
-        bool execute( wxString &version);
+        bool execute( wxString &version );
+        bool download( wxString versionurl, wxString &filename );
         virtual void *Entry();
 		VersionChecker *parent;
 
 		std::string url;
-		bool automatic_check;
+		TaskType taskType;
 };
 
 #endif

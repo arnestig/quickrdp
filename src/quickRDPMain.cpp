@@ -87,6 +87,7 @@ BEGIN_EVENT_TABLE(quickRDPFrame,wxFrame)
     //*)
     EVT_COMMAND(wxID_ANY, wxEVT_VERSION_CHECK_DONE, quickRDPFrame::onVersionCheckExecuted)
     EVT_COMMAND(wxID_ANY, wxEVT_AUTOMATIC_VERSION_CHECK_DONE, quickRDPFrame::onAutomaticVersionCheckExecuted)
+    EVT_COMMAND(wxID_ANY, wxEVT_VERSION_DOWNLOAD_COMPLETE, quickRDPFrame::onNewVersionDownloaded)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_STATUS_UPDATE, quickRDPFrame::onConnectionCheckerUpdate)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECK_SEND_DATA, quickRDPFrame::onConnectionCheckerWantData)
     EVT_COMMAND(wxID_ANY, wxEVT_CONNECTION_CHECKER_DONE, quickRDPFrame::onConnectionCheckerDone)
@@ -816,7 +817,19 @@ void quickRDPFrame::OnReportBugClick(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::OnMenuSearchForUpdates(wxCommandEvent& WXUNUSED(event) )
 {
-	Resources::Instance()->getVersionChecker()->checkForNewVersion( "https://github.com/arnestig/quickrdp/releases/latest", false );
+	Resources::Instance()->getVersionChecker()->checkForNewVersion( MANUAL_CHECK, "https://api.github.com/repos/arnestig/quickrdp/releases/latest" );
+}
+
+void quickRDPFrame::onNewVersionDownloaded( wxCommandEvent& event )
+{
+    if ( event.GetInt() == 1 ) {
+        wxExecute( event.GetString() );
+        Close();
+    } else {
+        if ( wxMessageBox( wxT("Failed to download the latest QuickRDP release.. Would you like to try and download it manually?"), wxT("Failed to download"), wxYES_NO ) == wxYES ) {
+            wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
+        }
+    }
 }
 
 void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
@@ -824,7 +837,11 @@ void quickRDPFrame::onVersionCheckExecuted( wxCommandEvent &event )
     /** event handler for when we're checking for a new version manually **/
     if ( event.GetInt() == 1 ) {
         if ( wxMessageBox( wxT("Version ") + event.GetString() + wxT(" is available for download. Do you want to download it now?"), wxT("New version available"), wxYES_NO ) == wxYES ) {
-            wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
+            #if defined(__WXMSW__)
+                Resources::Instance()->getVersionChecker()->checkForNewVersion( DOWNLOAD_BINARY );
+            #else
+                wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
+            #endif
         }
     } else {
         wxMessageBox( wxT("You already got the latest version of QuickRDP.") );
@@ -1038,12 +1055,18 @@ void quickRDPFrame::OnTextCtrlInput(wxCommandEvent& WXUNUSED(event) )
 
 void quickRDPFrame::checkForNewAvailableVersion( )
 {
-	Resources::Instance()->getVersionChecker()->checkForNewVersion( "https://github.com/arnestig/quickrdp/releases/latest" );
+	Resources::Instance()->getVersionChecker()->checkForNewVersion( AUTOMATIC_CHECK, "https://api.github.com/repos/arnestig/quickrdp/releases/latest" );
 }
 
 void quickRDPFrame::OnNewVersionTextClick(wxCommandEvent& WXUNUSED(event) )
 {
-    wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
+    #if defined(__WXMSW__)
+        if ( wxMessageBox( wxT("Do you want to download and install the new version?"), wxT("Download and install new version"), wxYES_NO ) == wxYES ) {
+            Resources::Instance()->getVersionChecker()->checkForNewVersion( DOWNLOAD_BINARY );
+        }
+    #else
+        wxLaunchDefaultBrowser( wxT("https://github.com/arnestig/quickrdp/releases/latest") );
+    #endif
 }
 
 void quickRDPFrame::onConnectionCheckerUpdate( wxCommandEvent& event )

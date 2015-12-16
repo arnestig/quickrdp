@@ -186,7 +186,7 @@ ConnectionCheckerWorkerThread::ConnectionCheckerWorkerThread( ConnectionChecker 
     sock_addr.sin_family = PF_INET;
     socket_mode = 1;
 
-    #if defined(WIN32)
+    #if defined(__WXMSW__)
     	WSADATA info;
     	if (WSAStartup(MAKEWORD(2,0), &info)) {
          	wxMessageBox( wxT("Error during WSAStartup()") );

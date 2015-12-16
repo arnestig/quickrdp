@@ -25,6 +25,7 @@
 
 DEFINE_EVENT_TYPE( wxEVT_VERSION_CHECK_DONE )
 DEFINE_EVENT_TYPE( wxEVT_AUTOMATIC_VERSION_CHECK_DONE )
+DEFINE_EVENT_TYPE( wxEVT_VERSION_DOWNLOAD_COMPLETE )
 
 VersionChecker::VersionChecker( wxEvtHandler *parent )
 	:	parent( parent )
@@ -57,9 +58,9 @@ VersionChecker::~VersionChecker()
 	}
 }
 
-void VersionChecker::checkForNewVersion( std::string url, bool automatic_check )
+void VersionChecker::checkForNewVersion( TaskType taskType, std::string url )
 {
-    VersionCheckerWorker *worker = new VersionCheckerWorker( this, url, automatic_check );
+    VersionCheckerWorker *worker = new VersionCheckerWorker( this, url, taskType );
     if ( worker->Create() != wxTHREAD_NO_ERROR ) {
         delete worker;
         worker = NULL;
@@ -95,11 +96,21 @@ void VersionChecker::postEvent( wxCommandEvent event )
     mutex.Unlock();
 }
 
-VersionCheckerWorker::VersionCheckerWorker( VersionChecker *parent, std::string url, bool automatic_check )
+void VersionChecker::setNewVersionURL( wxString newVersionURL )
+{
+    this->newVersionURL = newVersionURL;
+}
+
+wxString VersionChecker::getNewVersionURL()
+{
+    return newVersionURL;
+}
+
+VersionCheckerWorker::VersionCheckerWorker( VersionChecker *parent, std::string url, TaskType taskType )
     :   wxThread( wxTHREAD_DETACHED ),
         parent( parent ),
         url( url ),
-        automatic_check( automatic_check )
+        taskType( taskType )
 {
 }
 
@@ -126,17 +137,47 @@ bool VersionCheckerWorker::execute( wxString &version )
             latestVersion = retData.substr( first_quickrdp+quickrdp_str.length(),first_exe-first_quickrdp-exe_str.length()+1 );
         }
 
+        /** okay, lets try and find the download url for this binary **/
+        size_t curSeekPos = 0;
+        while ( curSeekPos != std::string::npos ) {
+            std::string firstDownload_str = "\"browser_download_url\"";
+            size_t firstDownloadURL = retData.find( firstDownload_str, curSeekPos ) + firstDownload_str.length() + 2;
+            size_t firstBracketAfterURL = retData.find( "}", firstDownloadURL ) - 1;
+            std::string targetURL = retData.substr( firstDownloadURL, firstBracketAfterURL - firstDownloadURL );
+            if ( targetURL.find( "exe" ) != std::string::npos ) {
+                wxString versionurl = wxString::FromUTF8( targetURL.c_str() );
+                parent->setNewVersionURL( versionurl );
+                break;
+            }
+            curSeekPos = retData.find( firstDownload_str, firstBracketAfterURL );
+        }
+
         if ( latestVersion.compare(ourVersion) > 0 ) { /** is this better than we got? **/
             version = wxString::FromUTF8( latestVersion.c_str() );
             return true;
         } else {
-            return false;
+            return true;
         }
     } else {
         return false;
     }
+}
 
-
+bool VersionCheckerWorker::download( wxString versionurl, wxString &filename )
+{
+    if ( versionurl.IsEmpty() == true ) {
+        return false;
+    }
+    filename = wxFileName::CreateTempFileName( wxT("quickrdp") );
+    std::string retData = get( versionurl.c_str() );
+    if ( retData.empty() == true ) {
+        return false;
+    }
+    std::ofstream out;
+    out.open(filename.mb_str(), std::ios::out | std::ios::binary );
+    out.write( retData.c_str(), sizeof(char)*retData.size() );
+    out.close();
+    return true;
 }
 
 int VersionCheckerWorker::writer( char *data, size_t size, size_t nmemb, std::string *buffer_in )
@@ -161,6 +202,7 @@ std::string VersionCheckerWorker::get( const char* url )
     if ( curl ) {
         curl_easy_setopt( curl, CURLOPT_URL, url );
         curl_easy_setopt( curl, CURLOPT_FOLLOWLOCATION, 1 );
+        curl_easy_setopt( curl, CURLOPT_USERAGENT, "QuickRDP/1.0");
         curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, &VersionCheckerWorker::writer );
         curl_easy_setopt( curl, CURLOPT_WRITEDATA, &buffer );
         result = curl_easy_perform( curl );
@@ -177,18 +219,37 @@ std::string VersionCheckerWorker::get( const char* url )
 void *VersionCheckerWorker::Entry()
 {
     /** execute our thread and check for a new version, then return information to the main frame **/
-
     wxCommandEvent evt( wxEVT_AUTOMATIC_VERSION_CHECK_DONE, wxID_ANY );
-    if ( automatic_check == false ) {
-        evt.SetEventType( wxEVT_VERSION_CHECK_DONE );
+    switch( taskType )
+    {
+        case AUTOMATIC_CHECK:
+            evt.SetEventType( wxEVT_AUTOMATIC_VERSION_CHECK_DONE );
+        break;
+        case DOWNLOAD_BINARY:
+            evt.SetEventType( wxEVT_VERSION_DOWNLOAD_COMPLETE );
+        break;
+        default:
+        case MANUAL_CHECK:
+            evt.SetEventType( wxEVT_VERSION_CHECK_DONE );
+        break;
     }
 
-    wxString latestVersion = wxT("");
-    if ( execute( latestVersion ) == true ) {
-        evt.SetInt( 1 );
-        evt.SetString( latestVersion );
+    if ( taskType == DOWNLOAD_BINARY ) {
+        wxString filename = wxT("");
+        if ( download( parent->getNewVersionURL(), filename ) == true ) {
+            evt.SetInt( 1 );
+            evt.SetString( filename );
+        } else {
+            evt.SetInt( 0 );
+        }
     } else {
-        evt.SetInt( 0 );
+        wxString latestVersion = wxT("");
+        if ( execute( latestVersion ) == true ) {
+            evt.SetInt( 1 );
+            evt.SetString( latestVersion );
+        } else {
+            evt.SetInt( 0 );
+        }
     }
 
     parent->postEvent( evt );

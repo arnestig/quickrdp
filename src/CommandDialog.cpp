@@ -370,7 +370,7 @@ void CommandDialog::OnconnectionTypeChoiceSelect(wxCommandEvent& WXUNUSED( event
     }
 }
 
-void CommandDialog::OnChangesMade(wxCommandEvent& event)
+void CommandDialog::OnChangesMade(wxCommandEvent& WXUNUSED( event ) )
 {
     saveButton->Enable( true );
 }
