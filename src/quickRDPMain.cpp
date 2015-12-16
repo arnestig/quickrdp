@@ -1201,7 +1201,7 @@ void quickRDPFrame::OnColumnClick(wxListEvent& event)
     loadRDPFromDatabase();
 }
 
-void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
+void quickRDPFrame::OnItemRightClick(wxListEvent& event )
 {
     RDPConnection *curCon = quickRDP::Connections::getSelectedConnection( getConnectionList() );
     /** prepare our RDP menu with checkboxes for console mode and resolutions **/
@@ -1276,7 +1276,18 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& WXUNUSED(event) )
         newCommandMenuItem->Enable( false );
     }
 
+    /** if the event originates from the keyboard context menu key, we want to move the mouse to the location of the item **/
+    if ( event.GetId() == 0 ) {
+        wxRect itemRect;
+        if ( quickRDP::Connections::getSelectedConnectionRect( getConnectionList(), itemRect ) == true ) {
+            wxPoint pagePos = Notebook1->GetCurrentPage()->GetPosition();
+            wxPoint nbPos = Notebook1->GetPosition();
+            WarpPointer( nbPos.x + itemRect.x + pagePos.x + itemRect.width/2, nbPos.y + itemRect.y + pagePos.y + itemRect.height/2 );
+        }
+    }
+
     PopupMenu( &PopupMenu1 );
+    //WarpPointer( pt.x, pt.y );
 }
 
 void quickRDPFrame::OnItemActivated(wxListEvent& WXUNUSED(event) )

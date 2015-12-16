@@ -45,6 +45,7 @@ const long ConnectionList::ID_COLUMN_CLIENTNAME = wxNewId();
 BEGIN_EVENT_TABLE(ConnectionList,wxPanel)
 	//(*EventTable(ConnectionList)
 	//*)
+	EVT_CONTEXT_MENU(ConnectionList::onContextMenu)
 END_EVENT_TABLE()
 
 ConnectionList::ConnectionList(wxWindow* parent, quickRDPFrame *mainFrame, wxWindowID id )
@@ -223,4 +224,13 @@ void ConnectionList::addColumns()
         }
     }
     UpdateColumnWidth();
+}
+
+void ConnectionList::onContextMenu(wxContextMenuEvent& event)
+{
+    wxPoint clickPos = event.GetPosition();
+    if ( clickPos == wxDefaultPosition ) { // the event was originating from the keyboard
+        wxListEvent evt;
+        mainFrame->OnItemRightClick( evt );
+    }
 }

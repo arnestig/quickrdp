@@ -22,8 +22,6 @@
 #include "generalTabPanel.h"
 #include "RDPFrame.h"
 
-#include <wx/msgdlg.h>
-
 //(*InternalHeaders(generalTabPanel)
 #include <wx/font.h>
 #include <wx/intl.h>

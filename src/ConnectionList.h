@@ -99,6 +99,7 @@ class ConnectionList: public wxPanel
 		//*)
 		quickRDPFrame *mainFrame;
 		std::vector< std::pair< wxString, ConnectionListColumn::ConnectionListColumn > > connectionListColumnMap;
+		void onContextMenu(wxContextMenuEvent& event);
 
 		DECLARE_EVENT_TABLE()
 };

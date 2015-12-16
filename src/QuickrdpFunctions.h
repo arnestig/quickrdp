@@ -228,6 +228,16 @@ namespace quickRDP
 
     namespace Connections
     {
+        inline bool getSelectedConnectionRect( wxListCtrl *listCtrl, wxRect &rect )
+        {
+            if ( listCtrl->GetSelectedItemCount() > 0 ) {
+                long itemIndex = -1;
+                itemIndex = listCtrl->GetNextItem( itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED );
+                return listCtrl->GetItemRect( itemIndex, rect );
+            }
+            return false;
+        }
+
         inline RDPConnection *getSelectedConnection( wxListCtrl *listCtrl )
         {
             if ( listCtrl->GetSelectedItemCount() > 0 ) {
