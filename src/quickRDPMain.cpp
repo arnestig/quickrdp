@@ -1287,7 +1287,6 @@ void quickRDPFrame::OnItemRightClick(wxListEvent& event )
     }
 
     PopupMenu( &PopupMenu1 );
-    //WarpPointer( pt.x, pt.y );
 }
 
 void quickRDPFrame::OnItemActivated(wxListEvent& WXUNUSED(event) )
