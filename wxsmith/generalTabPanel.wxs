@@ -67,8 +67,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="TextCtrl2" member="yes">
 									<size>101,21</size>
-									<style>wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -83,8 +84,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="PortText" member="yes">
 									<size>39,21</size>
-									<style>wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -105,8 +107,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL7" variable="TextCtrl7" member="yes">
 									<size>150,-1</size>
-									<style>wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -137,8 +140,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL3" variable="TextCtrl3" member="yes">
 									<size>150,-1</size>
-									<style>wxTE_PASSWORD|wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxTE_PASSWORD|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -159,8 +163,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL6" variable="TextCtrl6" member="yes">
 									<size>150,-1</size>
-									<style>wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -181,8 +186,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL4" variable="TextCtrl4" member="yes">
 									<size>150,-1</size>
-									<style>wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>
@@ -203,8 +209,9 @@
 							<object class="sizeritem">
 								<object class="wxTextCtrl" name="ID_TEXTCTRL5" variable="TextCtrl5" member="yes">
 									<size>150,-1</size>
-									<style>wxDOUBLE_BORDER</style>
+									<style>wxTE_PROCESS_ENTER|wxDOUBLE_BORDER</style>
 									<handler function="onTextUpdates" entry="EVT_TEXT" />
+									<handler function="OnTextEnter" entry="EVT_TEXT_ENTER" />
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 								<border>5</border>

@@ -92,6 +92,7 @@ class generalTabPanel: public wxPanel
 		//(*Handlers(generalTabPanel)
 		void onTextUpdates(wxCommandEvent& event);
 		void onConnectionChoice(wxCommandEvent& event);
+		void OnTextEnter(wxCommandEvent& event);
 		//*)
         RDPFrame *owner;
 		DECLARE_EVENT_TABLE()

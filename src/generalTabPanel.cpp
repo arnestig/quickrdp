@@ -22,6 +22,8 @@
 #include "generalTabPanel.h"
 #include "RDPFrame.h"
 
+#include <wx/msgdlg.h>
+
 //(*InternalHeaders(generalTabPanel)
 #include <wx/font.h>
 #include <wx/intl.h>
@@ -92,17 +94,17 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID WXUNUSED(id),const 
 	BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("Hostname:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer2->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl2 = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(101,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+	TextCtrl2 = new wxTextCtrl(this, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxSize(101,21), wxTE_PROCESS_ENTER|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL2"));
 	BoxSizer2->Add(TextCtrl2, 0, wxTOP|wxBOTTOM|wxLEFT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText10 = new wxStaticText(this, ID_STATICTEXT10, _(":"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
 	BoxSizer2->Add(StaticText10, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 3);
-	PortText = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(39,21), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+	PortText = new wxTextCtrl(this, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(39,21), wxTE_PROCESS_ENTER|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL1"));
 	BoxSizer2->Add(PortText, 1, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText8 = new wxStaticText(this, ID_STATICTEXT8, _("Username:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
 	BoxSizer11->Add(StaticText8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl7 = new wxTextCtrl(this, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL7"));
+	TextCtrl7 = new wxTextCtrl(this, ID_TEXTCTRL7, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PROCESS_ENTER|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL7"));
 	BoxSizer11->Add(TextCtrl7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer11, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
@@ -112,25 +114,25 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID WXUNUSED(id),const 
 	StaticText9->SetForegroundColour(wxColour(255,0,0));
 	StaticText9->SetToolTip(_("*** SECURITY RISK ***\nPlease note that for now passwords are stored in plain-text in your user\'s home directory. \nIt\'s a security risk since those files are commonly readable by other users on your system! \nUse wisely and on your own risk."));
 	BoxSizer5->Add(StaticText9, 0, wxTOP|wxBOTTOM|wxRIGHT|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl3 = new wxTextCtrl(this, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PASSWORD|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL3"));
+	TextCtrl3 = new wxTextCtrl(this, ID_TEXTCTRL3, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PROCESS_ENTER|wxTE_PASSWORD|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL3"));
 	BoxSizer5->Add(TextCtrl3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer5, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText7 = new wxStaticText(this, ID_STATICTEXT7, _("Comment:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
 	BoxSizer10->Add(StaticText7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl6 = new wxTextCtrl(this, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL6"));
+	TextCtrl6 = new wxTextCtrl(this, ID_TEXTCTRL6, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PROCESS_ENTER|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL6"));
 	BoxSizer10->Add(TextCtrl6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer10, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText4 = new wxStaticText(this, ID_STATICTEXT4, _("Domain:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
 	BoxSizer6->Add(StaticText4, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl4 = new wxTextCtrl(this, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL4"));
+	TextCtrl4 = new wxTextCtrl(this, ID_TEXTCTRL4, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PROCESS_ENTER|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL4"));
 	BoxSizer6->Add(TextCtrl4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer6, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
 	StaticText5 = new wxStaticText(this, ID_STATICTEXT5, _("Client name:"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
 	BoxSizer7->Add(StaticText5, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	TextCtrl5 = new wxTextCtrl(this, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL5"));
+	TextCtrl5 = new wxTextCtrl(this, ID_TEXTCTRL5, wxEmptyString, wxDefaultPosition, wxSize(150,-1), wxTE_PROCESS_ENTER|wxDOUBLE_BORDER, wxDefaultValidator, _T("ID_TEXTCTRL5"));
 	BoxSizer7->Add(TextCtrl5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer3->Add(BoxSizer7, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 0);
 	BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
@@ -144,12 +146,19 @@ generalTabPanel::generalTabPanel(wxWindow* parent,wxWindowID WXUNUSED(id),const 
 
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&generalTabPanel::onConnectionChoice);
 	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_TEXTCTRL7,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL7,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL3,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_TEXTCTRL6,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL6,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_TEXTCTRL4,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL4,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_TEXTCTRL5,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
+	Connect(ID_TEXTCTRL5,wxEVT_COMMAND_TEXT_ENTER,(wxObjectEventFunction)&generalTabPanel::OnTextEnter);
 	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&generalTabPanel::onTextUpdates);
 	//*)
 }
@@ -174,4 +183,26 @@ void generalTabPanel::onConnectionChoice(wxCommandEvent& WXUNUSED(event) )
 {
     owner->checkForChanges();
     owner->switchConnectionType( static_cast<ConnectionType::ConnectionType> ( Choice1->GetCurrentSelection() ) );
+}
+
+void generalTabPanel::OnTextEnter(wxCommandEvent& event)
+{
+    ConnectionType::ConnectionType curConnType = static_cast<ConnectionType::ConnectionType> ( Choice1->GetCurrentSelection() );
+    long currentWindowId = this->FindFocus()->GetId();
+    bool navigateForOwner = false;
+    if ( curConnType == ConnectionType::RDP ) {
+        if ( currentWindowId == ID_TEXTCTRL5 ) { // the client name box is the last field when using connection type == RDP
+            navigateForOwner = true;
+        }
+    } else {
+        if ( currentWindowId == ID_TEXTCTRL6 ) { // The comment box is the last field when using connection type != RDP
+            navigateForOwner = true;
+        }
+    }
+
+    if ( navigateForOwner == true ) {
+        owner->setFocusOnSaveButton();
+    } else {
+        this->FindFocus()->Navigate();
+    }
 }

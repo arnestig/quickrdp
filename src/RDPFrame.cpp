@@ -342,3 +342,8 @@ void RDPFrame::OnClose(wxCloseEvent& WXUNUSED(event) )
     }
     Destroy();
 }
+
+void RDPFrame::setFocusOnSaveButton()
+{
+    Button1->SetFocus();
+}

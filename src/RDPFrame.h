@@ -60,6 +60,7 @@ class RDPFrame: public wxDialog
 		windowTabPanel* windowTab;
         resourcesTabPanel* resourcesTab;
         void loadRDPConnection( RDPConnection* rdpConnection );
+        void setFocusOnSaveButton();
 
 	protected:
 
