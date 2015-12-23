@@ -169,7 +169,7 @@ bool VersionCheckerWorker::download( wxString versionurl, wxString &filename )
         return false;
     }
     filename = wxFileName::CreateTempFileName( wxT("quickrdp") );
-    std::string retData = get( versionurl.c_str() );
+    std::string retData = get( versionurl.mb_str() );
     if ( retData.empty() == true ) {
         return false;
     }
