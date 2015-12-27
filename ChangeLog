@@ -1,3 +1,18 @@
+quickrdp 2.4.3 - 2015-12-27
+ Bug fixes
+ ---------
+ * Fixed problem when saving frame size when windows was shutting down. Should
+ no longer get any strange and long streched windows when starting quickrdp
+ after a reboot now.
+ * Updated some of the example dialogs to not be modal (by popular request).
+ * Fixing so that Enter is processed in the options of connections.
+		
+ New features
+ ------------
+ * Added support for keyboard context menu key.
+ * Adding download feature and installation to the version checker for Windows.
+ Linux releases will still be launched to the github webpage.
+
 quickrdp 2.4.2 - 2015-04-02
  Moving from sourceforge to github.
  Since Sourceforge now apparently approve of adware / malware / spyware bundled by
