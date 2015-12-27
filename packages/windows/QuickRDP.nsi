@@ -1,7 +1,7 @@
     !define APPNAME "QuickRDP"
     !define COMPANYNAME "Tobias Eliasson"
     !ifndef VERSION
-    !define VERSION "2.4.2"
+    !define VERSION "2.4.3"
     !endif
     !define HELPURL "https://github.com/arnestig/quickrdp" # "Support Information" link
     !define UPDATEURL "https://github.com/arnestig/quickrdp" # "Product Updates" link
