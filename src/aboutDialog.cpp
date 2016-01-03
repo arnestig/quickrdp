@@ -1,5 +1,5 @@
 /**
-    Copyright (C) 2010-2015 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
+    Copyright (C) 2010-2016 QuickRDP - Manages RDP, SSH, Telnet and VNC connections
 
     Written by Tobias Eliasson <arnestig@gmail.com>.
 
@@ -86,10 +86,10 @@ aboutDialog::aboutDialog(wxWindow* parent,wxWindowID WXUNUSED(id),const wxPoint&
 	BoxSizer3->Add(-1,-1,0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	StaticText2 = new wxStaticText(Panel1, ID_STATICTEXT2, _("Manages RDP, telnet, SSH and VNC connections"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
 	BoxSizer3->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2015 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	StaticText3 = new wxStaticText(Panel1, ID_STATICTEXT3, _("Copyright © 2010 - 2016 Tobias Eliasson"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
 	wxFont StaticText3Font(8,wxSWISS,wxFONTSTYLE_NORMAL,wxNORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
 	StaticText3->SetFont(StaticText3Font);
-	StaticText3->SetLabel( wxT("Copyright © 2010 - 2015 Tobias Eliasson") );
+	StaticText3->SetLabel( wxT("Copyright © 2010 - 2016 Tobias Eliasson") );
 	BoxSizer3->Add(StaticText3, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer6 = new wxBoxSizer(wxVERTICAL);
 	StaticText4 = new wxStaticText(Panel1, ID_STATICTEXT4, _("Licence: GNU GPLv3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));

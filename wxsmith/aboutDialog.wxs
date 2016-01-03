@@ -66,7 +66,7 @@
 								</object>
 								<object class="sizeritem">
 									<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
-										<label>Copyright © 2010 - 2015 Tobias Eliasson</label>
+										<label>Copyright © 2010 - 2016 Tobias Eliasson</label>
 										<font>
 											<size>8</size>
 											<style>normal</style>
@@ -75,7 +75,7 @@
 											<family>swiss</family>
 											<face>Sans</face>
 										</font>
-										<extra_code>StaticText3-&gt;SetLabel( wxT(&quot;Copyright © 2010 - 2015 Tobias Eliasson&quot;) );</extra_code>
+										<extra_code>StaticText3-&gt;SetLabel( wxT(&quot;Copyright © 2010 - 2016 Tobias Eliasson&quot;) );</extra_code>
 									</object>
 									<flag>wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL</flag>
 									<border>5</border>
