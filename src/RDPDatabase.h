@@ -36,7 +36,7 @@ namespace ConnectionType
         VNC
     };
 
-    inline wxString getConnectionTypeName( ConnectionType::ConnectionType connectionType )
+    inline wxString getConnectionTypeName( ConnectionType connectionType )
     {
         switch ( connectionType )
         {
@@ -55,7 +55,7 @@ namespace ConnectionType
         }
     }
 
-    inline ConnectionType::ConnectionType getConnectionTypeForPort( int port )
+    inline ConnectionType getConnectionTypeForPort( int port )
     {
         switch ( port )
         {
