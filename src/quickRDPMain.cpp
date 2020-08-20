@@ -452,10 +452,10 @@ void quickRDPFrame::loadRDPFromDatabase()
         listCtrl->SetItem( itemIndexCounter, columnCounter, curRDP->getHostname() );
         wxColour itembgcolour;
         if ( use_grey_color == true && settings->getGreyListBackground() == true ) {
-            itembgcolour = wxColour( 240, 240, 240 );
+            itembgcolour = wxColour( 30, 30, 30 );
             use_grey_color = false;
         } else {
-            itembgcolour = wxColour( 255, 255, 255 );
+            itembgcolour = wxColour( 0, 0, 0 );
             use_grey_color = true;
         }
         listCtrl->SetItemBackgroundColour( item, itembgcolour );
